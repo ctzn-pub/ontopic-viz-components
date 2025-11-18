@@ -12,7 +12,7 @@ import {
   ResponsiveContainer,
   ReferenceLine
 } from 'recharts';
-import { createHistogram } from '@/lib/statistical-utils';
+import { createHistogram } from '../utils/statistical-utils';
 
 export interface HistogramProps {
   data: number[];

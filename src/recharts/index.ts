@@ -21,6 +21,6 @@ export { default as DemographicDotPlot } from './DemographicDotPlot';
 export { default as StateBarChart } from './bar.state.v1';
 export { default as HealthScatterplot } from './HealthScatterplot';
 
-// Components with statistical-utils dependency - need utilities moved to package
-// export { default as HistogramRecharts } from './HistogramRecharts';
-// export { default as ViolinPlot } from './ViolinPlot';
+// Statistical components with utils
+export { default as HistogramRecharts } from './HistogramRecharts';
+export { default as ViolinPlot } from './ViolinPlot';

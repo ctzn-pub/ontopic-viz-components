@@ -7,7 +7,7 @@ import * as topojson from 'topojson-client';
 import dynamic from 'next/dynamic';
 import { Card, CardHeader, CardTitle, CardContent } from '@/components/ui/card';
 import { mean, median } from 'd3-array';
-import { ResponsiveContainer, LineChart, CartesianGrid, XAxis, YAxis, Tooltip, Line, ErrorBar, BarChart as BarChart$1, Legend, Bar, Brush, ReferenceArea, Text, ScatterChart, Scatter, ComposedChart, ZAxis, Area, ReferenceLine } from 'recharts';
+import { ResponsiveContainer, LineChart, CartesianGrid, XAxis, YAxis, Tooltip, Line, ErrorBar, BarChart as BarChart$1, Legend, Bar, Brush, ReferenceArea, Text, ScatterChart, Scatter, ReferenceLine, ComposedChart, Cell, ZAxis, Area } from 'recharts';
 import { Button } from '@/components/ui/button';
 import { useTheme } from 'next-themes';
 import { Label } from '@/components/ui/label';
@@ -765,9 +765,9 @@ function DistributionPlot({
           );
         }
         if (showMean) {
-          const mean2 = groupData.reduce((sum, d) => sum + d.value, 0) / groupData.length;
+          const mean3 = groupData.reduce((sum, d) => sum + d.value, 0) / groupData.length;
           marks.push(
-            Plot24.ruleX([mean2], {
+            Plot24.ruleX([mean3], {
               stroke: color,
               strokeWidth: 2,
               strokeDasharray: "4,4"
@@ -827,9 +827,9 @@ function DistributionPlot({
         );
       }
       if (showMean) {
-        const mean2 = data.reduce((sum, d) => sum + d.value, 0) / data.length;
+        const mean3 = data.reduce((sum, d) => sum + d.value, 0) / data.length;
         marks.push(
-          Plot24.ruleX([mean2], {
+          Plot24.ruleX([mean3], {
             stroke: meanColor,
             strokeWidth: 2,
             strokeDasharray: "4,4"
@@ -5874,6 +5874,300 @@ Population: ${d.population?.toLocaleString()}`,
 };
 var HealthScatterplot_default = HealthScatterplot;
 
-export { AbortionOpinionChart, basic_bar_v1_default as BarChart, stat_boxplot_v1_default as BoxPlot, BoxPlotFaceted, BoxPlotFacetedGrouped, BoxPlotGrouped, geo_bubble_v1_default as BubbleMap, BulletChart, CorrelationHeatmap_default as CorrelationHeatmap, stat_demographic_bar_v1_default as DemographicBarChart, DemographicDotPlot, DemographicLineChart, stat_density_v1_default as DensityPlot, DistributionPlot, DivergingBar, basic_dot_v1_default as DotPlot, DualAxisChart_default as DualAxisChart, FacetedPlot, ForestPlot, HealthScatterplot_default as HealthScatterplot, HistogramObservable, LineChart_default as LineChart, OddsRatio_default as OddsRatio, PcaPlot, PlotContainer, PlotExport, PlotThemeProvider, QQPlot, RegressionPlot, ResidualPlot, HappinessCorrelatesPanel as ScatterplotRegression, SlopeChart, Sparkline, stat_splitbar_v1_default as SplitBar, StateBarChart, geo_state_map_v1_default as StateMap, StripPlot, SwarmPlot, TimeSeries_default as TimeSeries, TimeSeriesChart2 as TimeSeriesChart, TimeSeriesIndex_default as TimeSeriesIndex, TimeSeriesChart as TimeSeriesLine, TimeTrendDemoChart, defaultDarkTheme, defaultLightTheme, usePlotTheme };
+// src/utils/statistical-utils.ts
+function calculateQuartiles(data) {
+  if (data.length === 0) {
+    return { min: 0, q1: 0, median: 0, q3: 0, max: 0, outliers: [], iqr: 0 };
+  }
+  const sorted = [...data].sort((a, b) => a - b);
+  const n = sorted.length;
+  const q1 = quantile(sorted, 0.25);
+  const median2 = quantile(sorted, 0.5);
+  const q3 = quantile(sorted, 0.75);
+  const iqr = q3 - q1;
+  const lowerFence = q1 - 1.5 * iqr;
+  const upperFence = q3 + 1.5 * iqr;
+  const outliers = sorted.filter((v) => v < lowerFence || v > upperFence);
+  const nonOutliers = sorted.filter((v) => v >= lowerFence && v <= upperFence);
+  const min = nonOutliers.length > 0 ? nonOutliers[0] : sorted[0];
+  const max = nonOutliers.length > 0 ? nonOutliers[nonOutliers.length - 1] : sorted[n - 1];
+  return { min, q1, median: median2, q3, max, outliers, iqr };
+}
+function quantile(sortedData, p) {
+  if (sortedData.length === 0) return 0;
+  if (p <= 0) return sortedData[0];
+  if (p >= 1) return sortedData[sortedData.length - 1];
+  const index = (sortedData.length - 1) * p;
+  const lower = Math.floor(index);
+  const upper = Math.ceil(index);
+  const weight = index - lower;
+  return sortedData[lower] * (1 - weight) + sortedData[upper] * weight;
+}
+function mean2(data) {
+  if (data.length === 0) return 0;
+  return data.reduce((sum, val) => sum + val, 0) / data.length;
+}
+function standardDeviation(data) {
+  if (data.length === 0) return 0;
+  const avg = mean2(data);
+  const squareDiffs = data.map((value) => Math.pow(value - avg, 2));
+  const avgSquareDiff = mean2(squareDiffs);
+  return Math.sqrt(avgSquareDiff);
+}
+function kernelDensity(data, bandwidth, points = 50) {
+  const n = data.length;
+  if (n === 0) return [];
+  const std = standardDeviation(data);
+  const bw = 1.06 * std * Math.pow(n, -1 / 5);
+  const min = Math.min(...data);
+  const max = Math.max(...data);
+  const range = max - min;
+  const padding = range * 0.1;
+  const result = [];
+  for (let i = 0; i < points; i++) {
+    const x = min - padding + (max - min + 2 * padding) * i / (points - 1);
+    let density2 = 0;
+    for (const value of data) {
+      const u = (x - value) / bw;
+      density2 += Math.exp(-1 / 2 * u * u) / Math.sqrt(2 * Math.PI);
+    }
+    result.push({ x, density: density2 / (n * bw) });
+  }
+  return result;
+}
+function createHistogram(data, bins) {
+  if (data.length === 0) return [];
+  const numBins = bins ?? Math.ceil(Math.log2(data.length) + 1);
+  const min = Math.min(...data);
+  const max = Math.max(...data);
+  const binWidth = (max - min) / numBins;
+  const histogram = Array.from({ length: numBins }, (_, i) => {
+    const binStart = min + i * binWidth;
+    const binEnd = min + (i + 1) * binWidth;
+    const binMid = (binStart + binEnd) / 2;
+    return {
+      bin: `${binStart.toFixed(1)}-${binEnd.toFixed(1)}`,
+      count: 0,
+      binStart,
+      binEnd,
+      binMid
+    };
+  });
+  data.forEach((value) => {
+    const binIndex = Math.min(Math.floor((value - min) / binWidth), numBins - 1);
+    histogram[binIndex].count++;
+  });
+  return histogram;
+}
+function HistogramRecharts({
+  data,
+  bins,
+  width,
+  height = 500,
+  xlabel = "Value",
+  ylabel = "Frequency",
+  title,
+  color = "hsl(var(--primary))",
+  showMean = true,
+  showMedian = false
+}) {
+  const histogramData = useMemo(() => {
+    return createHistogram(data, bins);
+  }, [data, bins]);
+  const statistics = useMemo(() => {
+    if (data.length === 0) return { mean: 0, median: 0 };
+    const mean3 = data.reduce((sum, val) => sum + val, 0) / data.length;
+    const sorted = [...data].sort((a, b) => a - b);
+    const median2 = sorted[Math.floor(sorted.length / 2)];
+    return { mean: mean3, median: median2 };
+  }, [data]);
+  const CustomTooltip = ({ active, payload }) => {
+    if (active && payload && payload.length) {
+      const data2 = payload[0].payload;
+      return /* @__PURE__ */ jsxs("div", { className: "bg-white dark:bg-gray-800 p-3 border rounded shadow-lg", children: [
+        /* @__PURE__ */ jsx("p", { className: "font-semibold", children: data2.bin }),
+        /* @__PURE__ */ jsxs("p", { className: "text-sm", children: [
+          "Count: ",
+          data2.count
+        ] }),
+        /* @__PURE__ */ jsxs("p", { className: "text-xs text-muted-foreground", children: [
+          "Range: [",
+          data2.binStart.toFixed(2),
+          ", ",
+          data2.binEnd.toFixed(2),
+          ")"
+        ] })
+      ] });
+    }
+    return null;
+  };
+  return /* @__PURE__ */ jsxs("div", { className: "w-full", children: [
+    title && /* @__PURE__ */ jsx("h3", { className: "text-lg font-semibold mb-4", children: title }),
+    /* @__PURE__ */ jsx(ResponsiveContainer, { width: width || "100%", height, children: /* @__PURE__ */ jsxs(BarChart$1, { data: histogramData, margin: { top: 20, right: 30, left: 20, bottom: 60 }, children: [
+      /* @__PURE__ */ jsx(CartesianGrid, { strokeDasharray: "3 3" }),
+      /* @__PURE__ */ jsx(
+        XAxis,
+        {
+          dataKey: "bin",
+          label: { value: xlabel, position: "insideBottom", offset: -10 },
+          angle: -45,
+          textAnchor: "end",
+          height: 80
+        }
+      ),
+      /* @__PURE__ */ jsx(YAxis, { label: { value: ylabel, angle: -90, position: "insideLeft" } }),
+      /* @__PURE__ */ jsx(Tooltip, { content: /* @__PURE__ */ jsx(CustomTooltip, {}) }),
+      /* @__PURE__ */ jsx(Legend, {}),
+      /* @__PURE__ */ jsx(Bar, { dataKey: "count", fill: color, name: "Frequency" }),
+      showMean && /* @__PURE__ */ jsx(
+        ReferenceLine,
+        {
+          x: histogramData.find(
+            (d) => d.binStart <= statistics.mean && d.binEnd > statistics.mean
+          )?.bin,
+          stroke: "hsl(var(--destructive))",
+          strokeWidth: 2,
+          strokeDasharray: "5 5",
+          label: { value: `Mean: ${statistics.mean.toFixed(2)}`, position: "top", fill: "hsl(var(--destructive))" }
+        }
+      ),
+      showMedian && /* @__PURE__ */ jsx(
+        ReferenceLine,
+        {
+          x: histogramData.find(
+            (d) => d.binStart <= statistics.median && d.binEnd > statistics.median
+          )?.bin,
+          stroke: "hsl(var(--chart-2))",
+          strokeWidth: 2,
+          strokeDasharray: "5 5",
+          label: { value: `Median: ${statistics.median.toFixed(2)}`, position: "bottom", fill: "hsl(var(--chart-2))" }
+        }
+      )
+    ] }) }),
+    /* @__PURE__ */ jsx("div", { className: "mt-4 text-sm text-muted-foreground", children: /* @__PURE__ */ jsxs("p", { children: [
+      "Total observations: ",
+      data.length,
+      " \u2022 Bins: ",
+      histogramData.length,
+      " \u2022 Mean: ",
+      statistics.mean.toFixed(2),
+      " \u2022 Median: ",
+      statistics.median.toFixed(2)
+    ] }) })
+  ] });
+}
+function ViolinPlot({
+  data,
+  width,
+  height = 500,
+  xlabel = "Category",
+  ylabel = "Value",
+  title,
+  showBox = true
+}) {
+  const { violinShapes, scatterData, yDomain } = useMemo(() => {
+    const shapes = data.map((item, idx) => {
+      const density2 = kernelDensity(item.values, void 0, 100);
+      const maxDensity = Math.max(...density2.map((d) => d.density));
+      const quartiles = calculateQuartiles(item.values);
+      return {
+        category: item.category,
+        categoryIndex: idx,
+        density: density2.map((d) => ({
+          y: d.x,
+          width: maxDensity > 0 ? d.density / maxDensity * 0.35 : 0
+        })),
+        quartiles
+      };
+    });
+    const points = shapes.flatMap(
+      (shape) => shape.density.flatMap((d) => [
+        {
+          categoryIndex: shape.categoryIndex - d.width,
+          category: shape.category,
+          value: d.y
+        },
+        {
+          categoryIndex: shape.categoryIndex + d.width,
+          category: shape.category,
+          value: d.y
+        }
+      ])
+    );
+    const allValues = data.flatMap((d) => d.values);
+    const minVal = Math.min(...allValues);
+    const maxVal = Math.max(...allValues);
+    const padding = (maxVal - minVal) * 0.1;
+    return {
+      violinShapes: shapes,
+      scatterData: points,
+      yDomain: [minVal - padding, maxVal + padding]
+    };
+  }, [data]);
+  const CustomTooltip = ({ active, payload }) => {
+    if (active && payload && payload.length) {
+      const data2 = payload[0].payload;
+      return /* @__PURE__ */ jsxs("div", { className: "bg-white dark:bg-gray-800 p-3 border rounded shadow-lg", children: [
+        /* @__PURE__ */ jsx("p", { className: "font-semibold", children: data2.category }),
+        /* @__PURE__ */ jsxs("p", { className: "text-sm", children: [
+          "Value: ",
+          data2.value?.toFixed(2) || "N/A"
+        ] })
+      ] });
+    }
+    return null;
+  };
+  return /* @__PURE__ */ jsxs("div", { className: "w-full", children: [
+    title && /* @__PURE__ */ jsx("h3", { className: "text-lg font-semibold mb-4", children: title }),
+    /* @__PURE__ */ jsx(ResponsiveContainer, { width: width || "100%", height, children: /* @__PURE__ */ jsxs(ComposedChart, { margin: { top: 20, right: 30, left: 20, bottom: 80 }, children: [
+      /* @__PURE__ */ jsx(CartesianGrid, { strokeDasharray: "3 3" }),
+      /* @__PURE__ */ jsx(
+        XAxis,
+        {
+          type: "number",
+          dataKey: "categoryIndex",
+          domain: [-0.5, data.length - 0.5],
+          ticks: data.map((_, idx) => idx),
+          tickFormatter: (value) => data[Math.round(value)]?.category || "",
+          label: { value: xlabel, position: "insideBottom", offset: -15 },
+          angle: -45,
+          textAnchor: "end",
+          height: 100
+        }
+      ),
+      /* @__PURE__ */ jsx(
+        YAxis,
+        {
+          type: "number",
+          dataKey: "value",
+          domain: yDomain,
+          label: { value: ylabel, angle: -90, position: "insideLeft" }
+        }
+      ),
+      /* @__PURE__ */ jsx(Tooltip, { content: /* @__PURE__ */ jsx(CustomTooltip, {}) }),
+      /* @__PURE__ */ jsx(
+        Scatter,
+        {
+          data: scatterData,
+          fill: "hsl(var(--primary))",
+          fillOpacity: 0.3,
+          children: scatterData.map((entry, index) => /* @__PURE__ */ jsx(
+            Cell,
+            {
+              fill: `hsl(${Math.floor(entry.categoryIndex + 0.5) * 60 % 360}, 70%, 50%)`
+            },
+            `cell-${index}`
+          ))
+        }
+      )
+    ] }) }),
+    /* @__PURE__ */ jsx("div", { className: "mt-4 text-sm text-muted-foreground", children: /* @__PURE__ */ jsxs("p", { children: [
+      "Violin plot showing distribution density (wider = more data points) \u2022 Categories: ",
+      data.length
+    ] }) })
+  ] });
+}
+
+export { AbortionOpinionChart, basic_bar_v1_default as BarChart, stat_boxplot_v1_default as BoxPlot, BoxPlotFaceted, BoxPlotFacetedGrouped, BoxPlotGrouped, geo_bubble_v1_default as BubbleMap, BulletChart, CorrelationHeatmap_default as CorrelationHeatmap, stat_demographic_bar_v1_default as DemographicBarChart, DemographicDotPlot, DemographicLineChart, stat_density_v1_default as DensityPlot, DistributionPlot, DivergingBar, basic_dot_v1_default as DotPlot, DualAxisChart_default as DualAxisChart, FacetedPlot, ForestPlot, HealthScatterplot_default as HealthScatterplot, HistogramObservable, HistogramRecharts, LineChart_default as LineChart, OddsRatio_default as OddsRatio, PcaPlot, PlotContainer, PlotExport, PlotThemeProvider, QQPlot, RegressionPlot, ResidualPlot, HappinessCorrelatesPanel as ScatterplotRegression, SlopeChart, Sparkline, stat_splitbar_v1_default as SplitBar, StateBarChart, geo_state_map_v1_default as StateMap, StripPlot, SwarmPlot, TimeSeries_default as TimeSeries, TimeSeriesChart2 as TimeSeriesChart, TimeSeriesIndex_default as TimeSeriesIndex, TimeSeriesChart as TimeSeriesLine, TimeTrendDemoChart, ViolinPlot, defaultDarkTheme, defaultLightTheme, usePlotTheme };
 //# sourceMappingURL=index.mjs.map
 //# sourceMappingURL=index.mjs.map

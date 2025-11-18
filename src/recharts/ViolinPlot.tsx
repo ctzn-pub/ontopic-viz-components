@@ -11,7 +11,7 @@ import {
   ResponsiveContainer,
   Cell
 } from 'recharts';
-import { calculateQuartiles, kernelDensity } from '@/lib/statistical-utils';
+import { calculateQuartiles, kernelDensity } from '../utils/statistical-utils';
 
 export interface ViolinPlotDataPoint {
   category: string;
