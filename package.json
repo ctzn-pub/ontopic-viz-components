@@ -1,0 +1,33 @@
+{
+  "name": "@ontopic/viz-packages",
+  "version": "1.0.0",
+  "private": true,
+  "description": "Data visualization component packages for React applications",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/ontopic/viz-packages.git"
+  },
+  "author": "Ontopic",
+  "license": "MIT",
+  "engines": {
+    "node": ">=18.0.0",
+    "pnpm": ">=8.0.0"
+  },
+  "packageManager": "pnpm@8.15.0",
+  "scripts": {
+    "build": "pnpm --filter './packages/**' build",
+    "build:core": "pnpm --filter @ontopic/viz-core build",
+    "build:components": "pnpm --filter @ontopic/viz-components build",
+    "dev": "pnpm --filter './packages/**' dev",
+    "clean": "pnpm --filter './packages/**' clean",
+    "typecheck": "pnpm --filter './packages/**' typecheck",
+    "lint": "pnpm --filter './packages/**' lint"
+  },
+  "devDependencies": {
+    "@types/node": "^20.11.0",
+    "@types/react": "^18.2.48",
+    "@types/react-dom": "^18.2.18",
+    "typescript": "^5.3.3",
+    "tsup": "^8.0.1"
+  }
+}
