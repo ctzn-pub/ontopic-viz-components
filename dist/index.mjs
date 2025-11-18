@@ -1,11 +1,11 @@
-import * as React20 from 'react';
-import React20__default, { createContext, useRef, useState, useEffect, useContext, useMemo } from 'react';
+import * as React24 from 'react';
+import React24__default, { createContext, useRef, useState, useEffect, useContext, useMemo } from 'react';
 import * as Plot24 from '@observablehq/plot';
 import { jsx, jsxs, Fragment } from 'react/jsx-runtime';
 import { Download, Users, ArrowUpDown, ChevronUp, ChevronDown, Palette, DollarSign, UserCircle2, GraduationCap } from 'lucide-react';
-import * as topojson from 'topojson-client';
+import * as topojson3 from 'topojson-client';
 import dynamic from 'next/dynamic';
-import { Card, CardHeader, CardTitle, CardContent } from '@/components/ui/card';
+import { Card, CardHeader, CardTitle, CardContent, CardDescription } from '@/components/ui/card';
 import { mean, median } from 'd3-array';
 import { ResponsiveContainer, LineChart, CartesianGrid, XAxis, YAxis, Tooltip, Line, ErrorBar, BarChart as BarChart$1, Legend, Bar, Brush, ReferenceArea, Text, ScatterChart, Scatter, ReferenceLine, ComposedChart, Cell, ZAxis, Area } from 'recharts';
 import { Button } from '@/components/ui/button';
@@ -43,7 +43,7 @@ function PlotContainer({
   useEffect(() => {
     if (!containerRef.current) return;
     const finalWidth = width === "responsive" ? containerWidth : width;
-    const plot29 = Plot24.plot({
+    const plot33 = Plot24.plot({
       ...plotSpec,
       width: finalWidth,
       height
@@ -51,9 +51,9 @@ function PlotContainer({
     if (plotRef.current) {
       plotRef.current.remove();
     }
-    containerRef.current.appendChild(plot29);
-    plotRef.current = plot29;
-    onPlotCreated?.(plot29);
+    containerRef.current.appendChild(plot33);
+    plotRef.current = plot33;
+    onPlotCreated?.(plot33);
     return () => {
       if (plotRef.current) {
         plotRef.current.remove();
@@ -257,14 +257,14 @@ var StateMap = ({
     valueSuffix = "",
     valuePrefix = ""
   } = labels;
-  const containerRef = React20.useRef(null);
-  React20.useEffect(() => {
+  const containerRef = React24.useRef(null);
+  React24.useEffect(() => {
     if (!containerRef.current || !usTopoJSON || !data || data.length === 0) return;
     containerRef.current.innerHTML = "";
     const stateToValueMap = new Map(
       data.map(({ state, value }) => [state, value])
     );
-    const states = topojson.feature(usTopoJSON, usTopoJSON.objects.states);
+    const states = topojson3.feature(usTopoJSON, usTopoJSON.objects.states);
     for (const state of states.features) {
       state.properties.value = stateToValueMap.get(state.properties.name);
     }
@@ -275,16 +275,16 @@ var StateMap = ({
         return `${valuePrefix}${value}${valueSuffix}`;
       }
     };
-    const statemesh = topojson.mesh(
+    const statemesh = topojson3.mesh(
       usTopoJSON,
       usTopoJSON.objects.states,
       (a, b) => a !== b
     );
-    const nation = topojson.feature(
+    const nation = topojson3.feature(
       usTopoJSON,
       usTopoJSON.objects.nation
     );
-    const plot29 = Plot24.plot({
+    const plot33 = Plot24.plot({
       caption,
       projection,
       color: {
@@ -321,9 +321,9 @@ var StateMap = ({
         )
       ]
     });
-    containerRef.current.appendChild(plot29);
+    containerRef.current.appendChild(plot33);
     return () => {
-      plot29.remove();
+      plot33.remove();
     };
   }, [usTopoJSON, data, width, height, title, subtitle, caption, valueSuffix, valuePrefix, colorScheme, quantiles, reverseColors, projection]);
   return /* @__PURE__ */ jsx("div", { ref: containerRef, className });
@@ -373,7 +373,7 @@ function BubbleMap({
         tip: true
       })
     ];
-    const plot29 = Plot24.plot({
+    const plot33 = Plot24.plot({
       width,
       height,
       title,
@@ -388,9 +388,9 @@ function BubbleMap({
       },
       marks
     });
-    containerRef.current.appendChild(plot29);
+    containerRef.current.appendChild(plot33);
     return () => {
-      plot29?.remove();
+      plot33?.remove();
     };
   }, [data, longitudeKey, latitudeKey, sizeKey, colorKey, nameKey, title, subtitle, fill, fillOpacity, stroke, strokeWidth, width, height, projection]);
   return /* @__PURE__ */ jsx("div", { ref: containerRef, className });
@@ -419,7 +419,7 @@ function BoxPlot({
   useEffect(() => {
     if (!containerRef.current || !data || data.length === 0) return;
     containerRef.current.innerHTML = "";
-    const plot29 = Plot24.plot({
+    const plot33 = Plot24.plot({
       width,
       height,
       marginLeft,
@@ -451,9 +451,9 @@ function BoxPlot({
         })
       ]
     });
-    containerRef.current.appendChild(plot29);
+    containerRef.current.appendChild(plot33);
     return () => {
-      plot29?.remove();
+      plot33?.remove();
     };
   }, [data, x, y, title, xLabel, yLabel, fill, fillOpacity, stroke, strokeWidth, outlierRadius, width, height, marginLeft, marginBottom, xTickRotate]);
   return /* @__PURE__ */ jsx("div", { ref: containerRef, className });
@@ -488,7 +488,7 @@ function BoxPlotGrouped({
     const middleGroupIndex = Math.ceil((groups.length - 1) / 2);
     const tickValues = categories.flatMap((cat) => `${cat}__${groups[middleGroupIndex]}`);
     const tickFormat = (d) => d.split("__")[0];
-    const plot29 = Plot24.plot({
+    const plot33 = Plot24.plot({
       width,
       height,
       marginTop: title ? 40 : 20,
@@ -526,9 +526,9 @@ function BoxPlotGrouped({
         })
       ]
     });
-    plot29.setAttribute("role", "img");
-    plot29.setAttribute("aria-label", ariaLabel);
-    containerRef.current.appendChild(plot29);
+    plot33.setAttribute("role", "img");
+    plot33.setAttribute("aria-label", ariaLabel);
+    containerRef.current.appendChild(plot33);
     return () => {
       if (containerRef.current) {
         containerRef.current.innerHTML = "";
@@ -555,7 +555,7 @@ function BoxPlotFaceted({
   useEffect(() => {
     if (!containerRef.current || !data || data.length === 0) return;
     containerRef.current.innerHTML = "";
-    const plot29 = Plot24.plot({
+    const plot33 = Plot24.plot({
       width,
       height,
       marginTop: title ? 50 : 40,
@@ -593,9 +593,9 @@ function BoxPlotFaceted({
         Plot24.frame()
       ]
     });
-    plot29.setAttribute("role", "img");
-    plot29.setAttribute("aria-label", ariaLabel);
-    containerRef.current.appendChild(plot29);
+    plot33.setAttribute("role", "img");
+    plot33.setAttribute("aria-label", ariaLabel);
+    containerRef.current.appendChild(plot33);
     return () => {
       if (containerRef.current) {
         containerRef.current.innerHTML = "";
@@ -634,7 +634,7 @@ function BoxPlotFacetedGrouped({
     const middleGroupIndex = Math.ceil((groups.length - 1) / 2);
     const tickValues = categories.flatMap((cat) => `${cat}__${groups[middleGroupIndex]}`);
     const tickFormat = (d) => d.split("__")[0];
-    const plot29 = Plot24.plot({
+    const plot33 = Plot24.plot({
       width,
       height,
       marginTop: title ? 50 : 40,
@@ -682,9 +682,9 @@ function BoxPlotFacetedGrouped({
         Plot24.frame()
       ]
     });
-    plot29.setAttribute("role", "img");
-    plot29.setAttribute("aria-label", ariaLabel);
-    containerRef.current.appendChild(plot29);
+    plot33.setAttribute("role", "img");
+    plot33.setAttribute("aria-label", ariaLabel);
+    containerRef.current.appendChild(plot33);
     return () => {
       if (containerRef.current) {
         containerRef.current.innerHTML = "";
@@ -848,7 +848,7 @@ function DistributionPlot({
         );
       }
     }
-    const plot29 = Plot24.plot({
+    const plot33 = Plot24.plot({
       width,
       height,
       marginTop: title ? 40 : 20,
@@ -866,9 +866,9 @@ function DistributionPlot({
       },
       marks
     });
-    plot29.setAttribute("role", "img");
-    plot29.setAttribute("aria-label", ariaLabel);
-    containerRef.current.appendChild(plot29);
+    plot33.setAttribute("role", "img");
+    plot33.setAttribute("aria-label", ariaLabel);
+    containerRef.current.appendChild(plot33);
     return () => {
       if (containerRef.current) {
         containerRef.current.innerHTML = "";
@@ -991,7 +991,7 @@ function RegressionPlot({
         );
       }
     }
-    const plot29 = Plot24.plot({
+    const plot33 = Plot24.plot({
       width,
       height,
       marginTop: title ? 40 : 20,
@@ -1009,9 +1009,9 @@ function RegressionPlot({
       },
       marks
     });
-    plot29.setAttribute("role", "img");
-    plot29.setAttribute("aria-label", ariaLabel);
-    containerRef.current.appendChild(plot29);
+    plot33.setAttribute("role", "img");
+    plot33.setAttribute("aria-label", ariaLabel);
+    containerRef.current.appendChild(plot33);
     if (showRSquared && !hasGroups) {
       const xMean = plotData.reduce((sum, d) => sum + d.x, 0) / plotData.length;
       const yMean = plotData.reduce((sum, d) => sum + d.y, 0) / plotData.length;
@@ -1026,7 +1026,7 @@ function RegressionPlot({
       rText.setAttribute("font-size", "14");
       rText.setAttribute("fill", "#666");
       rText.textContent = `R\xB2 = ${rSquared.toFixed(3)}`;
-      plot29.appendChild(rText);
+      plot33.appendChild(rText);
     }
     return () => {
       if (containerRef.current) {
@@ -1068,7 +1068,7 @@ function QQPlot({
     const sampleMax = Math.max(...sortedData);
     const slope = (sampleMax - sampleMin) / (maxVal - minVal);
     const intercept = sampleMin - slope * minVal;
-    const plot29 = Plot24.plot({
+    const plot33 = Plot24.plot({
       width,
       height,
       marginTop: title ? 40 : 20,
@@ -1109,9 +1109,9 @@ function QQPlot({
         })
       ]
     });
-    plot29.setAttribute("role", "img");
-    plot29.setAttribute("aria-label", ariaLabel);
-    containerRef.current.appendChild(plot29);
+    plot33.setAttribute("role", "img");
+    plot33.setAttribute("aria-label", ariaLabel);
+    containerRef.current.appendChild(plot33);
     return () => {
       if (containerRef.current) {
         containerRef.current.innerHTML = "";
@@ -1155,7 +1155,7 @@ function ResidualPlot({
       const residual = d.y - fitted;
       return { fitted, residual };
     });
-    const plot29 = Plot24.plot({
+    const plot33 = Plot24.plot({
       width,
       height,
       marginTop: title ? 40 : 20,
@@ -1188,9 +1188,9 @@ function ResidualPlot({
         })
       ]
     });
-    plot29.setAttribute("role", "img");
-    plot29.setAttribute("aria-label", ariaLabel);
-    containerRef.current.appendChild(plot29);
+    plot33.setAttribute("role", "img");
+    plot33.setAttribute("aria-label", ariaLabel);
+    containerRef.current.appendChild(plot33);
     return () => {
       if (containerRef.current) {
         containerRef.current.innerHTML = "";
@@ -1216,7 +1216,7 @@ function SwarmPlot({
   useEffect(() => {
     if (!containerRef.current || !data || data.length === 0) return;
     containerRef.current.innerHTML = "";
-    const plot29 = Plot24.plot({
+    const plot33 = Plot24.plot({
       width,
       height,
       marginTop: title ? 40 : 20,
@@ -1252,9 +1252,9 @@ function SwarmPlot({
         )
       ]
     });
-    plot29.setAttribute("role", "img");
-    plot29.setAttribute("aria-label", ariaLabel);
-    containerRef.current.appendChild(plot29);
+    plot33.setAttribute("role", "img");
+    plot33.setAttribute("aria-label", ariaLabel);
+    containerRef.current.appendChild(plot33);
     return () => {
       if (containerRef.current) {
         containerRef.current.innerHTML = "";
@@ -1281,7 +1281,7 @@ function StripPlot({
   useEffect(() => {
     if (!containerRef.current || !data || data.length === 0) return;
     containerRef.current.innerHTML = "";
-    const plot29 = Plot24.plot({
+    const plot33 = Plot24.plot({
       width,
       height,
       marginTop: title ? 40 : 20,
@@ -1313,9 +1313,9 @@ function StripPlot({
         })
       ]
     });
-    plot29.setAttribute("role", "img");
-    plot29.setAttribute("aria-label", ariaLabel);
-    containerRef.current.appendChild(plot29);
+    plot33.setAttribute("role", "img");
+    plot33.setAttribute("aria-label", ariaLabel);
+    containerRef.current.appendChild(plot33);
     return () => {
       if (containerRef.current) {
         containerRef.current.innerHTML = "";
@@ -1400,7 +1400,7 @@ function ForestPlot({
         r: 5
       })
     );
-    const plot29 = Plot24.plot({
+    const plot33 = Plot24.plot({
       width,
       height,
       marginTop: title ? 40 : 20,
@@ -1419,9 +1419,9 @@ function ForestPlot({
       },
       marks
     });
-    plot29.setAttribute("role", "img");
-    plot29.setAttribute("aria-label", ariaLabel);
-    containerRef.current.appendChild(plot29);
+    plot33.setAttribute("role", "img");
+    plot33.setAttribute("aria-label", ariaLabel);
+    containerRef.current.appendChild(plot33);
     if (showPValues) {
       sortedData.forEach((d, i) => {
         if (d.pvalue !== void 0) {
@@ -1437,7 +1437,7 @@ function ForestPlot({
             starText.setAttribute("font-size", "14");
             starText.setAttribute("fill", "#666");
             starText.textContent = stars;
-            plot29.appendChild(starText);
+            plot33.appendChild(starText);
           }
         }
       });
@@ -1466,8 +1466,8 @@ var SplitBar = ({
   marginLeft = 150,
   showValueLabels = true
 }) => {
-  const containerRef = React20.useRef(null);
-  React20.useEffect(() => {
+  const containerRef = React24.useRef(null);
+  React24.useEffect(() => {
     if (!containerRef.current || !data || data.length === 0) return;
     if (subcategories.length !== 2) {
       console.error("SplitBar requires exactly 2 subcategories");
@@ -1498,7 +1498,7 @@ var SplitBar = ({
     );
     const minValue = Math.min(...allValues);
     const maxValue = Math.max(...allValues);
-    const plot29 = Plot24.plot({
+    const plot33 = Plot24.plot({
       caption,
       style: {
         backgroundColor: "white",
@@ -1558,9 +1558,9 @@ var SplitBar = ({
         Plot24.ruleX([minValue])
       ]
     });
-    containerRef.current.appendChild(plot29);
+    containerRef.current.appendChild(plot33);
     return () => {
-      plot29.remove();
+      plot33.remove();
     };
   }, [
     data,
@@ -1614,7 +1614,7 @@ function DotPlot({
         };
       }
     }
-    const plot29 = Plot24.plot({
+    const plot33 = Plot24.plot({
       title,
       subtitle,
       style: {
@@ -1647,9 +1647,9 @@ function DotPlot({
       height,
       marginLeft
     });
-    containerRef.current.appendChild(plot29);
+    containerRef.current.appendChild(plot33);
     return () => {
-      plot29?.remove();
+      plot33?.remove();
     };
   }, [data, x, y, fill, title, subtitle, xLabel, yLabel, radius, fillOpacity, width, height, marginLeft, colorScheme, tipFormat]);
   return /* @__PURE__ */ jsx("div", { ref: containerRef, className });
@@ -1699,7 +1699,7 @@ function BarChart({
         })
       );
     }
-    const plot29 = Plot24.plot({
+    const plot33 = Plot24.plot({
       width,
       height,
       marginBottom,
@@ -1724,9 +1724,9 @@ function BarChart({
       },
       marks
     });
-    containerRef.current.appendChild(plot29);
+    containerRef.current.appendChild(plot33);
     return () => {
-      plot29?.remove();
+      plot33?.remove();
     };
   }, [data, x, y, errorY, title, subtitle, caption, xLabel, yLabel, fill, errorStroke, errorStrokeWidth, width, height, marginBottom, xTickRotate, xTickFormat, xTicks]);
   return /* @__PURE__ */ jsx("div", { ref: containerRef, className });
@@ -1818,7 +1818,7 @@ function Sparkline({
         })
       );
     }
-    const plot29 = Plot24.plot({
+    const plot33 = Plot24.plot({
       width,
       height,
       marginTop: 5,
@@ -1833,11 +1833,11 @@ function Sparkline({
       },
       marks
     });
-    plot29.setAttribute("role", "img");
-    plot29.setAttribute("aria-label", ariaLabel);
-    containerRef.current.appendChild(plot29);
+    plot33.setAttribute("role", "img");
+    plot33.setAttribute("aria-label", ariaLabel);
+    containerRef.current.appendChild(plot33);
     return () => {
-      plot29?.remove();
+      plot33?.remove();
     };
   }, [data, variant, width, height, showMinMax, positiveColor, negativeColor, neutralColor, ariaLabel]);
   return /* @__PURE__ */ jsx("div", { ref: containerRef, className });
@@ -1939,7 +1939,7 @@ function SlopeChart({
         })
       );
     }
-    const plot29 = Plot24.plot({
+    const plot33 = Plot24.plot({
       width,
       height,
       marginLeft,
@@ -1959,9 +1959,9 @@ function SlopeChart({
       },
       marks
     });
-    containerRef.current.appendChild(plot29);
+    containerRef.current.appendChild(plot33);
     return () => {
-      plot29?.remove();
+      plot33?.remove();
     };
   }, [
     data,
@@ -2068,7 +2068,7 @@ function BulletChart({
         })
       );
     }
-    const plot29 = Plot24.plot({
+    const plot33 = Plot24.plot({
       width,
       height,
       marginLeft: 100,
@@ -2086,9 +2086,9 @@ function BulletChart({
       },
       marks
     });
-    containerRef.current.appendChild(plot29);
+    containerRef.current.appendChild(plot33);
     return () => {
-      plot29?.remove();
+      plot33?.remove();
     };
   }, [title, value, target, ranges, width, height, valueColor, targetColor, showLabels]);
   return /* @__PURE__ */ jsx("div", { ref: containerRef, className });
@@ -2152,7 +2152,7 @@ function DivergingBar({
         title: (d) => `${d[categoryKey]}: ${Math.abs(d[negativeKey])}% ${negativeLabel}`
       })
     );
-    const plot29 = Plot24.plot({
+    const plot33 = Plot24.plot({
       width,
       height,
       marginLeft,
@@ -2173,9 +2173,9 @@ function DivergingBar({
       },
       marks
     });
-    containerRef.current.appendChild(plot29);
+    containerRef.current.appendChild(plot33);
     return () => {
-      plot29?.remove();
+      plot33?.remove();
     };
   }, [
     data,
@@ -2297,7 +2297,7 @@ function FacetedPlot({
         );
         break;
     }
-    const plot29 = Plot24.plot({
+    const plot33 = Plot24.plot({
       width,
       height,
       marginTop: title ? 50 : 30,
@@ -2327,9 +2327,9 @@ function FacetedPlot({
       },
       marks
     });
-    plot29.setAttribute("role", "img");
-    plot29.setAttribute("aria-label", ariaLabel);
-    containerRef.current.appendChild(plot29);
+    plot33.setAttribute("role", "img");
+    plot33.setAttribute("aria-label", ariaLabel);
+    containerRef.current.appendChild(plot33);
     return () => {
       if (containerRef.current) {
         containerRef.current.innerHTML = "";
@@ -2357,7 +2357,7 @@ var CorrelationHeatmap = ({
     };
     const xDomain = [...new Set(convertedData.map((d) => d.x))];
     const yDomain = [...new Set(convertedData.map((d) => d.y))].reverse();
-    const plot29 = Plot24.plot({
+    const plot33 = Plot24.plot({
       title,
       subtitle,
       caption,
@@ -2413,9 +2413,9 @@ var CorrelationHeatmap = ({
       width,
       height
     });
-    containerRef.current.appendChild(plot29);
+    containerRef.current.appendChild(plot33);
     return () => {
-      if (plot29) plot29.remove();
+      if (plot33) plot33.remove();
     };
   }, [data, width, height, title, subtitle, caption]);
   return /* @__PURE__ */ jsxs("div", { className: "w-full", children: [
@@ -3074,7 +3074,7 @@ function HistogramObservable({
         })
       );
     }
-    const plot29 = Plot24.plot({
+    const plot33 = Plot24.plot({
       width,
       height,
       marginLeft: 60,
@@ -3084,8 +3084,8 @@ function HistogramObservable({
       marks
     });
     chartRef.current.innerHTML = "";
-    chartRef.current.appendChild(plot29);
-    return () => plot29.remove();
+    chartRef.current.appendChild(plot33);
+    return () => plot33.remove();
   }, [data, width, height, xlabel, ylabel, bins, showMean, showMedian]);
   return /* @__PURE__ */ jsxs("div", { className: "w-full", children: [
     title && /* @__PURE__ */ jsx("h3", { className: "text-lg font-semibold mb-4", children: title }),
@@ -3218,6 +3218,492 @@ var DensityPlot = ({ data }) => {
   ] });
 };
 var stat_density_v1_default = DensityPlot;
+var TOPOLOGY_BASE_URL = "https://ontopic-public-data.t3.storage.dev/geo";
+var GeoDensityMap = ({
+  data,
+  valueKey,
+  width = 960,
+  height = 600,
+  title = "Geographic Density Map",
+  description,
+  colorScheme = "puor",
+  legendLabel = "Density"
+}) => {
+  const mapRef = useRef(null);
+  const [us, setUs] = useState(null);
+  const [loading, setLoading] = useState(true);
+  useEffect(() => {
+    fetch(`${TOPOLOGY_BASE_URL}/us-albers-counties-10m.json`).then((response) => response.json()).then((topology) => {
+      setUs(topology);
+      setLoading(false);
+    }).catch((error) => {
+      console.error("Error loading topology:", error);
+      setLoading(false);
+    });
+  }, []);
+  useEffect(() => {
+    if (!data || data.length === 0 || !us || loading) return;
+    if (!mapRef.current) return;
+    mapRef.current.innerHTML = "";
+    const statemesh = topojson3.mesh(us, us.objects.states, (a, b) => a !== b);
+    const nation = topojson3.feature(us, us.objects.nation);
+    const countiesmesh = topojson3.mesh(us, us.objects.counties);
+    const mapPlot = Plot24.plot({
+      width,
+      height,
+      projection: "albers",
+      style: {
+        backgroundColor: "white",
+        fontFamily: "sans-serif"
+      },
+      color: {
+        scheme: colorScheme,
+        type: "quantile",
+        n: 4,
+        reverse: true,
+        label: legendLabel,
+        legend: true
+      },
+      marks: [
+        Plot24.geo(countiesmesh, { strokeOpacity: 0.5 }),
+        Plot24.geo(nation),
+        Plot24.geo(statemesh, { strokeOpacity: 0.2 }),
+        Plot24.density(data, {
+          x: "longitude",
+          y: "latitude",
+          bandwidth: 10,
+          fill: "density"
+        })
+      ]
+    });
+    mapRef.current.appendChild(mapPlot);
+    return () => {
+      mapPlot?.remove();
+    };
+  }, [data, width, height, us, loading, colorScheme, legendLabel]);
+  if (loading) {
+    return /* @__PURE__ */ jsxs(Card, { children: [
+      /* @__PURE__ */ jsxs(CardHeader, { children: [
+        /* @__PURE__ */ jsx(CardTitle, { children: title }),
+        description && /* @__PURE__ */ jsx(CardDescription, { children: description })
+      ] }),
+      /* @__PURE__ */ jsx(CardContent, { children: /* @__PURE__ */ jsx("div", { className: "flex justify-center items-center", style: { minHeight: `${height}px` }, children: /* @__PURE__ */ jsx("div", { className: "animate-spin rounded-full h-32 w-32 border-b-2 border-gray-900" }) }) })
+    ] });
+  }
+  return /* @__PURE__ */ jsxs(Card, { children: [
+    /* @__PURE__ */ jsxs(CardHeader, { children: [
+      /* @__PURE__ */ jsx(CardTitle, { children: title }),
+      description && /* @__PURE__ */ jsx(CardDescription, { children: description })
+    ] }),
+    /* @__PURE__ */ jsxs(CardContent, { children: [
+      /* @__PURE__ */ jsx("div", { ref: mapRef, className: "flex justify-center" }),
+      /* @__PURE__ */ jsx("p", { className: "text-sm text-gray-600 mt-4", children: "Density map showing geographic concentration across locations. Darker areas indicate higher concentration of data points. State and county boundaries are overlaid for geographic reference." })
+    ] })
+  ] });
+};
+var GeoDensityMap_default = GeoDensityMap;
+var TOPOLOGY_BASE_URL2 = "https://ontopic-public-data.t3.storage.dev/geo";
+var ChoroplethMap = ({
+  data = [],
+  title = "US County Mental Health Prevalence",
+  subtitle = "County-level mental health data from CDC",
+  valueLabel = "Mental Health (% Poor Mental Health Days)",
+  colorScheme = "blues"
+}) => {
+  const mapRef = useRef(null);
+  const [countyData, setCountyData] = useState([]);
+  const [us, setUs] = useState(null);
+  const [loading, setLoading] = useState(true);
+  useEffect(() => {
+    fetch(`${TOPOLOGY_BASE_URL2}/us-albers-counties-10m.json`).then((response) => response.json()).then((topology) => {
+      setUs(topology);
+    }).catch((error) => {
+      console.error("Error loading topology:", error);
+    });
+  }, []);
+  useEffect(() => {
+    if (data.length > 0) {
+      setCountyData(data);
+      setLoading(false);
+    } else {
+      fetch("/data/county_sample.json").then((response) => response.json()).then((data2) => {
+        setCountyData(data2);
+        setLoading(false);
+      }).catch((error) => {
+        console.error("Error loading county data:", error);
+        setLoading(false);
+      });
+    }
+  }, [data]);
+  useEffect(() => {
+    if (loading || !countyData || countyData.length === 0 || !us) return;
+    if (!mapRef.current) return;
+    mapRef.current.innerHTML = "";
+    try {
+      const statemesh = topojson3.mesh(us, us.objects.states, (a, b) => a !== b);
+      const nation = topojson3.feature(us, us.objects.nation);
+      const countiesmesh = topojson3.mesh(us, us.objects.counties);
+      const counties = topojson3.feature(us, us.objects.counties);
+      const dataMap = new Map(countyData.map((d) => [d.FIPS, d.MHLTH_AdjPrev]));
+      const populationMap = new Map(countyData.map((d) => [d.FIPS, d.population]));
+      console.log(`Loaded ${countyData.length} counties, data map has ${dataMap.size} entries`);
+      const colorConfig = {
+        type: "quantile",
+        n: 7,
+        scheme: colorScheme,
+        legend: true,
+        label: valueLabel,
+        tickFormat: ".1f"
+      };
+      const plot33 = Plot24.plot({
+        title,
+        subtitle,
+        width: 960,
+        height: 600,
+        projection: "albers",
+        style: {
+          backgroundColor: "white",
+          fontFamily: "sans-serif"
+        },
+        color: colorConfig,
+        marks: [
+          // County boundaries (light stroke)
+          Plot24.geo(countiesmesh, {
+            strokeOpacity: 0.3,
+            stroke: "#ddd"
+          }),
+          // Counties with data (choropleth fill)
+          Plot24.geo(counties.features, {
+            fill: (d) => {
+              const value = dataMap.get(d.id);
+              return value !== void 0 ? value : null;
+            },
+            stroke: "white",
+            strokeWidth: 0.5,
+            tip: true,
+            title: (d) => {
+              const countyName = d.properties?.name || `County ${d.id}`;
+              const value = dataMap.get(d.id);
+              const population = populationMap.get(d.id);
+              if (value !== void 0) {
+                const popText = population ? `
+Population: ${population.toLocaleString()}` : "";
+                return `${countyName}
+${valueLabel}: ${value.toFixed(1)}%${popText}`;
+              }
+              return `${countyName}
+No data available`;
+            }
+          }),
+          // Nation outline
+          Plot24.geo(nation, {
+            stroke: "black",
+            strokeWidth: 1,
+            fill: "none"
+          }),
+          // State boundaries (stronger stroke)
+          Plot24.geo(statemesh, {
+            stroke: "black",
+            strokeOpacity: 0.5,
+            strokeWidth: 0.5
+          })
+        ],
+        marginLeft: 0,
+        marginRight: 140
+        // Space for legend
+      });
+      mapRef.current.appendChild(plot33);
+      return () => {
+        plot33?.remove();
+      };
+    } catch (error) {
+      console.error("Error rendering choropleth map:", error);
+      if (mapRef.current) {
+        mapRef.current.innerHTML = `<div class="text-red-500 p-4">Error loading map: ${error}</div>`;
+      }
+    }
+  }, [countyData, loading, title, subtitle, valueLabel, colorScheme, us]);
+  if (loading || !us) {
+    return /* @__PURE__ */ jsxs("div", { className: "space-y-6", children: [
+      /* @__PURE__ */ jsx("div", { className: "mb-6", children: /* @__PURE__ */ jsx("p", { className: "text-gray-600", children: "Loading county health data..." }) }),
+      /* @__PURE__ */ jsx(Card, { children: /* @__PURE__ */ jsx(CardContent, { children: /* @__PURE__ */ jsx("div", { className: "flex justify-center items-center", style: { minHeight: "600px" }, children: /* @__PURE__ */ jsx("div", { className: "animate-spin rounded-full h-32 w-32 border-b-2 border-gray-900" }) }) }) })
+    ] });
+  }
+  return /* @__PURE__ */ jsxs("div", { className: "space-y-6", children: [
+    /* @__PURE__ */ jsx("div", { className: "mb-6", children: /* @__PURE__ */ jsx("p", { className: "text-gray-600", children: "Interactive county-level choropleth map showing mental health prevalence across US counties. Colors represent different prevalence ranges using quantile scaling for optimal contrast. Data source: CDC Behavioral Risk Factor Surveillance System (BRFSS)." }) }),
+    /* @__PURE__ */ jsxs(Card, { children: [
+      /* @__PURE__ */ jsxs(CardHeader, { children: [
+        /* @__PURE__ */ jsx(CardTitle, { children: "County Mental Health Prevalence Map" }),
+        /* @__PURE__ */ jsx("p", { className: "text-sm text-muted-foreground", children: "Percentage of adults reporting poor mental health for 14+ days per month" })
+      ] }),
+      /* @__PURE__ */ jsxs(CardContent, { children: [
+        /* @__PURE__ */ jsx("div", { ref: mapRef, className: "flex justify-center", style: { minHeight: "600px" } }),
+        /* @__PURE__ */ jsxs("p", { className: "text-sm text-gray-600 mt-4", children: [
+          "This choropleth map uses quantile scaling to divide ",
+          countyData.length,
+          " counties into equal-sized groups, ensuring good color distribution across geographic regions. Hover over counties for detailed information including population data."
+        ] })
+      ] })
+    ] }),
+    /* @__PURE__ */ jsxs("div", { className: "mt-6 p-4 bg-gray-50 rounded-lg", children: [
+      /* @__PURE__ */ jsx("h3", { className: "font-semibold mb-2", children: "Choropleth Map Features" }),
+      /* @__PURE__ */ jsxs("div", { className: "grid md:grid-cols-3 gap-4 text-sm", children: [
+        /* @__PURE__ */ jsxs("div", { children: [
+          /* @__PURE__ */ jsx("h4", { className: "font-medium", children: "Color Encoding" }),
+          /* @__PURE__ */ jsxs("ul", { className: "list-disc list-inside text-gray-600 space-y-1", children: [
+            /* @__PURE__ */ jsx("li", { children: "Quantile-based color scaling" }),
+            /* @__PURE__ */ jsx("li", { children: "7 color gradations for nuance" }),
+            /* @__PURE__ */ jsx("li", { children: "Interactive legend" }),
+            /* @__PURE__ */ jsx("li", { children: "Customizable color schemes" })
+          ] })
+        ] }),
+        /* @__PURE__ */ jsxs("div", { children: [
+          /* @__PURE__ */ jsx("h4", { className: "font-medium", children: "Geographic Features" }),
+          /* @__PURE__ */ jsxs("ul", { className: "list-disc list-inside text-gray-600 space-y-1", children: [
+            /* @__PURE__ */ jsx("li", { children: "County-level detail" }),
+            /* @__PURE__ */ jsx("li", { children: "State boundary overlay" }),
+            /* @__PURE__ */ jsx("li", { children: "Albers projection for accuracy" }),
+            /* @__PURE__ */ jsx("li", { children: "Clean boundary styling" })
+          ] })
+        ] }),
+        /* @__PURE__ */ jsxs("div", { children: [
+          /* @__PURE__ */ jsx("h4", { className: "font-medium", children: "Interactivity" }),
+          /* @__PURE__ */ jsxs("ul", { className: "list-disc list-inside text-gray-600 space-y-1", children: [
+            /* @__PURE__ */ jsx("li", { children: "Hover tooltips with details" }),
+            /* @__PURE__ */ jsx("li", { children: "County names and values" }),
+            /* @__PURE__ */ jsx("li", { children: "Responsive design" }),
+            /* @__PURE__ */ jsx("li", { children: "Data-driven styling" })
+          ] })
+        ] })
+      ] })
+    ] })
+  ] });
+};
+var ChoroplethMap_default = ChoroplethMap;
+var TOPOLOGY_BASE_URL3 = "https://ontopic-public-data.t3.storage.dev/geo";
+var EuropeMap = ({
+  data = [],
+  title = "European Economic Data",
+  subtitle = "GDP per capita by country (2023)",
+  valueLabel = "GDP per capita (thousands USD)",
+  colorScheme = "blues"
+}) => {
+  const mapRef = useRef(null);
+  const [countryData, setCountryData] = useState([]);
+  const [europe, setEurope] = useState(null);
+  const [loading, setLoading] = useState(true);
+  useEffect(() => {
+    fetch(`${TOPOLOGY_BASE_URL3}/europe.json`).then((response) => response.json()).then((topology) => {
+      setEurope(topology);
+    }).catch((error) => {
+      console.error("Error loading topology:", error);
+    });
+  }, []);
+  const sampleData = useMemo(() => [
+    { id: "DE", name: "Germany", value: 56.2, population: 8324e4 },
+    { id: "FR", name: "France", value: 47.3, population: 6739e4 },
+    { id: "IT", name: "Italy", value: 39.1, population: 5955e4 },
+    { id: "ES", name: "Spain", value: 31.8, population: 4735e4 },
+    { id: "PL", name: "Poland", value: 17.9, population: 3797e4 },
+    { id: "NL", name: "Netherlands", value: 58.4, population: 1744e4 },
+    { id: "BE", name: "Belgium", value: 51.7, population: 1159e4 },
+    { id: "AT", name: "Austria", value: 50.8, population: 9006e3 },
+    { id: "CH", name: "Switzerland", value: 93.5, population: 8715e3 },
+    { id: "NO", name: "Norway", value: 88.9, population: 5421e3 },
+    { id: "SE", name: "Sweden", value: 59.7, population: 1042e4 },
+    { id: "DK", name: "Denmark", value: 66.8, population: 5831e3 },
+    { id: "FI", name: "Finland", value: 52.4, population: 5541e3 },
+    { id: "IE", name: "Ireland", value: 84.6, population: 5024e3 },
+    { id: "PT", name: "Portugal", value: 24.7, population: 1029e4 },
+    { id: "GR", name: "Greece", value: 19.9, population: 1072e4 },
+    { id: "CZ", name: "Czech Republic", value: 28.1, population: 1071e4 },
+    { id: "HU", name: "Hungary", value: 18.6, population: 975e4 },
+    { id: "SK", name: "Slovakia", value: 20.8, population: 546e4 },
+    { id: "SI", name: "Slovenia", value: 28.9, population: 2119e3 },
+    { id: "HR", name: "Croatia", value: 16.7, population: 3879e3 },
+    { id: "RO", name: "Romania", value: 13.8, population: 1912e4 },
+    { id: "BG", name: "Bulgaria", value: 11.9, population: 6927e3 },
+    { id: "LT", name: "Lithuania", value: 22.7, population: 2795e3 },
+    { id: "LV", name: "Latvia", value: 20.6, population: 1884e3 },
+    { id: "EE", name: "Estonia", value: 26.8, population: 1331e3 },
+    { id: "LU", name: "Luxembourg", value: 125.7, population: 64e4 },
+    { id: "IS", name: "Iceland", value: 72.5, population: 372e3 },
+    { id: "UA", name: "Ukraine", value: 4.8, population: 4113e4 },
+    { id: "BY", name: "Belarus", value: 6.9, population: 9449e3 },
+    { id: "MD", name: "Moldova", value: 3.9, population: 2618e3 },
+    { id: "RS", name: "Serbia", value: 9.2, population: 6834e3 },
+    { id: "BA", name: "Bosnia and Herzegovina", value: 6.8, population: 3281e3 },
+    { id: "ME", name: "Montenegro", value: 9.7, population: 628e3 },
+    { id: "MK", name: "North Macedonia", value: 6.9, population: 2083e3 },
+    { id: "AL", name: "Albania", value: 5.8, population: 2838e3 },
+    { id: "KV", name: "Kosovo", value: 4.9, population: 1932e3 }
+  ], []);
+  useEffect(() => {
+    if (data.length > 0) {
+      setCountryData(data);
+    } else {
+      setCountryData(sampleData);
+    }
+    setLoading(false);
+  }, [data, sampleData]);
+  const countries = useMemo(() => {
+    if (!europe) return [];
+    try {
+      return topojson3.feature(europe, europe.objects.default).features;
+    } catch (error) {
+      console.error("Error processing TopoJSON:", error);
+      return [];
+    }
+  }, [europe]);
+  useEffect(() => {
+    if (!mapRef.current || loading || !europe || countries.length === 0 || countryData.length === 0) return;
+    mapRef.current.innerHTML = "";
+    const dataMap = new Map(countryData.map((d) => [d.id, d]));
+    const enhancedCountries = countries.map((country) => {
+      const countryId = country.id || country.properties?.id || country.properties?.["hc-key"]?.toUpperCase();
+      const dataPoint = dataMap.get(countryId);
+      return {
+        ...country,
+        properties: {
+          ...country.properties,
+          value: dataPoint?.value || 0,
+          name: dataPoint?.name || country.properties?.name || "Unknown",
+          population: dataPoint?.population || 0
+        }
+      };
+    });
+    const plot33 = Plot24.plot({
+      projection: {
+        type: "mercator",
+        domain: {
+          type: "MultiPoint",
+          coordinates: [[-25, 35], [45, 75]]
+        }
+      },
+      width: 800,
+      height: 600,
+      marginTop: 20,
+      marginBottom: 20,
+      marginLeft: 20,
+      marginRight: 20,
+      color: {
+        type: "quantile",
+        n: 5,
+        scheme: colorScheme,
+        legend: true,
+        label: valueLabel
+      },
+      marks: [
+        // Country fills
+        Plot24.geo(enhancedCountries, {
+          fill: (d) => d.properties.value,
+          stroke: "#fff",
+          strokeWidth: 0.5
+        }),
+        // Country borders
+        Plot24.geo(enhancedCountries, {
+          fill: "none",
+          stroke: "#666",
+          strokeWidth: 0.25
+        }),
+        // Interactive tooltips
+        Plot24.tip(enhancedCountries, Plot24.pointer(Plot24.centroid({
+          title: (d) => `${d.properties.name}: ${d.properties.value?.toFixed(1) || "N/A"}`
+        })))
+      ]
+    });
+    mapRef.current.appendChild(plot33);
+  }, [loading, europe, countries.length, countryData.length, colorScheme, valueLabel]);
+  if (loading || !europe) {
+    return /* @__PURE__ */ jsxs(Card, { className: "w-full", children: [
+      /* @__PURE__ */ jsxs(CardHeader, { children: [
+        /* @__PURE__ */ jsx(CardTitle, { children: title }),
+        subtitle && /* @__PURE__ */ jsx("p", { className: "text-sm text-gray-600", children: subtitle })
+      ] }),
+      /* @__PURE__ */ jsx(CardContent, { children: /* @__PURE__ */ jsx("div", { className: "flex items-center justify-center h-96", children: /* @__PURE__ */ jsx("div", { className: "text-gray-500", children: "Loading map..." }) }) })
+    ] });
+  }
+  return /* @__PURE__ */ jsxs(Card, { className: "w-full", children: [
+    /* @__PURE__ */ jsxs(CardHeader, { children: [
+      /* @__PURE__ */ jsx(CardTitle, { children: title }),
+      subtitle && /* @__PURE__ */ jsx("p", { className: "text-sm text-gray-600", children: subtitle })
+    ] }),
+    /* @__PURE__ */ jsxs(CardContent, { children: [
+      /* @__PURE__ */ jsx("div", { ref: mapRef, className: "w-full" }),
+      /* @__PURE__ */ jsxs("div", { className: "mt-4 text-xs text-gray-500", children: [
+        "Data shows ",
+        valueLabel.toLowerCase(),
+        " across European countries. Values are sample data for demonstration purposes."
+      ] })
+    ] })
+  ] });
+};
+var EuropeMap_default = EuropeMap;
+var TOPOLOGY_BASE_URL4 = "https://ontopic-public-data.t3.storage.dev/geo";
+var ZipMap = ({ data }) => {
+  const mapRef = useRef(null);
+  const [us, setUs] = useState(null);
+  const [loading, setLoading] = useState(true);
+  useEffect(() => {
+    fetch(`${TOPOLOGY_BASE_URL4}/us-albers-counties-10m.json`).then((response) => response.json()).then((topology) => {
+      setUs(topology);
+      setLoading(false);
+    }).catch((error) => {
+      console.error("Error loading topology:", error);
+      setLoading(false);
+    });
+  }, []);
+  useEffect(() => {
+    if (!data || data.length === 0 || !us || loading) return;
+    if (mapRef.current) mapRef.current.innerHTML = "";
+    const statemesh = topojson3.mesh(us, us.objects.states, (a, b) => a !== b);
+    const nation = topojson3.feature(us, us.objects.nation);
+    const countiesmesh = topojson3.mesh(us, us.objects.counties);
+    const mapPlot = Plot24.plot({
+      width: 960,
+      height: 600,
+      projection: "albers",
+      color: {
+        scheme: "puor",
+        type: "quantile",
+        n: 4,
+        reverse: true,
+        label: "Obesity (%)",
+        legend: true,
+        tickFormat: (d) => `${d.toFixed(1)}%`
+      },
+      marks: [
+        Plot24.geo(countiesmesh, { strokeOpacity: 0.5 }),
+        Plot24.geo(nation),
+        Plot24.geo(statemesh, { strokeOpacity: 0.2 }),
+        Plot24.dot(data, {
+          x: "longitude",
+          y: "latitude",
+          stroke: "obesity_rate",
+          tip: true,
+          strokeOpacity: 0.4,
+          r: 1
+        })
+      ]
+    });
+    mapRef.current.appendChild(mapPlot);
+    return () => mapPlot?.remove();
+  }, [data, us, loading]);
+  if (loading) {
+    return /* @__PURE__ */ jsx("div", { className: "space-y-6", children: /* @__PURE__ */ jsx(Card, { children: /* @__PURE__ */ jsx(CardContent, { children: /* @__PURE__ */ jsx("div", { className: "flex justify-center items-center", style: { minHeight: "600px" }, children: /* @__PURE__ */ jsx("div", { className: "animate-spin rounded-full h-32 w-32 border-b-2 border-gray-900" }) }) }) }) });
+  }
+  return /* @__PURE__ */ jsx("div", { className: "space-y-6", children: /* @__PURE__ */ jsxs(Card, { children: [
+    /* @__PURE__ */ jsxs(CardHeader, { children: [
+      /* @__PURE__ */ jsx(CardTitle, { children: "ZIP Code Density Map" }),
+      /* @__PURE__ */ jsx("p", { className: "text-sm text-muted-foreground", children: "Geographic distribution of health data with size and color encoding" })
+    ] }),
+    /* @__PURE__ */ jsxs(CardContent, { children: [
+      /* @__PURE__ */ jsx("div", { ref: mapRef, className: "flex justify-center" }),
+      /* @__PURE__ */ jsx("p", { className: "text-sm text-gray-600 mt-4", children: "Each dot represents a ZIP code area. Dot size and color both encode obesity rates, with larger and redder dots indicating higher rates." })
+    ] })
+  ] }) });
+};
+var ZipMap_default = ZipMap;
 function TimeSeriesChart({
   data,
   metadata,
@@ -3466,7 +3952,7 @@ function AbortionOpinionChart({ data }) {
     const educationMatch = selectedEducation === "All" || point.Education === selectedEducation;
     return regionMatch && educationMatch;
   });
-  const groupedData = React20__default.useMemo(() => {
+  const groupedData = React24__default.useMemo(() => {
     const groups = {};
     filteredData.forEach((point) => {
       const key = `${point.Census_Region} - ${point.Education}`;
@@ -4681,7 +5167,7 @@ var DualAxisChart = ({
   const colors = {
     series1: "#4299e1",
     series2: "#f59e0b"};
-  const filteredData = React20__default.useMemo(() => {
+  const filteredData = React24__default.useMemo(() => {
     if (!series1Data?.length || !series2Data?.length) return [];
     const now = /* @__PURE__ */ new Date();
     let startDate;
@@ -4752,7 +5238,7 @@ var DualAxisChart = ({
     }
     return null;
   };
-  const yAxis1Domain = React20__default.useMemo(() => {
+  const yAxis1Domain = React24__default.useMemo(() => {
     if (!filteredData.length) return [0, 0];
     const values = filteredData.map((item) => Number(item[series1Name])).filter(
       (value) => value !== void 0 && !isNaN(value)
@@ -4762,7 +5248,7 @@ var DualAxisChart = ({
     const margin = (max - min) * 0.1;
     return [min - margin, max + margin];
   }, [filteredData, series1Name]);
-  const yAxis2Domain = React20__default.useMemo(() => {
+  const yAxis2Domain = React24__default.useMemo(() => {
     if (!filteredData.length) return [0, 0];
     const values = filteredData.map((item) => Number(item[series2Name])).filter(
       (value) => value !== void 0 && !isNaN(value)
@@ -5300,7 +5786,7 @@ function DemographicLineChart({
 }) {
   const [activeTab, setActiveTab] = useState(null);
   const [demographicCategories, setDemographicCategories] = useState([]);
-  React20__default.useEffect(() => {
+  React24__default.useEffect(() => {
     if (!data || typeof data !== "object") return;
     const categories = Object.entries(data).filter(
       ([_, categoryData]) => categoryData && typeof categoryData === "object" && Object.values(categoryData).some((value) => value !== null)
@@ -5468,7 +5954,7 @@ function DemographicDotPlot({
 }) {
   const [activeTab, setActiveTab] = useState(null);
   const [demographicCategories, setDemographicCategories] = useState([]);
-  React20__default.useEffect(() => {
+  React24__default.useEffect(() => {
     if (!data || typeof data !== "object") return;
     const categories = Object.entries(data).filter(
       ([_, categoryData]) => categoryData && typeof categoryData === "object" && Object.values(categoryData).some((value) => value !== null)
@@ -5926,12 +6412,12 @@ function kernelDensity(data, bandwidth, points = 50) {
   const result = [];
   for (let i = 0; i < points; i++) {
     const x = min - padding + (max - min + 2 * padding) * i / (points - 1);
-    let density2 = 0;
+    let density3 = 0;
     for (const value of data) {
       const u = (x - value) / bw;
-      density2 += Math.exp(-1 / 2 * u * u) / Math.sqrt(2 * Math.PI);
+      density3 += Math.exp(-1 / 2 * u * u) / Math.sqrt(2 * Math.PI);
     }
-    result.push({ x, density: density2 / (n * bw) });
+    result.push({ x, density: density3 / (n * bw) });
   }
   return result;
 }
@@ -6067,13 +6553,13 @@ function ViolinPlot({
 }) {
   const { violinShapes, scatterData, yDomain } = useMemo(() => {
     const shapes = data.map((item, idx) => {
-      const density2 = kernelDensity(item.values, void 0, 100);
-      const maxDensity = Math.max(...density2.map((d) => d.density));
+      const density3 = kernelDensity(item.values, void 0, 100);
+      const maxDensity = Math.max(...density3.map((d) => d.density));
       const quartiles = calculateQuartiles(item.values);
       return {
         category: item.category,
         categoryIndex: idx,
-        density: density2.map((d) => ({
+        density: density3.map((d) => ({
           y: d.x,
           width: maxDensity > 0 ? d.density / maxDensity * 0.35 : 0
         })),
@@ -6168,6 +6654,6 @@ function ViolinPlot({
   ] });
 }
 
-export { AbortionOpinionChart, basic_bar_v1_default as BarChart, stat_boxplot_v1_default as BoxPlot, BoxPlotFaceted, BoxPlotFacetedGrouped, BoxPlotGrouped, geo_bubble_v1_default as BubbleMap, BulletChart, CorrelationHeatmap_default as CorrelationHeatmap, stat_demographic_bar_v1_default as DemographicBarChart, DemographicDotPlot, DemographicLineChart, stat_density_v1_default as DensityPlot, DistributionPlot, DivergingBar, basic_dot_v1_default as DotPlot, DualAxisChart_default as DualAxisChart, FacetedPlot, ForestPlot, HealthScatterplot_default as HealthScatterplot, HistogramObservable, HistogramRecharts, LineChart_default as LineChart, OddsRatio_default as OddsRatio, PcaPlot, PlotContainer, PlotExport, PlotThemeProvider, QQPlot, RegressionPlot, ResidualPlot, HappinessCorrelatesPanel as ScatterplotRegression, SlopeChart, Sparkline, stat_splitbar_v1_default as SplitBar, StateBarChart, geo_state_map_v1_default as StateMap, StripPlot, SwarmPlot, TimeSeries_default as TimeSeries, TimeSeriesChart2 as TimeSeriesChart, TimeSeriesIndex_default as TimeSeriesIndex, TimeSeriesChart as TimeSeriesLine, TimeTrendDemoChart, ViolinPlot, defaultDarkTheme, defaultLightTheme, usePlotTheme };
+export { AbortionOpinionChart, basic_bar_v1_default as BarChart, stat_boxplot_v1_default as BoxPlot, BoxPlotFaceted, BoxPlotFacetedGrouped, BoxPlotGrouped, geo_bubble_v1_default as BubbleMap, BulletChart, ChoroplethMap_default as ChoroplethMap, CorrelationHeatmap_default as CorrelationHeatmap, stat_demographic_bar_v1_default as DemographicBarChart, DemographicDotPlot, DemographicLineChart, stat_density_v1_default as DensityPlot, DistributionPlot, DivergingBar, basic_dot_v1_default as DotPlot, DualAxisChart_default as DualAxisChart, EuropeMap_default as EuropeMap, FacetedPlot, ForestPlot, GeoDensityMap_default as GeoDensityMap, HealthScatterplot_default as HealthScatterplot, HistogramObservable, HistogramRecharts, LineChart_default as LineChart, OddsRatio_default as OddsRatio, PcaPlot, PlotContainer, PlotExport, PlotThemeProvider, QQPlot, RegressionPlot, ResidualPlot, HappinessCorrelatesPanel as ScatterplotRegression, SlopeChart, Sparkline, stat_splitbar_v1_default as SplitBar, StateBarChart, geo_state_map_v1_default as StateMap, StripPlot, SwarmPlot, TimeSeries_default as TimeSeries, TimeSeriesChart2 as TimeSeriesChart, TimeSeriesIndex_default as TimeSeriesIndex, TimeSeriesChart as TimeSeriesLine, TimeTrendDemoChart, ViolinPlot, ZipMap_default as ZipMap, defaultDarkTheme, defaultLightTheme, usePlotTheme };
 //# sourceMappingURL=index.mjs.map
 //# sourceMappingURL=index.mjs.map

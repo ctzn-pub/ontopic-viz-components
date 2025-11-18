@@ -4,7 +4,8 @@ import React, { useRef, useEffect, useState, useMemo } from 'react';
 import * as Plot from "@observablehq/plot";
 import * as topojson from "topojson-client";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
-import { getDataUrl } from '@/lib/config';
+
+const TOPOLOGY_BASE_URL = 'https://ontopic-public-data.t3.storage.dev/geo';
 
 interface CountryDataPoint {
   id: string;
@@ -35,7 +36,7 @@ const EuropeMap: React.FC<EuropeMapProps> = ({
 
   // Fetch topology data
   useEffect(() => {
-    fetch(getDataUrl('geo/europe.json'))
+    fetch(`${TOPOLOGY_BASE_URL}/europe.json`)
       .then(response => response.json())
       .then(topology => {
         setEurope(topology);

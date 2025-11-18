@@ -80,11 +80,11 @@ export { default as DensityPlot } from './stat.density.v1';
 export { default as HistogramPlot } from './stat.histogram.v1';
 export { default as PointPlot } from './stat.point.v1';
 
-// Map components with getDataUrl dependency - need data passed as props
-// export { default as GeoDensityMap } from './GeoDensityMap';
-// export { default as ChoroplethMap } from './ChoroplethMap';
-// export { default as EuropeMap } from './EuropeMap';
-// export { default as ZipMap } from './ZipMap';
+// Map components (now use public CDN for topology data)
+export { default as GeoDensityMap } from './GeoDensityMap';
+export { default as ChoroplethMap } from './ChoroplethMap';
+export { default as EuropeMap } from './EuropeMap';
+export { default as ZipMap } from './ZipMap';
 
 // TimeTrendDemo with DemoColors dependency - needs color passed as prop
 // export { default as TimeTrendDemo } from './TimeTrendDemo';

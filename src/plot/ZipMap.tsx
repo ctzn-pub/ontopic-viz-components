@@ -4,7 +4,8 @@ import React, { useRef, useEffect, useState } from 'react';
 import * as Plot from "@observablehq/plot";
 import * as topojson from "topojson-client";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
-import { getDataUrl } from '@/lib/config';
+
+const TOPOLOGY_BASE_URL = 'https://ontopic-public-data.t3.storage.dev/geo';
 
 interface ZipDataPoint {
   obesity_rate: number;
@@ -23,7 +24,7 @@ const ZipMap: React.FC<ZipMapProps> = ({ data }) => {
 
   // Fetch topology data
   useEffect(() => {
-    fetch(getDataUrl('geo/us-albers-counties-10m.json'))
+    fetch(`${TOPOLOGY_BASE_URL}/us-albers-counties-10m.json`)
       .then(response => response.json())
       .then(topology => {
         setUs(topology);
