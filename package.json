@@ -32,7 +32,8 @@
     "dev": "tsup --watch",
     "clean": "rm -rf dist",
     "typecheck": "tsc --noEmit",
-    "lint": "echo 'No linting configured yet'"
+    "lint": "echo 'No linting configured yet'",
+    "prepare": "npm run build"
   },
   "keywords": [
     "data visualization",
