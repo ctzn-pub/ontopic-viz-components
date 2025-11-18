@@ -1,11 +1,22 @@
 'use strict';
 
-var React = require('react');
-var Plot8 = require('@observablehq/plot');
+var React20 = require('react');
+var Plot24 = require('@observablehq/plot');
 var jsxRuntime = require('react/jsx-runtime');
 var lucideReact = require('lucide-react');
 var topojson = require('topojson-client');
+var dynamic = require('next/dynamic');
+var card = require('@/components/ui/card');
+var d3Array = require('d3-array');
 var recharts = require('recharts');
+var button = require('@/components/ui/button');
+var nextThemes = require('next-themes');
+var label = require('@/components/ui/label');
+var _switch = require('@/components/ui/switch');
+var tabs = require('@/components/ui/tabs');
+var input = require('@/components/ui/input');
+
+function _interopDefault (e) { return e && e.__esModule ? e : { default: e }; }
 
 function _interopNamespace(e) {
   if (e && e.__esModule) return e;
@@ -25,9 +36,10 @@ function _interopNamespace(e) {
   return Object.freeze(n);
 }
 
-var React__namespace = /*#__PURE__*/_interopNamespace(React);
-var Plot8__namespace = /*#__PURE__*/_interopNamespace(Plot8);
+var React20__namespace = /*#__PURE__*/_interopNamespace(React20);
+var Plot24__namespace = /*#__PURE__*/_interopNamespace(Plot24);
 var topojson__namespace = /*#__PURE__*/_interopNamespace(topojson);
+var dynamic__default = /*#__PURE__*/_interopDefault(dynamic);
 
 function cn(...classes) {
   return classes.filter(Boolean).join(" ");
@@ -40,10 +52,10 @@ function PlotContainer({
   ariaLabel,
   onPlotCreated
 }) {
-  const containerRef = React.useRef(null);
-  const plotRef = React.useRef(null);
-  const [containerWidth, setContainerWidth] = React.useState(800);
-  React.useEffect(() => {
+  const containerRef = React20.useRef(null);
+  const plotRef = React20.useRef(null);
+  const [containerWidth, setContainerWidth] = React20.useState(800);
+  React20.useEffect(() => {
     if (width !== "responsive" || !containerRef.current) return;
     const observer = new ResizeObserver((entries) => {
       const entry = entries[0];
@@ -54,10 +66,10 @@ function PlotContainer({
     observer.observe(containerRef.current);
     return () => observer.disconnect();
   }, [width]);
-  React.useEffect(() => {
+  React20.useEffect(() => {
     if (!containerRef.current) return;
     const finalWidth = width === "responsive" ? containerWidth : width;
-    const plot23 = Plot8__namespace.plot({
+    const plot29 = Plot24__namespace.plot({
       ...plotSpec,
       width: finalWidth,
       height
@@ -65,9 +77,9 @@ function PlotContainer({
     if (plotRef.current) {
       plotRef.current.remove();
     }
-    containerRef.current.appendChild(plot23);
-    plotRef.current = plot23;
-    onPlotCreated?.(plot23);
+    containerRef.current.appendChild(plot29);
+    plotRef.current = plot29;
+    onPlotCreated?.(plot29);
     return () => {
       if (plotRef.current) {
         plotRef.current.remove();
@@ -146,7 +158,7 @@ var defaultDarkTheme = {
   background: "#0a0a0a",
   foreground: "#ffffff"
 };
-var PlotThemeContext = React.createContext(defaultLightTheme);
+var PlotThemeContext = React20.createContext(defaultLightTheme);
 function PlotThemeProvider({
   theme = "light",
   children
@@ -155,19 +167,19 @@ function PlotThemeProvider({
   return /* @__PURE__ */ jsxRuntime.jsx(PlotThemeContext.Provider, { value: resolvedTheme, children });
 }
 function usePlotTheme() {
-  return React.useContext(PlotThemeContext);
+  return React20.useContext(PlotThemeContext);
 }
 function PlotExport({
   plotRef,
   filename = "chart",
   formats = ["svg", "png"],
-  Button,
+  Button: Button5,
   DropdownMenu,
   DropdownMenuTrigger,
   DropdownMenuContent,
   DropdownMenuItem
 }) {
-  const [isExporting, setIsExporting] = React.useState(false);
+  const [isExporting, setIsExporting] = React20.useState(false);
   const exportAs = async (format) => {
     if (!plotRef.current) return;
     setIsExporting(true);
@@ -216,7 +228,7 @@ function PlotExport({
     a.click();
     URL.revokeObjectURL(url);
   };
-  if (!Button || !DropdownMenu) {
+  if (!Button5 || !DropdownMenu) {
     return /* @__PURE__ */ jsxRuntime.jsxs("div", { className: "plot-export", children: [
       /* @__PURE__ */ jsxRuntime.jsxs(
         "button",
@@ -242,7 +254,7 @@ function PlotExport({
     ] });
   }
   return /* @__PURE__ */ jsxRuntime.jsxs(DropdownMenu, { children: [
-    /* @__PURE__ */ jsxRuntime.jsx(DropdownMenuTrigger, { asChild: true, children: /* @__PURE__ */ jsxRuntime.jsxs(Button, { variant: "outline", size: "sm", disabled: isExporting, children: [
+    /* @__PURE__ */ jsxRuntime.jsx(DropdownMenuTrigger, { asChild: true, children: /* @__PURE__ */ jsxRuntime.jsxs(Button5, { variant: "outline", size: "sm", disabled: isExporting, children: [
       /* @__PURE__ */ jsxRuntime.jsx(lucideReact.Download, { className: "h-4 w-4 mr-2" }),
       isExporting ? "Exporting..." : "Export"
     ] }) }),
@@ -271,8 +283,8 @@ var StateMap = ({
     valueSuffix = "",
     valuePrefix = ""
   } = labels;
-  const containerRef = React__namespace.useRef(null);
-  React__namespace.useEffect(() => {
+  const containerRef = React20__namespace.useRef(null);
+  React20__namespace.useEffect(() => {
     if (!containerRef.current || !usTopoJSON || !data || data.length === 0) return;
     containerRef.current.innerHTML = "";
     const stateToValueMap = new Map(
@@ -298,7 +310,7 @@ var StateMap = ({
       usTopoJSON,
       usTopoJSON.objects.nation
     );
-    const plot23 = Plot8__namespace.plot({
+    const plot29 = Plot24__namespace.plot({
       caption,
       projection,
       color: {
@@ -313,31 +325,31 @@ var StateMap = ({
       height,
       marks: [
         // State fills
-        Plot8__namespace.geo(states, {
+        Plot24__namespace.geo(states, {
           fill: (d) => d.properties.value
         }),
         // State boundaries
-        Plot8__namespace.geo(statemesh, {
+        Plot24__namespace.geo(statemesh, {
           strokeWidth: 0.75
         }),
         // Nation outline
-        Plot8__namespace.geo(nation, {
+        Plot24__namespace.geo(nation, {
           strokeWidth: 1.5
         }),
         // Interactive tooltips
-        Plot8__namespace.tip(
+        Plot24__namespace.tip(
           states.features,
-          Plot8__namespace.pointer(
-            Plot8__namespace.centroid({
+          Plot24__namespace.pointer(
+            Plot24__namespace.centroid({
               title: (d) => `${d.properties.name}: ${formatNumberAsK(d.properties.value)}`
             })
           )
         )
       ]
     });
-    containerRef.current.appendChild(plot23);
+    containerRef.current.appendChild(plot29);
     return () => {
-      plot23.remove();
+      plot29.remove();
     };
   }, [usTopoJSON, data, width, height, title, subtitle, caption, valueSuffix, valuePrefix, colorScheme, quantiles, reverseColors, projection]);
   return /* @__PURE__ */ jsxRuntime.jsx("div", { ref: containerRef, className });
@@ -361,8 +373,8 @@ function BubbleMap({
   projection = "albers-usa",
   className = ""
 }) {
-  const containerRef = React.useRef(null);
-  React.useEffect(() => {
+  const containerRef = React20.useRef(null);
+  React20.useEffect(() => {
     if (!containerRef.current || !data || data.length === 0) return;
     containerRef.current.innerHTML = "";
     const plotData = data.map((d) => ({
@@ -375,7 +387,7 @@ function BubbleMap({
     }));
     const marks = [
       // Bubble dots
-      Plot8__namespace.dot(plotData, {
+      Plot24__namespace.dot(plotData, {
         x: "longitude",
         y: "latitude",
         r: "size",
@@ -387,7 +399,7 @@ function BubbleMap({
         tip: true
       })
     ];
-    const plot23 = Plot8__namespace.plot({
+    const plot29 = Plot24__namespace.plot({
       width,
       height,
       title,
@@ -402,9 +414,9 @@ function BubbleMap({
       },
       marks
     });
-    containerRef.current.appendChild(plot23);
+    containerRef.current.appendChild(plot29);
     return () => {
-      plot23?.remove();
+      plot29?.remove();
     };
   }, [data, longitudeKey, latitudeKey, sizeKey, colorKey, nameKey, title, subtitle, fill, fillOpacity, stroke, strokeWidth, width, height, projection]);
   return /* @__PURE__ */ jsxRuntime.jsx("div", { ref: containerRef, className });
@@ -429,11 +441,11 @@ function BoxPlot({
   xTickRotate = -45,
   className = ""
 }) {
-  const containerRef = React.useRef(null);
-  React.useEffect(() => {
+  const containerRef = React20.useRef(null);
+  React20.useEffect(() => {
     if (!containerRef.current || !data || data.length === 0) return;
     containerRef.current.innerHTML = "";
-    const plot23 = Plot8__namespace.plot({
+    const plot29 = Plot24__namespace.plot({
       width,
       height,
       marginLeft,
@@ -453,7 +465,7 @@ function BoxPlot({
       },
       marks: [
         // Box plot with Observable Plot's built-in boxY mark
-        Plot8__namespace.boxY(data, {
+        Plot24__namespace.boxY(data, {
           x,
           y,
           fill,
@@ -465,9 +477,9 @@ function BoxPlot({
         })
       ]
     });
-    containerRef.current.appendChild(plot23);
+    containerRef.current.appendChild(plot29);
     return () => {
-      plot23?.remove();
+      plot29?.remove();
     };
   }, [data, x, y, title, xLabel, yLabel, fill, fillOpacity, stroke, strokeWidth, outlierRadius, width, height, marginLeft, marginBottom, xTickRotate]);
   return /* @__PURE__ */ jsxRuntime.jsx("div", { ref: containerRef, className });
@@ -485,8 +497,8 @@ function BoxPlotGrouped({
   className = "",
   ariaLabel = "Grouped box plot showing distributions by category and group"
 }) {
-  const containerRef = React.useRef(null);
-  React.useEffect(() => {
+  const containerRef = React20.useRef(null);
+  React20.useEffect(() => {
     if (!containerRef.current || !data || data.length === 0) return;
     containerRef.current.innerHTML = "";
     const transformedData = data.map((d) => ({
@@ -502,7 +514,7 @@ function BoxPlotGrouped({
     const middleGroupIndex = Math.ceil((groups.length - 1) / 2);
     const tickValues = categories.flatMap((cat) => `${cat}__${groups[middleGroupIndex]}`);
     const tickFormat = (d) => d.split("__")[0];
-    const plot23 = Plot8__namespace.plot({
+    const plot29 = Plot24__namespace.plot({
       width,
       height,
       marginTop: title ? 40 : 20,
@@ -529,7 +541,7 @@ function BoxPlotGrouped({
         range: colorScheme
       },
       marks: [
-        Plot8__namespace.boxY(transformedData, {
+        Plot24__namespace.boxY(transformedData, {
           x: "compoundCategory",
           y: "value",
           fill: "group",
@@ -540,9 +552,9 @@ function BoxPlotGrouped({
         })
       ]
     });
-    plot23.setAttribute("role", "img");
-    plot23.setAttribute("aria-label", ariaLabel);
-    containerRef.current.appendChild(plot23);
+    plot29.setAttribute("role", "img");
+    plot29.setAttribute("aria-label", ariaLabel);
+    containerRef.current.appendChild(plot29);
     return () => {
       if (containerRef.current) {
         containerRef.current.innerHTML = "";
@@ -565,11 +577,11 @@ function BoxPlotFaceted({
   className = "",
   ariaLabel = "Faceted box plot showing distributions across panels"
 }) {
-  const containerRef = React.useRef(null);
-  React.useEffect(() => {
+  const containerRef = React20.useRef(null);
+  React20.useEffect(() => {
     if (!containerRef.current || !data || data.length === 0) return;
     containerRef.current.innerHTML = "";
-    const plot23 = Plot8__namespace.plot({
+    const plot29 = Plot24__namespace.plot({
       width,
       height,
       marginTop: title ? 50 : 40,
@@ -594,7 +606,7 @@ function BoxPlotFaceted({
         marginRight: 20
       },
       marks: [
-        Plot8__namespace.boxY(data, {
+        Plot24__namespace.boxY(data, {
           x: "category",
           y: "value",
           fx: "facet",
@@ -604,12 +616,12 @@ function BoxPlotFaceted({
           strokeWidth: 1.5,
           r: 3
         }),
-        Plot8__namespace.frame()
+        Plot24__namespace.frame()
       ]
     });
-    plot23.setAttribute("role", "img");
-    plot23.setAttribute("aria-label", ariaLabel);
-    containerRef.current.appendChild(plot23);
+    plot29.setAttribute("role", "img");
+    plot29.setAttribute("aria-label", ariaLabel);
+    containerRef.current.appendChild(plot29);
     return () => {
       if (containerRef.current) {
         containerRef.current.innerHTML = "";
@@ -631,8 +643,8 @@ function BoxPlotFacetedGrouped({
   className = "",
   ariaLabel = "Faceted and grouped box plot showing distributions across panels with side-by-side groups"
 }) {
-  const containerRef = React.useRef(null);
-  React.useEffect(() => {
+  const containerRef = React20.useRef(null);
+  React20.useEffect(() => {
     if (!containerRef.current || !data || data.length === 0) return;
     containerRef.current.innerHTML = "";
     const transformedData = data.map((d) => ({
@@ -648,7 +660,7 @@ function BoxPlotFacetedGrouped({
     const middleGroupIndex = Math.ceil((groups.length - 1) / 2);
     const tickValues = categories.flatMap((cat) => `${cat}__${groups[middleGroupIndex]}`);
     const tickFormat = (d) => d.split("__")[0];
-    const plot23 = Plot8__namespace.plot({
+    const plot29 = Plot24__namespace.plot({
       width,
       height,
       marginTop: title ? 50 : 40,
@@ -681,7 +693,7 @@ function BoxPlotFacetedGrouped({
         range: colorScheme
       },
       marks: [
-        Plot8__namespace.boxY(transformedData, {
+        Plot24__namespace.boxY(transformedData, {
           x: "compoundCategory",
           // Compound key for side-by-side positioning
           y: "value",
@@ -693,12 +705,12 @@ function BoxPlotFacetedGrouped({
           strokeWidth: 1.5,
           r: 3
         }),
-        Plot8__namespace.frame()
+        Plot24__namespace.frame()
       ]
     });
-    plot23.setAttribute("role", "img");
-    plot23.setAttribute("aria-label", ariaLabel);
-    containerRef.current.appendChild(plot23);
+    plot29.setAttribute("role", "img");
+    plot29.setAttribute("aria-label", ariaLabel);
+    containerRef.current.appendChild(plot29);
     return () => {
       if (containerRef.current) {
         containerRef.current.innerHTML = "";
@@ -727,8 +739,8 @@ function DistributionPlot({
   className = "",
   ariaLabel = "Distribution plot showing data distribution"
 }) {
-  const containerRef = React.useRef(null);
-  React.useEffect(() => {
+  const containerRef = React20.useRef(null);
+  React20.useEffect(() => {
     if (!containerRef.current || !data || data.length === 0) return;
     containerRef.current.innerHTML = "";
     const hasGroups = data.some((d) => d.group !== void 0);
@@ -741,9 +753,9 @@ function DistributionPlot({
         const color = groupColors?.[group] || defaultColors[i % defaultColors.length];
         if (showHistogram) {
           marks.push(
-            Plot8__namespace.rectY(
+            Plot24__namespace.rectY(
               groupData,
-              Plot8__namespace.binX(
+              Plot24__namespace.binX(
                 { y: "count" },
                 {
                   x: "value",
@@ -757,7 +769,7 @@ function DistributionPlot({
         }
         if (showDensity) {
           marks.push(
-            Plot8__namespace.density(
+            Plot24__namespace.density(
               groupData,
               {
                 x: "value",
@@ -771,7 +783,7 @@ function DistributionPlot({
         }
         if (showRug) {
           marks.push(
-            Plot8__namespace.tickX(groupData, {
+            Plot24__namespace.tickX(groupData, {
               x: "value",
               stroke: color,
               strokeOpacity: 0.3
@@ -779,9 +791,9 @@ function DistributionPlot({
           );
         }
         if (showMean) {
-          const mean = groupData.reduce((sum, d) => sum + d.value, 0) / groupData.length;
+          const mean2 = groupData.reduce((sum, d) => sum + d.value, 0) / groupData.length;
           marks.push(
-            Plot8__namespace.ruleX([mean], {
+            Plot24__namespace.ruleX([mean2], {
               stroke: color,
               strokeWidth: 2,
               strokeDasharray: "4,4"
@@ -790,9 +802,9 @@ function DistributionPlot({
         }
         if (showMedian) {
           const sorted = [...groupData].sort((a, b) => a.value - b.value);
-          const median = sorted[Math.floor(sorted.length / 2)]?.value || 0;
+          const median2 = sorted[Math.floor(sorted.length / 2)]?.value || 0;
           marks.push(
-            Plot8__namespace.ruleX([median], {
+            Plot24__namespace.ruleX([median2], {
               stroke: color,
               strokeWidth: 2,
               strokeDasharray: "2,2"
@@ -803,9 +815,9 @@ function DistributionPlot({
     } else {
       if (showHistogram) {
         marks.push(
-          Plot8__namespace.rectY(
+          Plot24__namespace.rectY(
             data,
-            Plot8__namespace.binX(
+            Plot24__namespace.binX(
               { y: "count" },
               {
                 x: "value",
@@ -819,7 +831,7 @@ function DistributionPlot({
       }
       if (showDensity) {
         marks.push(
-          Plot8__namespace.density(
+          Plot24__namespace.density(
             data,
             {
               x: "value",
@@ -833,7 +845,7 @@ function DistributionPlot({
       }
       if (showRug) {
         marks.push(
-          Plot8__namespace.tickX(data, {
+          Plot24__namespace.tickX(data, {
             x: "value",
             stroke: fillColor,
             strokeOpacity: 0.5
@@ -841,9 +853,9 @@ function DistributionPlot({
         );
       }
       if (showMean) {
-        const mean = data.reduce((sum, d) => sum + d.value, 0) / data.length;
+        const mean2 = data.reduce((sum, d) => sum + d.value, 0) / data.length;
         marks.push(
-          Plot8__namespace.ruleX([mean], {
+          Plot24__namespace.ruleX([mean2], {
             stroke: meanColor,
             strokeWidth: 2,
             strokeDasharray: "4,4"
@@ -852,9 +864,9 @@ function DistributionPlot({
       }
       if (showMedian) {
         const sorted = [...data].sort((a, b) => a.value - b.value);
-        const median = sorted[Math.floor(sorted.length / 2)]?.value || 0;
+        const median2 = sorted[Math.floor(sorted.length / 2)]?.value || 0;
         marks.push(
-          Plot8__namespace.ruleX([median], {
+          Plot24__namespace.ruleX([median2], {
             stroke: medianColor,
             strokeWidth: 2,
             strokeDasharray: "2,2"
@@ -862,7 +874,7 @@ function DistributionPlot({
         );
       }
     }
-    const plot23 = Plot8__namespace.plot({
+    const plot29 = Plot24__namespace.plot({
       width,
       height,
       marginTop: title ? 40 : 20,
@@ -880,9 +892,9 @@ function DistributionPlot({
       },
       marks
     });
-    plot23.setAttribute("role", "img");
-    plot23.setAttribute("aria-label", ariaLabel);
-    containerRef.current.appendChild(plot23);
+    plot29.setAttribute("role", "img");
+    plot29.setAttribute("aria-label", ariaLabel);
+    containerRef.current.appendChild(plot29);
     return () => {
       if (containerRef.current) {
         containerRef.current.innerHTML = "";
@@ -909,8 +921,8 @@ function RegressionPlot({
   className = "",
   ariaLabel = "Regression plot showing relationship between variables"
 }) {
-  const containerRef = React.useRef(null);
-  React.useEffect(() => {
+  const containerRef = React20.useRef(null);
+  React20.useEffect(() => {
     if (!containerRef.current || !data || data.length === 0) return;
     containerRef.current.innerHTML = "";
     let plotData = data;
@@ -927,7 +939,7 @@ function RegressionPlot({
         const groupData = plotData.filter((d) => d.group === group);
         const color = groupColors?.[group] || defaultColors[i % defaultColors.length];
         marks.push(
-          Plot8__namespace.dot(groupData, {
+          Plot24__namespace.dot(groupData, {
             x: "x",
             y: "y",
             fill: color,
@@ -937,7 +949,7 @@ function RegressionPlot({
         );
         if (method === "linear") {
           marks.push(
-            Plot8__namespace.linearRegressionY(groupData, {
+            Plot24__namespace.linearRegressionY(groupData, {
               x: "x",
               y: "y",
               stroke: color,
@@ -947,7 +959,7 @@ function RegressionPlot({
           );
         } else if (method === "loess") {
           marks.push(
-            Plot8__namespace.line(groupData, {
+            Plot24__namespace.line(groupData, {
               x: "x",
               y: "y",
               stroke: color,
@@ -959,7 +971,7 @@ function RegressionPlot({
       });
     } else {
       marks.push(
-        Plot8__namespace.dot(plotData, {
+        Plot24__namespace.dot(plotData, {
           x: "x",
           y: "y",
           fill: pointColor,
@@ -969,7 +981,7 @@ function RegressionPlot({
       );
       if (method === "linear") {
         marks.push(
-          Plot8__namespace.linearRegressionY(plotData, {
+          Plot24__namespace.linearRegressionY(plotData, {
             x: "x",
             y: "y",
             stroke: lineColor,
@@ -979,9 +991,9 @@ function RegressionPlot({
         );
       } else if (method === "loess") {
         marks.push(
-          Plot8__namespace.line(
+          Plot24__namespace.line(
             plotData,
-            Plot8__namespace.windowY({
+            Plot24__namespace.windowY({
               k: Math.max(7, Math.floor(plotData.length / 20)),
               x: "x",
               y: "y",
@@ -992,9 +1004,9 @@ function RegressionPlot({
         );
       } else if (method === "polynomial") {
         marks.push(
-          Plot8__namespace.line(
+          Plot24__namespace.line(
             plotData,
-            Plot8__namespace.windowY({
+            Plot24__namespace.windowY({
               k: Math.max(7, Math.floor(plotData.length / 10)),
               x: "x",
               y: "y",
@@ -1005,7 +1017,7 @@ function RegressionPlot({
         );
       }
     }
-    const plot23 = Plot8__namespace.plot({
+    const plot29 = Plot24__namespace.plot({
       width,
       height,
       marginTop: title ? 40 : 20,
@@ -1023,9 +1035,9 @@ function RegressionPlot({
       },
       marks
     });
-    plot23.setAttribute("role", "img");
-    plot23.setAttribute("aria-label", ariaLabel);
-    containerRef.current.appendChild(plot23);
+    plot29.setAttribute("role", "img");
+    plot29.setAttribute("aria-label", ariaLabel);
+    containerRef.current.appendChild(plot29);
     if (showRSquared && !hasGroups) {
       const xMean = plotData.reduce((sum, d) => sum + d.x, 0) / plotData.length;
       const yMean = plotData.reduce((sum, d) => sum + d.y, 0) / plotData.length;
@@ -1040,7 +1052,7 @@ function RegressionPlot({
       rText.setAttribute("font-size", "14");
       rText.setAttribute("fill", "#666");
       rText.textContent = `R\xB2 = ${rSquared.toFixed(3)}`;
-      plot23.appendChild(rText);
+      plot29.appendChild(rText);
     }
     return () => {
       if (containerRef.current) {
@@ -1062,8 +1074,8 @@ function QQPlot({
   className = "",
   ariaLabel = "Q-Q plot for normality testing"
 }) {
-  const containerRef = React.useRef(null);
-  React.useEffect(() => {
+  const containerRef = React20.useRef(null);
+  React20.useEffect(() => {
     if (!containerRef.current || !data || data.length === 0) return;
     containerRef.current.innerHTML = "";
     const sortedData = [...data].sort((a, b) => a - b);
@@ -1082,7 +1094,7 @@ function QQPlot({
     const sampleMax = Math.max(...sortedData);
     const slope = (sampleMax - sampleMin) / (maxVal - minVal);
     const intercept = sampleMin - slope * minVal;
-    const plot23 = Plot8__namespace.plot({
+    const plot29 = Plot24__namespace.plot({
       width,
       height,
       marginTop: title ? 40 : 20,
@@ -1100,7 +1112,7 @@ function QQPlot({
       },
       marks: [
         // Reference line (theoretical normal)
-        Plot8__namespace.line(
+        Plot24__namespace.line(
           [
             { x: minVal, y: intercept + slope * minVal },
             { x: maxVal, y: intercept + slope * maxVal }
@@ -1114,7 +1126,7 @@ function QQPlot({
           }
         ),
         // Q-Q points
-        Plot8__namespace.dot(qqData, {
+        Plot24__namespace.dot(qqData, {
           x: "theoretical",
           y: "sample",
           fill: pointColor,
@@ -1123,9 +1135,9 @@ function QQPlot({
         })
       ]
     });
-    plot23.setAttribute("role", "img");
-    plot23.setAttribute("aria-label", ariaLabel);
-    containerRef.current.appendChild(plot23);
+    plot29.setAttribute("role", "img");
+    plot29.setAttribute("aria-label", ariaLabel);
+    containerRef.current.appendChild(plot29);
     return () => {
       if (containerRef.current) {
         containerRef.current.innerHTML = "";
@@ -1153,8 +1165,8 @@ function ResidualPlot({
   className = "",
   ariaLabel = "Residual plot for regression diagnostics"
 }) {
-  const containerRef = React.useRef(null);
-  React.useEffect(() => {
+  const containerRef = React20.useRef(null);
+  React20.useEffect(() => {
     if (!containerRef.current || !data || data.length === 0) return;
     containerRef.current.innerHTML = "";
     const n = data.length;
@@ -1169,7 +1181,7 @@ function ResidualPlot({
       const residual = d.y - fitted;
       return { fitted, residual };
     });
-    const plot23 = Plot8__namespace.plot({
+    const plot29 = Plot24__namespace.plot({
       width,
       height,
       marginTop: title ? 40 : 20,
@@ -1187,13 +1199,13 @@ function ResidualPlot({
       },
       marks: [
         // Zero reference line
-        Plot8__namespace.ruleY([0], {
+        Plot24__namespace.ruleY([0], {
           stroke: lineColor,
           strokeWidth: 2,
           strokeDasharray: "5,5"
         }),
         // Residual points
-        Plot8__namespace.dot(residualData, {
+        Plot24__namespace.dot(residualData, {
           x: "fitted",
           y: "residual",
           fill: pointColor,
@@ -1202,9 +1214,9 @@ function ResidualPlot({
         })
       ]
     });
-    plot23.setAttribute("role", "img");
-    plot23.setAttribute("aria-label", ariaLabel);
-    containerRef.current.appendChild(plot23);
+    plot29.setAttribute("role", "img");
+    plot29.setAttribute("aria-label", ariaLabel);
+    containerRef.current.appendChild(plot29);
     return () => {
       if (containerRef.current) {
         containerRef.current.innerHTML = "";
@@ -1226,11 +1238,11 @@ function SwarmPlot({
   className = "",
   ariaLabel = "Swarm plot showing distribution by category"
 }) {
-  const containerRef = React.useRef(null);
-  React.useEffect(() => {
+  const containerRef = React20.useRef(null);
+  React20.useEffect(() => {
     if (!containerRef.current || !data || data.length === 0) return;
     containerRef.current.innerHTML = "";
-    const plot23 = Plot8__namespace.plot({
+    const plot29 = Plot24__namespace.plot({
       width,
       height,
       marginTop: title ? 40 : 20,
@@ -1252,9 +1264,9 @@ function SwarmPlot({
       },
       marks: [
         // Swarm plot using dodge transform
-        Plot8__namespace.dot(
+        Plot24__namespace.dot(
           data,
-          Plot8__namespace.dodgeX("middle", {
+          Plot24__namespace.dodgeX("middle", {
             x: "category",
             y: "value",
             fill: "category",
@@ -1266,9 +1278,9 @@ function SwarmPlot({
         )
       ]
     });
-    plot23.setAttribute("role", "img");
-    plot23.setAttribute("aria-label", ariaLabel);
-    containerRef.current.appendChild(plot23);
+    plot29.setAttribute("role", "img");
+    plot29.setAttribute("aria-label", ariaLabel);
+    containerRef.current.appendChild(plot29);
     return () => {
       if (containerRef.current) {
         containerRef.current.innerHTML = "";
@@ -1291,11 +1303,11 @@ function StripPlot({
   className = "",
   ariaLabel = "Strip plot showing distribution by category"
 }) {
-  const containerRef = React.useRef(null);
-  React.useEffect(() => {
+  const containerRef = React20.useRef(null);
+  React20.useEffect(() => {
     if (!containerRef.current || !data || data.length === 0) return;
     containerRef.current.innerHTML = "";
-    const plot23 = Plot8__namespace.plot({
+    const plot29 = Plot24__namespace.plot({
       width,
       height,
       marginTop: title ? 40 : 20,
@@ -1317,7 +1329,7 @@ function StripPlot({
       },
       marks: [
         // Strip plot with jitter
-        Plot8__namespace.dot(data, {
+        Plot24__namespace.dot(data, {
           x: "category",
           y: "value",
           fill: "category",
@@ -1327,9 +1339,9 @@ function StripPlot({
         })
       ]
     });
-    plot23.setAttribute("role", "img");
-    plot23.setAttribute("aria-label", ariaLabel);
-    containerRef.current.appendChild(plot23);
+    plot29.setAttribute("role", "img");
+    plot29.setAttribute("aria-label", ariaLabel);
+    containerRef.current.appendChild(plot29);
     return () => {
       if (containerRef.current) {
         containerRef.current.innerHTML = "";
@@ -1353,8 +1365,8 @@ function ForestPlot({
   className = "",
   ariaLabel = "Forest plot showing regression coefficients with confidence intervals"
 }) {
-  const containerRef = React.useRef(null);
-  React.useEffect(() => {
+  const containerRef = React20.useRef(null);
+  React20.useEffect(() => {
     if (!containerRef.current || !data || data.length === 0) return;
     containerRef.current.innerHTML = "";
     let sortedData = [...data];
@@ -1375,14 +1387,14 @@ function ForestPlot({
     const marks = [];
     if (showZeroLine) {
       marks.push(
-        Plot8__namespace.ruleX([0], {
+        Plot24__namespace.ruleX([0], {
           stroke: "#000",
           strokeWidth: 2
         })
       );
     }
     marks.push(
-      Plot8__namespace.ruleX(sortedData, {
+      Plot24__namespace.ruleX(sortedData, {
         x1: "ci_lower",
         x2: "ci_upper",
         y: "variable",
@@ -1391,7 +1403,7 @@ function ForestPlot({
       })
     );
     marks.push(
-      Plot8__namespace.tickX(sortedData, {
+      Plot24__namespace.tickX(sortedData, {
         x: "ci_lower",
         y: "variable",
         stroke: (d) => getColor(d),
@@ -1399,7 +1411,7 @@ function ForestPlot({
       })
     );
     marks.push(
-      Plot8__namespace.tickX(sortedData, {
+      Plot24__namespace.tickX(sortedData, {
         x: "ci_upper",
         y: "variable",
         stroke: (d) => getColor(d),
@@ -1407,14 +1419,14 @@ function ForestPlot({
       })
     );
     marks.push(
-      Plot8__namespace.dot(sortedData, {
+      Plot24__namespace.dot(sortedData, {
         x: "coef",
         y: "variable",
         fill: (d) => getColor(d),
         r: 5
       })
     );
-    const plot23 = Plot8__namespace.plot({
+    const plot29 = Plot24__namespace.plot({
       width,
       height,
       marginTop: title ? 40 : 20,
@@ -1433,9 +1445,9 @@ function ForestPlot({
       },
       marks
     });
-    plot23.setAttribute("role", "img");
-    plot23.setAttribute("aria-label", ariaLabel);
-    containerRef.current.appendChild(plot23);
+    plot29.setAttribute("role", "img");
+    plot29.setAttribute("aria-label", ariaLabel);
+    containerRef.current.appendChild(plot29);
     if (showPValues) {
       sortedData.forEach((d, i) => {
         if (d.pvalue !== void 0) {
@@ -1451,7 +1463,7 @@ function ForestPlot({
             starText.setAttribute("font-size", "14");
             starText.setAttribute("fill", "#666");
             starText.textContent = stars;
-            plot23.appendChild(starText);
+            plot29.appendChild(starText);
           }
         }
       });
@@ -1475,13 +1487,13 @@ var SplitBar = ({
   caption = "",
   sortBy = "overall",
   sortDirection = "descending",
-  formatValue = (v) => `${v.toFixed(1)}%`,
+  formatValue: formatValue2 = (v) => `${v.toFixed(1)}%`,
   className = "",
   marginLeft = 150,
   showValueLabels = true
 }) => {
-  const containerRef = React__namespace.useRef(null);
-  React__namespace.useEffect(() => {
+  const containerRef = React20__namespace.useRef(null);
+  React20__namespace.useEffect(() => {
     if (!containerRef.current || !data || data.length === 0) return;
     if (subcategories.length !== 2) {
       console.error("SplitBar requires exactly 2 subcategories");
@@ -1512,7 +1524,7 @@ var SplitBar = ({
     );
     const minValue = Math.min(...allValues);
     const maxValue = Math.max(...allValues);
-    const plot23 = Plot8__namespace.plot({
+    const plot29 = Plot24__namespace.plot({
       caption,
       style: {
         backgroundColor: "white",
@@ -1540,27 +1552,27 @@ var SplitBar = ({
       },
       marks: [
         // Background bars for overall values
-        Plot8__namespace.barX(sortedData, {
+        Plot24__namespace.barX(sortedData, {
           y: "category",
           x: "overall",
           fill: "#e4e4e4",
-          title: (d) => `Overall: ${formatValue(d.overall)}`
+          title: (d) => `Overall: ${formatValue2(d.overall)}`
         }),
         // Dots for subcategory values
-        Plot8__namespace.dot(dotData, {
+        Plot24__namespace.dot(dotData, {
           y: "category",
           x: "value",
           fill: "subcategory",
           r: 5,
           tip: true,
-          title: (d) => `${d.subcategory}: ${formatValue(d.value)}`
+          title: (d) => `${d.subcategory}: ${formatValue2(d.value)}`
         }),
         // Value labels on bars
         ...showValueLabels ? [
-          Plot8__namespace.text(sortedData, {
+          Plot24__namespace.text(sortedData, {
             y: "category",
             x: "overall",
-            text: (d) => formatValue(d.overall),
+            text: (d) => formatValue2(d.overall),
             dx: -25,
             fill: "black",
             fontSize: 9,
@@ -1569,12 +1581,12 @@ var SplitBar = ({
           })
         ] : [],
         // Zero reference line
-        Plot8__namespace.ruleX([minValue])
+        Plot24__namespace.ruleX([minValue])
       ]
     });
-    containerRef.current.appendChild(plot23);
+    containerRef.current.appendChild(plot29);
     return () => {
-      plot23.remove();
+      plot29.remove();
     };
   }, [
     data,
@@ -1587,7 +1599,7 @@ var SplitBar = ({
     caption,
     sortBy,
     sortDirection,
-    formatValue,
+    formatValue2,
     marginLeft,
     showValueLabels
   ]);
@@ -1612,8 +1624,8 @@ function DotPlot({
   tipFormat,
   className = ""
 }) {
-  const containerRef = React.useRef(null);
-  React.useEffect(() => {
+  const containerRef = React20.useRef(null);
+  React20.useEffect(() => {
     if (!containerRef.current || !data || data.length === 0) return;
     containerRef.current.innerHTML = "";
     let colorConfig = fill ? { legend: true } : void 0;
@@ -1628,7 +1640,7 @@ function DotPlot({
         };
       }
     }
-    const plot23 = Plot8__namespace.plot({
+    const plot29 = Plot24__namespace.plot({
       title,
       subtitle,
       style: {
@@ -1644,7 +1656,7 @@ function DotPlot({
       },
       color: colorConfig,
       marks: [
-        Plot8__namespace.dot(data, {
+        Plot24__namespace.dot(data, {
           x,
           y,
           fill: fill || "currentColor",
@@ -1655,15 +1667,15 @@ function DotPlot({
           title: tipFormat || ((d) => `${d[y]}: ${d[x]}`),
           tip: true
         }),
-        Plot8__namespace.ruleX([0])
+        Plot24__namespace.ruleX([0])
       ],
       width,
       height,
       marginLeft
     });
-    containerRef.current.appendChild(plot23);
+    containerRef.current.appendChild(plot29);
     return () => {
-      plot23?.remove();
+      plot29?.remove();
     };
   }, [data, x, y, fill, title, subtitle, xLabel, yLabel, radius, fillOpacity, width, height, marginLeft, colorScheme, tipFormat]);
   return /* @__PURE__ */ jsxRuntime.jsx("div", { ref: containerRef, className });
@@ -1690,13 +1702,13 @@ function BarChart({
   xTicks,
   className = ""
 }) {
-  const containerRef = React.useRef(null);
-  React.useEffect(() => {
+  const containerRef = React20.useRef(null);
+  React20.useEffect(() => {
     if (!containerRef.current || !data || data.length === 0) return;
     containerRef.current.innerHTML = "";
     const marks = [
       // Main bar chart
-      Plot8__namespace.barY(data, {
+      Plot24__namespace.barY(data, {
         x,
         y,
         fill
@@ -1704,7 +1716,7 @@ function BarChart({
     ];
     if (errorY) {
       marks.push(
-        Plot8__namespace.ruleX(data, {
+        Plot24__namespace.ruleX(data, {
           x,
           y1: errorY.lower,
           y2: errorY.upper,
@@ -1713,7 +1725,7 @@ function BarChart({
         })
       );
     }
-    const plot23 = Plot8__namespace.plot({
+    const plot29 = Plot24__namespace.plot({
       width,
       height,
       marginBottom,
@@ -1738,9 +1750,9 @@ function BarChart({
       },
       marks
     });
-    containerRef.current.appendChild(plot23);
+    containerRef.current.appendChild(plot29);
     return () => {
-      plot23?.remove();
+      plot29?.remove();
     };
   }, [data, x, y, errorY, title, subtitle, caption, xLabel, yLabel, fill, errorStroke, errorStrokeWidth, width, height, marginBottom, xTickRotate, xTickFormat, xTicks]);
   return /* @__PURE__ */ jsxRuntime.jsx("div", { ref: containerRef, className });
@@ -1758,8 +1770,8 @@ function Sparkline({
   className = "",
   ariaLabel = "Sparkline chart"
 }) {
-  const containerRef = React.useRef(null);
-  React.useEffect(() => {
+  const containerRef = React20.useRef(null);
+  React20.useEffect(() => {
     if (!containerRef.current || !data || data.length === 0) return;
     containerRef.current.innerHTML = "";
     const indexedData = data.map((value, index) => ({ index, value }));
@@ -1774,7 +1786,7 @@ function Sparkline({
     const marks = [];
     if (variant === "line") {
       marks.push(
-        Plot8__namespace.lineY(indexedData, {
+        Plot24__namespace.lineY(indexedData, {
           x: "index",
           y: "value",
           stroke: color,
@@ -1783,14 +1795,14 @@ function Sparkline({
       );
     } else if (variant === "area") {
       marks.push(
-        Plot8__namespace.areaY(indexedData, {
+        Plot24__namespace.areaY(indexedData, {
           x: "index",
           y: "value",
           fill: color,
           fillOpacity: 0.3,
           curve: "catmull-rom"
         }),
-        Plot8__namespace.lineY(indexedData, {
+        Plot24__namespace.lineY(indexedData, {
           x: "index",
           y: "value",
           stroke: color,
@@ -1800,7 +1812,7 @@ function Sparkline({
       );
     } else if (variant === "bar") {
       marks.push(
-        Plot8__namespace.barY(indexedData, {
+        Plot24__namespace.barY(indexedData, {
           x: "index",
           y: "value",
           fill: color,
@@ -1814,7 +1826,7 @@ function Sparkline({
       const minIndex = data.indexOf(minValue);
       const maxIndex = data.indexOf(maxValue);
       marks.push(
-        Plot8__namespace.dot([{ index: minIndex, value: minValue }], {
+        Plot24__namespace.dot([{ index: minIndex, value: minValue }], {
           x: "index",
           y: "value",
           fill: negativeColor,
@@ -1822,7 +1834,7 @@ function Sparkline({
           stroke: "white",
           strokeWidth: 1
         }),
-        Plot8__namespace.dot([{ index: maxIndex, value: maxValue }], {
+        Plot24__namespace.dot([{ index: maxIndex, value: maxValue }], {
           x: "index",
           y: "value",
           fill: positiveColor,
@@ -1832,7 +1844,7 @@ function Sparkline({
         })
       );
     }
-    const plot23 = Plot8__namespace.plot({
+    const plot29 = Plot24__namespace.plot({
       width,
       height,
       marginTop: 5,
@@ -1847,11 +1859,11 @@ function Sparkline({
       },
       marks
     });
-    plot23.setAttribute("role", "img");
-    plot23.setAttribute("aria-label", ariaLabel);
-    containerRef.current.appendChild(plot23);
+    plot29.setAttribute("role", "img");
+    plot29.setAttribute("aria-label", ariaLabel);
+    containerRef.current.appendChild(plot29);
     return () => {
-      plot23?.remove();
+      plot29?.remove();
     };
   }, [data, variant, width, height, showMinMax, positiveColor, negativeColor, neutralColor, ariaLabel]);
   return /* @__PURE__ */ jsxRuntime.jsx("div", { ref: containerRef, className });
@@ -1880,8 +1892,8 @@ function SlopeChart({
   showLabels = true,
   className = ""
 }) {
-  const containerRef = React.useRef(null);
-  React.useEffect(() => {
+  const containerRef = React20.useRef(null);
+  React20.useEffect(() => {
     if (!containerRef.current || !data || data.length === 0) return;
     containerRef.current.innerHTML = "";
     const longData = [];
@@ -1898,7 +1910,7 @@ function SlopeChart({
     };
     const marks = [];
     marks.push(
-      Plot8__namespace.line(longData, {
+      Plot24__namespace.line(longData, {
         x: "time",
         y: "value",
         z: labelKey,
@@ -1908,7 +1920,7 @@ function SlopeChart({
       })
     );
     marks.push(
-      Plot8__namespace.dot(longData, {
+      Plot24__namespace.dot(longData, {
         x: "time",
         y: "value",
         fill: (d) => getColor(d.change),
@@ -1924,7 +1936,7 @@ function SlopeChart({
         change: d[afterKey] - d[beforeKey]
       }));
       marks.push(
-        Plot8__namespace.text(beforeData, {
+        Plot24__namespace.text(beforeData, {
           x: "time",
           y: "value",
           text: labelKey,
@@ -1941,7 +1953,7 @@ function SlopeChart({
         change: d[afterKey] - d[beforeKey]
       }));
       marks.push(
-        Plot8__namespace.text(afterData, {
+        Plot24__namespace.text(afterData, {
           x: "time",
           y: "value",
           text: (d) => d.value.toFixed(1),
@@ -1953,7 +1965,7 @@ function SlopeChart({
         })
       );
     }
-    const plot23 = Plot8__namespace.plot({
+    const plot29 = Plot24__namespace.plot({
       width,
       height,
       marginLeft,
@@ -1973,9 +1985,9 @@ function SlopeChart({
       },
       marks
     });
-    containerRef.current.appendChild(plot23);
+    containerRef.current.appendChild(plot29);
     return () => {
-      plot23?.remove();
+      plot29?.remove();
     };
   }, [
     data,
@@ -2014,8 +2026,8 @@ function BulletChart({
   showLabels = true,
   className = ""
 }) {
-  const containerRef = React.useRef(null);
-  React.useEffect(() => {
+  const containerRef = React20.useRef(null);
+  React20.useEffect(() => {
     if (!containerRef.current) return;
     containerRef.current.innerHTML = "";
     const sortedRanges = [...ranges].sort((a, b) => b.threshold - a.threshold);
@@ -2027,7 +2039,7 @@ function BulletChart({
     const marks = [];
     sortedRanges.forEach((range) => {
       marks.push(
-        Plot8__namespace.barX([{ value: range.threshold }], {
+        Plot24__namespace.barX([{ value: range.threshold }], {
           x: "value",
           fill: range.color,
           fillOpacity: 0.3,
@@ -2037,7 +2049,7 @@ function BulletChart({
       );
     });
     marks.push(
-      Plot8__namespace.barX([{ value }], {
+      Plot24__namespace.barX([{ value }], {
         x: "value",
         fill: valueColor,
         y: () => title,
@@ -2047,7 +2059,7 @@ function BulletChart({
       })
     );
     marks.push(
-      Plot8__namespace.tickX([{ value: target }], {
+      Plot24__namespace.tickX([{ value: target }], {
         x: "value",
         y: () => title,
         stroke: targetColor,
@@ -2059,7 +2071,7 @@ function BulletChart({
     );
     if (showLabels) {
       marks.push(
-        Plot8__namespace.text([{ value, label: value.toString() }], {
+        Plot24__namespace.text([{ value, label: value.toString() }], {
           x: "value",
           y: () => title,
           text: "label",
@@ -2071,7 +2083,7 @@ function BulletChart({
         })
       );
       marks.push(
-        Plot8__namespace.text([{ value: target, label: `Target: ${target}` }], {
+        Plot24__namespace.text([{ value: target, label: `Target: ${target}` }], {
           x: "value",
           y: () => title,
           text: "label",
@@ -2082,7 +2094,7 @@ function BulletChart({
         })
       );
     }
-    const plot23 = Plot8__namespace.plot({
+    const plot29 = Plot24__namespace.plot({
       width,
       height,
       marginLeft: 100,
@@ -2100,9 +2112,9 @@ function BulletChart({
       },
       marks
     });
-    containerRef.current.appendChild(plot23);
+    containerRef.current.appendChild(plot29);
     return () => {
-      plot23?.remove();
+      plot29?.remove();
     };
   }, [title, value, target, ranges, width, height, valueColor, targetColor, showLabels]);
   return /* @__PURE__ */ jsxRuntime.jsx("div", { ref: containerRef, className });
@@ -2129,8 +2141,8 @@ function DivergingBar({
   showZeroLine = true,
   className = ""
 }) {
-  const containerRef = React.useRef(null);
-  React.useEffect(() => {
+  const containerRef = React20.useRef(null);
+  React20.useEffect(() => {
     if (!containerRef.current || !data || data.length === 0) return;
     containerRef.current.innerHTML = "";
     let processedData = data.map((d) => ({
@@ -2144,14 +2156,14 @@ function DivergingBar({
     const marks = [];
     if (showZeroLine) {
       marks.push(
-        Plot8__namespace.ruleX([0], {
+        Plot24__namespace.ruleX([0], {
           stroke: "#000",
           strokeWidth: 2
         })
       );
     }
     marks.push(
-      Plot8__namespace.barX(processedData, {
+      Plot24__namespace.barX(processedData, {
         y: categoryKey,
         x: positiveKey,
         fill: positiveColor,
@@ -2159,14 +2171,14 @@ function DivergingBar({
       })
     );
     marks.push(
-      Plot8__namespace.barX(processedData, {
+      Plot24__namespace.barX(processedData, {
         y: categoryKey,
         x: negativeKey,
         fill: negativeColor,
         title: (d) => `${d[categoryKey]}: ${Math.abs(d[negativeKey])}% ${negativeLabel}`
       })
     );
-    const plot23 = Plot8__namespace.plot({
+    const plot29 = Plot24__namespace.plot({
       width,
       height,
       marginLeft,
@@ -2187,9 +2199,9 @@ function DivergingBar({
       },
       marks
     });
-    containerRef.current.appendChild(plot23);
+    containerRef.current.appendChild(plot29);
     return () => {
-      plot23?.remove();
+      plot29?.remove();
     };
   }, [
     data,
@@ -2232,8 +2244,8 @@ function FacetedPlot({
   className = "",
   ariaLabel = "Faceted plot showing comparative analysis across groups"
 }) {
-  const containerRef = React.useRef(null);
-  React.useEffect(() => {
+  const containerRef = React20.useRef(null);
+  React20.useEffect(() => {
     if (!containerRef.current || !data || data.length === 0) return;
     containerRef.current.innerHTML = "";
     let plotData = data;
@@ -2278,7 +2290,7 @@ function FacetedPlot({
     switch (mark) {
       case "dot":
         marks.push(
-          Plot8__namespace.dot(plotData, {
+          Plot24__namespace.dot(plotData, {
             ...baseOptions,
             r: 3,
             fillOpacity: 0.6
@@ -2287,7 +2299,7 @@ function FacetedPlot({
         break;
       case "line":
         marks.push(
-          Plot8__namespace.line(plotData, {
+          Plot24__namespace.line(plotData, {
             ...baseOptions,
             strokeWidth: 2,
             ...groupBy && { z: groupBy }
@@ -2296,14 +2308,14 @@ function FacetedPlot({
         break;
       case "bar":
         marks.push(
-          Plot8__namespace.barY(plotData, {
+          Plot24__namespace.barY(plotData, {
             ...baseOptions
           })
         );
         break;
       case "area":
         marks.push(
-          Plot8__namespace.areaY(plotData, {
+          Plot24__namespace.areaY(plotData, {
             ...baseOptions,
             fillOpacity: 0.5,
             ...groupBy && { z: groupBy }
@@ -2311,7 +2323,7 @@ function FacetedPlot({
         );
         break;
     }
-    const plot23 = Plot8__namespace.plot({
+    const plot29 = Plot24__namespace.plot({
       width,
       height,
       marginTop: title ? 50 : 30,
@@ -2341,9 +2353,9 @@ function FacetedPlot({
       },
       marks
     });
-    plot23.setAttribute("role", "img");
-    plot23.setAttribute("aria-label", ariaLabel);
-    containerRef.current.appendChild(plot23);
+    plot29.setAttribute("role", "img");
+    plot29.setAttribute("aria-label", ariaLabel);
+    containerRef.current.appendChild(plot29);
     return () => {
       if (containerRef.current) {
         containerRef.current.innerHTML = "";
@@ -2352,6 +2364,886 @@ function FacetedPlot({
   }, [data, x, y, facetX, facetY, mark, xLabel, yLabel, title, width, height, sharedScales, color, groupBy, ariaLabel]);
   return /* @__PURE__ */ jsxRuntime.jsx("div", { ref: containerRef, className });
 }
+var CorrelationHeatmap = ({
+  data,
+  width = 600,
+  height = 600,
+  title = "County Health Correlations",
+  subtitle = "Focus on variables focused on adjusted prevalence",
+  caption = "Source: CDC"
+}) => {
+  const containerRef = React20.useRef(null);
+  React20.useEffect(() => {
+    if (!data || !containerRef.current) return;
+    containerRef.current.innerHTML = "";
+    const variables = [...new Set(data.map((d) => d.x))];
+    const convertedData = data.filter((d) => variables.indexOf(d.y) > variables.indexOf(d.x));
+    const cleanVariableName = (name) => {
+      return name.replace("_AdjPrev", "").replace("_", " ").toUpperCase();
+    };
+    const xDomain = [...new Set(convertedData.map((d) => d.x))];
+    const yDomain = [...new Set(convertedData.map((d) => d.y))].reverse();
+    const plot29 = Plot24__namespace.plot({
+      title,
+      subtitle,
+      caption,
+      padding: 0,
+      marginLeft: 120,
+      marginTop: 120,
+      marginRight: 60,
+      marginBottom: 60,
+      grid: true,
+      style: {
+        backgroundColor: "white",
+        fontFamily: "sans-serif"
+      },
+      x: {
+        axis: "top",
+        label: "",
+        domain: xDomain,
+        tickRotate: -45,
+        tickFormat: cleanVariableName
+      },
+      y: {
+        label: "",
+        domain: yDomain,
+        tickFormat: cleanVariableName
+      },
+      color: {
+        type: "linear",
+        scheme: "RdBu",
+        domain: [-1, 1],
+        legend: true,
+        label: "Correlation coefficient"
+      },
+      marks: [
+        // Cell background
+        Plot24__namespace.cell(convertedData, {
+          x: "x",
+          y: "y",
+          fill: "value",
+          inset: 0.5,
+          tip: true,
+          title: (d) => `${cleanVariableName(d.x)} vs ${cleanVariableName(d.y)}: ${d.value.toFixed(3)}`
+        }),
+        // Text overlay
+        Plot24__namespace.text(convertedData, {
+          x: "x",
+          y: "y",
+          text: (d) => d.value.toFixed(2),
+          fill: (d) => Math.abs(d.value) > 0.5 ? "white" : "black",
+          fontSize: 10,
+          fontWeight: "bold"
+        })
+      ],
+      width,
+      height
+    });
+    containerRef.current.appendChild(plot29);
+    return () => {
+      if (plot29) plot29.remove();
+    };
+  }, [data, width, height, title, subtitle, caption]);
+  return /* @__PURE__ */ jsxRuntime.jsxs("div", { className: "w-full", children: [
+    /* @__PURE__ */ jsxRuntime.jsx("div", { ref: containerRef, className: "flex justify-center" }),
+    /* @__PURE__ */ jsxRuntime.jsxs("div", { className: "mt-4 text-sm text-gray-600 text-center", children: [
+      /* @__PURE__ */ jsxRuntime.jsx("p", { children: "Correlation matrix showing relationships between health outcome variables." }),
+      /* @__PURE__ */ jsxRuntime.jsx("p", { children: "Values range from -1 (strong negative correlation) to +1 (strong positive correlation)." })
+    ] })
+  ] });
+};
+var CorrelationHeatmap_default = CorrelationHeatmap;
+var HighchartsReact = dynamic__default.default(() => import('highcharts-react-official'), { ssr: false });
+function PcaPlot() {
+  const [Highcharts, setHighcharts] = React20.useState(null);
+  React20.useEffect(() => {
+    import('highcharts').then((HighchartsModule) => {
+      setHighcharts(HighchartsModule.default);
+    });
+  }, []);
+  if (!Highcharts) {
+    return /* @__PURE__ */ jsxRuntime.jsx("div", { className: "flex items-center justify-center h-96", children: "Loading chart..." });
+  }
+  const pcadata = [
+    {
+      x: 0.678,
+      y: 0.278,
+      lab: "log_pd",
+      col_var: "Active",
+      type_var: "arrow",
+      key_var: "log_pd",
+      tooltip_text: "<strong>Level:</strong> <br /> <strong>Variable:</strong> log_pd<br /> <strong>Axis 1 :</strong> 0.678<br /> <strong>Axis 2 :</strong> 0.278<br /> <strong>Squared cosinus:</strong> 0.536<br /> <strong>Contribution:</strong> 11.354<br />"
+    },
+    {
+      x: -0.731,
+      y: 0.285,
+      lab: "per_white",
+      col_var: "Active",
+      type_var: "arrow",
+      key_var: "per_white",
+      tooltip_text: "<strong>Level:</strong> <br /> <strong>Variable:</strong> per_white<br /> <strong>Axis 1 :</strong> -0.731<br /> <strong>Axis 2 :</strong> 0.285<br /> <strong>Squared cosinus:</strong> 0.615<br /> <strong>Contribution:</strong> 12.95<br />"
+    },
+    {
+      x: 0.217,
+      y: -0.439,
+      lab: "per_unemployed",
+      col_var: "Active",
+      type_var: "arrow",
+      key_var: "per_unemployed",
+      tooltip_text: "<strong>Level:</strong> <br /> <strong>Variable:</strong> per_unemployed<br /> <strong>Axis 1 :</strong> 0.217<br /> <strong>Axis 2 :</strong> -0.439<br /> <strong>Squared cosinus:</strong> 0.24<br /> <strong>Contribution:</strong> 6.67<br />"
+    },
+    {
+      x: 0.278,
+      y: -0.655,
+      lab: "per_poverty",
+      col_var: "Active",
+      type_var: "arrow",
+      key_var: "per_poverty",
+      tooltip_text: "<strong>Level:</strong> <br /> <strong>Variable:</strong> per_poverty<br /> <strong>Axis 1 :</strong> 0.278<br /> <strong>Axis 2 :</strong> -0.655<br /> <strong>Squared cosinus:</strong> 0.505<br /> <strong>Contribution:</strong> 14.268<br />"
+    },
+    {
+      x: -0.489,
+      y: 0.39,
+      lab: "per_married",
+      col_var: "Active",
+      type_var: "arrow",
+      key_var: "per_married",
+      tooltip_text: "<strong>Level:</strong> <br /> <strong>Variable:</strong> per_married<br /> <strong>Axis 1 :</strong> -0.489<br /> <strong>Axis 2 :</strong> 0.39<br /> <strong>Squared cosinus:</strong> 0.391<br /> <strong>Contribution:</strong> 9.237<br />"
+    },
+    {
+      x: 0.53,
+      y: -0.055,
+      lab: "per_hispanic",
+      col_var: "Active",
+      type_var: "arrow",
+      key_var: "per_hispanic",
+      tooltip_text: "<strong>Level:</strong> <br /> <strong>Variable:</strong> per_hispanic<br /> <strong>Axis 1 :</strong> 0.53<br /> <strong>Axis 2 :</strong> -0.055<br /> <strong>Squared cosinus:</strong> 0.284<br /> <strong>Contribution:</strong> 5.628<br />"
+    },
+    {
+      x: 0.444,
+      y: -0.174,
+      lab: "per_hh_withkids_under18",
+      col_var: "Active",
+      type_var: "arrow",
+      key_var: "per_hh_withkids_under18",
+      tooltip_text: "<strong>Level:</strong> <br /> <strong>Variable:</strong> per_hh_withkids_under18<br /> <strong>Axis 1 :</strong> 0.444<br /> <strong>Axis 2 :</strong> -0.174<br /> <strong>Squared cosinus:</strong> 0.227<br /> <strong>Contribution:</strong> 4.793<br />"
+    },
+    {
+      x: 0.72,
+      y: 0.309,
+      lab: "per_foreign_born",
+      col_var: "Active",
+      type_var: "arrow",
+      key_var: "per_foreign_born",
+      tooltip_text: "<strong>Level:</strong> <br /> <strong>Variable:</strong> per_foreign_born<br /> <strong>Axis 1 :</strong> 0.72<br /> <strong>Axis 2 :</strong> 0.309<br /> <strong>Squared cosinus:</strong> 0.614<br /> <strong>Contribution:</strong> 13.059<br />"
+    },
+    {
+      x: 0.158,
+      y: 0.712,
+      lab: "per_college_above",
+      col_var: "Active",
+      type_var: "arrow",
+      key_var: "per_college_above",
+      tooltip_text: "<strong>Level:</strong> <br /> <strong>Variable:</strong> per_college_above<br /> <strong>Axis 1 :</strong> 0.158<br /> <strong>Axis 2 :</strong> 0.712<br /> <strong>Squared cosinus:</strong> 0.532<br /> <strong>Contribution:</strong> 15.564<br />"
+    },
+    {
+      x: 0.466,
+      y: -0.381,
+      lab: "per_black",
+      col_var: "Active",
+      type_var: "arrow",
+      key_var: "per_black",
+      tooltip_text: "<strong>Level:</strong> <br /> <strong>Variable:</strong> per_black<br /> <strong>Axis 1 :</strong> 0.466<br /> <strong>Axis 2 :</strong> -0.381<br /> <strong>Squared cosinus:</strong> 0.362<br /> <strong>Contribution:</strong> 8.606<br />"
+    },
+    {
+      x: 0.565,
+      y: 0.465,
+      lab: "per_asian",
+      col_var: "Active",
+      type_var: "arrow",
+      key_var: "per_asian",
+      tooltip_text: "<strong>Level:</strong> <br /> <strong>Variable:</strong> per_asian<br /> <strong>Axis 1 :</strong> 0.565<br /> <strong>Axis 2 :</strong> 0.465<br /> <strong>Squared cosinus:</strong> 0.535<br /> <strong>Contribution:</strong> 12.716<br />"
+    },
+    {
+      x: -0.547,
+      y: 0.168,
+      lab: "per_65_over",
+      col_var: "Active",
+      type_var: "arrow",
+      key_var: "per_65_over",
+      tooltip_text: "<strong>Level:</strong> <br /> <strong>Variable:</strong> per_65_over<br /> <strong>Axis 1 :</strong> -0.547<br /> <strong>Axis 2 :</strong> 0.168<br /> <strong>Squared cosinus:</strong> 0.328<br /> <strong>Contribution:</strong> 6.749<br />"
+    },
+    {
+      x: 0.12,
+      y: 0.819,
+      lab: "median_income",
+      col_var: "Active",
+      type_var: "arrow",
+      key_var: "median_income",
+      tooltip_text: "<strong>Level:</strong> <br /> <strong>Variable:</strong> median_income<br /> <strong>Axis 1 :</strong> 0.12<br /> <strong>Axis 2 :</strong> 0.819<br /> <strong>Squared cosinus:</strong> 0.685<br /> <strong>Contribution:</strong> 20.25<br />"
+    },
+    {
+      x: -0.643,
+      y: 0.258,
+      lab: "median_age",
+      col_var: "Active",
+      type_var: "arrow",
+      key_var: "median_age",
+      tooltip_text: "<strong>Level:</strong> <br /> <strong>Variable:</strong> median_age<br /> <strong>Axis 1 :</strong> -0.643<br /> <strong>Axis 2 :</strong> 0.258<br /> <strong>Squared cosinus:</strong> 0.479<br /> <strong>Contribution:</strong> 10.128<br />"
+    },
+    {
+      x: 0.465,
+      y: -0.17,
+      lab: "hh_size",
+      col_var: "Active",
+      type_var: "arrow",
+      key_var: "hh_size",
+      tooltip_text: "<strong>Level:</strong> <br /> <strong>Variable:</strong> hh_size<br /> <strong>Axis 1 :</strong> 0.465<br /> <strong>Axis 2 :</strong> -0.17<br /> <strong>Squared cosinus:</strong> 0.245<br /> <strong>Contribution:</strong> 5.127<br />"
+    },
+    {
+      x: 0.781,
+      y: -0.031,
+      lab: "gini.simpson.race",
+      col_var: "Active",
+      type_var: "arrow",
+      key_var: "gini.simpson.race",
+      tooltip_text: "<strong>Level:</strong> <br /> <strong>Variable:</strong> gini.simpson.race<br /> <strong>Axis 1 :</strong> 0.781<br /> <strong>Axis 2 :</strong> -0.031<br /> <strong>Squared cosinus:</strong> 0.611<br /> <strong>Contribution:</strong> 12.057<br />"
+    },
+    {
+      x: 0.251,
+      y: -0.062,
+      lab: "gini",
+      col_var: "Active",
+      type_var: "arrow",
+      key_var: "gini",
+      tooltip_text: "<strong>Level:</strong> <br /> <strong>Variable:</strong> gini<br /> <strong>Axis 1 :</strong> 0.251<br /> <strong>Axis 2 :</strong> -0.062<br /> <strong>Squared cosinus:</strong> 0.067<br /> <strong>Contribution:</strong> 1.359<br />"
+    },
+    {
+      x: 0.338,
+      y: 0.731,
+      lab: "B25077_001",
+      col_var: "Active",
+      type_var: "arrow",
+      key_var: "B25077_001",
+      tooltip_text: "<strong>Level:</strong> <br /> <strong>Variable:</strong> B25077_001<br /> <strong>Axis 1 :</strong> 0.338<br /> <strong>Axis 2 :</strong> 0.731<br /> <strong>Squared cosinus:</strong> 0.649<br /> <strong>Contribution:</strong> 18.151<br />"
+    },
+    {
+      x: 0.652,
+      y: 0.314,
+      lab: "avg_commute_time",
+      col_var: "Active",
+      type_var: "arrow",
+      key_var: "avg_commute_time",
+      tooltip_text: "<strong>Level:</strong> <br /> <strong>Variable:</strong> avg_commute_time<br /> <strong>Axis 1 :</strong> 0.652<br /> <strong>Axis 2 :</strong> 0.314<br /> <strong>Squared cosinus:</strong> 0.525<br /> <strong>Contribution:</strong> 11.332<br />"
+    },
+    {
+      x: -0.203,
+      y: -0.73,
+      lab: "OBESITY_zip",
+      col_var: "Supplementary",
+      type_var: "arrow",
+      key_var: "OBESITY_zip",
+      tooltip_text: "<strong>Level:</strong> <br /> <strong>Variable:</strong> OBESITY_zip<br /> <strong>Axis 1 :</strong> -0.203<br /> <strong>Axis 2 :</strong> -0.73<br /> <strong>Squared cosinus:</strong> 0.574<br /> "
+    }
+  ];
+  const seriesData = pcadata.map((o) => {
+    return {
+      name: o.lab,
+      color: o.lab == "OBESITY_zip" ? "#FF0000" : "#b3b3b3",
+      marker: { symbol: "triangle-down" },
+      lineWidth: 1,
+      data: [
+        [0, 0],
+        [o["x"], o["y"]]
+      ]
+    };
+  });
+  seriesData.push({
+    data: [[0, 0]],
+    marker: {
+      radius: 260,
+      lineColor: "#e4e4e4",
+      fillColor: "transparent",
+      lineWidth: 1,
+      symbol: "circle"
+    }
+  });
+  const chartOptions = {
+    chart: {
+      backgroundColor: "white",
+      style: {
+        fontFamily: "Inter, sans-serif"
+      }
+    },
+    title: {
+      text: ""
+    },
+    legend: { enabled: false },
+    yAxis: {
+      gridLineWidth: 0,
+      min: -1,
+      max: 1,
+      title: {
+        align: "high",
+        text: "Axis 2 (17.69%)",
+        style: { color: "#374151" }
+      },
+      labels: {
+        style: { color: "#374151" }
+      },
+      plotLines: [
+        {
+          color: "#d1d5db",
+          width: 1,
+          value: 0,
+          dashStyle: "dash"
+        }
+      ]
+    },
+    plotOptions: {
+      series: {
+        dataLabels: {
+          enabled: true,
+          padding: 5,
+          style: {
+            color: "#374151",
+            fontSize: "12px",
+            fontWeight: "500"
+          },
+          formatter: function() {
+            return this.y === 0 ? null : this.series.name;
+          }
+        }
+      }
+    },
+    xAxis: {
+      lineWidth: 1,
+      min: -1,
+      max: 1,
+      title: {
+        align: "high",
+        text: "Axis 1 (26.68%)",
+        style: { color: "#374151" }
+      },
+      labels: {
+        style: { color: "#374151" }
+      },
+      plotLines: [
+        {
+          color: "#d1d5db",
+          width: 1,
+          value: 0,
+          dashStyle: "dash"
+        }
+      ]
+    },
+    series: seriesData
+  };
+  return /* @__PURE__ */ jsxRuntime.jsx("div", { className: "flex justify-center", children: /* @__PURE__ */ jsxRuntime.jsx("div", { className: "w-full max-w-4xl", children: /* @__PURE__ */ jsxRuntime.jsx(
+    HighchartsReact,
+    {
+      highcharts: Highcharts,
+      containerProps: {
+        style: { width: "100%", height: "700px" }
+      },
+      options: chartOptions
+    }
+  ) }) });
+}
+var OddsRatio = ({ data }) => {
+  const observablePlotRef = React20.useRef(null);
+  const forestPlotRef = React20.useRef(null);
+  const dotPlotRef = React20.useRef(null);
+  const plotData = React20.useMemo(() => Object.keys(data.odds_ratios).map((key) => ({
+    Label: key.replace(/C\((.*?)\)\[T\.(.*?)\]/, "$1 $2").replace(/C\((.*?), Treatment\(.*?\)\)\[T\.(.*?)\]/, "$1 $2").replace(/:/g, " \xD7 "),
+    // Replace interaction symbols
+    OddsRatio: data.odds_ratios[key],
+    LowerCI: data.conf_int_lower[key],
+    UpperCI: data.conf_int_upper[key]
+  })), [data]);
+  React20.useEffect(() => {
+    if (!data) return;
+    if (observablePlotRef.current) observablePlotRef.current.innerHTML = "";
+    if (forestPlotRef.current) forestPlotRef.current.innerHTML = "";
+    if (dotPlotRef.current) dotPlotRef.current.innerHTML = "";
+    const observablePlot = Plot24__namespace.plot({
+      marginLeft: 200,
+      title: "Statistical Odds Ratios",
+      subtitle: "Analysis of various factors affecting outcomes",
+      caption: "Source: General Social Survey",
+      style: {
+        backgroundColor: "white",
+        fontFamily: "sans-serif"
+      },
+      x: {
+        grid: true,
+        type: "log",
+        label: "Odds Ratio",
+        tickFormat: ","
+      },
+      y: {
+        grid: true,
+        label: "",
+        domain: plotData.map((d) => d.Label)
+      },
+      marks: [
+        Plot24__namespace.dot(plotData, {
+          x: "OddsRatio",
+          y: "Label",
+          tip: {
+            format: { fill: false, x: (d) => d.toFixed(2) }
+          },
+          fill: (d) => d.OddsRatio > 1 ? "green" : "red"
+        }),
+        Plot24__namespace.ruleY(plotData, {
+          x1: "LowerCI",
+          x2: "UpperCI",
+          y: "Label",
+          stroke: (d) => d.OddsRatio > 1 ? "green" : "red"
+        }),
+        Plot24__namespace.ruleX([1], {
+          stroke: "black",
+          strokeWidth: 0.5
+        })
+      ],
+      width: 800,
+      height: 500
+    });
+    const forestPlot = Plot24__namespace.plot({
+      marginLeft: 220,
+      title: "Forest Plot Analysis",
+      subtitle: "Advanced statistical visualization with enhanced features",
+      caption: "Source: General Social Survey",
+      style: {
+        backgroundColor: "white",
+        fontFamily: "sans-serif"
+      },
+      x: {
+        grid: true,
+        type: "log",
+        label: "Odds Ratio (log scale)",
+        tickFormat: ".2f",
+        domain: [0.3, 3]
+      },
+      y: {
+        grid: true,
+        label: "",
+        domain: plotData.map((d) => d.Label).reverse()
+        // Reverse for traditional forest plot order
+      },
+      marks: [
+        // Confidence interval rectangles (for visual emphasis)
+        Plot24__namespace.rect(plotData, {
+          x1: "LowerCI",
+          x2: "UpperCI",
+          y: "Label",
+          fill: (d) => d.OddsRatio > 1 ? "#dcfce7" : "#fef2f2",
+          fillOpacity: 0.3,
+          ry: 3
+        }),
+        // Confidence interval lines
+        Plot24__namespace.ruleY(plotData, {
+          x1: "LowerCI",
+          x2: "UpperCI",
+          y: "Label",
+          stroke: (d) => d.OddsRatio > 1 ? "#16a34a" : "#dc2626",
+          strokeWidth: 3
+        }),
+        // End caps for confidence intervals
+        Plot24__namespace.ruleY(plotData, {
+          x: "LowerCI",
+          y: "Label",
+          stroke: (d) => d.OddsRatio > 1 ? "#16a34a" : "#dc2626",
+          strokeWidth: 2,
+          dx: 0,
+          dy: -8
+        }),
+        Plot24__namespace.ruleY(plotData, {
+          x: "LowerCI",
+          y: "Label",
+          stroke: (d) => d.OddsRatio > 1 ? "#16a34a" : "#dc2626",
+          strokeWidth: 2,
+          dx: 0,
+          dy: 8
+        }),
+        Plot24__namespace.ruleY(plotData, {
+          x: "UpperCI",
+          y: "Label",
+          stroke: (d) => d.OddsRatio > 1 ? "#16a34a" : "#dc2626",
+          strokeWidth: 2,
+          dx: 0,
+          dy: -8
+        }),
+        Plot24__namespace.ruleY(plotData, {
+          x: "UpperCI",
+          y: "Label",
+          stroke: (d) => d.OddsRatio > 1 ? "#16a34a" : "#dc2626",
+          strokeWidth: 2,
+          dx: 0,
+          dy: 8
+        }),
+        // Central point estimates (squares for forest plots)
+        Plot24__namespace.dot(plotData, {
+          x: "OddsRatio",
+          y: "Label",
+          fill: (d) => d.OddsRatio > 1 ? "#16a34a" : "#dc2626",
+          stroke: "white",
+          strokeWidth: 2,
+          r: 6,
+          symbol: "square",
+          tip: {
+            format: {
+              fill: false,
+              x: (d) => `OR: ${d.toFixed(3)}`
+            }
+          }
+        }),
+        // Reference line at OR = 1
+        Plot24__namespace.ruleX([1], {
+          stroke: "#374151",
+          strokeWidth: 2,
+          strokeDasharray: "5,5"
+        })
+      ],
+      width: 800,
+      height: 500
+    });
+    const dotPlot = Plot24__namespace.plot({
+      marginLeft: 200,
+      title: "Sized Dot Plot",
+      subtitle: "Dot size reflects statistical significance",
+      caption: "Source: General Social Survey",
+      style: {
+        backgroundColor: "white",
+        fontFamily: "sans-serif"
+      },
+      x: {
+        grid: true,
+        type: "log",
+        label: "Odds Ratio",
+        tickFormat: ".2f"
+      },
+      y: {
+        grid: true,
+        label: "",
+        domain: plotData.map((d) => d.Label)
+      },
+      marks: [
+        // Confidence interval lines
+        Plot24__namespace.ruleY(plotData, {
+          x1: "LowerCI",
+          x2: "UpperCI",
+          y: "Label",
+          stroke: "#9ca3af",
+          strokeWidth: 2
+        }),
+        // Main dots with size based on confidence interval width (inverse - smaller CI = larger dot)
+        Plot24__namespace.dot(plotData, {
+          x: "OddsRatio",
+          y: "Label",
+          r: (d) => Math.max(3, 15 - (d.UpperCI - d.LowerCI) * 5),
+          // Smaller CI = larger dot
+          fill: (d) => d.OddsRatio > 1 ? "#3b82f6" : "#ef4444",
+          stroke: "white",
+          strokeWidth: 1.5,
+          fillOpacity: 0.8,
+          tip: {
+            format: {
+              fill: false,
+              x: (d) => `${d.toFixed(3)} [${plotData.find((p) => p.OddsRatio === d)?.LowerCI.toFixed(3)}, ${plotData.find((p) => p.OddsRatio === d)?.UpperCI.toFixed(3)}]`
+            }
+          }
+        }),
+        Plot24__namespace.ruleX([1], {
+          stroke: "black",
+          strokeWidth: 1
+        })
+      ],
+      width: 800,
+      height: 500
+    });
+    if (observablePlotRef.current) observablePlotRef.current.appendChild(observablePlot);
+    if (forestPlotRef.current) forestPlotRef.current.appendChild(forestPlot);
+    if (dotPlotRef.current) dotPlotRef.current.appendChild(dotPlot);
+    return () => {
+      observablePlot?.remove();
+      forestPlot?.remove();
+      dotPlot?.remove();
+    };
+  }, [data, plotData]);
+  return /* @__PURE__ */ jsxRuntime.jsxs("div", { className: "space-y-6", children: [
+    /* @__PURE__ */ jsxRuntime.jsx("div", { className: "mb-6", children: /* @__PURE__ */ jsxRuntime.jsx("p", { className: "text-gray-600", children: "Statistical odds ratio analysis demonstrating multiple visualization approaches. Each method emphasizes different aspects of the statistical relationships and confidence intervals." }) }),
+    /* @__PURE__ */ jsxRuntime.jsxs(card.Card, { children: [
+      /* @__PURE__ */ jsxRuntime.jsxs(card.CardHeader, { children: [
+        /* @__PURE__ */ jsxRuntime.jsx(card.CardTitle, { children: "Basic Odds Ratio Plot" }),
+        /* @__PURE__ */ jsxRuntime.jsx("p", { className: "text-sm text-muted-foreground", children: "Standard odds ratio visualization with confidence intervals" })
+      ] }),
+      /* @__PURE__ */ jsxRuntime.jsxs(card.CardContent, { children: [
+        /* @__PURE__ */ jsxRuntime.jsx("div", { ref: observablePlotRef, className: "flex justify-center" }),
+        /* @__PURE__ */ jsxRuntime.jsx("div", { className: "mt-4 text-sm text-gray-600", children: /* @__PURE__ */ jsxRuntime.jsxs("p", { children: [
+          /* @__PURE__ */ jsxRuntime.jsx("strong", { children: "Features:" }),
+          " Logarithmic scale, conditional coloring (red < 1, green > 1), interactive tooltips, confidence interval lines, null effect reference line"
+        ] }) })
+      ] })
+    ] }),
+    /* @__PURE__ */ jsxRuntime.jsxs(card.Card, { children: [
+      /* @__PURE__ */ jsxRuntime.jsxs(card.CardHeader, { children: [
+        /* @__PURE__ */ jsxRuntime.jsx(card.CardTitle, { children: "Forest Plot Analysis" }),
+        /* @__PURE__ */ jsxRuntime.jsx("p", { className: "text-sm text-muted-foreground", children: "Advanced forest plot with enhanced statistical visualization features" })
+      ] }),
+      /* @__PURE__ */ jsxRuntime.jsxs(card.CardContent, { children: [
+        /* @__PURE__ */ jsxRuntime.jsx("div", { ref: forestPlotRef, className: "flex justify-center" }),
+        /* @__PURE__ */ jsxRuntime.jsx("div", { className: "mt-4 text-sm text-gray-600", children: /* @__PURE__ */ jsxRuntime.jsxs("p", { children: [
+          /* @__PURE__ */ jsxRuntime.jsx("strong", { children: "Features:" }),
+          " Square markers for point estimates, confidence interval rectangles, end caps on intervals, enhanced color coding, traditional forest plot layout"
+        ] }) })
+      ] })
+    ] }),
+    /* @__PURE__ */ jsxRuntime.jsxs(card.Card, { children: [
+      /* @__PURE__ */ jsxRuntime.jsxs(card.CardHeader, { children: [
+        /* @__PURE__ */ jsxRuntime.jsx(card.CardTitle, { children: "Precision-Weighted Dot Plot" }),
+        /* @__PURE__ */ jsxRuntime.jsx("p", { className: "text-sm text-muted-foreground", children: "Dot plot where marker size reflects statistical precision (inverse of confidence interval width)" })
+      ] }),
+      /* @__PURE__ */ jsxRuntime.jsxs(card.CardContent, { children: [
+        /* @__PURE__ */ jsxRuntime.jsx("div", { ref: dotPlotRef, className: "flex justify-center" }),
+        /* @__PURE__ */ jsxRuntime.jsx("div", { className: "mt-4 text-sm text-gray-600", children: /* @__PURE__ */ jsxRuntime.jsxs("p", { children: [
+          /* @__PURE__ */ jsxRuntime.jsx("strong", { children: "Features:" }),
+          " Size-encoded precision, larger dots indicate more precise estimates, confidence interval lines, statistical significance visual weighting"
+        ] }) })
+      ] })
+    ] }),
+    /* @__PURE__ */ jsxRuntime.jsxs("div", { className: "mt-6 p-4 bg-gray-50 rounded-lg", children: [
+      /* @__PURE__ */ jsxRuntime.jsx("h3", { className: "font-semibold mb-2", children: "Statistical Visualization Techniques" }),
+      /* @__PURE__ */ jsxRuntime.jsxs("div", { className: "grid md:grid-cols-3 gap-4 text-sm", children: [
+        /* @__PURE__ */ jsxRuntime.jsxs("div", { children: [
+          /* @__PURE__ */ jsxRuntime.jsx("h4", { className: "font-medium", children: "Basic Odds Ratio" }),
+          /* @__PURE__ */ jsxRuntime.jsxs("ul", { className: "list-disc list-inside text-gray-600 space-y-1", children: [
+            /* @__PURE__ */ jsxRuntime.jsx("li", { children: "Clear point estimates" }),
+            /* @__PURE__ */ jsxRuntime.jsx("li", { children: "Confidence interval display" }),
+            /* @__PURE__ */ jsxRuntime.jsx("li", { children: "Effect direction coding" }),
+            /* @__PURE__ */ jsxRuntime.jsx("li", { children: "Reference line indication" })
+          ] })
+        ] }),
+        /* @__PURE__ */ jsxRuntime.jsxs("div", { children: [
+          /* @__PURE__ */ jsxRuntime.jsx("h4", { className: "font-medium", children: "Forest Plot" }),
+          /* @__PURE__ */ jsxRuntime.jsxs("ul", { className: "list-disc list-inside text-gray-600 space-y-1", children: [
+            /* @__PURE__ */ jsxRuntime.jsx("li", { children: "Meta-analysis standard" }),
+            /* @__PURE__ */ jsxRuntime.jsx("li", { children: "Enhanced visual emphasis" }),
+            /* @__PURE__ */ jsxRuntime.jsx("li", { children: "Professional presentation" }),
+            /* @__PURE__ */ jsxRuntime.jsx("li", { children: "Multiple study comparison" })
+          ] })
+        ] }),
+        /* @__PURE__ */ jsxRuntime.jsxs("div", { children: [
+          /* @__PURE__ */ jsxRuntime.jsx("h4", { className: "font-medium", children: "Precision Weighting" }),
+          /* @__PURE__ */ jsxRuntime.jsxs("ul", { className: "list-disc list-inside text-gray-600 space-y-1", children: [
+            /* @__PURE__ */ jsxRuntime.jsx("li", { children: "Visual uncertainty encoding" }),
+            /* @__PURE__ */ jsxRuntime.jsx("li", { children: "Statistical weight display" }),
+            /* @__PURE__ */ jsxRuntime.jsx("li", { children: "Precision-based emphasis" }),
+            /* @__PURE__ */ jsxRuntime.jsx("li", { children: "Quality assessment aid" })
+          ] })
+        ] })
+      ] })
+    ] })
+  ] });
+};
+var OddsRatio_default = OddsRatio;
+function HistogramObservable({
+  data,
+  width = 800,
+  height = 500,
+  xlabel = "Value",
+  ylabel = "Frequency",
+  title,
+  bins = 20,
+  showMean = true,
+  showMedian = false
+}) {
+  const chartRef = React20.useRef(null);
+  React20.useEffect(() => {
+    if (!data.length || !chartRef.current) return;
+    const meanValue = d3Array.mean(data);
+    const medianValue = d3Array.median(data);
+    const marks = [
+      // Histogram
+      Plot24__namespace.rectY(data, Plot24__namespace.binX({ y: "count" }, {
+        x: (d) => d,
+        thresholds: bins,
+        fill: "hsl(var(--primary))",
+        fillOpacity: 0.6,
+        stroke: "hsl(var(--foreground))",
+        strokeWidth: 1
+      }))
+    ];
+    if (showMean && meanValue !== void 0) {
+      marks.push(
+        Plot24__namespace.ruleX([meanValue], {
+          stroke: "hsl(var(--destructive))",
+          strokeWidth: 2,
+          strokeDasharray: "5,5"
+        }),
+        Plot24__namespace.text([{ x: meanValue, y: 0 }], {
+          x: "x",
+          y: "y",
+          text: () => [`Mean: ${meanValue.toFixed(2)}`],
+          dy: -10,
+          fill: "hsl(var(--destructive))",
+          fontSize: 12
+        })
+      );
+    }
+    if (showMedian && medianValue !== void 0) {
+      marks.push(
+        Plot24__namespace.ruleX([medianValue], {
+          stroke: "hsl(var(--chart-2))",
+          strokeWidth: 2,
+          strokeDasharray: "5,5"
+        })
+      );
+    }
+    const plot29 = Plot24__namespace.plot({
+      width,
+      height,
+      marginLeft: 60,
+      marginBottom: 60,
+      x: { label: xlabel },
+      y: { label: ylabel, grid: true },
+      marks
+    });
+    chartRef.current.innerHTML = "";
+    chartRef.current.appendChild(plot29);
+    return () => plot29.remove();
+  }, [data, width, height, xlabel, ylabel, bins, showMean, showMedian]);
+  return /* @__PURE__ */ jsxRuntime.jsxs("div", { className: "w-full", children: [
+    title && /* @__PURE__ */ jsxRuntime.jsx("h3", { className: "text-lg font-semibold mb-4", children: title }),
+    /* @__PURE__ */ jsxRuntime.jsx("div", { ref: chartRef }),
+    /* @__PURE__ */ jsxRuntime.jsx("div", { className: "mt-4 text-sm text-muted-foreground", children: /* @__PURE__ */ jsxRuntime.jsxs("p", { children: [
+      "Total observations: ",
+      data.length,
+      " \u2022 Bins: ",
+      bins
+    ] }) })
+  ] });
+}
+var DensityPlot = ({ data }) => {
+  const singleRef = React20.useRef(null);
+  const overlayRef = React20.useRef(null);
+  const mentalHealthData = React20.useMemo(() => data.map((d, i) => ({
+    MHLTH_AdjPrev: Math.random() * 20 + 10,
+    // Random mental health rates between 10-30%
+    population: d.population || Math.floor(Math.random() * 5e4) + 1e4
+  })), [data]);
+  const cleanData = React20.useMemo(() => data.filter((d) => d.dir2020 !== void 0), [data]);
+  React20.useEffect(() => {
+    if (!data || data.length === 0) return;
+    if (singleRef.current) singleRef.current.innerHTML = "";
+    if (overlayRef.current) overlayRef.current.innerHTML = "";
+    const singlePlot = Plot24__namespace.plot({
+      title: "Mental Health Distribution",
+      subtitle: "Distribution by County",
+      caption: "Source: CDC",
+      style: {
+        backgroundColor: "white",
+        fontFamily: "sans-serif"
+      },
+      y: { grid: true, label: "Count" },
+      x: { label: "Mental Health Rate (%)" },
+      marks: [
+        Plot24__namespace.areaY(mentalHealthData, Plot24__namespace.binX(
+          { y: "count", filter: null },
+          { x: "MHLTH_AdjPrev", fillOpacity: 0.3, fill: "#3b82f6" }
+        )),
+        Plot24__namespace.lineY(mentalHealthData, Plot24__namespace.binX(
+          { y: "count", filter: null },
+          { x: "MHLTH_AdjPrev", label: "Mental Health", tip: true, stroke: "#3b82f6", strokeWidth: 2 }
+        )),
+        Plot24__namespace.ruleY([0])
+      ],
+      width: 600,
+      height: 400
+    });
+    const overlayPlot = Plot24__namespace.plot({
+      title: "Obesity Distribution by Category",
+      subtitle: "Overlaid density plots by demographic grouping",
+      caption: "Source: CDC",
+      style: {
+        backgroundColor: "white",
+        fontFamily: "sans-serif"
+      },
+      y: { grid: true, label: "Count" },
+      x: { label: "Obesity Rate (%)" },
+      marks: [
+        Plot24__namespace.areaY(cleanData, Plot24__namespace.binX(
+          { y: "count", filter: null },
+          { x: "OBESITY_AdjPrev", fill: "dir2020", fillOpacity: 0.2 }
+        )),
+        Plot24__namespace.lineY(cleanData, Plot24__namespace.binX(
+          { y: "count", filter: null },
+          { x: "OBESITY_AdjPrev", stroke: "dir2020", tip: true, strokeWidth: 2 }
+        )),
+        Plot24__namespace.ruleY([0])
+      ],
+      color: {
+        legend: true,
+        scheme: "category10"
+      },
+      width: 600,
+      height: 400
+    });
+    if (singleRef.current) singleRef.current.appendChild(singlePlot);
+    if (overlayRef.current) overlayRef.current.appendChild(overlayPlot);
+    return () => {
+      singlePlot?.remove();
+      overlayPlot?.remove();
+    };
+  }, [data, mentalHealthData, cleanData]);
+  return /* @__PURE__ */ jsxRuntime.jsxs("div", { className: "space-y-6", children: [
+    /* @__PURE__ */ jsxRuntime.jsx("div", { className: "mb-6", children: /* @__PURE__ */ jsxRuntime.jsx("p", { className: "text-gray-600", children: "Density plot analysis showing the distribution patterns of health metrics across counties. These visualizations reveal the shape, spread, and central tendencies of population health indicators." }) }),
+    /* @__PURE__ */ jsxRuntime.jsxs(card.Card, { children: [
+      /* @__PURE__ */ jsxRuntime.jsxs(card.CardHeader, { children: [
+        /* @__PURE__ */ jsxRuntime.jsx(card.CardTitle, { children: "Single Distribution" }),
+        /* @__PURE__ */ jsxRuntime.jsx("p", { className: "text-sm text-muted-foreground", children: "Distribution of mental health rates across counties" })
+      ] }),
+      /* @__PURE__ */ jsxRuntime.jsxs(card.CardContent, { children: [
+        /* @__PURE__ */ jsxRuntime.jsx("div", { ref: singleRef, className: "flex justify-center" }),
+        /* @__PURE__ */ jsxRuntime.jsx("p", { className: "text-sm text-gray-600 mt-4", children: "This histogram shows the frequency distribution of mental health prevalence rates, with both area and line representations of the density. The combined area and line approach emphasizes both the overall distribution shape and precise bin boundaries." })
+      ] })
+    ] }),
+    /* @__PURE__ */ jsxRuntime.jsxs(card.Card, { children: [
+      /* @__PURE__ */ jsxRuntime.jsxs(card.CardHeader, { children: [
+        /* @__PURE__ */ jsxRuntime.jsx(card.CardTitle, { children: "Overlay Comparison" }),
+        /* @__PURE__ */ jsxRuntime.jsx("p", { className: "text-sm text-muted-foreground", children: "Comparison of obesity rate distributions by demographic category" })
+      ] }),
+      /* @__PURE__ */ jsxRuntime.jsxs(card.CardContent, { children: [
+        /* @__PURE__ */ jsxRuntime.jsx("div", { ref: overlayRef, className: "flex justify-center" }),
+        /* @__PURE__ */ jsxRuntime.jsx("p", { className: "text-sm text-gray-600 mt-4", children: "Multiple density curves overlaid to compare obesity rate distributions across different demographic groups, allowing for direct comparison of patterns. This approach reveals differences in distribution shapes, central tendencies, and spread between groups." })
+      ] })
+    ] }),
+    /* @__PURE__ */ jsxRuntime.jsxs("div", { className: "mt-6 p-4 bg-gray-50 rounded-lg", children: [
+      /* @__PURE__ */ jsxRuntime.jsx("h3", { className: "font-semibold mb-2", children: "Density Plot techniques" }),
+      /* @__PURE__ */ jsxRuntime.jsxs("div", { className: "grid md:grid-cols-2 gap-4 text-sm", children: [
+        /* @__PURE__ */ jsxRuntime.jsxs("div", { children: [
+          /* @__PURE__ */ jsxRuntime.jsx("h4", { className: "font-medium", children: "Single Distribution" }),
+          /* @__PURE__ */ jsxRuntime.jsxs("ul", { className: "list-disc list-inside text-gray-600 space-y-1", children: [
+            /* @__PURE__ */ jsxRuntime.jsx("li", { children: "Overall distribution shape" }),
+            /* @__PURE__ */ jsxRuntime.jsx("li", { children: "Central tendency identification" }),
+            /* @__PURE__ */ jsxRuntime.jsx("li", { children: "Spread and variability" }),
+            /* @__PURE__ */ jsxRuntime.jsx("li", { children: "Outlier and skewness detection" })
+          ] })
+        ] }),
+        /* @__PURE__ */ jsxRuntime.jsxs("div", { children: [
+          /* @__PURE__ */ jsxRuntime.jsx("h4", { className: "font-medium", children: "Overlay Comparison" }),
+          /* @__PURE__ */ jsxRuntime.jsxs("ul", { className: "list-disc list-inside text-gray-600 space-y-1", children: [
+            /* @__PURE__ */ jsxRuntime.jsx("li", { children: "Group comparison analysis" }),
+            /* @__PURE__ */ jsxRuntime.jsx("li", { children: "Distribution shape differences" }),
+            /* @__PURE__ */ jsxRuntime.jsx("li", { children: "Relative positioning" }),
+            /* @__PURE__ */ jsxRuntime.jsx("li", { children: "Population heterogeneity" })
+          ] })
+        ] })
+      ] })
+    ] })
+  ] });
+};
+var stat_density_v1_default = DensityPlot;
 function TimeSeriesChart({
   data,
   metadata,
@@ -2589,8 +3481,8 @@ function TimeSeriesChart2({
   ] });
 }
 function AbortionOpinionChart({ data }) {
-  const [selectedRegion, setSelectedRegion] = React.useState("All");
-  const [selectedEducation, setSelectedEducation] = React.useState("All");
+  const [selectedRegion, setSelectedRegion] = React20.useState("All");
+  const [selectedEducation, setSelectedEducation] = React20.useState("All");
   const { metadata, dataPoints, dataPointMetadata } = data;
   const regions = ["All", ...dataPointMetadata.find((d) => d.id === "Census_Region")?.categories || []];
   const educationLevels = ["All", ...dataPointMetadata.find((d) => d.id === "Education")?.categories || []];
@@ -2600,7 +3492,7 @@ function AbortionOpinionChart({ data }) {
     const educationMatch = selectedEducation === "All" || point.Education === selectedEducation;
     return regionMatch && educationMatch;
   });
-  const groupedData = React__namespace.default.useMemo(() => {
+  const groupedData = React20__namespace.default.useMemo(() => {
     const groups = {};
     filteredData.forEach((point) => {
       const key = `${point.Census_Region} - ${point.Education}`;
@@ -3110,6 +4002,1903 @@ function HappinessCorrelatesPanel({ data }) {
     /* @__PURE__ */ jsxRuntime.jsx("div", { className: "mt-5", children: /* @__PURE__ */ jsxRuntime.jsx(RegionLegend, {}) })
   ] });
 }
+var LineChart3 = ({ data = [] }) => {
+  const basicRef = React20.useRef(null);
+  const errorBarsRef = React20.useRef(null);
+  const marijuanaData = [
+    { year: 1975, value: 33.766, ci_lower: 29.2359, ci_upper: 38.296, demo_level_title: "Rarely" },
+    { year: 1980, value: 39.9999, ci_lower: 33.8308, ci_upper: 46.169, demo_level_title: "Rarely" },
+    { year: 1990, value: 28.1103, ci_lower: 21.4728, ci_upper: 34.7478, demo_level_title: "Rarely" },
+    { year: 1998, value: 44.4119, ci_lower: 40.0516, ci_upper: 48.7722, demo_level_title: "Rarely" },
+    { year: 2008, value: 51.5992, ci_lower: 46.3518, ci_upper: 56.8467, demo_level_title: "Rarely" },
+    { year: 2014, value: 68.025, ci_lower: 64.1351, ci_upper: 71.915, demo_level_title: "Rarely" },
+    { year: 2018, value: 75.4005, ci_lower: 71.0312, ci_upper: 79.7699, demo_level_title: "Rarely" },
+    { year: 2022, value: 82.1393, ci_lower: 78.1238, ci_upper: 86.1548, demo_level_title: "Rarely" },
+    { year: 1975, value: 27.8498, ci_lower: 23.4259, ci_upper: 32.2738, demo_level_title: "Sometimes" },
+    { year: 1980, value: 26.5497, ci_lower: 21.1635, ci_upper: 31.9359, demo_level_title: "Sometimes" },
+    { year: 1990, value: 12.051, ci_lower: 7.6668, ci_upper: 16.4351, demo_level_title: "Sometimes" },
+    { year: 1998, value: 25.4621, ci_lower: 20.8151, ci_upper: 30.1091, demo_level_title: "Sometimes" },
+    { year: 2008, value: 33.1419, ci_lower: 28.3581, ci_upper: 37.9257, demo_level_title: "Sometimes" },
+    { year: 2014, value: 56.069, ci_lower: 50.063, ci_upper: 62.075, demo_level_title: "Sometimes" },
+    { year: 2018, value: 63.5873, ci_lower: 57.5489, ci_upper: 69.6256, demo_level_title: "Sometimes" },
+    { year: 2022, value: 73.1045, ci_lower: 66.0019, ci_upper: 80.2071, demo_level_title: "Sometimes" },
+    { year: 1975, value: 9.4417, ci_lower: 6.5779, ci_upper: 12.3055, demo_level_title: "Weekly" },
+    { year: 1980, value: 14.9472, ci_lower: 10.4098, ci_upper: 19.4845, demo_level_title: "Weekly" },
+    { year: 1990, value: 11.088, ci_lower: 5.5125, ci_upper: 16.6635, demo_level_title: "Weekly" },
+    { year: 1998, value: 11.4878, ci_lower: 8.6407, ci_upper: 14.335, demo_level_title: "Weekly" },
+    { year: 2008, value: 24.4865, ci_lower: 19.6032, ci_upper: 29.3699, demo_level_title: "Weekly" },
+    { year: 2014, value: 34.5205, ci_lower: 30.212, ci_upper: 38.829, demo_level_title: "Weekly" },
+    { year: 2018, value: 41.1593, ci_lower: 34.6969, ci_upper: 47.6217, demo_level_title: "Weekly" },
+    { year: 2022, value: 44.1575, ci_lower: 33.6355, ci_upper: 54.6796, demo_level_title: "Weekly" }
+  ];
+  const metadata = {
+    title: "Trends in Opinion on Marijuana Legalization, by Church Attendance",
+    subtitle: "% of US Population Who Support Marijuana Legalization, by Year and Church Attendance",
+    source: { name: "General Social Survey, United States, 1972 - 2022; 38312 Observations" },
+    domain: ["Rarely", "Sometimes", "Weekly"]
+  };
+  const customColors = [
+    "#525252",
+    // Dark Grey for Rarely
+    "#D3D3D3",
+    // Light Grey for Sometimes
+    "#6A0DAD"
+    // Deep Purple for Weekly
+  ];
+  React20.useEffect(() => {
+    if (!marijuanaData || marijuanaData.length === 0) return;
+    if (basicRef.current) basicRef.current.innerHTML = "";
+    if (errorBarsRef.current) errorBarsRef.current.innerHTML = "";
+    console.log("Rendering charts with data:", marijuanaData.length, "points");
+    try {
+      const basicPlot = Plot24__namespace.plot({
+        title: "Marijuana Legalization Support by Church Attendance",
+        subtitle: "Trends from 1975-2022 (clean view)",
+        style: {
+          backgroundColor: "white",
+          fontFamily: "sans-serif"
+        },
+        x: {
+          label: "Year",
+          domain: [1975, 2022],
+          tickFormat: ".0f",
+          grid: true
+        },
+        y: {
+          label: "% Supporting Marijuana Legalization",
+          grid: true,
+          domain: [0, 90]
+        },
+        color: {
+          legend: true,
+          domain: metadata.domain,
+          range: customColors
+        },
+        marks: [
+          Plot24__namespace.lineY(marijuanaData, {
+            x: "year",
+            y: "value",
+            stroke: "demo_level_title",
+            strokeWidth: 2.5,
+            tip: true
+          }),
+          Plot24__namespace.dot(marijuanaData, {
+            x: "year",
+            y: "value",
+            fill: "demo_level_title",
+            stroke: "white",
+            strokeWidth: 1.5,
+            r: 3,
+            tip: true
+          })
+        ],
+        width: 700,
+        height: 400,
+        marginLeft: 80
+      });
+      const errorBarsPlot = Plot24__namespace.plot({
+        title: metadata.title,
+        subtitle: metadata.subtitle,
+        caption: `Source: ${metadata.source.name}`,
+        style: {
+          backgroundColor: "white",
+          fontFamily: "sans-serif"
+        },
+        x: {
+          label: "Year",
+          domain: [1975, 2022],
+          tickFormat: ".0f",
+          grid: true
+        },
+        y: {
+          label: "% Supporting Marijuana Legalization",
+          grid: true,
+          domain: [0, 90]
+        },
+        color: {
+          legend: true,
+          domain: metadata.domain,
+          range: customColors
+        },
+        marks: [
+          // Confidence interval error bars (vertical lines at each data point)
+          Plot24__namespace.ruleX(marijuanaData, {
+            x: "year",
+            y1: "ci_lower",
+            y2: "ci_upper",
+            stroke: "demo_level_title",
+            strokeWidth: 1.5,
+            strokeOpacity: 0.7
+          }),
+          // Main trend lines
+          Plot24__namespace.lineY(marijuanaData, {
+            x: "year",
+            y: "value",
+            stroke: "demo_level_title",
+            strokeWidth: 2.5,
+            tip: true
+          }),
+          // Data points
+          Plot24__namespace.dot(marijuanaData, {
+            x: "year",
+            y: "value",
+            fill: "demo_level_title",
+            stroke: "white",
+            strokeWidth: 1.5,
+            r: 3.5,
+            tip: true
+          })
+        ],
+        width: 800,
+        height: 350,
+        marginLeft: 80
+      });
+      if (basicRef.current) {
+        basicRef.current.appendChild(basicPlot);
+        console.log("Basic plot appended");
+      }
+      if (errorBarsRef.current) {
+        errorBarsRef.current.appendChild(errorBarsPlot);
+        console.log("Error bars plot appended");
+      }
+      return () => {
+        basicPlot?.remove();
+        errorBarsPlot?.remove();
+      };
+    } catch (error) {
+      console.error("Error rendering plots:", error);
+    }
+  }, []);
+  return /* @__PURE__ */ jsxRuntime.jsxs("div", { className: "space-y-6", children: [
+    /* @__PURE__ */ jsxRuntime.jsx("div", { className: "mb-6", children: /* @__PURE__ */ jsxRuntime.jsx("p", { className: "text-gray-600", children: "Analysis of public opinion on marijuana legalization from the General Social Survey (1975-2022). Shows how attitudes vary by church attendance frequency, with confidence intervals showing statistical uncertainty." }) }),
+    /* @__PURE__ */ jsxRuntime.jsxs(card.Card, { children: [
+      /* @__PURE__ */ jsxRuntime.jsxs(card.CardHeader, { children: [
+        /* @__PURE__ */ jsxRuntime.jsx(card.CardTitle, { children: "Basic Trend Lines" }),
+        /* @__PURE__ */ jsxRuntime.jsx("p", { className: "text-sm text-muted-foreground", children: "Clean line chart showing support trends by church attendance frequency" })
+      ] }),
+      /* @__PURE__ */ jsxRuntime.jsxs(card.CardContent, { children: [
+        /* @__PURE__ */ jsxRuntime.jsx("div", { ref: basicRef, className: "flex justify-center", style: { minHeight: "400px" } }),
+        /* @__PURE__ */ jsxRuntime.jsx("p", { className: "text-sm text-gray-600 mt-4", children: "This simplified view shows the clear trend patterns: those who rarely attend church show the highest and fastest-growing support, while those who attend weekly show the lowest but steadily increasing support over time." })
+      ] })
+    ] }),
+    /* @__PURE__ */ jsxRuntime.jsxs(card.Card, { children: [
+      /* @__PURE__ */ jsxRuntime.jsxs(card.CardHeader, { children: [
+        /* @__PURE__ */ jsxRuntime.jsx(card.CardTitle, { children: "Trends with Error Bars" }),
+        /* @__PURE__ */ jsxRuntime.jsx("p", { className: "text-sm text-muted-foreground", children: "Complete analysis including confidence intervals showing statistical uncertainty" })
+      ] }),
+      /* @__PURE__ */ jsxRuntime.jsxs(card.CardContent, { children: [
+        /* @__PURE__ */ jsxRuntime.jsx("div", { ref: errorBarsRef, className: "flex justify-center", style: { minHeight: "400px" } }),
+        /* @__PURE__ */ jsxRuntime.jsx("p", { className: "text-sm text-gray-600 mt-4", children: "The error bars show 95% confidence intervals around each estimate. Larger error bars indicate greater statistical uncertainty, often due to smaller sample sizes. This matches the original Observable Framework visualization design." })
+      ] })
+    ] }),
+    /* @__PURE__ */ jsxRuntime.jsxs("div", { className: "mt-6 p-4 bg-gray-50 rounded-lg", children: [
+      /* @__PURE__ */ jsxRuntime.jsx("h3", { className: "font-semibold mb-2", children: "Key Findings" }),
+      /* @__PURE__ */ jsxRuntime.jsxs("div", { className: "grid md:grid-cols-3 gap-4 text-sm", children: [
+        /* @__PURE__ */ jsxRuntime.jsxs("div", { children: [
+          /* @__PURE__ */ jsxRuntime.jsx("h4", { className: "font-medium", children: "Rarely Attend Church" }),
+          /* @__PURE__ */ jsxRuntime.jsxs("ul", { className: "list-disc list-inside text-gray-600 space-y-1", children: [
+            /* @__PURE__ */ jsxRuntime.jsx("li", { children: "Highest support levels (82% by 2022)" }),
+            /* @__PURE__ */ jsxRuntime.jsx("li", { children: "Steady upward trend since 1990s" }),
+            /* @__PURE__ */ jsxRuntime.jsx("li", { children: "Largest absolute increase over time" }),
+            /* @__PURE__ */ jsxRuntime.jsx("li", { children: "Generally narrower confidence intervals" })
+          ] })
+        ] }),
+        /* @__PURE__ */ jsxRuntime.jsxs("div", { children: [
+          /* @__PURE__ */ jsxRuntime.jsx("h4", { className: "font-medium", children: "Sometimes Attend" }),
+          /* @__PURE__ */ jsxRuntime.jsxs("ul", { className: "list-disc list-inside text-gray-600 space-y-1", children: [
+            /* @__PURE__ */ jsxRuntime.jsx("li", { children: "Moderate support levels (73% by 2022)" }),
+            /* @__PURE__ */ jsxRuntime.jsx("li", { children: "Similar upward trajectory" }),
+            /* @__PURE__ */ jsxRuntime.jsx("li", { children: "More volatile in earlier years" }),
+            /* @__PURE__ */ jsxRuntime.jsx("li", { children: "Intermediate between other groups" })
+          ] })
+        ] }),
+        /* @__PURE__ */ jsxRuntime.jsxs("div", { children: [
+          /* @__PURE__ */ jsxRuntime.jsx("h4", { className: "font-medium", children: "Weekly Church Attendance" }),
+          /* @__PURE__ */ jsxRuntime.jsxs("ul", { className: "list-disc list-inside text-gray-600 space-y-1", children: [
+            /* @__PURE__ */ jsxRuntime.jsx("li", { children: "Lowest support but growing (44% by 2022)" }),
+            /* @__PURE__ */ jsxRuntime.jsx("li", { children: "Accelerated growth since 2000s" }),
+            /* @__PURE__ */ jsxRuntime.jsx("li", { children: "Largest relative percentage increase" }),
+            /* @__PURE__ */ jsxRuntime.jsx("li", { children: "Shows cultural shift even among religious" })
+          ] })
+        ] })
+      ] })
+    ] })
+  ] });
+};
+var LineChart_default = LineChart3;
+var formatValue = (value) => {
+  return value.toLocaleString("en-US");
+};
+var calculatePercentChange = (current, previous) => {
+  return (current - previous) / previous * 100;
+};
+var calculateStats = (data) => {
+  if (!data.length) return { avg: "0", max: "0", min: "0", trend: 0 };
+  const values = data.map((d) => d.value);
+  const firstValue = values[0];
+  const lastValue = values[values.length - 1];
+  const trend = calculatePercentChange(lastValue, firstValue);
+  return {
+    avg: (values.reduce((a, b) => a + b, 0) / values.length).toFixed(1),
+    max: Math.max(...values).toFixed(1),
+    min: Math.min(...values).toFixed(1),
+    trend
+  };
+};
+var TimeSeries = ({ data }) => {
+  const [showRecessions, setShowRecessions] = React20.useState(true);
+  const { theme } = nextThemes.useTheme();
+  const processedData = React20.useMemo(() => {
+    return data.observations.map((item, index, arr) => {
+      const value = parseFloat(item.value);
+      const previousValue = index > 0 ? parseFloat(arr[index - 1].value) : value;
+      return {
+        date: item.date,
+        value,
+        percentChange: calculatePercentChange(value, previousValue)
+      };
+    });
+  }, [data]);
+  const filteredData = processedData;
+  calculateStats(filteredData);
+  filteredData[filteredData.length - 1]?.value || 0;
+  const recessionPeriods2 = [
+    { start: "2020-02-01", end: "2020-04-01" },
+    { start: "2007-12-01", end: "2009-06-01" },
+    { start: "2001-03-01", end: "2001-11-01" },
+    { start: "1990-07-01", end: "1991-03-01" },
+    { start: "1981-07-01", end: "1982-11-01" },
+    { start: "1980-01-01", end: "1980-07-01" },
+    { start: "1973-11-01", end: "1975-03-01" },
+    { start: "1969-12-01", end: "1970-11-01" },
+    { start: "1960-04-01", end: "1961-02-01" },
+    { start: "1957-08-01", end: "1958-04-01" },
+    { start: "1953-07-01", end: "1954-05-01" },
+    { start: "1948-11-01", end: "1949-10-01" },
+    { start: "1945-02-01", end: "1945-10-01" }
+  ];
+  const formatDate = (date) => {
+    return new Date(date).toLocaleDateString("en-US", {
+      year: "2-digit",
+      month: "short"
+    });
+  };
+  const CustomTooltip = ({ active, payload, label }) => {
+    if (!active || !payload?.length) return null;
+    const data2 = payload[0].payload;
+    const date = new Date(label || "").toLocaleDateString("en-US", {
+      year: "numeric",
+      month: "long"
+    });
+    const value = formatValue(data2.value);
+    const percentChange = data2.percentChange.toFixed(1);
+    const color = data2.percentChange > 0 ? "text-green-500" : data2.percentChange < 0 ? "text-red-500" : "text-gray-500";
+    return /* @__PURE__ */ jsxRuntime.jsxs("div", { className: "bg-popover/80 backdrop-blur p-2 rounded-lg border shadow-lg", children: [
+      /* @__PURE__ */ jsxRuntime.jsx("div", { className: "text-sm font-medium", children: date }),
+      /* @__PURE__ */ jsxRuntime.jsx("div", { className: "text-lg font-bold", children: value }),
+      /* @__PURE__ */ jsxRuntime.jsxs("div", { className: `text-sm ${color}`, children: [
+        percentChange,
+        "% from previous"
+      ] })
+    ] });
+  };
+  return /* @__PURE__ */ jsxRuntime.jsxs(card.Card, { className: "w-full bg-background shadow-lg rounded-lg border-border", children: [
+    /* @__PURE__ */ jsxRuntime.jsx(card.CardHeader, { className: "pb-4", children: /* @__PURE__ */ jsxRuntime.jsx("div", { className: "flex flex-col md:flex-row justify-between items-start space-y-4 md:space-y-0 md:space-x-4", children: /* @__PURE__ */ jsxRuntime.jsxs("div", { children: [
+      /* @__PURE__ */ jsxRuntime.jsx(card.CardTitle, { className: "text-2xl font-bold text-foreground", children: data.short_title || data.title.split(":")[0] }),
+      /* @__PURE__ */ jsxRuntime.jsx("p", { className: "text-sm text-muted-foreground mt-1", children: data.title })
+    ] }) }) }),
+    /* @__PURE__ */ jsxRuntime.jsx(card.CardContent, { children: /* @__PURE__ */ jsxRuntime.jsx("div", { className: "h-[400px]", children: /* @__PURE__ */ jsxRuntime.jsx(recharts.ResponsiveContainer, { width: "100%", height: "100%", children: /* @__PURE__ */ jsxRuntime.jsxs(
+      recharts.LineChart,
+      {
+        data: filteredData,
+        margin: { top: 20, right: 30, left: 50, bottom: 0 },
+        children: [
+          /* @__PURE__ */ jsxRuntime.jsx(
+            recharts.CartesianGrid,
+            {
+              strokeDasharray: "3 3",
+              className: "stroke-muted",
+              vertical: false
+            }
+          ),
+          /* @__PURE__ */ jsxRuntime.jsx(
+            recharts.XAxis,
+            {
+              dataKey: "date",
+              tickFormatter: formatDate,
+              minTickGap: 30,
+              tick: { fill: theme === "dark" ? "#9CA3AF" : "#6B7280" }
+            }
+          ),
+          /* @__PURE__ */ jsxRuntime.jsx(
+            recharts.YAxis,
+            {
+              domain: ["auto", "auto"],
+              tickFormatter: formatValue,
+              tick: { fill: theme === "dark" ? "#9CA3AF" : "#6B7280" }
+            }
+          ),
+          /* @__PURE__ */ jsxRuntime.jsx(recharts.Tooltip, { content: /* @__PURE__ */ jsxRuntime.jsx(CustomTooltip, {}) }),
+          /* @__PURE__ */ jsxRuntime.jsx(
+            recharts.Line,
+            {
+              type: "monotone",
+              dataKey: "value",
+              dot: false,
+              stroke: "#4299e1",
+              strokeWidth: 2
+            }
+          ),
+          /* @__PURE__ */ jsxRuntime.jsx(
+            recharts.Brush,
+            {
+              dataKey: "date",
+              height: 30,
+              stroke: "#8884d8",
+              fill: "#fff",
+              tickFormatter: formatDate,
+              travellerWidth: 10,
+              startIndex: 0,
+              endIndex: filteredData.length - 1,
+              children: /* @__PURE__ */ jsxRuntime.jsxs(recharts.LineChart, { children: [
+                /* @__PURE__ */ jsxRuntime.jsx(recharts.Line, { dataKey: "value", stroke: "#4299e1", dot: false }),
+                showRecessions && recessionPeriods2.map((period, index) => /* @__PURE__ */ jsxRuntime.jsx(
+                  recharts.ReferenceArea,
+                  {
+                    x1: period.start,
+                    x2: period.end,
+                    fill: "currentColor",
+                    fillOpacity: 0.1,
+                    strokeOpacity: 0
+                  },
+                  index
+                ))
+              ] })
+            }
+          ),
+          showRecessions && recessionPeriods2.map((period, index) => /* @__PURE__ */ jsxRuntime.jsx(
+            recharts.ReferenceArea,
+            {
+              x1: period.start,
+              x2: period.end,
+              fill: "currentColor",
+              fillOpacity: 0.1,
+              strokeOpacity: 0
+            },
+            index
+          ))
+        ]
+      }
+    ) }) }) })
+  ] });
+};
+var TimeSeries_default = TimeSeries;
+var TimeRangeButton = ({ active, onClick, children }) => /* @__PURE__ */ jsxRuntime.jsx(
+  button.Button,
+  {
+    variant: active ? "default" : "ghost",
+    size: "sm",
+    onClick,
+    className: `transition-all ${active ? "bg-blue-500 text-white hover:bg-blue-600" : "hover:bg-gray-100"}`,
+    children
+  }
+);
+var IndexChart = ({ series1, series2 }) => {
+  const [timeRange, setTimeRange] = React20.useState("MAX");
+  const [showRecessions, setShowRecessions] = React20.useState(true);
+  const [brushDomain, setBrushDomain] = React20.useState(null);
+  const { theme } = nextThemes.useTheme();
+  const colors = {
+    series1: "#4299e1",
+    // original blue
+    series2: "#f59e0b"
+    // original amber
+  };
+  console.log("series1:", series1);
+  console.log("series2:", series2);
+  const recessionPeriods2 = [
+    { start: "1960-04-01", end: "1961-02-01" },
+    { start: "1969-12-01", end: "1970-11-01" },
+    { start: "1973-11-01", end: "1975-03-01" },
+    { start: "1980-01-01", end: "1980-07-01" },
+    { start: "1981-07-01", end: "1982-11-01" },
+    { start: "1990-07-01", end: "1991-03-01" },
+    { start: "2001-03-01", end: "2001-11-01" },
+    { start: "2007-12-01", end: "2009-06-01" },
+    { start: "2020-02-01", end: "2020-04-01" }
+  ];
+  const formatSeriesData = (series) => {
+    return series.observations.map((obs) => ({
+      date: obs.date,
+      value: parseFloat(obs.value)
+    }));
+  };
+  const filteredData = React20.useMemo(() => {
+    const series1Data = formatSeriesData(series1);
+    const series2Data = formatSeriesData(series2);
+    if (!series1Data?.length || !series2Data?.length) return [];
+    const now = /* @__PURE__ */ new Date();
+    let startDate;
+    const ranges = {
+      "1Y": () => new Date(now.getFullYear() - 1, now.getMonth(), now.getDate()),
+      "2Y": () => new Date(now.getFullYear() - 2, now.getMonth(), now.getDate()),
+      "5Y": () => new Date(now.getFullYear() - 5, now.getMonth(), now.getDate()),
+      "MAX": () => new Date(Math.max(+new Date(series1Data[0].date), +new Date(series2Data[0].date)))
+    };
+    startDate = ranges[timeRange]();
+    const filteredSeries1 = series1Data.filter((item) => new Date(item.date) >= startDate);
+    const filteredSeries2 = series2Data.filter((item) => new Date(item.date) >= startDate);
+    if (!filteredSeries1.length || !filteredSeries2.length) return [];
+    const baseValueSeries1 = filteredSeries1[0].value;
+    const baseValueSeries2 = filteredSeries2[0].value;
+    const indexedSeries1 = filteredSeries1.map((item) => ({
+      date: item.date,
+      value: (item.value - baseValueSeries1) / baseValueSeries1 * 100
+    }));
+    const indexedSeries2 = filteredSeries2.map((item) => ({
+      date: item.date,
+      value: (item.value - baseValueSeries2) / baseValueSeries2 * 100
+    }));
+    return indexedSeries1.map((item, index) => ({
+      date: item.date,
+      [series1.title]: item.value,
+      [series2.title]: indexedSeries2[index] ? indexedSeries2[index].value : null
+    }));
+  }, [series1, series2, timeRange]);
+  const timeRanges = ["1Y", "2Y", "5Y", "MAX"];
+  const formatDate = (str) => {
+    const date = new Date(str);
+    if (timeRange === "MAX") {
+      return date.getFullYear().toString();
+    }
+    const month = date.toLocaleString("default", { month: "short" });
+    const year = date.getFullYear();
+    return `${month} ${year}`;
+  };
+  const handleBrushChange = (domain) => {
+    if (domain && domain.startIndex !== void 0 && domain.endIndex !== void 0) {
+      setBrushDomain({
+        start: domain.startIndex,
+        end: domain.endIndex
+      });
+    }
+  };
+  const CustomTooltip = ({ active, payload, label }) => {
+    if (active && payload && payload.length && label) {
+      return /* @__PURE__ */ jsxRuntime.jsxs("div", { className: "bg-background p-4 rounded-lg shadow-lg border border-border", children: [
+        /* @__PURE__ */ jsxRuntime.jsx("p", { className: "font-bold text-foreground", children: formatDate(label) }),
+        payload.map((entry) => {
+          const color = entry.dataKey === series1.title ? colors.series1 : colors.series2;
+          return /* @__PURE__ */ jsxRuntime.jsx("div", { className: "mt-1", children: /* @__PURE__ */ jsxRuntime.jsxs("p", { className: "text-sm text-muted-foreground flex items-center", children: [
+            /* @__PURE__ */ jsxRuntime.jsx("span", { className: "w-2 h-2 rounded-full mr-2", style: { backgroundColor: color } }),
+            /* @__PURE__ */ jsxRuntime.jsxs("span", { children: [
+              entry.dataKey,
+              ":"
+            ] }),
+            /* @__PURE__ */ jsxRuntime.jsxs("span", { className: "ml-1 font-medium", style: { color }, children: [
+              entry.value.toFixed(2),
+              "%"
+            ] })
+          ] }) }, entry.dataKey);
+        })
+      ] });
+    }
+    return null;
+  };
+  return /* @__PURE__ */ jsxRuntime.jsxs(card.Card, { className: "w-full bg-background shadow-lg rounded-lg border-border", children: [
+    /* @__PURE__ */ jsxRuntime.jsx(card.CardHeader, { className: "pb-0", children: /* @__PURE__ */ jsxRuntime.jsxs("div", { className: "flex flex-col md:flex-row justify-between items-start space-y-4 md:space-y-0 md:space-x-4", children: [
+      /* @__PURE__ */ jsxRuntime.jsxs("div", { children: [
+        /* @__PURE__ */ jsxRuntime.jsx(card.CardTitle, { className: "text-2xl font-bold text-foreground", children: "Index Chart" }),
+        /* @__PURE__ */ jsxRuntime.jsxs("div", { className: "text-muted-foreground text-sm mt-2", children: [
+          series1.title,
+          " vs ",
+          series2.title
+        ] })
+      ] }),
+      /* @__PURE__ */ jsxRuntime.jsx("div", { className: "flex flex-wrap gap-2 items-center", children: /* @__PURE__ */ jsxRuntime.jsx("div", { className: "flex space-x-2", children: timeRanges.map((range) => /* @__PURE__ */ jsxRuntime.jsx(
+        TimeRangeButton,
+        {
+          active: timeRange === range,
+          onClick: () => setTimeRange(range),
+          children: range
+        },
+        range
+      )) }) })
+    ] }) }),
+    /* @__PURE__ */ jsxRuntime.jsx(card.CardContent, { children: /* @__PURE__ */ jsxRuntime.jsx("div", { className: "h-[500px]", children: /* @__PURE__ */ jsxRuntime.jsx(recharts.ResponsiveContainer, { width: "100%", height: "100%", children: /* @__PURE__ */ jsxRuntime.jsxs(
+      recharts.LineChart,
+      {
+        data: filteredData,
+        margin: { top: 30, right: 30, left: 0, bottom: 20 },
+        children: [
+          /* @__PURE__ */ jsxRuntime.jsx(
+            recharts.Legend,
+            {
+              verticalAlign: "top",
+              align: "left",
+              height: 36,
+              iconType: "circle",
+              wrapperStyle: {
+                paddingBottom: "60px"
+              },
+              formatter: (value) => /* @__PURE__ */ jsxRuntime.jsx("span", { className: "text-sm text-muted-foreground", children: value })
+            }
+          ),
+          /* @__PURE__ */ jsxRuntime.jsx(
+            recharts.CartesianGrid,
+            {
+              strokeDasharray: "3 3",
+              className: "stroke-muted",
+              vertical: false
+            }
+          ),
+          /* @__PURE__ */ jsxRuntime.jsx(
+            recharts.XAxis,
+            {
+              dataKey: "date",
+              axisLine: false,
+              tickLine: false,
+              tickFormatter: formatDate,
+              tick: { fill: theme === "dark" ? "#9CA3AF" : "#6B7280", fontSize: 12 },
+              dy: 10,
+              minTickGap: 5,
+              interval: "preserveStartEnd"
+            }
+          ),
+          /* @__PURE__ */ jsxRuntime.jsx(
+            recharts.YAxis,
+            {
+              domain: ["auto", "auto"],
+              axisLine: false,
+              tickLine: false,
+              tickFormatter: (value) => `${value}%`,
+              tick: { fill: theme === "dark" ? "#9CA3AF" : "#6B7280", fontSize: 12 },
+              width: 60,
+              dx: -10
+            }
+          ),
+          /* @__PURE__ */ jsxRuntime.jsx(recharts.Tooltip, { content: /* @__PURE__ */ jsxRuntime.jsx(CustomTooltip, {}) }),
+          showRecessions && recessionPeriods2.map((period, index) => /* @__PURE__ */ jsxRuntime.jsx(
+            recharts.ReferenceArea,
+            {
+              x1: period.start,
+              x2: period.end,
+              className: "fill-muted",
+              fillOpacity: 0.4,
+              alwaysShow: true,
+              ifOverflow: "visible"
+            },
+            index
+          )),
+          /* @__PURE__ */ jsxRuntime.jsx(
+            recharts.Line,
+            {
+              type: "monotone",
+              dataKey: series1.title,
+              stroke: colors.series1,
+              strokeWidth: 2,
+              dot: false,
+              activeDot: { r: 6, fill: colors.series1 }
+            }
+          ),
+          /* @__PURE__ */ jsxRuntime.jsx(
+            recharts.Line,
+            {
+              type: "monotone",
+              dataKey: series2.title,
+              stroke: colors.series2,
+              strokeWidth: 2,
+              dot: false,
+              activeDot: { r: 6, fill: colors.series2 }
+            }
+          ),
+          /* @__PURE__ */ jsxRuntime.jsx(
+            recharts.Brush,
+            {
+              dataKey: "date",
+              height: 40,
+              stroke: "#8884d8",
+              tickFormatter: formatDate,
+              onChange: handleBrushChange,
+              startIndex: brushDomain?.start,
+              endIndex: brushDomain?.end,
+              children: /* @__PURE__ */ jsxRuntime.jsxs(recharts.LineChart, { children: [
+                /* @__PURE__ */ jsxRuntime.jsx(
+                  recharts.Line,
+                  {
+                    type: "monotone",
+                    dataKey: series1.title,
+                    stroke: colors.series1,
+                    strokeWidth: 1,
+                    dot: false
+                  }
+                ),
+                /* @__PURE__ */ jsxRuntime.jsx(
+                  recharts.Line,
+                  {
+                    type: "monotone",
+                    dataKey: series2.title,
+                    stroke: colors.series2,
+                    strokeWidth: 1,
+                    dot: false
+                  }
+                )
+              ] })
+            }
+          )
+        ]
+      }
+    ) }) }) })
+  ] });
+};
+var SeriesComparison = ({
+  series1,
+  series2,
+  title = "Series Comparison",
+  description
+}) => {
+  return /* @__PURE__ */ jsxRuntime.jsxs("div", { className: "w-full max-w-7xl mx-auto p-4", children: [
+    /* @__PURE__ */ jsxRuntime.jsx("h2", { className: "text-2xl font-bold mb-4", children: title }),
+    /* @__PURE__ */ jsxRuntime.jsx(
+      IndexChart,
+      {
+        series1,
+        series2
+      }
+    ),
+    description && /* @__PURE__ */ jsxRuntime.jsx("div", { className: "mt-4 text-sm text-muted-foreground", children: /* @__PURE__ */ jsxRuntime.jsx("p", { children: description }) })
+  ] });
+};
+var TimeSeriesIndex_default = SeriesComparison;
+var TimeRangeButton2 = ({ active, onClick, children }) => /* @__PURE__ */ jsxRuntime.jsx(
+  button.Button,
+  {
+    variant: active ? "default" : "ghost",
+    size: "sm",
+    onClick,
+    className: `transition-all ${active ? "bg-primary text-primary-foreground hover:bg-primary/90" : "hover:bg-muted"}`,
+    children
+  }
+);
+var recessionPeriods = [
+  { start: "1960-04-01", end: "1961-02-01" },
+  { start: "1969-12-01", end: "1970-11-01" },
+  { start: "1973-11-01", end: "1975-03-01" },
+  { start: "1980-01-01", end: "1980-07-01" },
+  { start: "1981-07-01", end: "1982-11-01" },
+  { start: "1990-07-01", end: "1991-03-01" },
+  { start: "2001-03-01", end: "2001-11-01" },
+  { start: "2007-12-01", end: "2009-06-01" },
+  { start: "2020-02-01", end: "2020-04-01" }
+];
+var DualAxisChart = ({
+  series1Data,
+  series2Data,
+  series1Name,
+  series2Name,
+  series1Unit,
+  series2Unit,
+  title = "Housing Market Indicators",
+  description
+}) => {
+  const [timeRange, setTimeRange] = React20.useState("MAX");
+  const [showRecessions, setShowRecessions] = React20.useState(true);
+  const { theme } = nextThemes.useTheme();
+  const colors = {
+    series1: "#4299e1",
+    series2: "#f59e0b"};
+  const filteredData = React20__namespace.default.useMemo(() => {
+    if (!series1Data?.length || !series2Data?.length) return [];
+    const now = /* @__PURE__ */ new Date();
+    let startDate;
+    const ranges = {
+      "1Y": () => new Date(now.getFullYear() - 1, now.getMonth(), now.getDate()),
+      "2Y": () => new Date(now.getFullYear() - 2, now.getMonth(), now.getDate()),
+      "5Y": () => new Date(now.getFullYear() - 5, now.getMonth(), now.getDate()),
+      "MAX": () => new Date(Math.min(+new Date(series1Data[0].date), +new Date(series2Data[0].date)))
+    };
+    startDate = ranges[timeRange]();
+    const filteredSeries1 = series1Data.filter((item) => new Date(item.date) >= startDate);
+    const filteredSeries2 = series2Data.filter((item) => new Date(item.date) >= startDate);
+    const mergedData = [];
+    let i = 0, j = 0;
+    while (i < filteredSeries1.length && j < filteredSeries2.length) {
+      const date1 = new Date(filteredSeries1[i].date);
+      const date2 = new Date(filteredSeries2[j].date);
+      if (date1.getTime() === date2.getTime()) {
+        mergedData.push({
+          date: filteredSeries1[i].date,
+          [series1Name]: filteredSeries1[i].value,
+          [series2Name]: filteredSeries2[j].value
+        });
+        i++;
+        j++;
+      } else if (date1 < date2) {
+        i++;
+      } else {
+        j++;
+      }
+    }
+    return mergedData;
+  }, [series1Data, series2Data, series1Name, series2Name, timeRange]);
+  const timeRanges = ["1Y", "2Y", "5Y", "MAX"];
+  const formatDate = (str) => {
+    const date = new Date(str);
+    if (timeRange === "MAX") {
+      return date.getFullYear().toString();
+    }
+    const month = date.toLocaleString("default", { month: "short" });
+    const year = date.getFullYear();
+    return `${month} ${year}`;
+  };
+  const CustomTooltip = ({
+    active,
+    payload,
+    label
+  }) => {
+    if (active && payload && payload.length) {
+      return /* @__PURE__ */ jsxRuntime.jsxs("div", { className: "bg-background p-4 rounded-lg shadow-lg border border-border", children: [
+        /* @__PURE__ */ jsxRuntime.jsx("p", { className: "font-bold text-foreground", children: formatDate(label || "") }),
+        payload.map((entry) => /* @__PURE__ */ jsxRuntime.jsxs(
+          "p",
+          {
+            className: "text-sm text-muted-foreground flex items-center",
+            children: [
+              /* @__PURE__ */ jsxRuntime.jsx("span", { className: "w-2 h-2 rounded-full mr-2", style: { backgroundColor: entry.color } }),
+              /* @__PURE__ */ jsxRuntime.jsxs("span", { children: [
+                entry.name,
+                ":"
+              ] }),
+              /* @__PURE__ */ jsxRuntime.jsx("span", { className: "ml-1 font-medium", style: { color: entry.color }, children: typeof entry.value === "number" ? `${entry.value.toFixed(1)} ${entry.name === series1Name ? series1Unit : series2Unit}` : "N/A" })
+            ]
+          },
+          entry.dataKey
+        ))
+      ] });
+    }
+    return null;
+  };
+  const yAxis1Domain = React20__namespace.default.useMemo(() => {
+    if (!filteredData.length) return [0, 0];
+    const values = filteredData.map((item) => Number(item[series1Name])).filter(
+      (value) => value !== void 0 && !isNaN(value)
+    );
+    const min = Math.min(...values);
+    const max = Math.max(...values);
+    const margin = (max - min) * 0.1;
+    return [min - margin, max + margin];
+  }, [filteredData, series1Name]);
+  const yAxis2Domain = React20__namespace.default.useMemo(() => {
+    if (!filteredData.length) return [0, 0];
+    const values = filteredData.map((item) => Number(item[series2Name])).filter(
+      (value) => value !== void 0 && !isNaN(value)
+    );
+    const min = Math.min(...values);
+    const max = Math.max(...values);
+    const margin = (max - min) * 0.1;
+    return [min - margin, max + margin];
+  }, [filteredData, series2Name]);
+  return /* @__PURE__ */ jsxRuntime.jsxs(card.Card, { className: "w-full bg-background shadow-lg rounded-lg border-border", children: [
+    /* @__PURE__ */ jsxRuntime.jsxs(card.CardHeader, { className: "flex flex-row items-center justify-between space-y-0 pb-2", children: [
+      /* @__PURE__ */ jsxRuntime.jsx(card.CardTitle, { className: "text-base font-medium", children: title }),
+      /* @__PURE__ */ jsxRuntime.jsx("div", { className: "flex items-center space-x-2", children: timeRanges.map((range) => /* @__PURE__ */ jsxRuntime.jsx(
+        TimeRangeButton2,
+        {
+          active: timeRange === range,
+          onClick: () => setTimeRange(range),
+          children: range
+        },
+        range
+      )) })
+    ] }),
+    /* @__PURE__ */ jsxRuntime.jsxs(card.CardContent, { children: [
+      description && /* @__PURE__ */ jsxRuntime.jsx("p", { className: "text-sm text-muted-foreground mb-6", children: description }),
+      /* @__PURE__ */ jsxRuntime.jsx("div", { className: "h-96", children: /* @__PURE__ */ jsxRuntime.jsx(recharts.ResponsiveContainer, { width: "100%", height: "100%", children: /* @__PURE__ */ jsxRuntime.jsxs(
+        recharts.LineChart,
+        {
+          data: filteredData,
+          margin: { top: 20, right: 30, left: 0, bottom: 0 },
+          children: [
+            /* @__PURE__ */ jsxRuntime.jsx(
+              recharts.CartesianGrid,
+              {
+                strokeDasharray: "3 3",
+                className: "stroke-muted",
+                vertical: false
+              }
+            ),
+            /* @__PURE__ */ jsxRuntime.jsx(
+              recharts.Legend,
+              {
+                verticalAlign: "top",
+                align: "left",
+                height: 36,
+                iconType: "circle",
+                formatter: (value) => /* @__PURE__ */ jsxRuntime.jsx("span", { className: "text-sm text-muted-foreground", children: value })
+              }
+            ),
+            /* @__PURE__ */ jsxRuntime.jsx(
+              recharts.Brush,
+              {
+                dataKey: "date",
+                height: 30,
+                stroke: "#8884d8",
+                fill: "#fff",
+                tickFormatter: formatDate,
+                travellerWidth: 10,
+                startIndex: 0,
+                endIndex: filteredData.length - 1,
+                children: /* @__PURE__ */ jsxRuntime.jsxs(recharts.LineChart, { children: [
+                  /* @__PURE__ */ jsxRuntime.jsx(recharts.Line, { dataKey: series1Name, stroke: colors.series1, dot: false }),
+                  /* @__PURE__ */ jsxRuntime.jsx(recharts.Line, { dataKey: series2Name, stroke: colors.series2, dot: false })
+                ] })
+              }
+            ),
+            /* @__PURE__ */ jsxRuntime.jsx(
+              recharts.XAxis,
+              {
+                dataKey: "date",
+                axisLine: false,
+                tickLine: false,
+                tickFormatter: formatDate,
+                tick: { fill: theme === "dark" ? "#9CA3AF" : "#6B7280", fontSize: 12 },
+                dy: 10,
+                minTickGap: 5,
+                interval: "preserveStartEnd"
+              }
+            ),
+            /* @__PURE__ */ jsxRuntime.jsx(
+              recharts.YAxis,
+              {
+                yAxisId: "left",
+                domain: yAxis1Domain,
+                orientation: "left",
+                axisLine: false,
+                tickLine: false,
+                tick: { fill: theme === "dark" ? "#9CA3AF" : "#6B7280", fontSize: 12 },
+                width: 60,
+                dx: -10,
+                label: {
+                  value: series1Unit,
+                  angle: -90,
+                  position: "insideLeft",
+                  style: { fill: colors.series1, fontSize: 12 }
+                },
+                tickFormatter: (value) => value.toFixed(1)
+              }
+            ),
+            /* @__PURE__ */ jsxRuntime.jsx(
+              recharts.YAxis,
+              {
+                yAxisId: "right",
+                domain: yAxis2Domain,
+                orientation: "right",
+                axisLine: false,
+                tickLine: false,
+                tick: { fill: theme === "dark" ? "#9CA3AF" : "#6B7280", fontSize: 12 },
+                width: 60,
+                dx: 10,
+                label: {
+                  value: series2Unit,
+                  angle: 90,
+                  position: "insideRight",
+                  style: { fill: colors.series2, fontSize: 12 }
+                },
+                tickFormatter: (value) => value.toFixed(1)
+              }
+            ),
+            /* @__PURE__ */ jsxRuntime.jsx(
+              recharts.Tooltip,
+              {
+                content: (props) => /* @__PURE__ */ jsxRuntime.jsx(CustomTooltip, { ...props })
+              }
+            ),
+            showRecessions && recessionPeriods.map((period, index) => /* @__PURE__ */ jsxRuntime.jsx(
+              recharts.ReferenceArea,
+              {
+                x1: period.start,
+                x2: period.end,
+                className: "fill-muted",
+                fillOpacity: 0.4,
+                alwaysShow: true,
+                ifOverflow: "visible"
+              },
+              index
+            )),
+            /* @__PURE__ */ jsxRuntime.jsx(
+              recharts.Line,
+              {
+                yAxisId: "left",
+                type: "monotone",
+                dataKey: series1Name,
+                stroke: colors.series1,
+                strokeWidth: 2,
+                dot: false,
+                activeDot: { r: 6, fill: colors.series1 }
+              }
+            ),
+            /* @__PURE__ */ jsxRuntime.jsx(
+              recharts.Line,
+              {
+                yAxisId: "right",
+                type: "monotone",
+                dataKey: series2Name,
+                stroke: colors.series2,
+                strokeWidth: 2,
+                dot: false,
+                activeDot: { r: 6, fill: colors.series2 }
+              }
+            )
+          ]
+        }
+      ) }) })
+    ] })
+  ] });
+};
+var DualAxisChart_default = DualAxisChart;
+var COLORS = ["#2196f3", "#f44336", "#4caf50", "#ff9800", "#9c27b0", "#795548", "#607d8b"];
+var presidentialTerms = [
+  { start: 1971, end: 1976, party: "Republican", president: "Nixon/Ford" },
+  { start: 1976, end: 1980, party: "Democrat", president: "Carter" },
+  { start: 1980, end: 1992, party: "Republican", president: "Reagan/Bush" },
+  { start: 1992, end: 2e3, party: "Democrat", president: "Clinton" },
+  { start: 2e3, end: 2008, party: "Republican", president: "Bush" },
+  // Simplified name
+  { start: 2008, end: 2016, party: "Democrat", president: "Obama" },
+  { start: 2016, end: 2020, party: "Republican", president: "Trump" },
+  { start: 2020, end: 2024, party: "Democrat", president: "Biden" }
+  // Adjust end year if needed
+];
+var generateTicks = (start, end, interval) => {
+  const ticks = [];
+  const firstTick = Math.ceil(start / interval) * interval;
+  for (let i = firstTick; i <= end; i += interval) {
+    if (i <= end) {
+      ticks.push(i);
+    }
+  }
+  return ticks;
+};
+var processDataPoint = (d) => {
+  const yearNum = parseInt(String(d.year), 10);
+  const valueNum = typeof d.value === "number" ? d.value : parseFloat(String(d.value));
+  return {
+    ...d,
+    year: isNaN(yearNum) ? null : yearNum,
+    value: typeof valueNum === "number" && !isNaN(valueNum) ? valueNum : null
+  };
+};
+function TimeTrendDemoChart({
+  data,
+  demographicGroups,
+  demographic,
+  sourceId
+}) {
+  const [visibleGroups, setVisibleGroups] = React20.useState(new Set(demographicGroups));
+  const [showCI, setShowCI] = React20.useState(false);
+  React20.useEffect(() => {
+    setVisibleGroups(new Set(demographicGroups));
+    const fetchMetadata = async () => {
+      if (!sourceId || !demographic) return;
+      try {
+        const response = await fetch(`/api/chart-metadata?sourceId=${sourceId}`);
+        if (!response.ok) throw new Error("Failed to fetch metadata");
+        const metadata = await response.json();
+        if (metadata[demographic]?.show_demo && Array.isArray(metadata[demographic].show_demo)) {
+          setVisibleGroups(new Set(metadata[demographic].show_demo));
+        }
+      } catch (error) {
+        console.error("Error fetching chart metadata:", error);
+      }
+    };
+    fetchMetadata();
+  }, [sourceId, demographic, demographicGroups]);
+  if (!data || !data.dataPoints || !Array.isArray(data.dataPoints) || data.dataPoints.length === 0) {
+    return /* @__PURE__ */ jsxRuntime.jsx("div", { className: "p-4 text-center text-gray-500", children: "No data available to display chart." });
+  }
+  const processedDataPoints = data.dataPoints.map(processDataPoint);
+  const allValidYearsNumeric = processedDataPoints.map((d) => d.year).filter((year) => year !== null);
+  if (allValidYearsNumeric.length === 0) {
+    return /* @__PURE__ */ jsxRuntime.jsx("div", { className: "p-4 text-center text-gray-500", children: "Data contains no valid years." });
+  }
+  const minYearInData = Math.min(...allValidYearsNumeric);
+  const maxYearInData = Math.max(...allValidYearsNumeric);
+  const relevantPresidentialTerms = presidentialTerms.filter(
+    (term) => term.end >= minYearInData && term.start <= maxYearInData
+  );
+  const firstRelevantBandStart = relevantPresidentialTerms.length > 0 ? Math.min(...relevantPresidentialTerms.map((t) => t.start)) : minYearInData;
+  const xAxisMin = Math.min(firstRelevantBandStart, minYearInData);
+  const xAxisMax = maxYearInData;
+  const xTickInterval = 5;
+  const xAxisTicks = generateTicks(xAxisMin, xAxisMax, xTickInterval);
+  const groupedData = demographicGroups.map((group) => {
+    const groupData = processedDataPoints.filter((d) => d[demographic] === group && d.year !== null).map((d) => d).sort((a, b) => a.year - b.year);
+    return { name: group, data: groupData };
+  });
+  const hasCIData = groupedData.some(
+    (g) => g.data.some((d) => d.standard_error !== void 0 || d.ci_lower !== void 0 && d.ci_upper !== void 0)
+  );
+  const getVisibleBounds = () => {
+    let overallMin = Infinity;
+    let overallMax = -Infinity;
+    let hasVisibleData = false;
+    groupedData.filter((group) => visibleGroups.has(group.name)).forEach((group) => {
+      group.data.forEach((point) => {
+        if (point.value === null) return;
+        hasVisibleData = true;
+        let currentMin = point.value;
+        let currentMax = point.value;
+        if (showCI) {
+          if (point.ci_lower !== void 0 && point.ci_lower !== null) {
+            currentMin = point.ci_lower;
+          } else if (typeof point.standard_error === "number" && !isNaN(point.standard_error)) {
+            currentMin = point.value - 1.96 * point.standard_error;
+          }
+          if (point.ci_upper !== void 0 && point.ci_upper !== null) {
+            currentMax = point.ci_upper;
+          } else if (typeof point.standard_error === "number" && !isNaN(point.standard_error)) {
+            currentMax = point.value + 1.96 * point.standard_error;
+          }
+        }
+        if (typeof currentMin === "number" && !isNaN(currentMin)) {
+          overallMin = Math.min(overallMin, currentMin);
+        }
+        if (typeof currentMax === "number" && !isNaN(currentMax)) {
+          overallMax = Math.max(overallMax, currentMax);
+        }
+      });
+    });
+    return hasVisibleData && isFinite(overallMin) && isFinite(overallMax) ? { min: overallMin, max: overallMax } : { min: 0, max: 100 };
+  };
+  const { min: effectiveMin, max: effectiveMax } = getVisibleBounds();
+  let yDomain = [0, 100];
+  if (isFinite(effectiveMin) && isFinite(effectiveMax)) {
+    const dataRange = effectiveMax - effectiveMin;
+    const buffer = Math.max(5, dataRange * 0.15);
+    const lowerBound = effectiveMin - buffer;
+    const upperBound = effectiveMax + buffer;
+    const finalMin = Math.max(0, lowerBound);
+    const finalMax = Math.min(100, upperBound);
+    const minRange = 10;
+    if (finalMin >= finalMax) {
+      const centerValue = Math.min(100, Math.max(0, (effectiveMin + effectiveMax) / 2));
+      yDomain = [Math.max(0, Math.floor((centerValue - minRange / 2) / 5) * 5), Math.min(100, Math.ceil((centerValue + minRange / 2) / 5) * 5)];
+      if (yDomain[0] >= yDomain[1]) {
+        yDomain = [Math.max(0, finalMin - 5), Math.min(100, finalMax + 5)];
+      }
+    } else if (finalMax - finalMin < minRange) {
+      const midPoint = (finalMin + finalMax) / 2;
+      yDomain = [Math.max(0, Math.floor((midPoint - minRange / 2) / 5) * 5), Math.min(100, Math.ceil((midPoint + minRange / 2) / 5) * 5)];
+      if (yDomain[0] >= yDomain[1]) {
+        yDomain = [Math.max(0, finalMin - buffer), Math.min(100, finalMax + buffer)];
+        if (yDomain[0] >= yDomain[1]) yDomain = [Math.max(0, finalMin - 5), Math.min(100, finalMax + 5)];
+      }
+    } else {
+      yDomain = [finalMin, finalMax];
+    }
+  }
+  const handleLegendClick = (entry) => {
+    setVisibleGroups((prev) => {
+      const newSet = new Set(prev);
+      if (newSet.has(entry.value)) {
+        newSet.delete(entry.value);
+      } else {
+        newSet.add(entry.value);
+      }
+      return newSet;
+    });
+  };
+  const yAxisTickFormatter = (value) => {
+    const metadata = data.dataPointMetadata.find((d) => d.id === "value");
+    const prefixValue = metadata?.value_prefix;
+    const suffixValue = metadata?.value_suffix;
+    const prefix = prefixValue && (typeof prefixValue !== "object" || Object.keys(prefixValue).length > 0) ? String(prefixValue) : "";
+    const suffix = suffixValue && (typeof suffixValue !== "object" || Object.keys(suffixValue).length > 0) ? String(suffixValue) : "%";
+    const num = Number(value);
+    if (isNaN(num)) return String(value);
+    const formattedValue = num.toLocaleString(void 0, { minimumFractionDigits: 0, maximumFractionDigits: 0 });
+    return `${prefix}${formattedValue}${suffix}`;
+  };
+  const CustomTooltip = ({ active, payload, label }) => {
+    if (!active || !payload || payload.length === 0 || label === void 0) return null;
+    const visiblePayload = payload.filter((series) => visibleGroups.has(series.name));
+    if (visiblePayload.length === 0) return null;
+    const valueMetadata = data.dataPointMetadata.find((m) => m.id === "value");
+    const suffix = typeof valueMetadata?.value_suffix === "string" ? valueMetadata.value_suffix : "%";
+    const prefix = typeof valueMetadata?.value_prefix === "string" ? valueMetadata.value_prefix : "";
+    return /* @__PURE__ */ jsxRuntime.jsxs("div", { className: "bg-white p-3 border border-gray-300 shadow-lg rounded-md text-sm max-w-xs", children: [
+      /* @__PURE__ */ jsxRuntime.jsx("p", { className: "font-semibold mb-2 text-gray-700", children: `Year: ${label}` }),
+      visiblePayload.map((series) => {
+        const colorIndex = demographicGroups.indexOf(series.name);
+        const color = colorIndex !== -1 ? COLORS[colorIndex % COLORS.length] : series.color || "#8884d8";
+        const pointData = series.payload;
+        return /* @__PURE__ */ jsxRuntime.jsxs("div", { className: "mb-1.5 last:mb-0", children: [
+          /* @__PURE__ */ jsxRuntime.jsx("p", { className: "font-medium", style: { color }, children: series.name }),
+          /* @__PURE__ */ jsxRuntime.jsx("p", { className: "text-gray-600", style: { color }, children: `Value: ${series.value != null ? `${prefix}${series.value.toFixed(1)}${suffix}` : "N/A"}` }),
+          pointData?.ci_lower !== void 0 && pointData?.ci_upper !== void 0 && /* @__PURE__ */ jsxRuntime.jsx("p", { className: "text-gray-500 text-xs", children: `95% CI: [${pointData.ci_lower.toFixed(1)}%, ${pointData.ci_upper.toFixed(1)}%]` }),
+          pointData?.n_actual && /* @__PURE__ */ jsxRuntime.jsx("p", { className: "text-gray-500 text-xs", children: `N: ${pointData.n_actual.toLocaleString()}` })
+        ] }, series.name);
+      })
+    ] });
+  };
+  return /* @__PURE__ */ jsxRuntime.jsxs("div", { className: "w-full bg-white p-4 md:p-6 rounded-lg shadow", children: [
+    /* @__PURE__ */ jsxRuntime.jsxs("div", { className: "mb-4", children: [
+      /* @__PURE__ */ jsxRuntime.jsx("h2", { className: "text-xl font-semibold text-gray-800", children: data.metadata.title }),
+      data.metadata.subtitle && /* @__PURE__ */ jsxRuntime.jsx("p", { className: "text-sm text-gray-600 mt-1", children: data.metadata.subtitle }),
+      data.metadata.question && /* @__PURE__ */ jsxRuntime.jsx("p", { className: "text-sm text-gray-500 italic mt-1", children: data.metadata.question })
+    ] }),
+    /* @__PURE__ */ jsxRuntime.jsx("div", { className: "h-[450px] md:h-[500px] w-full", children: /* @__PURE__ */ jsxRuntime.jsx(recharts.ResponsiveContainer, { width: "100%", height: "100%", children: /* @__PURE__ */ jsxRuntime.jsxs(
+      recharts.LineChart,
+      {
+        margin: { top: 20, right: 20, left: 10, bottom: 5 },
+        children: [
+          relevantPresidentialTerms.map((term, index) => /* @__PURE__ */ jsxRuntime.jsx(
+            recharts.ReferenceArea,
+            {
+              x1: term.start,
+              x2: term.end,
+              yAxisId: "left",
+              fill: term.party === "Democrat" ? "rgba(230, 240, 255, 0.5)" : "rgba(255, 235, 238, 0.5)",
+              ifOverflow: "visible",
+              shapeRendering: "crispEdges"
+            },
+            `term-bg-${index}`
+          )),
+          /* @__PURE__ */ jsxRuntime.jsx(recharts.CartesianGrid, { strokeDasharray: "3 3", stroke: "#e0e0e0", vertical: false }),
+          /* @__PURE__ */ jsxRuntime.jsx(
+            recharts.XAxis,
+            {
+              dataKey: "year",
+              type: "number",
+              domain: [xAxisMin, xAxisMax],
+              allowDataOverflow: true,
+              ticks: xAxisTicks,
+              tick: { fontSize: 11, fill: "#666" },
+              padding: { left: 10, right: 10 },
+              tickFormatter: (year) => String(year),
+              interval: 0,
+              axisLine: { stroke: "#ccc" },
+              tickLine: { stroke: "#ccc" }
+            }
+          ),
+          /* @__PURE__ */ jsxRuntime.jsx(
+            recharts.YAxis,
+            {
+              yAxisId: "left",
+              tickFormatter: yAxisTickFormatter,
+              domain: yDomain,
+              allowDataOverflow: false,
+              axisLine: false,
+              tickLine: false,
+              tick: { fontSize: 11, fill: "#666" },
+              width: 50
+            }
+          ),
+          /* @__PURE__ */ jsxRuntime.jsx(recharts.Tooltip, { content: /* @__PURE__ */ jsxRuntime.jsx(CustomTooltip, {}), cursor: { stroke: "#a0a0a0", strokeWidth: 1, strokeDasharray: "3 3" } }),
+          /* @__PURE__ */ jsxRuntime.jsx(
+            recharts.Legend,
+            {
+              verticalAlign: "bottom",
+              align: "center",
+              height: 40,
+              onClick: handleLegendClick,
+              iconSize: 10,
+              wrapperStyle: { paddingTop: "10px" },
+              formatter: (value) => {
+                const isVisible = visibleGroups.has(value);
+                return /* @__PURE__ */ jsxRuntime.jsx("span", { style: { color: isVisible ? "#333" : "#aaa", cursor: "pointer", marginLeft: "4px", fontSize: "12px" }, children: value });
+              }
+            }
+          ),
+          groupedData.map((group) => {
+            const colorIndex = demographicGroups.indexOf(group.name);
+            const color = colorIndex !== -1 ? COLORS[colorIndex % COLORS.length] : "#8884d8";
+            return /* @__PURE__ */ jsxRuntime.jsx(
+              recharts.Line,
+              {
+                yAxisId: "left",
+                type: "linear",
+                data: group.data,
+                dataKey: "value",
+                name: group.name,
+                stroke: color,
+                strokeWidth: 2,
+                dot: { r: 3, fill: color, strokeWidth: 1, stroke: "white" },
+                activeDot: { r: 5, strokeWidth: 1, stroke: "white" },
+                hide: !visibleGroups.has(group.name),
+                connectNulls: true,
+                isAnimationActive: false,
+                children: showCI && hasCIData && /* @__PURE__ */ jsxRuntime.jsx(
+                  recharts.ErrorBar,
+                  {
+                    dataKey: (d) => typeof d.standard_error === "number" && !isNaN(d.standard_error) ? 1.96 * d.standard_error : 0,
+                    width: 4,
+                    strokeWidth: 1.5,
+                    stroke: color,
+                    opacity: 0.35,
+                    direction: "y"
+                  }
+                )
+              },
+              group.name
+            );
+          }),
+          relevantPresidentialTerms.map((term, index) => /* @__PURE__ */ jsxRuntime.jsx(
+            recharts.Text,
+            {
+              x: (term.start + term.end) / 2,
+              y: typeof yDomain[1] === "number" ? yDomain[1] - 3 : 97,
+              textAnchor: "middle",
+              verticalAnchor: "start",
+              fill: "#6b7280",
+              fontSize: 10,
+              children: term.president
+            },
+            `term-label-${index}`
+          ))
+        ]
+      },
+      `${demographic}-${showCI}`
+    ) }) }),
+    /* @__PURE__ */ jsxRuntime.jsxs("div", { className: "flex flex-col sm:flex-row justify-between items-center mt-3 sm:mt-1 pt-2 border-t border-gray-200", children: [
+      /* @__PURE__ */ jsxRuntime.jsxs("div", { className: "text-xs text-gray-500 text-left order-1 sm:order-none", children: [
+        "Source: ",
+        data.metadata.source?.name || "Not specified",
+        data.metadata.observations && ` (${data.metadata.observations.toLocaleString()} Observations)`
+      ] }),
+      /* @__PURE__ */ jsxRuntime.jsxs("div", { className: "flex items-center space-x-2 order-2 sm:order-none", children: [
+        /* @__PURE__ */ jsxRuntime.jsx(
+          _switch.Switch,
+          {
+            id: "show-ci",
+            checked: showCI,
+            onCheckedChange: setShowCI,
+            disabled: !hasCIData
+          }
+        ),
+        /* @__PURE__ */ jsxRuntime.jsx(label.Label, { htmlFor: "show-ci", className: `text-xs ${!hasCIData ? "text-gray-400" : "text-gray-600"}`, children: "Show 95% CI" })
+      ] })
+    ] })
+  ] });
+}
+var domains = {
+  "Age Group": ["18-24", "25-34", "35-44", "45-54", "55-64", "65+"],
+  "Education Attained": [
+    "Less than H.S.",
+    "H.S. or G.E.D.",
+    "Some post-H.S.",
+    "College graduate"
+  ],
+  "Household Income": [
+    "Less than $15,000",
+    "$15,000-$24,999",
+    "$25,000-$34,999",
+    "$35,000-$49,999",
+    "$50,000-$99,999",
+    "$100,000-$199,999",
+    "$200,000+"
+  ],
+  "Race/Ethnicity": [
+    "White, non-Hispanic",
+    "Black, non-Hispanic",
+    "Asian, non-Hispanic",
+    "Hispanic"
+  ],
+  Gender: ["Female", "Male"]
+};
+var categoryReference = {
+  "Age Group": { icon: lucideReact.Users, color: "text-blue-500" },
+  "Education Attained": { icon: lucideReact.GraduationCap, color: "text-green-500" },
+  Gender: { icon: lucideReact.UserCircle2, color: "text-purple-500" },
+  "Household Income": { icon: lucideReact.DollarSign, color: "text-yellow-500" },
+  "Race/Ethnicity": { icon: lucideReact.Palette, color: "text-red-500" }
+};
+var defaultCategoryInfo = {
+  icon: lucideReact.Users,
+  color: "text-gray-500"
+};
+function getCategoryInfo(category) {
+  return categoryReference[category] || defaultCategoryInfo;
+}
+function DemographicLineChart({
+  data,
+  ylabel = "Value (%)"
+}) {
+  const [activeTab, setActiveTab] = React20.useState(null);
+  const [demographicCategories, setDemographicCategories] = React20.useState([]);
+  React20__namespace.default.useEffect(() => {
+    if (!data || typeof data !== "object") return;
+    const categories = Object.entries(data).filter(
+      ([_, categoryData]) => categoryData && typeof categoryData === "object" && Object.values(categoryData).some((value) => value !== null)
+    ).map(([key, categoryData]) => ({
+      key,
+      ...getCategoryInfo(key),
+      data: Object.entries(categoryData).map(([breakOut, details]) => ({
+        break_out: breakOut,
+        ...details,
+        error: [
+          details.value - details.confidence_limit_low,
+          details.confidence_limit_high - details.value
+        ],
+        break_out_category: key
+      })).sort((a, b) => {
+        const order = domains[key];
+        if (!order) return 0;
+        const indexA = order.indexOf(a.break_out);
+        const indexB = order.indexOf(b.break_out);
+        return indexA - indexB;
+      })
+    }));
+    setDemographicCategories(categories);
+    if (categories.length > 0 && !activeTab) {
+      setActiveTab(categories[0].key);
+    }
+  }, [data, activeTab]);
+  if (demographicCategories.length === 0) {
+    return /* @__PURE__ */ jsxRuntime.jsx(card.Card, { children: /* @__PURE__ */ jsxRuntime.jsx(card.CardContent, { className: "p-6", children: /* @__PURE__ */ jsxRuntime.jsx("p", { className: "text-muted-foreground", children: "No demographic data available" }) }) });
+  }
+  return /* @__PURE__ */ jsxRuntime.jsxs(card.Card, { children: [
+    /* @__PURE__ */ jsxRuntime.jsx(card.CardHeader, { children: /* @__PURE__ */ jsxRuntime.jsxs(card.CardTitle, { className: "flex items-center gap-2", children: [
+      /* @__PURE__ */ jsxRuntime.jsx(lucideReact.Users, { className: "w-5 h-5" }),
+      "Demographic Line Chart with Error Bars"
+    ] }) }),
+    /* @__PURE__ */ jsxRuntime.jsx(card.CardContent, { children: /* @__PURE__ */ jsxRuntime.jsxs(tabs.Tabs, { value: activeTab || void 0, onValueChange: setActiveTab, children: [
+      /* @__PURE__ */ jsxRuntime.jsx(tabs.TabsList, { className: "grid w-full", style: { gridTemplateColumns: `repeat(${demographicCategories.length}, 1fr)` }, children: demographicCategories.map((category) => {
+        const Icon = category.icon;
+        return /* @__PURE__ */ jsxRuntime.jsxs(tabs.TabsTrigger, { value: category.key, children: [
+          /* @__PURE__ */ jsxRuntime.jsx(Icon, { className: `w-4 h-4 mr-2 ${category.color}` }),
+          category.key
+        ] }, category.key);
+      }) }),
+      demographicCategories.map((category) => /* @__PURE__ */ jsxRuntime.jsxs(tabs.TabsContent, { value: category.key, className: "space-y-4", children: [
+        /* @__PURE__ */ jsxRuntime.jsx("div", { className: "flex justify-center mt-4", children: /* @__PURE__ */ jsxRuntime.jsxs(
+          recharts.LineChart,
+          {
+            width: 600,
+            height: 400,
+            data: category.data,
+            margin: { top: 20, right: 30, left: 20, bottom: 25 },
+            className: "w-full h-full",
+            children: [
+              /* @__PURE__ */ jsxRuntime.jsx(recharts.CartesianGrid, { strokeDasharray: "3 3" }),
+              /* @__PURE__ */ jsxRuntime.jsx(
+                recharts.XAxis,
+                {
+                  dataKey: "break_out",
+                  label: {
+                    value: category.data[0]?.break_out_category || "",
+                    position: "insideBottom",
+                    offset: -10
+                  },
+                  interval: 0,
+                  tick: {
+                    fill: "hsl(var(--foreground))",
+                    fontSize: 10,
+                    textAnchor: "end",
+                    dy: 10
+                  },
+                  height: 80,
+                  padding: { left: 30, right: 30 }
+                }
+              ),
+              /* @__PURE__ */ jsxRuntime.jsx(
+                recharts.YAxis,
+                {
+                  label: {
+                    value: ylabel,
+                    angle: -90,
+                    position: "insideLeft",
+                    offset: 0,
+                    style: { textAnchor: "middle" }
+                  },
+                  tick: { fill: "hsl(var(--foreground))" }
+                }
+              ),
+              /* @__PURE__ */ jsxRuntime.jsx(
+                recharts.Tooltip,
+                {
+                  contentStyle: {
+                    backgroundColor: "hsl(var(--background))",
+                    border: "1px solid hsl(var(--border))"
+                  }
+                }
+              ),
+              /* @__PURE__ */ jsxRuntime.jsx(
+                recharts.Line,
+                {
+                  dataKey: "value",
+                  stroke: "hsl(var(--foreground))",
+                  isAnimationActive: false,
+                  dot: true,
+                  children: /* @__PURE__ */ jsxRuntime.jsx(
+                    recharts.ErrorBar,
+                    {
+                      dataKey: "error",
+                      width: 4,
+                      strokeWidth: 2,
+                      stroke: "grey"
+                    }
+                  )
+                }
+              )
+            ]
+          }
+        ) }),
+        /* @__PURE__ */ jsxRuntime.jsx("p", { className: "text-sm text-muted-foreground text-center", children: "Error bars represent 95% confidence intervals" })
+      ] }, category.key))
+    ] }) })
+  ] });
+}
+var domains2 = {
+  "Age Group": ["18-24", "25-34", "35-44", "45-54", "55-64", "65+"],
+  "Education Attained": [
+    "Less than H.S.",
+    "H.S. or G.E.D.",
+    "Some post-H.S.",
+    "College graduate"
+  ],
+  "Household Income": [
+    "Less than $15,000",
+    "$15,000-$24,999",
+    "$25,000-$34,999",
+    "$35,000-$49,999",
+    "$50,000-$99,999",
+    "$100,000-$199,999",
+    "$200,000+"
+  ],
+  "Race/Ethnicity": [
+    "White, non-Hispanic",
+    "Black, non-Hispanic",
+    "Asian, non-Hispanic",
+    "Hispanic"
+  ],
+  Gender: ["Female", "Male"]
+};
+var categoryReference2 = {
+  "Age Group": { icon: lucideReact.Users, color: "text-blue-500" },
+  "Education Attained": { icon: lucideReact.GraduationCap, color: "text-green-500" },
+  Gender: { icon: lucideReact.UserCircle2, color: "text-purple-500" },
+  "Household Income": { icon: lucideReact.DollarSign, color: "text-yellow-500" },
+  "Race/Ethnicity": { icon: lucideReact.Palette, color: "text-red-500" }
+};
+var defaultCategoryInfo2 = {
+  icon: lucideReact.Users,
+  color: "text-gray-500"
+};
+function getCategoryInfo2(category) {
+  return categoryReference2[category] || defaultCategoryInfo2;
+}
+function DemographicDotPlot({
+  data,
+  ylabel = "Value (%)"
+}) {
+  const [activeTab, setActiveTab] = React20.useState(null);
+  const [demographicCategories, setDemographicCategories] = React20.useState([]);
+  React20__namespace.default.useEffect(() => {
+    if (!data || typeof data !== "object") return;
+    const categories = Object.entries(data).filter(
+      ([_, categoryData]) => categoryData && typeof categoryData === "object" && Object.values(categoryData).some((value) => value !== null)
+    ).map(([key, categoryData]) => ({
+      key,
+      ...getCategoryInfo2(key),
+      data: Object.entries(categoryData).map(([breakOut, details]) => ({
+        break_out: breakOut,
+        ...details,
+        error: [
+          details.value - details.confidence_limit_low,
+          details.confidence_limit_high - details.value
+        ],
+        break_out_category: key
+      })).sort((a, b) => {
+        const order = domains2[key];
+        if (!order) return 0;
+        const indexA = order.indexOf(a.break_out);
+        const indexB = order.indexOf(b.break_out);
+        return indexA - indexB;
+      })
+    }));
+    setDemographicCategories(categories);
+    if (categories.length > 0 && !activeTab) {
+      setActiveTab(categories[0].key);
+    }
+  }, [data, activeTab]);
+  if (demographicCategories.length === 0) {
+    return /* @__PURE__ */ jsxRuntime.jsx(card.Card, { children: /* @__PURE__ */ jsxRuntime.jsx(card.CardContent, { className: "p-6", children: /* @__PURE__ */ jsxRuntime.jsx("p", { className: "text-muted-foreground", children: "No demographic data available" }) }) });
+  }
+  return /* @__PURE__ */ jsxRuntime.jsxs(card.Card, { children: [
+    /* @__PURE__ */ jsxRuntime.jsx(card.CardHeader, { children: /* @__PURE__ */ jsxRuntime.jsxs(card.CardTitle, { className: "flex items-center gap-2", children: [
+      /* @__PURE__ */ jsxRuntime.jsx(lucideReact.Users, { className: "w-5 h-5" }),
+      "Demographic Dot Plot with Error Bars"
+    ] }) }),
+    /* @__PURE__ */ jsxRuntime.jsx(card.CardContent, { children: /* @__PURE__ */ jsxRuntime.jsxs(tabs.Tabs, { value: activeTab || void 0, onValueChange: setActiveTab, children: [
+      /* @__PURE__ */ jsxRuntime.jsx(tabs.TabsList, { className: "grid w-full", style: { gridTemplateColumns: `repeat(${demographicCategories.length}, 1fr)` }, children: demographicCategories.map((category) => {
+        const Icon = category.icon;
+        return /* @__PURE__ */ jsxRuntime.jsxs(tabs.TabsTrigger, { value: category.key, children: [
+          /* @__PURE__ */ jsxRuntime.jsx(Icon, { className: `w-4 h-4 mr-2 ${category.color}` }),
+          category.key
+        ] }, category.key);
+      }) }),
+      demographicCategories.map((category) => /* @__PURE__ */ jsxRuntime.jsxs(tabs.TabsContent, { value: category.key, className: "space-y-4", children: [
+        /* @__PURE__ */ jsxRuntime.jsx("div", { className: "flex justify-center mt-4", children: /* @__PURE__ */ jsxRuntime.jsxs(
+          recharts.ScatterChart,
+          {
+            width: 600,
+            height: 400,
+            data: category.data,
+            margin: { top: 20, right: 30, left: 20, bottom: 25 },
+            className: "w-full h-full",
+            children: [
+              /* @__PURE__ */ jsxRuntime.jsx(recharts.CartesianGrid, { strokeDasharray: "3 3" }),
+              /* @__PURE__ */ jsxRuntime.jsx(
+                recharts.XAxis,
+                {
+                  dataKey: "break_out",
+                  label: {
+                    value: category.data[0]?.break_out_category || "",
+                    position: "insideBottom",
+                    offset: -10
+                  },
+                  interval: 0,
+                  tick: {
+                    fill: "hsl(var(--foreground))",
+                    fontSize: 10,
+                    textAnchor: "end",
+                    dy: 10
+                  },
+                  height: 80,
+                  padding: { left: 30, right: 30 }
+                }
+              ),
+              /* @__PURE__ */ jsxRuntime.jsx(
+                recharts.YAxis,
+                {
+                  label: {
+                    value: ylabel,
+                    angle: -90,
+                    position: "insideLeft",
+                    offset: 0,
+                    style: { textAnchor: "middle" }
+                  },
+                  tick: { fill: "hsl(var(--foreground))" }
+                }
+              ),
+              /* @__PURE__ */ jsxRuntime.jsx(
+                recharts.Tooltip,
+                {
+                  contentStyle: {
+                    backgroundColor: "hsl(var(--background))",
+                    border: "1px solid hsl(var(--border))"
+                  }
+                }
+              ),
+              /* @__PURE__ */ jsxRuntime.jsx(recharts.Scatter, { dataKey: "value", fill: "hsl(var(--foreground))", isAnimationActive: false, children: /* @__PURE__ */ jsxRuntime.jsx(
+                recharts.ErrorBar,
+                {
+                  dataKey: "error",
+                  width: 4,
+                  strokeWidth: 2,
+                  stroke: "grey"
+                }
+              ) })
+            ]
+          }
+        ) }),
+        /* @__PURE__ */ jsxRuntime.jsx("p", { className: "text-sm text-muted-foreground text-center", children: "Error bars represent 95% confidence intervals" })
+      ] }, category.key))
+    ] }) })
+  ] });
+}
+function StateBarChart({ data }) {
+  const [sortOrder, setSortOrder] = React20.useState("desc");
+  const [searchTerm, setSearchTerm] = React20.useState("");
+  const [isExpanded, setIsExpanded] = React20.useState(false);
+  const sortedData = Object.entries(data.state_data).filter((entry) => entry[1].overall !== null).map(([code, data2]) => ({
+    code,
+    state: data2.state_name,
+    overall: data2.overall
+  })).sort((a, b) => sortOrder === "desc" ? b.overall - a.overall : a.overall - b.overall).filter(
+    (item) => item.state.toLowerCase().includes(searchTerm.toLowerCase()) || item.code.toLowerCase().includes(searchTerm.toLowerCase())
+  );
+  const toggleSort = () => {
+    setSortOrder((prev) => prev === "desc" ? "asc" : "desc");
+  };
+  return /* @__PURE__ */ jsxRuntime.jsxs("div", { className: "w-full", children: [
+    /* @__PURE__ */ jsxRuntime.jsxs("div", { className: "mb-4", children: [
+      /* @__PURE__ */ jsxRuntime.jsxs("div", { className: "flex items-center gap-2 mb-2", children: [
+        /* @__PURE__ */ jsxRuntime.jsx("h2", { className: "text-2xl font-bold", children: data.clean_title }),
+        /* @__PURE__ */ jsxRuntime.jsxs("span", { className: "text-md text-gray-500", children: [
+          "(",
+          data.year,
+          ")"
+        ] })
+      ] }),
+      /* @__PURE__ */ jsxRuntime.jsx("div", { className: "flex items-center gap-2 mb-4", children: /* @__PURE__ */ jsxRuntime.jsx("span", { className: "text-md text-gray-500", children: data.question }) }),
+      /* @__PURE__ */ jsxRuntime.jsxs("div", { className: "flex justify-between items-center mb-4", children: [
+        /* @__PURE__ */ jsxRuntime.jsx(
+          input.Input,
+          {
+            placeholder: "Search states...",
+            value: searchTerm,
+            onChange: (e) => setSearchTerm(e.target.value),
+            className: "max-w-sm"
+          }
+        ),
+        /* @__PURE__ */ jsxRuntime.jsxs(button.Button, { onClick: toggleSort, variant: "outline", children: [
+          "Sort ",
+          sortOrder === "desc" ? "Ascending" : "Descending",
+          /* @__PURE__ */ jsxRuntime.jsx(lucideReact.ArrowUpDown, { className: "ml-2 h-4 w-4" })
+        ] })
+      ] })
+    ] }),
+    /* @__PURE__ */ jsxRuntime.jsx("div", { className: `${isExpanded ? "h-auto" : "h-[400px]"}`, children: /* @__PURE__ */ jsxRuntime.jsx(recharts.ResponsiveContainer, { width: "100%", height: isExpanded ? 800 : 400, children: /* @__PURE__ */ jsxRuntime.jsxs(recharts.BarChart, { data: sortedData, layout: "vertical", margin: { right: 20, top: 20, bottom: 40 }, children: [
+      /* @__PURE__ */ jsxRuntime.jsx(recharts.CartesianGrid, { strokeDasharray: "3 3" }),
+      /* @__PURE__ */ jsxRuntime.jsx(
+        recharts.XAxis,
+        {
+          type: "number",
+          label: { value: `Response: ${data.response} (%)`, position: "bottom", offset: 0 },
+          tickFormatter: (value) => `${value}%`
+        }
+      ),
+      /* @__PURE__ */ jsxRuntime.jsx(
+        recharts.YAxis,
+        {
+          dataKey: "state",
+          type: "category",
+          width: 180,
+          interval: isExpanded ? 0 : 5,
+          tick: { fontSize: 10 }
+        }
+      ),
+      /* @__PURE__ */ jsxRuntime.jsx(
+        recharts.Tooltip,
+        {
+          formatter: (value) => [`${value}%`, `Response: ${data.response}`],
+          labelFormatter: (label) => `State: ${label}`
+        }
+      ),
+      /* @__PURE__ */ jsxRuntime.jsx(recharts.Bar, { dataKey: "overall", fill: "#4A4A4A" })
+    ] }) }) }),
+    /* @__PURE__ */ jsxRuntime.jsx("div", { className: "flex justify-center mt-4", children: /* @__PURE__ */ jsxRuntime.jsx(button.Button, { onClick: () => setIsExpanded(!isExpanded), variant: "outline", children: isExpanded ? /* @__PURE__ */ jsxRuntime.jsxs(jsxRuntime.Fragment, { children: [
+      "See less ",
+      /* @__PURE__ */ jsxRuntime.jsx(lucideReact.ChevronUp, { className: "ml-2 h-4 w-4" })
+    ] }) : /* @__PURE__ */ jsxRuntime.jsxs(jsxRuntime.Fragment, { children: [
+      "Expand ",
+      /* @__PURE__ */ jsxRuntime.jsx(lucideReact.ChevronDown, { className: "ml-2 h-4 w-4" })
+    ] }) }) }),
+    /* @__PURE__ */ jsxRuntime.jsx("div", { className: "flex items-center gap-2 mt-6", children: /* @__PURE__ */ jsxRuntime.jsx("span", { className: "text-sm text-gray-500", children: "Source: CDC Behavioral Risk Factor Surveillance System" }) })
+  ] });
+}
+var HealthScatterplot = ({ data }) => {
+  const singleRef = React20.useRef(null);
+  const regressionRef = React20.useRef(null);
+  const facetRef = React20.useRef(null);
+  const cleanData = React20.useMemo(() => data.filter((d) => d.dir2020 !== void 0), [data]);
+  React20.useEffect(() => {
+    if (!data || data.length === 0) return;
+    if (singleRef.current) singleRef.current.innerHTML = "";
+    if (regressionRef.current) regressionRef.current.innerHTML = "";
+    if (facetRef.current) facetRef.current.innerHTML = "";
+    const singlePlot = Plot24__namespace.plot({
+      title: "County Health Correlations",
+      subtitle: "Obesity vs Diabetes prevalence by county",
+      caption: "Source: CDC",
+      style: {
+        backgroundColor: "white",
+        fontFamily: "sans-serif"
+      },
+      x: {
+        label: "Obesity (%)",
+        grid: true
+      },
+      y: {
+        label: "Diabetes (%)",
+        grid: true
+      },
+      marks: [
+        Plot24__namespace.dot(cleanData, {
+          x: "OBESITY_AdjPrev",
+          y: "DIABETES_AdjPrev",
+          r: (d) => Math.sqrt(d.population) * 8e-3,
+          fill: (d) => d.dir2020,
+          fillOpacity: 0.6,
+          stroke: "black",
+          strokeWidth: 0.5,
+          title: (d) => `Obesity: ${d.OBESITY_AdjPrev}%
+Diabetes: ${d.DIABETES_AdjPrev}%
+Population: ${d.population?.toLocaleString()}`
+        })
+      ],
+      color: {
+        legend: true,
+        scheme: "category10"
+      },
+      width: 700,
+      height: 500
+    });
+    const regressionPlot = Plot24__namespace.plot({
+      title: "County Health Correlations with Trend",
+      subtitle: "Including linear regression line",
+      caption: "Source: CDC",
+      style: {
+        backgroundColor: "white",
+        fontFamily: "sans-serif"
+      },
+      x: {
+        label: "Obesity (%)",
+        grid: true
+      },
+      y: {
+        label: "Diabetes (%)",
+        grid: true
+      },
+      marks: [
+        Plot24__namespace.dot(cleanData, {
+          x: "OBESITY_AdjPrev",
+          y: "DIABETES_AdjPrev",
+          r: (d) => Math.sqrt(d.population) * 8e-3,
+          fill: (d) => d.dir2020,
+          fillOpacity: 0.7,
+          stroke: "black",
+          strokeWidth: 0.5,
+          title: (d) => `Obesity: ${d.OBESITY_AdjPrev}%
+Diabetes: ${d.DIABETES_AdjPrev}%
+Population: ${d.population?.toLocaleString()}`
+        }),
+        Plot24__namespace.linearRegressionY(cleanData, {
+          x: "OBESITY_AdjPrev",
+          y: "DIABETES_AdjPrev",
+          strokeWidth: 2,
+          stroke: "#ff6b35"
+        })
+      ],
+      color: {
+        legend: true,
+        scheme: "category10"
+      },
+      width: 700,
+      height: 500
+    });
+    const facetPlot = Plot24__namespace.plot({
+      title: "County Health Correlations by Category",
+      subtitle: "Faceted by demographic grouping",
+      caption: "Source: CDC",
+      style: {
+        backgroundColor: "white",
+        fontFamily: "sans-serif"
+      },
+      x: {
+        label: "Obesity (%)",
+        grid: true
+      },
+      y: {
+        label: "Diabetes (%)",
+        grid: true
+      },
+      facet: { data: cleanData, x: "dir2020" },
+      marks: [
+        Plot24__namespace.dot(cleanData, {
+          x: "OBESITY_AdjPrev",
+          y: "DIABETES_AdjPrev",
+          r: (d) => Math.sqrt(d.population) * 0.01,
+          stroke: "dir2020",
+          fill: "dir2020",
+          fillOpacity: 0.3,
+          title: (d) => `Obesity: ${d.OBESITY_AdjPrev}%
+Diabetes: ${d.DIABETES_AdjPrev}%
+Population: ${d.population?.toLocaleString()}`,
+          tip: true
+        }),
+        Plot24__namespace.linearRegressionY(cleanData, {
+          x: "OBESITY_AdjPrev",
+          y: "DIABETES_AdjPrev",
+          stroke: "dir2020",
+          strokeWidth: 2
+        })
+      ],
+      color: {
+        legend: true,
+        scheme: "category10"
+      },
+      width: 800,
+      height: 600
+    });
+    if (singleRef.current) singleRef.current.appendChild(singlePlot);
+    if (regressionRef.current) regressionRef.current.appendChild(regressionPlot);
+    if (facetRef.current) facetRef.current.appendChild(facetPlot);
+    return () => {
+      singlePlot?.remove();
+      regressionPlot?.remove();
+      facetPlot?.remove();
+    };
+  }, [data, cleanData]);
+  return /* @__PURE__ */ jsxRuntime.jsxs("div", { className: "space-y-6", children: [
+    /* @__PURE__ */ jsxRuntime.jsx("div", { className: "mb-6", children: /* @__PURE__ */ jsxRuntime.jsx("p", { className: "text-gray-600", children: "Scatterplot analysis exploring relationships between county-level health indicators. Each visualization reveals different aspects of the obesity-diabetes correlation using various analytical approaches." }) }),
+    /* @__PURE__ */ jsxRuntime.jsxs(card.Card, { children: [
+      /* @__PURE__ */ jsxRuntime.jsxs(card.CardHeader, { children: [
+        /* @__PURE__ */ jsxRuntime.jsx(card.CardTitle, { children: "Basic Scatterplot" }),
+        /* @__PURE__ */ jsxRuntime.jsx("p", { className: "text-sm text-muted-foreground", children: "Simple scatter plot showing the relationship between obesity and diabetes rates" })
+      ] }),
+      /* @__PURE__ */ jsxRuntime.jsxs(card.CardContent, { children: [
+        /* @__PURE__ */ jsxRuntime.jsx("div", { ref: singleRef, className: "flex justify-center" }),
+        /* @__PURE__ */ jsxRuntime.jsx("p", { className: "text-sm text-gray-600 mt-4", children: "Each point represents a county. Point size reflects population, and color indicates demographic grouping. The clear clustering pattern suggests a strong positive relationship between these health metrics." })
+      ] })
+    ] }),
+    /* @__PURE__ */ jsxRuntime.jsxs(card.Card, { children: [
+      /* @__PURE__ */ jsxRuntime.jsxs(card.CardHeader, { children: [
+        /* @__PURE__ */ jsxRuntime.jsx(card.CardTitle, { children: "Regression Analysis" }),
+        /* @__PURE__ */ jsxRuntime.jsx("p", { className: "text-sm text-muted-foreground", children: "Same data with linear regression line showing the overall trend" })
+      ] }),
+      /* @__PURE__ */ jsxRuntime.jsxs(card.CardContent, { children: [
+        /* @__PURE__ */ jsxRuntime.jsx("div", { ref: regressionRef, className: "flex justify-center" }),
+        /* @__PURE__ */ jsxRuntime.jsx("p", { className: "text-sm text-gray-600 mt-4", children: "The orange regression line shows the positive correlation between obesity and diabetes rates across counties. The linear trend confirms the strong association between these health conditions at the population level." })
+      ] })
+    ] }),
+    /* @__PURE__ */ jsxRuntime.jsxs(card.Card, { children: [
+      /* @__PURE__ */ jsxRuntime.jsxs(card.CardHeader, { children: [
+        /* @__PURE__ */ jsxRuntime.jsx(card.CardTitle, { children: "Faceted Analysis" }),
+        /* @__PURE__ */ jsxRuntime.jsx("p", { className: "text-sm text-muted-foreground", children: "Separate panels for each demographic category with individual regression lines" })
+      ] }),
+      /* @__PURE__ */ jsxRuntime.jsxs(card.CardContent, { children: [
+        /* @__PURE__ */ jsxRuntime.jsx("div", { ref: facetRef, className: "flex justify-center" }),
+        /* @__PURE__ */ jsxRuntime.jsx("p", { className: "text-sm text-gray-600 mt-4", children: "Faceted view allows comparison of obesity-diabetes relationships across different demographic groups, each with its own regression line. This reveals how the correlation strength may vary by population characteristics." })
+      ] })
+    ] }),
+    /* @__PURE__ */ jsxRuntime.jsxs("div", { className: "mt-6 p-4 bg-gray-50 rounded-lg", children: [
+      /* @__PURE__ */ jsxRuntime.jsx("h3", { className: "font-semibold mb-2", children: "Scatterplot Techniques" }),
+      /* @__PURE__ */ jsxRuntime.jsxs("div", { className: "grid md:grid-cols-3 gap-4 text-sm", children: [
+        /* @__PURE__ */ jsxRuntime.jsxs("div", { children: [
+          /* @__PURE__ */ jsxRuntime.jsx("h4", { className: "font-medium", children: "Basic Scatter" }),
+          /* @__PURE__ */ jsxRuntime.jsxs("ul", { className: "list-disc list-inside text-gray-600 space-y-1", children: [
+            /* @__PURE__ */ jsxRuntime.jsx("li", { children: "Point-to-point relationships" }),
+            /* @__PURE__ */ jsxRuntime.jsx("li", { children: "Size and color encoding" }),
+            /* @__PURE__ */ jsxRuntime.jsx("li", { children: "Pattern identification" }),
+            /* @__PURE__ */ jsxRuntime.jsx("li", { children: "Outlier detection" })
+          ] })
+        ] }),
+        /* @__PURE__ */ jsxRuntime.jsxs("div", { children: [
+          /* @__PURE__ */ jsxRuntime.jsx("h4", { className: "font-medium", children: "Regression Lines" }),
+          /* @__PURE__ */ jsxRuntime.jsxs("ul", { className: "list-disc list-inside text-gray-600 space-y-1", children: [
+            /* @__PURE__ */ jsxRuntime.jsx("li", { children: "Trend quantification" }),
+            /* @__PURE__ */ jsxRuntime.jsx("li", { children: "Predictive modeling" }),
+            /* @__PURE__ */ jsxRuntime.jsx("li", { children: "Correlation strength" }),
+            /* @__PURE__ */ jsxRuntime.jsx("li", { children: "Statistical inference" })
+          ] })
+        ] }),
+        /* @__PURE__ */ jsxRuntime.jsxs("div", { children: [
+          /* @__PURE__ */ jsxRuntime.jsx("h4", { className: "font-medium", children: "Faceted Views" }),
+          /* @__PURE__ */ jsxRuntime.jsxs("ul", { className: "list-disc list-inside text-gray-600 space-y-1", children: [
+            /* @__PURE__ */ jsxRuntime.jsx("li", { children: "Group comparisons" }),
+            /* @__PURE__ */ jsxRuntime.jsx("li", { children: "Conditional relationships" }),
+            /* @__PURE__ */ jsxRuntime.jsx("li", { children: "Subpopulation analysis" }),
+            /* @__PURE__ */ jsxRuntime.jsx("li", { children: "Interaction effects" })
+          ] })
+        ] })
+      ] })
+    ] })
+  ] });
+};
+var HealthScatterplot_default = HealthScatterplot;
 
 exports.AbortionOpinionChart = AbortionOpinionChart;
 exports.BarChart = basic_bar_v1_default;
@@ -3119,12 +5908,22 @@ exports.BoxPlotFacetedGrouped = BoxPlotFacetedGrouped;
 exports.BoxPlotGrouped = BoxPlotGrouped;
 exports.BubbleMap = geo_bubble_v1_default;
 exports.BulletChart = BulletChart;
+exports.CorrelationHeatmap = CorrelationHeatmap_default;
 exports.DemographicBarChart = stat_demographic_bar_v1_default;
+exports.DemographicDotPlot = DemographicDotPlot;
+exports.DemographicLineChart = DemographicLineChart;
+exports.DensityPlot = stat_density_v1_default;
 exports.DistributionPlot = DistributionPlot;
 exports.DivergingBar = DivergingBar;
 exports.DotPlot = basic_dot_v1_default;
+exports.DualAxisChart = DualAxisChart_default;
 exports.FacetedPlot = FacetedPlot;
 exports.ForestPlot = ForestPlot;
+exports.HealthScatterplot = HealthScatterplot_default;
+exports.HistogramObservable = HistogramObservable;
+exports.LineChart = LineChart_default;
+exports.OddsRatio = OddsRatio_default;
+exports.PcaPlot = PcaPlot;
 exports.PlotContainer = PlotContainer;
 exports.PlotExport = PlotExport;
 exports.PlotThemeProvider = PlotThemeProvider;
@@ -3135,11 +5934,15 @@ exports.ScatterplotRegression = HappinessCorrelatesPanel;
 exports.SlopeChart = SlopeChart;
 exports.Sparkline = Sparkline;
 exports.SplitBar = stat_splitbar_v1_default;
+exports.StateBarChart = StateBarChart;
 exports.StateMap = geo_state_map_v1_default;
 exports.StripPlot = StripPlot;
 exports.SwarmPlot = SwarmPlot;
+exports.TimeSeries = TimeSeries_default;
 exports.TimeSeriesChart = TimeSeriesChart2;
+exports.TimeSeriesIndex = TimeSeriesIndex_default;
 exports.TimeSeriesLine = TimeSeriesChart;
+exports.TimeTrendDemoChart = TimeTrendDemoChart;
 exports.defaultDarkTheme = defaultDarkTheme;
 exports.defaultLightTheme = defaultLightTheme;
 exports.usePlotTheme = usePlotTheme;

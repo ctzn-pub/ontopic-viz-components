@@ -10,15 +10,17 @@ export { default as DemographicBarChart } from './stat.demographic_bar.v1';
 // Scatterplot components (clean)
 export { default as ScatterplotRegression } from './ScatterplotRegression';
 
-// Components with app dependencies - commented out for now
-// export { default as LineChart } from './LineChart';
-// export { default as TimeSeries } from './TimeSeries';
-// export { default as TimeSeriesIndex } from './TimeSeriesIndex';
-// export { default as DualAxisChart } from './DualAxisChart';
-// export { default as TimeTrendDemoChart } from './TimeTrendDemoChart';
-// export { default as DemographicLineChart } from './DemographicLineChart';
-// export { default as DemographicDotPlot } from './DemographicDotPlot';
-// export { default as StateBarChart } from './bar.state.v1';
-// export { default as HealthScatterplot } from './HealthScatterplot';
+// Additional Recharts components (only use shadcn/ui which is external)
+export { default as LineChart } from './LineChart';
+export { default as TimeSeries } from './TimeSeries';
+export { default as TimeSeriesIndex } from './TimeSeriesIndex';
+export { default as DualAxisChart } from './DualAxisChart';
+export { default as TimeTrendDemoChart } from './TimeTrendDemoChart';
+export { default as DemographicLineChart } from './DemographicLineChart';
+export { default as DemographicDotPlot } from './DemographicDotPlot';
+export { default as StateBarChart } from './bar.state.v1';
+export { default as HealthScatterplot } from './HealthScatterplot';
+
+// Components with statistical-utils dependency - need utilities moved to package
 // export { default as HistogramRecharts } from './HistogramRecharts';
 // export { default as ViolinPlot } from './ViolinPlot';

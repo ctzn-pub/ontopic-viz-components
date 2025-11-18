@@ -71,16 +71,20 @@ export type { DivergingBarProps } from './viz.diverging_bar.v1';
 export { FacetedPlot } from './viz.faceted.v1';
 export type { FacetedPlotProps } from './viz.faceted.v1';
 
-// Components with app dependencies - commented out for now
-// export { default as CorrelationHeatmap } from './CorrelationHeatmap';
-// export { default as PcaPlot } from './PcaPlot';
-// export { default as OddsRatio } from './OddsRatio';
+// Additional Plot components (no app dependencies)
+export { default as CorrelationHeatmap } from './CorrelationHeatmap';
+export { default as PcaPlot } from './PcaPlot';
+export { default as OddsRatio } from './OddsRatio';
+export { default as HistogramObservable } from './HistogramObservable';
+export { default as DensityPlot } from './stat.density.v1';
+export { default as HistogramPlot } from './stat.histogram.v1';
+export { default as PointPlot } from './stat.point.v1';
+
+// Map components with getDataUrl dependency - need data passed as props
 // export { default as GeoDensityMap } from './GeoDensityMap';
 // export { default as ChoroplethMap } from './ChoroplethMap';
 // export { default as EuropeMap } from './EuropeMap';
 // export { default as ZipMap } from './ZipMap';
+
+// TimeTrendDemo with DemoColors dependency - needs color passed as prop
 // export { default as TimeTrendDemo } from './TimeTrendDemo';
-// export { default as HistogramObservable } from './HistogramObservable';
-// export { default as DensityPlot } from './stat.density.v1';
-// export { default as HistogramPlot } from './stat.histogram.v1';
-// export { default as PointPlot } from './stat.point.v1';

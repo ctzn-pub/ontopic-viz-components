@@ -20,6 +20,11 @@ export default defineConfig({
     'recharts',
     'lucide-react',
     'topojson-client',
+    'd3-array',
+    'highcharts',
+    'highcharts-react-official',
+    'next/dynamic',
+    'next-themes',
     // shadcn/ui components (expected from consuming app)
     '@/components/ui/card',
     '@/components/ui/button',
