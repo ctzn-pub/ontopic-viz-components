@@ -7,7 +7,7 @@ export default defineConfig({
     'src/recharts/index.ts'
   ],
   format: ['cjs', 'esm'],
-  dts: false, // Temporarily disabled while fixing component exports
+  dts: false, // Temporarily disabled due to strict Plot types
   splitting: false,
   sourcemap: true,
   clean: true,

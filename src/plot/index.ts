@@ -14,35 +14,35 @@ export type { BubbleMapProps } from './geo.bubble.v1';
 export { default as BoxPlot } from './stat.boxplot.v1';
 export type { BoxPlotProps } from './stat.boxplot.v1';
 
-export { default as BoxPlotGrouped } from './stat.boxplot.grouped.v1';
+export { BoxPlotGrouped } from './stat.boxplot.grouped.v1';
 export type { BoxPlotGroupedProps } from './stat.boxplot.grouped.v1';
 
-export { default as BoxPlotFaceted } from './stat.boxplot.faceted.v1';
+export { BoxPlotFaceted } from './stat.boxplot.faceted.v1';
 export type { BoxPlotFacetedProps } from './stat.boxplot.faceted.v1';
 
-export { default as BoxPlotFacetedGrouped } from './stat.boxplot.faceted_grouped.v1';
+export { BoxPlotFacetedGrouped } from './stat.boxplot.faceted_grouped.v1';
 export type { BoxPlotFacetedGroupedProps } from './stat.boxplot.faceted_grouped.v1';
 
-export { default as DistributionPlot } from './stat.distribution.v1';
+export { DistributionPlot } from './stat.distribution.v1';
 export type { DistributionPlotProps } from './stat.distribution.v1';
 
 // Statistical analysis components (clean)
-export { default as RegressionPlot } from './stat.regression.v1';
+export { RegressionPlot } from './stat.regression.v1';
 export type { RegressionPlotProps } from './stat.regression.v1';
 
-export { default as QQPlot } from './stat.qq.v1';
+export { QQPlot } from './stat.qq.v1';
 export type { QQPlotProps } from './stat.qq.v1';
 
-export { default as ResidualPlot } from './stat.residual.v1';
+export { ResidualPlot } from './stat.residual.v1';
 export type { ResidualPlotProps } from './stat.residual.v1';
 
-export { default as SwarmPlot } from './stat.swarm.v1';
+export { SwarmPlot } from './stat.swarm.v1';
 export type { SwarmPlotProps } from './stat.swarm.v1';
 
-export { default as StripPlot } from './stat.strip.v1';
+export { StripPlot } from './stat.strip.v1';
 export type { StripPlotProps } from './stat.strip.v1';
 
-export { default as ForestPlot } from './stat.forest.v1';
+export { ForestPlot } from './stat.forest.v1';
 export type { ForestPlotProps } from './stat.forest.v1';
 
 export { default as SplitBar } from './stat.splitbar.v1';
@@ -56,19 +56,19 @@ export { default as BarChart } from './basic.bar.v1';
 export type { BarChartProps } from './basic.bar.v1';
 
 // Specialized visualizations (clean)
-export { default as Sparkline } from './viz.sparkline.v1';
+export { Sparkline } from './viz.sparkline.v1';
 export type { SparklineProps } from './viz.sparkline.v1';
 
-export { default as SlopeChart } from './viz.slope.v1';
+export { SlopeChart } from './viz.slope.v1';
 export type { SlopeChartProps } from './viz.slope.v1';
 
-export { default as BulletChart } from './viz.bullet.v1';
+export { BulletChart } from './viz.bullet.v1';
 export type { BulletChartProps } from './viz.bullet.v1';
 
-export { default as DivergingBar } from './viz.diverging_bar.v1';
+export { DivergingBar } from './viz.diverging_bar.v1';
 export type { DivergingBarProps } from './viz.diverging_bar.v1';
 
-export { default as FacetedPlot } from './viz.faceted.v1';
+export { FacetedPlot } from './viz.faceted.v1';
 export type { FacetedPlotProps } from './viz.faceted.v1';
 
 // Components with app dependencies - commented out for now

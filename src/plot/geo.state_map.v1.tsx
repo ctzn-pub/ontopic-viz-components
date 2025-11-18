@@ -134,7 +134,7 @@ export const StateMap: React.FC<StateMapProps> = ({
         type: "quantile",
         n: quantiles,
         reverse: reverseColors,
-        scheme: colorScheme,
+        scheme: colorScheme as any,
         legend: true,
         tickFormat: formatNumberAsK
       },
