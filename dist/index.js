@@ -1,6 +1,6 @@
 'use strict';
 
-var React24 = require('react');
+var React25 = require('react');
 var Plot24 = require('@observablehq/plot');
 var jsxRuntime = require('react/jsx-runtime');
 var lucideReact = require('lucide-react');
@@ -8,9 +8,9 @@ var topojson3 = require('topojson-client');
 var dynamic = require('next/dynamic');
 var card = require('@/components/ui/card');
 var d3Array = require('d3-array');
+var nextThemes = require('next-themes');
 var recharts = require('recharts');
 var button = require('@/components/ui/button');
-var nextThemes = require('next-themes');
 var label = require('@/components/ui/label');
 var _switch = require('@/components/ui/switch');
 var tabs = require('@/components/ui/tabs');
@@ -36,7 +36,7 @@ function _interopNamespace(e) {
   return Object.freeze(n);
 }
 
-var React24__namespace = /*#__PURE__*/_interopNamespace(React24);
+var React25__namespace = /*#__PURE__*/_interopNamespace(React25);
 var Plot24__namespace = /*#__PURE__*/_interopNamespace(Plot24);
 var topojson3__namespace = /*#__PURE__*/_interopNamespace(topojson3);
 var dynamic__default = /*#__PURE__*/_interopDefault(dynamic);
@@ -52,10 +52,10 @@ function PlotContainer({
   ariaLabel,
   onPlotCreated
 }) {
-  const containerRef = React24.useRef(null);
-  const plotRef = React24.useRef(null);
-  const [containerWidth, setContainerWidth] = React24.useState(800);
-  React24.useEffect(() => {
+  const containerRef = React25.useRef(null);
+  const plotRef = React25.useRef(null);
+  const [containerWidth, setContainerWidth] = React25.useState(800);
+  React25.useEffect(() => {
     if (width !== "responsive" || !containerRef.current) return;
     const observer = new ResizeObserver((entries) => {
       const entry = entries[0];
@@ -66,10 +66,10 @@ function PlotContainer({
     observer.observe(containerRef.current);
     return () => observer.disconnect();
   }, [width]);
-  React24.useEffect(() => {
+  React25.useEffect(() => {
     if (!containerRef.current) return;
     const finalWidth = width === "responsive" ? containerWidth : width;
-    const plot33 = Plot24__namespace.plot({
+    const plot34 = Plot24__namespace.plot({
       ...plotSpec,
       width: finalWidth,
       height
@@ -77,9 +77,9 @@ function PlotContainer({
     if (plotRef.current) {
       plotRef.current.remove();
     }
-    containerRef.current.appendChild(plot33);
-    plotRef.current = plot33;
-    onPlotCreated?.(plot33);
+    containerRef.current.appendChild(plot34);
+    plotRef.current = plot34;
+    onPlotCreated?.(plot34);
     return () => {
       if (plotRef.current) {
         plotRef.current.remove();
@@ -158,7 +158,7 @@ var defaultDarkTheme = {
   background: "#0a0a0a",
   foreground: "#ffffff"
 };
-var PlotThemeContext = React24.createContext(defaultLightTheme);
+var PlotThemeContext = React25.createContext(defaultLightTheme);
 function PlotThemeProvider({
   theme = "light",
   children
@@ -167,7 +167,7 @@ function PlotThemeProvider({
   return /* @__PURE__ */ jsxRuntime.jsx(PlotThemeContext.Provider, { value: resolvedTheme, children });
 }
 function usePlotTheme() {
-  return React24.useContext(PlotThemeContext);
+  return React25.useContext(PlotThemeContext);
 }
 function PlotExport({
   plotRef,
@@ -179,7 +179,7 @@ function PlotExport({
   DropdownMenuContent,
   DropdownMenuItem
 }) {
-  const [isExporting, setIsExporting] = React24.useState(false);
+  const [isExporting, setIsExporting] = React25.useState(false);
   const exportAs = async (format) => {
     if (!plotRef.current) return;
     setIsExporting(true);
@@ -283,8 +283,8 @@ var StateMap = ({
     valueSuffix = "",
     valuePrefix = ""
   } = labels;
-  const containerRef = React24__namespace.useRef(null);
-  React24__namespace.useEffect(() => {
+  const containerRef = React25__namespace.useRef(null);
+  React25__namespace.useEffect(() => {
     if (!containerRef.current || !usTopoJSON || !data || data.length === 0) return;
     containerRef.current.innerHTML = "";
     const stateToValueMap = new Map(
@@ -310,7 +310,7 @@ var StateMap = ({
       usTopoJSON,
       usTopoJSON.objects.nation
     );
-    const plot33 = Plot24__namespace.plot({
+    const plot34 = Plot24__namespace.plot({
       caption,
       projection,
       color: {
@@ -347,9 +347,9 @@ var StateMap = ({
         )
       ]
     });
-    containerRef.current.appendChild(plot33);
+    containerRef.current.appendChild(plot34);
     return () => {
-      plot33.remove();
+      plot34.remove();
     };
   }, [usTopoJSON, data, width, height, title, subtitle, caption, valueSuffix, valuePrefix, colorScheme, quantiles, reverseColors, projection]);
   return /* @__PURE__ */ jsxRuntime.jsx("div", { ref: containerRef, className });
@@ -373,8 +373,8 @@ function BubbleMap({
   projection = "albers-usa",
   className = ""
 }) {
-  const containerRef = React24.useRef(null);
-  React24.useEffect(() => {
+  const containerRef = React25.useRef(null);
+  React25.useEffect(() => {
     if (!containerRef.current || !data || data.length === 0) return;
     containerRef.current.innerHTML = "";
     const plotData = data.map((d) => ({
@@ -399,7 +399,7 @@ function BubbleMap({
         tip: true
       })
     ];
-    const plot33 = Plot24__namespace.plot({
+    const plot34 = Plot24__namespace.plot({
       width,
       height,
       title,
@@ -414,9 +414,9 @@ function BubbleMap({
       },
       marks
     });
-    containerRef.current.appendChild(plot33);
+    containerRef.current.appendChild(plot34);
     return () => {
-      plot33?.remove();
+      plot34?.remove();
     };
   }, [data, longitudeKey, latitudeKey, sizeKey, colorKey, nameKey, title, subtitle, fill, fillOpacity, stroke, strokeWidth, width, height, projection]);
   return /* @__PURE__ */ jsxRuntime.jsx("div", { ref: containerRef, className });
@@ -441,11 +441,11 @@ function BoxPlot({
   xTickRotate = -45,
   className = ""
 }) {
-  const containerRef = React24.useRef(null);
-  React24.useEffect(() => {
+  const containerRef = React25.useRef(null);
+  React25.useEffect(() => {
     if (!containerRef.current || !data || data.length === 0) return;
     containerRef.current.innerHTML = "";
-    const plot33 = Plot24__namespace.plot({
+    const plot34 = Plot24__namespace.plot({
       width,
       height,
       marginLeft,
@@ -477,9 +477,9 @@ function BoxPlot({
         })
       ]
     });
-    containerRef.current.appendChild(plot33);
+    containerRef.current.appendChild(plot34);
     return () => {
-      plot33?.remove();
+      plot34?.remove();
     };
   }, [data, x, y, title, xLabel, yLabel, fill, fillOpacity, stroke, strokeWidth, outlierRadius, width, height, marginLeft, marginBottom, xTickRotate]);
   return /* @__PURE__ */ jsxRuntime.jsx("div", { ref: containerRef, className });
@@ -497,8 +497,8 @@ function BoxPlotGrouped({
   className = "",
   ariaLabel = "Grouped box plot showing distributions by category and group"
 }) {
-  const containerRef = React24.useRef(null);
-  React24.useEffect(() => {
+  const containerRef = React25.useRef(null);
+  React25.useEffect(() => {
     if (!containerRef.current || !data || data.length === 0) return;
     containerRef.current.innerHTML = "";
     const transformedData = data.map((d) => ({
@@ -514,7 +514,7 @@ function BoxPlotGrouped({
     const middleGroupIndex = Math.ceil((groups.length - 1) / 2);
     const tickValues = categories.flatMap((cat) => `${cat}__${groups[middleGroupIndex]}`);
     const tickFormat = (d) => d.split("__")[0];
-    const plot33 = Plot24__namespace.plot({
+    const plot34 = Plot24__namespace.plot({
       width,
       height,
       marginTop: title ? 40 : 20,
@@ -552,9 +552,9 @@ function BoxPlotGrouped({
         })
       ]
     });
-    plot33.setAttribute("role", "img");
-    plot33.setAttribute("aria-label", ariaLabel);
-    containerRef.current.appendChild(plot33);
+    plot34.setAttribute("role", "img");
+    plot34.setAttribute("aria-label", ariaLabel);
+    containerRef.current.appendChild(plot34);
     return () => {
       if (containerRef.current) {
         containerRef.current.innerHTML = "";
@@ -577,11 +577,11 @@ function BoxPlotFaceted({
   className = "",
   ariaLabel = "Faceted box plot showing distributions across panels"
 }) {
-  const containerRef = React24.useRef(null);
-  React24.useEffect(() => {
+  const containerRef = React25.useRef(null);
+  React25.useEffect(() => {
     if (!containerRef.current || !data || data.length === 0) return;
     containerRef.current.innerHTML = "";
-    const plot33 = Plot24__namespace.plot({
+    const plot34 = Plot24__namespace.plot({
       width,
       height,
       marginTop: title ? 50 : 40,
@@ -619,9 +619,9 @@ function BoxPlotFaceted({
         Plot24__namespace.frame()
       ]
     });
-    plot33.setAttribute("role", "img");
-    plot33.setAttribute("aria-label", ariaLabel);
-    containerRef.current.appendChild(plot33);
+    plot34.setAttribute("role", "img");
+    plot34.setAttribute("aria-label", ariaLabel);
+    containerRef.current.appendChild(plot34);
     return () => {
       if (containerRef.current) {
         containerRef.current.innerHTML = "";
@@ -643,8 +643,8 @@ function BoxPlotFacetedGrouped({
   className = "",
   ariaLabel = "Faceted and grouped box plot showing distributions across panels with side-by-side groups"
 }) {
-  const containerRef = React24.useRef(null);
-  React24.useEffect(() => {
+  const containerRef = React25.useRef(null);
+  React25.useEffect(() => {
     if (!containerRef.current || !data || data.length === 0) return;
     containerRef.current.innerHTML = "";
     const transformedData = data.map((d) => ({
@@ -660,7 +660,7 @@ function BoxPlotFacetedGrouped({
     const middleGroupIndex = Math.ceil((groups.length - 1) / 2);
     const tickValues = categories.flatMap((cat) => `${cat}__${groups[middleGroupIndex]}`);
     const tickFormat = (d) => d.split("__")[0];
-    const plot33 = Plot24__namespace.plot({
+    const plot34 = Plot24__namespace.plot({
       width,
       height,
       marginTop: title ? 50 : 40,
@@ -708,9 +708,9 @@ function BoxPlotFacetedGrouped({
         Plot24__namespace.frame()
       ]
     });
-    plot33.setAttribute("role", "img");
-    plot33.setAttribute("aria-label", ariaLabel);
-    containerRef.current.appendChild(plot33);
+    plot34.setAttribute("role", "img");
+    plot34.setAttribute("aria-label", ariaLabel);
+    containerRef.current.appendChild(plot34);
     return () => {
       if (containerRef.current) {
         containerRef.current.innerHTML = "";
@@ -739,8 +739,8 @@ function DistributionPlot({
   className = "",
   ariaLabel = "Distribution plot showing data distribution"
 }) {
-  const containerRef = React24.useRef(null);
-  React24.useEffect(() => {
+  const containerRef = React25.useRef(null);
+  React25.useEffect(() => {
     if (!containerRef.current || !data || data.length === 0) return;
     containerRef.current.innerHTML = "";
     const hasGroups = data.some((d) => d.group !== void 0);
@@ -874,7 +874,7 @@ function DistributionPlot({
         );
       }
     }
-    const plot33 = Plot24__namespace.plot({
+    const plot34 = Plot24__namespace.plot({
       width,
       height,
       marginTop: title ? 40 : 20,
@@ -892,9 +892,9 @@ function DistributionPlot({
       },
       marks
     });
-    plot33.setAttribute("role", "img");
-    plot33.setAttribute("aria-label", ariaLabel);
-    containerRef.current.appendChild(plot33);
+    plot34.setAttribute("role", "img");
+    plot34.setAttribute("aria-label", ariaLabel);
+    containerRef.current.appendChild(plot34);
     return () => {
       if (containerRef.current) {
         containerRef.current.innerHTML = "";
@@ -921,8 +921,8 @@ function RegressionPlot({
   className = "",
   ariaLabel = "Regression plot showing relationship between variables"
 }) {
-  const containerRef = React24.useRef(null);
-  React24.useEffect(() => {
+  const containerRef = React25.useRef(null);
+  React25.useEffect(() => {
     if (!containerRef.current || !data || data.length === 0) return;
     containerRef.current.innerHTML = "";
     let plotData = data;
@@ -1017,7 +1017,7 @@ function RegressionPlot({
         );
       }
     }
-    const plot33 = Plot24__namespace.plot({
+    const plot34 = Plot24__namespace.plot({
       width,
       height,
       marginTop: title ? 40 : 20,
@@ -1035,9 +1035,9 @@ function RegressionPlot({
       },
       marks
     });
-    plot33.setAttribute("role", "img");
-    plot33.setAttribute("aria-label", ariaLabel);
-    containerRef.current.appendChild(plot33);
+    plot34.setAttribute("role", "img");
+    plot34.setAttribute("aria-label", ariaLabel);
+    containerRef.current.appendChild(plot34);
     if (showRSquared && !hasGroups) {
       const xMean = plotData.reduce((sum, d) => sum + d.x, 0) / plotData.length;
       const yMean = plotData.reduce((sum, d) => sum + d.y, 0) / plotData.length;
@@ -1052,7 +1052,7 @@ function RegressionPlot({
       rText.setAttribute("font-size", "14");
       rText.setAttribute("fill", "#666");
       rText.textContent = `R\xB2 = ${rSquared.toFixed(3)}`;
-      plot33.appendChild(rText);
+      plot34.appendChild(rText);
     }
     return () => {
       if (containerRef.current) {
@@ -1074,8 +1074,8 @@ function QQPlot({
   className = "",
   ariaLabel = "Q-Q plot for normality testing"
 }) {
-  const containerRef = React24.useRef(null);
-  React24.useEffect(() => {
+  const containerRef = React25.useRef(null);
+  React25.useEffect(() => {
     if (!containerRef.current || !data || data.length === 0) return;
     containerRef.current.innerHTML = "";
     const sortedData = [...data].sort((a, b) => a - b);
@@ -1094,7 +1094,7 @@ function QQPlot({
     const sampleMax = Math.max(...sortedData);
     const slope = (sampleMax - sampleMin) / (maxVal - minVal);
     const intercept = sampleMin - slope * minVal;
-    const plot33 = Plot24__namespace.plot({
+    const plot34 = Plot24__namespace.plot({
       width,
       height,
       marginTop: title ? 40 : 20,
@@ -1135,9 +1135,9 @@ function QQPlot({
         })
       ]
     });
-    plot33.setAttribute("role", "img");
-    plot33.setAttribute("aria-label", ariaLabel);
-    containerRef.current.appendChild(plot33);
+    plot34.setAttribute("role", "img");
+    plot34.setAttribute("aria-label", ariaLabel);
+    containerRef.current.appendChild(plot34);
     return () => {
       if (containerRef.current) {
         containerRef.current.innerHTML = "";
@@ -1165,8 +1165,8 @@ function ResidualPlot({
   className = "",
   ariaLabel = "Residual plot for regression diagnostics"
 }) {
-  const containerRef = React24.useRef(null);
-  React24.useEffect(() => {
+  const containerRef = React25.useRef(null);
+  React25.useEffect(() => {
     if (!containerRef.current || !data || data.length === 0) return;
     containerRef.current.innerHTML = "";
     const n = data.length;
@@ -1181,7 +1181,7 @@ function ResidualPlot({
       const residual = d.y - fitted;
       return { fitted, residual };
     });
-    const plot33 = Plot24__namespace.plot({
+    const plot34 = Plot24__namespace.plot({
       width,
       height,
       marginTop: title ? 40 : 20,
@@ -1214,9 +1214,9 @@ function ResidualPlot({
         })
       ]
     });
-    plot33.setAttribute("role", "img");
-    plot33.setAttribute("aria-label", ariaLabel);
-    containerRef.current.appendChild(plot33);
+    plot34.setAttribute("role", "img");
+    plot34.setAttribute("aria-label", ariaLabel);
+    containerRef.current.appendChild(plot34);
     return () => {
       if (containerRef.current) {
         containerRef.current.innerHTML = "";
@@ -1238,11 +1238,11 @@ function SwarmPlot({
   className = "",
   ariaLabel = "Swarm plot showing distribution by category"
 }) {
-  const containerRef = React24.useRef(null);
-  React24.useEffect(() => {
+  const containerRef = React25.useRef(null);
+  React25.useEffect(() => {
     if (!containerRef.current || !data || data.length === 0) return;
     containerRef.current.innerHTML = "";
-    const plot33 = Plot24__namespace.plot({
+    const plot34 = Plot24__namespace.plot({
       width,
       height,
       marginTop: title ? 40 : 20,
@@ -1278,9 +1278,9 @@ function SwarmPlot({
         )
       ]
     });
-    plot33.setAttribute("role", "img");
-    plot33.setAttribute("aria-label", ariaLabel);
-    containerRef.current.appendChild(plot33);
+    plot34.setAttribute("role", "img");
+    plot34.setAttribute("aria-label", ariaLabel);
+    containerRef.current.appendChild(plot34);
     return () => {
       if (containerRef.current) {
         containerRef.current.innerHTML = "";
@@ -1303,11 +1303,11 @@ function StripPlot({
   className = "",
   ariaLabel = "Strip plot showing distribution by category"
 }) {
-  const containerRef = React24.useRef(null);
-  React24.useEffect(() => {
+  const containerRef = React25.useRef(null);
+  React25.useEffect(() => {
     if (!containerRef.current || !data || data.length === 0) return;
     containerRef.current.innerHTML = "";
-    const plot33 = Plot24__namespace.plot({
+    const plot34 = Plot24__namespace.plot({
       width,
       height,
       marginTop: title ? 40 : 20,
@@ -1339,9 +1339,9 @@ function StripPlot({
         })
       ]
     });
-    plot33.setAttribute("role", "img");
-    plot33.setAttribute("aria-label", ariaLabel);
-    containerRef.current.appendChild(plot33);
+    plot34.setAttribute("role", "img");
+    plot34.setAttribute("aria-label", ariaLabel);
+    containerRef.current.appendChild(plot34);
     return () => {
       if (containerRef.current) {
         containerRef.current.innerHTML = "";
@@ -1365,8 +1365,8 @@ function ForestPlot({
   className = "",
   ariaLabel = "Forest plot showing regression coefficients with confidence intervals"
 }) {
-  const containerRef = React24.useRef(null);
-  React24.useEffect(() => {
+  const containerRef = React25.useRef(null);
+  React25.useEffect(() => {
     if (!containerRef.current || !data || data.length === 0) return;
     containerRef.current.innerHTML = "";
     let sortedData = [...data];
@@ -1426,7 +1426,7 @@ function ForestPlot({
         r: 5
       })
     );
-    const plot33 = Plot24__namespace.plot({
+    const plot34 = Plot24__namespace.plot({
       width,
       height,
       marginTop: title ? 40 : 20,
@@ -1445,9 +1445,9 @@ function ForestPlot({
       },
       marks
     });
-    plot33.setAttribute("role", "img");
-    plot33.setAttribute("aria-label", ariaLabel);
-    containerRef.current.appendChild(plot33);
+    plot34.setAttribute("role", "img");
+    plot34.setAttribute("aria-label", ariaLabel);
+    containerRef.current.appendChild(plot34);
     if (showPValues) {
       sortedData.forEach((d, i) => {
         if (d.pvalue !== void 0) {
@@ -1463,7 +1463,7 @@ function ForestPlot({
             starText.setAttribute("font-size", "14");
             starText.setAttribute("fill", "#666");
             starText.textContent = stars;
-            plot33.appendChild(starText);
+            plot34.appendChild(starText);
           }
         }
       });
@@ -1492,8 +1492,8 @@ var SplitBar = ({
   marginLeft = 150,
   showValueLabels = true
 }) => {
-  const containerRef = React24__namespace.useRef(null);
-  React24__namespace.useEffect(() => {
+  const containerRef = React25__namespace.useRef(null);
+  React25__namespace.useEffect(() => {
     if (!containerRef.current || !data || data.length === 0) return;
     if (subcategories.length !== 2) {
       console.error("SplitBar requires exactly 2 subcategories");
@@ -1524,7 +1524,7 @@ var SplitBar = ({
     );
     const minValue = Math.min(...allValues);
     const maxValue = Math.max(...allValues);
-    const plot33 = Plot24__namespace.plot({
+    const plot34 = Plot24__namespace.plot({
       caption,
       style: {
         backgroundColor: "white",
@@ -1584,9 +1584,9 @@ var SplitBar = ({
         Plot24__namespace.ruleX([minValue])
       ]
     });
-    containerRef.current.appendChild(plot33);
+    containerRef.current.appendChild(plot34);
     return () => {
-      plot33.remove();
+      plot34.remove();
     };
   }, [
     data,
@@ -1624,8 +1624,8 @@ function DotPlot({
   tipFormat,
   className = ""
 }) {
-  const containerRef = React24.useRef(null);
-  React24.useEffect(() => {
+  const containerRef = React25.useRef(null);
+  React25.useEffect(() => {
     if (!containerRef.current || !data || data.length === 0) return;
     containerRef.current.innerHTML = "";
     let colorConfig = fill ? { legend: true } : void 0;
@@ -1640,7 +1640,7 @@ function DotPlot({
         };
       }
     }
-    const plot33 = Plot24__namespace.plot({
+    const plot34 = Plot24__namespace.plot({
       title,
       subtitle,
       style: {
@@ -1673,9 +1673,9 @@ function DotPlot({
       height,
       marginLeft
     });
-    containerRef.current.appendChild(plot33);
+    containerRef.current.appendChild(plot34);
     return () => {
-      plot33?.remove();
+      plot34?.remove();
     };
   }, [data, x, y, fill, title, subtitle, xLabel, yLabel, radius, fillOpacity, width, height, marginLeft, colorScheme, tipFormat]);
   return /* @__PURE__ */ jsxRuntime.jsx("div", { ref: containerRef, className });
@@ -1702,8 +1702,8 @@ function BarChart({
   xTicks,
   className = ""
 }) {
-  const containerRef = React24.useRef(null);
-  React24.useEffect(() => {
+  const containerRef = React25.useRef(null);
+  React25.useEffect(() => {
     if (!containerRef.current || !data || data.length === 0) return;
     containerRef.current.innerHTML = "";
     const marks = [
@@ -1725,7 +1725,7 @@ function BarChart({
         })
       );
     }
-    const plot33 = Plot24__namespace.plot({
+    const plot34 = Plot24__namespace.plot({
       width,
       height,
       marginBottom,
@@ -1750,9 +1750,9 @@ function BarChart({
       },
       marks
     });
-    containerRef.current.appendChild(plot33);
+    containerRef.current.appendChild(plot34);
     return () => {
-      plot33?.remove();
+      plot34?.remove();
     };
   }, [data, x, y, errorY, title, subtitle, caption, xLabel, yLabel, fill, errorStroke, errorStrokeWidth, width, height, marginBottom, xTickRotate, xTickFormat, xTicks]);
   return /* @__PURE__ */ jsxRuntime.jsx("div", { ref: containerRef, className });
@@ -1770,8 +1770,8 @@ function Sparkline({
   className = "",
   ariaLabel = "Sparkline chart"
 }) {
-  const containerRef = React24.useRef(null);
-  React24.useEffect(() => {
+  const containerRef = React25.useRef(null);
+  React25.useEffect(() => {
     if (!containerRef.current || !data || data.length === 0) return;
     containerRef.current.innerHTML = "";
     const indexedData = data.map((value, index) => ({ index, value }));
@@ -1844,7 +1844,7 @@ function Sparkline({
         })
       );
     }
-    const plot33 = Plot24__namespace.plot({
+    const plot34 = Plot24__namespace.plot({
       width,
       height,
       marginTop: 5,
@@ -1859,11 +1859,11 @@ function Sparkline({
       },
       marks
     });
-    plot33.setAttribute("role", "img");
-    plot33.setAttribute("aria-label", ariaLabel);
-    containerRef.current.appendChild(plot33);
+    plot34.setAttribute("role", "img");
+    plot34.setAttribute("aria-label", ariaLabel);
+    containerRef.current.appendChild(plot34);
     return () => {
-      plot33?.remove();
+      plot34?.remove();
     };
   }, [data, variant, width, height, showMinMax, positiveColor, negativeColor, neutralColor, ariaLabel]);
   return /* @__PURE__ */ jsxRuntime.jsx("div", { ref: containerRef, className });
@@ -1892,8 +1892,8 @@ function SlopeChart({
   showLabels = true,
   className = ""
 }) {
-  const containerRef = React24.useRef(null);
-  React24.useEffect(() => {
+  const containerRef = React25.useRef(null);
+  React25.useEffect(() => {
     if (!containerRef.current || !data || data.length === 0) return;
     containerRef.current.innerHTML = "";
     const longData = [];
@@ -1965,7 +1965,7 @@ function SlopeChart({
         })
       );
     }
-    const plot33 = Plot24__namespace.plot({
+    const plot34 = Plot24__namespace.plot({
       width,
       height,
       marginLeft,
@@ -1985,9 +1985,9 @@ function SlopeChart({
       },
       marks
     });
-    containerRef.current.appendChild(plot33);
+    containerRef.current.appendChild(plot34);
     return () => {
-      plot33?.remove();
+      plot34?.remove();
     };
   }, [
     data,
@@ -2026,8 +2026,8 @@ function BulletChart({
   showLabels = true,
   className = ""
 }) {
-  const containerRef = React24.useRef(null);
-  React24.useEffect(() => {
+  const containerRef = React25.useRef(null);
+  React25.useEffect(() => {
     if (!containerRef.current) return;
     containerRef.current.innerHTML = "";
     const sortedRanges = [...ranges].sort((a, b) => b.threshold - a.threshold);
@@ -2094,7 +2094,7 @@ function BulletChart({
         })
       );
     }
-    const plot33 = Plot24__namespace.plot({
+    const plot34 = Plot24__namespace.plot({
       width,
       height,
       marginLeft: 100,
@@ -2112,9 +2112,9 @@ function BulletChart({
       },
       marks
     });
-    containerRef.current.appendChild(plot33);
+    containerRef.current.appendChild(plot34);
     return () => {
-      plot33?.remove();
+      plot34?.remove();
     };
   }, [title, value, target, ranges, width, height, valueColor, targetColor, showLabels]);
   return /* @__PURE__ */ jsxRuntime.jsx("div", { ref: containerRef, className });
@@ -2141,8 +2141,8 @@ function DivergingBar({
   showZeroLine = true,
   className = ""
 }) {
-  const containerRef = React24.useRef(null);
-  React24.useEffect(() => {
+  const containerRef = React25.useRef(null);
+  React25.useEffect(() => {
     if (!containerRef.current || !data || data.length === 0) return;
     containerRef.current.innerHTML = "";
     let processedData = data.map((d) => ({
@@ -2178,7 +2178,7 @@ function DivergingBar({
         title: (d) => `${d[categoryKey]}: ${Math.abs(d[negativeKey])}% ${negativeLabel}`
       })
     );
-    const plot33 = Plot24__namespace.plot({
+    const plot34 = Plot24__namespace.plot({
       width,
       height,
       marginLeft,
@@ -2199,9 +2199,9 @@ function DivergingBar({
       },
       marks
     });
-    containerRef.current.appendChild(plot33);
+    containerRef.current.appendChild(plot34);
     return () => {
-      plot33?.remove();
+      plot34?.remove();
     };
   }, [
     data,
@@ -2244,8 +2244,8 @@ function FacetedPlot({
   className = "",
   ariaLabel = "Faceted plot showing comparative analysis across groups"
 }) {
-  const containerRef = React24.useRef(null);
-  React24.useEffect(() => {
+  const containerRef = React25.useRef(null);
+  React25.useEffect(() => {
     if (!containerRef.current || !data || data.length === 0) return;
     containerRef.current.innerHTML = "";
     let plotData = data;
@@ -2323,7 +2323,7 @@ function FacetedPlot({
         );
         break;
     }
-    const plot33 = Plot24__namespace.plot({
+    const plot34 = Plot24__namespace.plot({
       width,
       height,
       marginTop: title ? 50 : 30,
@@ -2353,9 +2353,9 @@ function FacetedPlot({
       },
       marks
     });
-    plot33.setAttribute("role", "img");
-    plot33.setAttribute("aria-label", ariaLabel);
-    containerRef.current.appendChild(plot33);
+    plot34.setAttribute("role", "img");
+    plot34.setAttribute("aria-label", ariaLabel);
+    containerRef.current.appendChild(plot34);
     return () => {
       if (containerRef.current) {
         containerRef.current.innerHTML = "";
@@ -2372,8 +2372,8 @@ var CorrelationHeatmap = ({
   subtitle = "Focus on variables focused on adjusted prevalence",
   caption = "Source: CDC"
 }) => {
-  const containerRef = React24.useRef(null);
-  React24.useEffect(() => {
+  const containerRef = React25.useRef(null);
+  React25.useEffect(() => {
     if (!data || !containerRef.current) return;
     containerRef.current.innerHTML = "";
     const variables = [...new Set(data.map((d) => d.x))];
@@ -2383,7 +2383,7 @@ var CorrelationHeatmap = ({
     };
     const xDomain = [...new Set(convertedData.map((d) => d.x))];
     const yDomain = [...new Set(convertedData.map((d) => d.y))].reverse();
-    const plot33 = Plot24__namespace.plot({
+    const plot34 = Plot24__namespace.plot({
       title,
       subtitle,
       caption,
@@ -2439,9 +2439,9 @@ var CorrelationHeatmap = ({
       width,
       height
     });
-    containerRef.current.appendChild(plot33);
+    containerRef.current.appendChild(plot34);
     return () => {
-      if (plot33) plot33.remove();
+      if (plot34) plot34.remove();
     };
   }, [data, width, height, title, subtitle, caption]);
   return /* @__PURE__ */ jsxRuntime.jsxs("div", { className: "w-full", children: [
@@ -2455,8 +2455,8 @@ var CorrelationHeatmap = ({
 var CorrelationHeatmap_default = CorrelationHeatmap;
 var HighchartsReact = dynamic__default.default(() => import('highcharts-react-official'), { ssr: false });
 function PcaPlot() {
-  const [Highcharts, setHighcharts] = React24.useState(null);
-  React24.useEffect(() => {
+  const [Highcharts, setHighcharts] = React25.useState(null);
+  React25.useEffect(() => {
     import('highcharts').then((HighchartsModule) => {
       setHighcharts(HighchartsModule.default);
     });
@@ -2751,17 +2751,17 @@ function PcaPlot() {
   ) }) });
 }
 var OddsRatio = ({ data }) => {
-  const observablePlotRef = React24.useRef(null);
-  const forestPlotRef = React24.useRef(null);
-  const dotPlotRef = React24.useRef(null);
-  const plotData = React24.useMemo(() => Object.keys(data.odds_ratios).map((key) => ({
+  const observablePlotRef = React25.useRef(null);
+  const forestPlotRef = React25.useRef(null);
+  const dotPlotRef = React25.useRef(null);
+  const plotData = React25.useMemo(() => Object.keys(data.odds_ratios).map((key) => ({
     Label: key.replace(/C\((.*?)\)\[T\.(.*?)\]/, "$1 $2").replace(/C\((.*?), Treatment\(.*?\)\)\[T\.(.*?)\]/, "$1 $2").replace(/:/g, " \xD7 "),
     // Replace interaction symbols
     OddsRatio: data.odds_ratios[key],
     LowerCI: data.conf_int_lower[key],
     UpperCI: data.conf_int_upper[key]
   })), [data]);
-  React24.useEffect(() => {
+  React25.useEffect(() => {
     if (!data) return;
     if (observablePlotRef.current) observablePlotRef.current.innerHTML = "";
     if (forestPlotRef.current) forestPlotRef.current.innerHTML = "";
@@ -3058,8 +3058,8 @@ function HistogramObservable({
   showMean = true,
   showMedian = false
 }) {
-  const chartRef = React24.useRef(null);
-  React24.useEffect(() => {
+  const chartRef = React25.useRef(null);
+  React25.useEffect(() => {
     if (!data.length || !chartRef.current) return;
     const meanValue = d3Array.mean(data);
     const medianValue = d3Array.median(data);
@@ -3100,7 +3100,7 @@ function HistogramObservable({
         })
       );
     }
-    const plot33 = Plot24__namespace.plot({
+    const plot34 = Plot24__namespace.plot({
       width,
       height,
       marginLeft: 60,
@@ -3110,8 +3110,8 @@ function HistogramObservable({
       marks
     });
     chartRef.current.innerHTML = "";
-    chartRef.current.appendChild(plot33);
-    return () => plot33.remove();
+    chartRef.current.appendChild(plot34);
+    return () => plot34.remove();
   }, [data, width, height, xlabel, ylabel, bins, showMean, showMedian]);
   return /* @__PURE__ */ jsxRuntime.jsxs("div", { className: "w-full", children: [
     title && /* @__PURE__ */ jsxRuntime.jsx("h3", { className: "text-lg font-semibold mb-4", children: title }),
@@ -3125,15 +3125,15 @@ function HistogramObservable({
   ] });
 }
 var DensityPlot = ({ data }) => {
-  const singleRef = React24.useRef(null);
-  const overlayRef = React24.useRef(null);
-  const mentalHealthData = React24.useMemo(() => data.map((d, i) => ({
+  const singleRef = React25.useRef(null);
+  const overlayRef = React25.useRef(null);
+  const mentalHealthData = React25.useMemo(() => data.map((d, i) => ({
     MHLTH_AdjPrev: Math.random() * 20 + 10,
     // Random mental health rates between 10-30%
     population: d.population || Math.floor(Math.random() * 5e4) + 1e4
   })), [data]);
-  const cleanData = React24.useMemo(() => data.filter((d) => d.dir2020 !== void 0), [data]);
-  React24.useEffect(() => {
+  const cleanData = React25.useMemo(() => data.filter((d) => d.dir2020 !== void 0), [data]);
+  React25.useEffect(() => {
     if (!data || data.length === 0) return;
     if (singleRef.current) singleRef.current.innerHTML = "";
     if (overlayRef.current) overlayRef.current.innerHTML = "";
@@ -3255,10 +3255,10 @@ var GeoDensityMap = ({
   colorScheme = "puor",
   legendLabel = "Density"
 }) => {
-  const mapRef = React24.useRef(null);
-  const [us, setUs] = React24.useState(null);
-  const [loading, setLoading] = React24.useState(true);
-  React24.useEffect(() => {
+  const mapRef = React25.useRef(null);
+  const [us, setUs] = React25.useState(null);
+  const [loading, setLoading] = React25.useState(true);
+  React25.useEffect(() => {
     fetch(`${TOPOLOGY_BASE_URL}/us-albers-counties-10m.json`).then((response) => response.json()).then((topology) => {
       setUs(topology);
       setLoading(false);
@@ -3267,7 +3267,7 @@ var GeoDensityMap = ({
       setLoading(false);
     });
   }, []);
-  React24.useEffect(() => {
+  React25.useEffect(() => {
     if (!data || data.length === 0 || !us || loading) return;
     if (!mapRef.current) return;
     mapRef.current.innerHTML = "";
@@ -3336,18 +3336,18 @@ var ChoroplethMap = ({
   valueLabel = "Mental Health (% Poor Mental Health Days)",
   colorScheme = "blues"
 }) => {
-  const mapRef = React24.useRef(null);
-  const [countyData, setCountyData] = React24.useState([]);
-  const [us, setUs] = React24.useState(null);
-  const [loading, setLoading] = React24.useState(true);
-  React24.useEffect(() => {
+  const mapRef = React25.useRef(null);
+  const [countyData, setCountyData] = React25.useState([]);
+  const [us, setUs] = React25.useState(null);
+  const [loading, setLoading] = React25.useState(true);
+  React25.useEffect(() => {
     fetch(`${TOPOLOGY_BASE_URL2}/us-albers-counties-10m.json`).then((response) => response.json()).then((topology) => {
       setUs(topology);
     }).catch((error) => {
       console.error("Error loading topology:", error);
     });
   }, []);
-  React24.useEffect(() => {
+  React25.useEffect(() => {
     if (data.length > 0) {
       setCountyData(data);
       setLoading(false);
@@ -3361,7 +3361,7 @@ var ChoroplethMap = ({
       });
     }
   }, [data]);
-  React24.useEffect(() => {
+  React25.useEffect(() => {
     if (loading || !countyData || countyData.length === 0 || !us) return;
     if (!mapRef.current) return;
     mapRef.current.innerHTML = "";
@@ -3381,7 +3381,7 @@ var ChoroplethMap = ({
         label: valueLabel,
         tickFormat: ".1f"
       };
-      const plot33 = Plot24__namespace.plot({
+      const plot34 = Plot24__namespace.plot({
         title,
         subtitle,
         width: 960,
@@ -3438,9 +3438,9 @@ No data available`;
         marginRight: 140
         // Space for legend
       });
-      mapRef.current.appendChild(plot33);
+      mapRef.current.appendChild(plot34);
       return () => {
-        plot33?.remove();
+        plot34?.remove();
       };
     } catch (error) {
       console.error("Error rendering choropleth map:", error);
@@ -3514,18 +3514,18 @@ var EuropeMap = ({
   valueLabel = "GDP per capita (thousands USD)",
   colorScheme = "blues"
 }) => {
-  const mapRef = React24.useRef(null);
-  const [countryData, setCountryData] = React24.useState([]);
-  const [europe, setEurope] = React24.useState(null);
-  const [loading, setLoading] = React24.useState(true);
-  React24.useEffect(() => {
+  const mapRef = React25.useRef(null);
+  const [countryData, setCountryData] = React25.useState([]);
+  const [europe, setEurope] = React25.useState(null);
+  const [loading, setLoading] = React25.useState(true);
+  React25.useEffect(() => {
     fetch(`${TOPOLOGY_BASE_URL3}/europe.json`).then((response) => response.json()).then((topology) => {
       setEurope(topology);
     }).catch((error) => {
       console.error("Error loading topology:", error);
     });
   }, []);
-  const sampleData = React24.useMemo(() => [
+  const sampleData = React25.useMemo(() => [
     { id: "DE", name: "Germany", value: 56.2, population: 8324e4 },
     { id: "FR", name: "France", value: 47.3, population: 6739e4 },
     { id: "IT", name: "Italy", value: 39.1, population: 5955e4 },
@@ -3564,7 +3564,7 @@ var EuropeMap = ({
     { id: "AL", name: "Albania", value: 5.8, population: 2838e3 },
     { id: "KV", name: "Kosovo", value: 4.9, population: 1932e3 }
   ], []);
-  React24.useEffect(() => {
+  React25.useEffect(() => {
     if (data.length > 0) {
       setCountryData(data);
     } else {
@@ -3572,7 +3572,7 @@ var EuropeMap = ({
     }
     setLoading(false);
   }, [data, sampleData]);
-  const countries = React24.useMemo(() => {
+  const countries = React25.useMemo(() => {
     if (!europe) return [];
     try {
       return topojson3__namespace.feature(europe, europe.objects.default).features;
@@ -3581,7 +3581,7 @@ var EuropeMap = ({
       return [];
     }
   }, [europe]);
-  React24.useEffect(() => {
+  React25.useEffect(() => {
     if (!mapRef.current || loading || !europe || countries.length === 0 || countryData.length === 0) return;
     mapRef.current.innerHTML = "";
     const dataMap = new Map(countryData.map((d) => [d.id, d]));
@@ -3598,7 +3598,7 @@ var EuropeMap = ({
         }
       };
     });
-    const plot33 = Plot24__namespace.plot({
+    const plot34 = Plot24__namespace.plot({
       projection: {
         type: "mercator",
         domain: {
@@ -3638,7 +3638,7 @@ var EuropeMap = ({
         })))
       ]
     });
-    mapRef.current.appendChild(plot33);
+    mapRef.current.appendChild(plot34);
   }, [loading, europe, countries.length, countryData.length, colorScheme, valueLabel]);
   if (loading || !europe) {
     return /* @__PURE__ */ jsxRuntime.jsxs(card.Card, { className: "w-full", children: [
@@ -3667,10 +3667,10 @@ var EuropeMap = ({
 var EuropeMap_default = EuropeMap;
 var TOPOLOGY_BASE_URL4 = "https://ontopic-public-data.t3.storage.dev/geo";
 var ZipMap = ({ data }) => {
-  const mapRef = React24.useRef(null);
-  const [us, setUs] = React24.useState(null);
-  const [loading, setLoading] = React24.useState(true);
-  React24.useEffect(() => {
+  const mapRef = React25.useRef(null);
+  const [us, setUs] = React25.useState(null);
+  const [loading, setLoading] = React25.useState(true);
+  React25.useEffect(() => {
     fetch(`${TOPOLOGY_BASE_URL4}/us-albers-counties-10m.json`).then((response) => response.json()).then((topology) => {
       setUs(topology);
       setLoading(false);
@@ -3679,7 +3679,7 @@ var ZipMap = ({ data }) => {
       setLoading(false);
     });
   }, []);
-  React24.useEffect(() => {
+  React25.useEffect(() => {
     if (!data || data.length === 0 || !us || loading) return;
     if (mapRef.current) mapRef.current.innerHTML = "";
     const statemesh = topojson3__namespace.mesh(us, us.objects.states, (a, b) => a !== b);
@@ -3730,6 +3730,308 @@ var ZipMap = ({ data }) => {
   ] }) });
 };
 var ZipMap_default = ZipMap;
+function TimetrendDemo({ defaults, error, data, colors, label }) {
+  console.log("ttd data", data);
+  console.log("ttd defaults", defaults);
+  if (!defaults || !data) {
+    return /* @__PURE__ */ jsxRuntime.jsx("div", { children: "Loading..." });
+  }
+  const containerRef = React25.useRef(null);
+  const [containerWidth, setContainerWidth] = React25.useState(0);
+  const initialVisibleSeries = data.dataPointMetadata?.find((item) => item.id === defaults.color)?.categories || [];
+  const [visibleSeries, setVisibleSeries] = React25.useState(new Set(initialVisibleSeries));
+  const getColor = (category) => {
+    const categoryColors = colors[defaults.color] || {};
+    return categoryColors[category] || "#cccccc";
+  };
+  const toggleSeries = (series) => {
+    setVisibleSeries((prevVisibleSeries) => {
+      const updatedSet = new Set(prevVisibleSeries);
+      if (updatedSet.has(series)) {
+        updatedSet.delete(series);
+      } else {
+        updatedSet.add(series);
+      }
+      return updatedSet;
+    });
+  };
+  const { theme } = nextThemes.useTheme();
+  const USEPREZ = typeof defaults.plotBands !== "undefined" && defaults.plotBands === "PrezEra";
+  const colorPal = colors[defaults.color] || {};
+  React25.useEffect(() => {
+    if (!containerRef.current) return;
+    const updateWidth = () => {
+      if (containerRef.current) {
+        setContainerWidth(containerRef.current.offsetWidth);
+      }
+    };
+    updateWidth();
+    window.addEventListener("resize", updateWidth);
+    return () => window.removeEventListener("resize", updateWidth);
+  }, []);
+  React25.useEffect(() => {
+    if (!data || !defaults || containerWidth === 0) return;
+    const xFormedData = data.dataPoints.map((d) => ({
+      ...d,
+      year: +d["year"]
+    }));
+    const average = xFormedData.reduce(
+      (total, d) => total + d[defaults.y],
+      0
+    ) / xFormedData.length;
+    const yaxisMin = Math.max(
+      0,
+      Math.min(
+        ...xFormedData.map((d) => d[defaults.y])
+      ) - 0.2 * average
+    );
+    const yaxisMax = Math.max(
+      ...xFormedData.map((d) => d[defaults.y])
+    ) + 0.2 * average;
+    const yaxisMinEb = Math.floor(
+      Math.min(
+        ...data.dataPoints.filter((d) => d.ci_lower !== void 0).map((d) => d.ci_lower)
+      )
+    );
+    const yaxisMaxEb = Math.round(
+      Math.max(
+        ...data.dataPoints.filter((d) => d.ci_upper !== void 0).map((d) => d.ci_upper)
+      )
+    );
+    const lastValue = data.dataPointMetadata.find((d) => d.id == defaults.x).categories.slice(-1)[0];
+    const lastYearData = xFormedData.filter((d) => d[defaults.x] === lastValue).sort(
+      (a, b) => a[defaults.y] - b[defaults.y]
+    );
+    lastYearData.map(
+      (d, i, arr) => {
+        const valueDiff = i > 0 ? d[defaults.y] - arr[i - 1][defaults.y] : void 0;
+        const valueDiffRev = i < arr.length - 1 ? d[defaults.y] - arr[i + 1][defaults.y] : void 0;
+        return {
+          ...d,
+          valueDiff,
+          valueDiffRev,
+          diffSmall: valueDiff !== void 0 ? valueDiff / (yaxisMax - yaxisMin) : void 0,
+          diffSmallRev: valueDiffRev !== void 0 ? -valueDiffRev / (yaxisMax - yaxisMin) : void 0
+        };
+      }
+    );
+    const PresEras = [
+      { startYear: 1972, endYear: 1977, politicalParty: "Republican", president: "Nixon/Ford" },
+      { startYear: 1977, endYear: 1981, politicalParty: "Democratic", president: "Carter" },
+      { startYear: 1981, endYear: 1993, politicalParty: "Republican", president: "Reagan/Bush" },
+      { startYear: 1993, endYear: 2001, politicalParty: "Democratic", president: "Clinton" },
+      { startYear: 2001, endYear: 2009, politicalParty: "Republican", president: "Bush2" },
+      { startYear: 2009, endYear: 2017, politicalParty: "Democratic", president: "Obama" },
+      { startYear: 2017, endYear: 2021, politicalParty: "Republican", president: "Trump" },
+      { startYear: 2021, endYear: 2023, politicalParty: "Democratic", president: "Biden" }
+    ];
+    const dataDates = data.dataPoints.map((d) => d[defaults.x]);
+    const dataStartDate = Math.min(...dataDates);
+    const dataEndDate = Math.max(...dataDates);
+    const filteredByDate = PresEras.filter((period) => {
+      return period.endYear >= dataStartDate && period.startYear <= dataEndDate;
+    }).map((period) => {
+      return {
+        ...period,
+        startYear: Math.max(period.startYear, dataStartDate),
+        endYear: Math.min(period.endYear, dataEndDate)
+      };
+    });
+    const filteredDem = filteredByDate.filter((d) => d.politicalParty === "Democratic");
+    const filteredRep = filteredByDate.filter((d) => d.politicalParty === "Republican");
+    data.dataPointMetadata.find(
+      (item) => item.id === defaults.color
+    ).categories.map((category) => colorPal[category] || "#cccccc");
+    const filteredData = xFormedData.filter((d) => visibleSeries.has(d[defaults.color]));
+    const plotHeight = Math.min(400, containerWidth * 0.6);
+    const plot34 = Plot24__namespace.plot({
+      caption: `Source: ${data.metadata.source.name}`,
+      height: plotHeight,
+      width: containerWidth,
+      marginTop: 20,
+      marginRight: 40,
+      marginBottom: 50,
+      marginLeft: 60,
+      style: {
+        backgroundColor: "transparent",
+        overflow: "visible"
+      },
+      x: {
+        label: data.dataPointMetadata.find(
+          (item) => item.id === defaults.x
+        ).name,
+        tickFormat: (d) => `${Math.floor(d)}`,
+        labelOffset: 35
+      },
+      y: {
+        grid: true,
+        domain: error === "none" ? [yaxisMin, yaxisMax] : [yaxisMinEb, yaxisMaxEb],
+        label: data.dataPointMetadata.find(
+          (item) => item.id === defaults.y
+        ).name
+      },
+      color: {
+        type: "ordinal",
+        domain: Array.from(visibleSeries),
+        range: Array.from(visibleSeries).map((series) => getColor(series))
+      },
+      marks: [
+        USEPREZ ? Plot24__namespace.rect(filteredDem, {
+          x1: "startYear",
+          x2: "endYear",
+          y1: yaxisMinEb,
+          y2: yaxisMaxEb,
+          fillOpacity: 0.1,
+          fill: "#2987f1"
+        }) : null,
+        USEPREZ ? Plot24__namespace.rect(filteredRep, {
+          x1: "startYear",
+          x2: "endYear",
+          y1: yaxisMinEb,
+          y2: yaxisMaxEb,
+          fillOpacity: 0.1,
+          fill: "#fa5352"
+        }) : null,
+        Plot24__namespace.axisX({
+          tickSize: 5,
+          tickPadding: 5,
+          tickFormat: (d) => `${Math.floor(d)}`
+        }),
+        Plot24__namespace.axisY({
+          label: "",
+          tickFormat: data.dataPointMetadata.find(
+            (item) => item.id === defaults.y
+          ).units == "Percent" ? (d) => `${d}${data.dataPointMetadata.find(
+            (item) => item.id === defaults.y
+          ).value_suffix}` : "",
+          tickSize: 0
+        }),
+        Plot24__namespace.lineY(filteredData, {
+          x: defaults.x,
+          y: defaults.y,
+          stroke: defaults.color ? defaults.color : void 0,
+          strokeWidth: 2,
+          title: (d) => `${data.dataPointMetadata.find(
+            (item) => item.id === defaults.x
+          ).name}: ${d[defaults.x]} 
+${data.dataPointMetadata.find(
+            (item) => item.id === defaults.y
+          ).name}:
+${d[defaults.y].toFixed(2)}${data.dataPointMetadata.find(
+            (item) => item.id === defaults.y
+          ).units == "Percent" ? data.dataPointMetadata.find(
+            (item) => item.id === defaults.y
+          ).value_suffix : ""}`
+        }),
+        error === "yes" ? Plot24__namespace.ruleX(filteredData, {
+          x: defaults.x,
+          y1: "ci_lower",
+          y2: "ci_upper",
+          stroke: defaults.color ? defaults.color : void 0
+        }) : null,
+        Plot24__namespace.dot(filteredData, {
+          x: defaults.x,
+          y: defaults.y,
+          stroke: defaults.color ? defaults.color : void 0,
+          r: 4
+        }),
+        Plot24__namespace.ruleY([yaxisMinEb]),
+        ...filteredDem.map((president) => Plot24__namespace.text(
+          [{
+            x: president.startYear,
+            y: yaxisMinEb,
+            text: president.president
+          }],
+          {
+            rotate: 270,
+            x: "x",
+            y: "y",
+            text: "text",
+            dy: -2,
+            textAnchor: "start"
+          }
+        )),
+        ...filteredRep.map((president) => Plot24__namespace.text(
+          [{
+            x: president.startYear,
+            y: yaxisMinEb,
+            text: president.president
+          }],
+          {
+            rotate: 270,
+            x: "x",
+            y: "y",
+            text: "text",
+            dy: -2,
+            textAnchor: "start"
+          }
+        )),
+        Plot24__namespace.tip(
+          filteredData,
+          Plot24__namespace.pointer({
+            x: defaults.x,
+            y: defaults.y,
+            title: (d) => `${d[defaults.color]} ${d[defaults.x]}: ${d[defaults.y].toFixed(0)}${data.dataPointMetadata.find(
+              (item) => item.id === defaults.y
+            ).units == "Percent" ? data.dataPointMetadata.find(
+              (item) => item.id === defaults.y
+            ).value_suffix : ""}`,
+            fill: theme === "dark" ? "#000000" : "#FFFFFF"
+          })
+        )
+      ]
+    });
+    if (containerRef.current) {
+      containerRef.current.innerHTML = "";
+      containerRef.current.appendChild(plot34);
+    }
+  }, [data, defaults, error, containerWidth, visibleSeries, theme, colorPal]);
+  const colorsinfo = data.dataPointMetadata.find((item) => item.id === defaults.color).categories;
+  return /* @__PURE__ */ jsxRuntime.jsxs("div", { className: "w-full", children: [
+    /* @__PURE__ */ jsxRuntime.jsx("div", { className: "text-xl font-semibold mb-1", children: data.metadata.title }),
+    /* @__PURE__ */ jsxRuntime.jsx("div", { className: "text-md text-gray-600 dark:text-gray-300 mb-2", children: data.metadata.subtitle }),
+    /* @__PURE__ */ jsxRuntime.jsxs("div", { style: { display: "flex", alignItems: "center", flexWrap: "wrap", gap: "8px", marginBottom: "12px" }, children: [
+      /* @__PURE__ */ jsxRuntime.jsx("span", { className: "text-xs", children: label }),
+      colorsinfo.map((series) => /* @__PURE__ */ jsxRuntime.jsxs(
+        "div",
+        {
+          className: "legend-item text-xs cursor-pointer flex items-center",
+          onClick: () => toggleSeries(series),
+          children: [
+            /* @__PURE__ */ jsxRuntime.jsx(
+              "div",
+              {
+                className: "legend-icon mr-1 relative",
+                style: {
+                  width: "12px",
+                  height: "12px",
+                  backgroundColor: visibleSeries.has(series) ? getColor(series) : "#ccc",
+                  display: "inline-block"
+                },
+                children: !visibleSeries.has(series) && /* @__PURE__ */ jsxRuntime.jsx(
+                  "div",
+                  {
+                    style: {
+                      position: "absolute",
+                      top: 0,
+                      left: 0,
+                      right: 0,
+                      bottom: 0,
+                      background: `linear-gradient(to bottom right, transparent, black 50%, transparent)`
+                    }
+                  }
+                )
+              }
+            ),
+            /* @__PURE__ */ jsxRuntime.jsx("span", { style: { color: visibleSeries.has(series) ? "inherit" : "#ccc" }, children: series })
+          ]
+        },
+        series
+      ))
+    ] }),
+    /* @__PURE__ */ jsxRuntime.jsx("div", { ref: containerRef, className: "w-full" })
+  ] });
+}
 function TimeSeriesChart({
   data,
   metadata,
@@ -3967,8 +4269,8 @@ function TimeSeriesChart2({
   ] });
 }
 function AbortionOpinionChart({ data }) {
-  const [selectedRegion, setSelectedRegion] = React24.useState("All");
-  const [selectedEducation, setSelectedEducation] = React24.useState("All");
+  const [selectedRegion, setSelectedRegion] = React25.useState("All");
+  const [selectedEducation, setSelectedEducation] = React25.useState("All");
   const { metadata, dataPoints, dataPointMetadata } = data;
   const regions = ["All", ...dataPointMetadata.find((d) => d.id === "Census_Region")?.categories || []];
   const educationLevels = ["All", ...dataPointMetadata.find((d) => d.id === "Education")?.categories || []];
@@ -3978,7 +4280,7 @@ function AbortionOpinionChart({ data }) {
     const educationMatch = selectedEducation === "All" || point.Education === selectedEducation;
     return regionMatch && educationMatch;
   });
-  const groupedData = React24__namespace.default.useMemo(() => {
+  const groupedData = React25__namespace.default.useMemo(() => {
     const groups = {};
     filteredData.forEach((point) => {
       const key = `${point.Census_Region} - ${point.Education}`;
@@ -4489,8 +4791,8 @@ function HappinessCorrelatesPanel({ data }) {
   ] });
 }
 var LineChart3 = ({ data = [] }) => {
-  const basicRef = React24.useRef(null);
-  const errorBarsRef = React24.useRef(null);
+  const basicRef = React25.useRef(null);
+  const errorBarsRef = React25.useRef(null);
   const marijuanaData = [
     { year: 1975, value: 33.766, ci_lower: 29.2359, ci_upper: 38.296, demo_level_title: "Rarely" },
     { year: 1980, value: 39.9999, ci_lower: 33.8308, ci_upper: 46.169, demo_level_title: "Rarely" },
@@ -4531,7 +4833,7 @@ var LineChart3 = ({ data = [] }) => {
     "#6A0DAD"
     // Deep Purple for Weekly
   ];
-  React24.useEffect(() => {
+  React25.useEffect(() => {
     if (!marijuanaData || marijuanaData.length === 0) return;
     if (basicRef.current) basicRef.current.innerHTML = "";
     if (errorBarsRef.current) errorBarsRef.current.innerHTML = "";
@@ -4732,9 +5034,9 @@ var calculateStats = (data) => {
   };
 };
 var TimeSeries = ({ data }) => {
-  const [showRecessions, setShowRecessions] = React24.useState(true);
+  const [showRecessions, setShowRecessions] = React25.useState(true);
   const { theme } = nextThemes.useTheme();
-  const processedData = React24.useMemo(() => {
+  const processedData = React25.useMemo(() => {
     return data.observations.map((item, index, arr) => {
       const value = parseFloat(item.value);
       const previousValue = index > 0 ? parseFloat(arr[index - 1].value) : value;
@@ -4890,9 +5192,9 @@ var TimeRangeButton = ({ active, onClick, children }) => /* @__PURE__ */ jsxRunt
   }
 );
 var IndexChart = ({ series1, series2 }) => {
-  const [timeRange, setTimeRange] = React24.useState("MAX");
-  const [showRecessions, setShowRecessions] = React24.useState(true);
-  const [brushDomain, setBrushDomain] = React24.useState(null);
+  const [timeRange, setTimeRange] = React25.useState("MAX");
+  const [showRecessions, setShowRecessions] = React25.useState(true);
+  const [brushDomain, setBrushDomain] = React25.useState(null);
   const { theme } = nextThemes.useTheme();
   const colors = {
     series1: "#4299e1",
@@ -4919,7 +5221,7 @@ var IndexChart = ({ series1, series2 }) => {
       value: parseFloat(obs.value)
     }));
   };
-  const filteredData = React24.useMemo(() => {
+  const filteredData = React25.useMemo(() => {
     const series1Data = formatSeriesData(series1);
     const series2Data = formatSeriesData(series2);
     if (!series1Data?.length || !series2Data?.length) return [];
@@ -5187,13 +5489,13 @@ var DualAxisChart = ({
   title = "Housing Market Indicators",
   description
 }) => {
-  const [timeRange, setTimeRange] = React24.useState("MAX");
-  const [showRecessions, setShowRecessions] = React24.useState(true);
+  const [timeRange, setTimeRange] = React25.useState("MAX");
+  const [showRecessions, setShowRecessions] = React25.useState(true);
   const { theme } = nextThemes.useTheme();
   const colors = {
     series1: "#4299e1",
     series2: "#f59e0b"};
-  const filteredData = React24__namespace.default.useMemo(() => {
+  const filteredData = React25__namespace.default.useMemo(() => {
     if (!series1Data?.length || !series2Data?.length) return [];
     const now = /* @__PURE__ */ new Date();
     let startDate;
@@ -5264,7 +5566,7 @@ var DualAxisChart = ({
     }
     return null;
   };
-  const yAxis1Domain = React24__namespace.default.useMemo(() => {
+  const yAxis1Domain = React25__namespace.default.useMemo(() => {
     if (!filteredData.length) return [0, 0];
     const values = filteredData.map((item) => Number(item[series1Name])).filter(
       (value) => value !== void 0 && !isNaN(value)
@@ -5274,7 +5576,7 @@ var DualAxisChart = ({
     const margin = (max - min) * 0.1;
     return [min - margin, max + margin];
   }, [filteredData, series1Name]);
-  const yAxis2Domain = React24__namespace.default.useMemo(() => {
+  const yAxis2Domain = React25__namespace.default.useMemo(() => {
     if (!filteredData.length) return [0, 0];
     const values = filteredData.map((item) => Number(item[series2Name])).filter(
       (value) => value !== void 0 && !isNaN(value)
@@ -5480,9 +5782,9 @@ function TimeTrendDemoChart({
   demographic,
   sourceId
 }) {
-  const [visibleGroups, setVisibleGroups] = React24.useState(new Set(demographicGroups));
-  const [showCI, setShowCI] = React24.useState(false);
-  React24.useEffect(() => {
+  const [visibleGroups, setVisibleGroups] = React25.useState(new Set(demographicGroups));
+  const [showCI, setShowCI] = React25.useState(false);
+  React25.useEffect(() => {
     setVisibleGroups(new Set(demographicGroups));
     const fetchMetadata = async () => {
       if (!sourceId || !demographic) return;
@@ -5810,9 +6112,9 @@ function DemographicLineChart({
   data,
   ylabel = "Value (%)"
 }) {
-  const [activeTab, setActiveTab] = React24.useState(null);
-  const [demographicCategories, setDemographicCategories] = React24.useState([]);
-  React24__namespace.default.useEffect(() => {
+  const [activeTab, setActiveTab] = React25.useState(null);
+  const [demographicCategories, setDemographicCategories] = React25.useState([]);
+  React25__namespace.default.useEffect(() => {
     if (!data || typeof data !== "object") return;
     const categories = Object.entries(data).filter(
       ([_, categoryData]) => categoryData && typeof categoryData === "object" && Object.values(categoryData).some((value) => value !== null)
@@ -5978,9 +6280,9 @@ function DemographicDotPlot({
   data,
   ylabel = "Value (%)"
 }) {
-  const [activeTab, setActiveTab] = React24.useState(null);
-  const [demographicCategories, setDemographicCategories] = React24.useState([]);
-  React24__namespace.default.useEffect(() => {
+  const [activeTab, setActiveTab] = React25.useState(null);
+  const [demographicCategories, setDemographicCategories] = React25.useState([]);
+  React25__namespace.default.useEffect(() => {
     if (!data || typeof data !== "object") return;
     const categories = Object.entries(data).filter(
       ([_, categoryData]) => categoryData && typeof categoryData === "object" && Object.values(categoryData).some((value) => value !== null)
@@ -6095,9 +6397,9 @@ function DemographicDotPlot({
   ] });
 }
 function StateBarChart({ data }) {
-  const [sortOrder, setSortOrder] = React24.useState("desc");
-  const [searchTerm, setSearchTerm] = React24.useState("");
-  const [isExpanded, setIsExpanded] = React24.useState(false);
+  const [sortOrder, setSortOrder] = React25.useState("desc");
+  const [searchTerm, setSearchTerm] = React25.useState("");
+  const [isExpanded, setIsExpanded] = React25.useState(false);
   const sortedData = Object.entries(data.state_data).filter((entry) => entry[1].overall !== null).map(([code, data2]) => ({
     code,
     state: data2.state_name,
@@ -6176,11 +6478,11 @@ function StateBarChart({ data }) {
   ] });
 }
 var HealthScatterplot = ({ data }) => {
-  const singleRef = React24.useRef(null);
-  const regressionRef = React24.useRef(null);
-  const facetRef = React24.useRef(null);
-  const cleanData = React24.useMemo(() => data.filter((d) => d.dir2020 !== void 0), [data]);
-  React24.useEffect(() => {
+  const singleRef = React25.useRef(null);
+  const regressionRef = React25.useRef(null);
+  const facetRef = React25.useRef(null);
+  const cleanData = React25.useMemo(() => data.filter((d) => d.dir2020 !== void 0), [data]);
+  React25.useEffect(() => {
     if (!data || data.length === 0) return;
     if (singleRef.current) singleRef.current.innerHTML = "";
     if (regressionRef.current) regressionRef.current.innerHTML = "";
@@ -6483,10 +6785,10 @@ function HistogramRecharts({
   showMean = true,
   showMedian = false
 }) {
-  const histogramData = React24.useMemo(() => {
+  const histogramData = React25.useMemo(() => {
     return createHistogram(data, bins);
   }, [data, bins]);
-  const statistics = React24.useMemo(() => {
+  const statistics = React25.useMemo(() => {
     if (data.length === 0) return { mean: 0, median: 0 };
     const mean3 = data.reduce((sum, val) => sum + val, 0) / data.length;
     const sorted = [...data].sort((a, b) => a - b);
@@ -6577,7 +6879,7 @@ function ViolinPlot({
   title,
   showBox = true
 }) {
-  const { violinShapes, scatterData, yDomain } = React24.useMemo(() => {
+  const { violinShapes, scatterData, yDomain } = React25.useMemo(() => {
     const shapes = data.map((item, idx) => {
       const density3 = kernelDensity(item.values, void 0, 100);
       const maxDensity = Math.max(...density3.map((d) => d.density));
@@ -6726,6 +7028,7 @@ exports.TimeSeries = TimeSeries_default;
 exports.TimeSeriesChart = TimeSeriesChart2;
 exports.TimeSeriesIndex = TimeSeriesIndex_default;
 exports.TimeSeriesLine = TimeSeriesChart;
+exports.TimeTrendDemo = TimetrendDemo;
 exports.TimeTrendDemoChart = TimeTrendDemoChart;
 exports.ViolinPlot = ViolinPlot;
 exports.ZipMap = ZipMap_default;

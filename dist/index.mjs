@@ -1,5 +1,5 @@
-import * as React24 from 'react';
-import React24__default, { createContext, useRef, useState, useEffect, useContext, useMemo } from 'react';
+import * as React25 from 'react';
+import React25__default, { createContext, useRef, useState, useEffect, useContext, useMemo } from 'react';
 import * as Plot24 from '@observablehq/plot';
 import { jsx, jsxs, Fragment } from 'react/jsx-runtime';
 import { Download, Users, ArrowUpDown, ChevronUp, ChevronDown, Palette, DollarSign, UserCircle2, GraduationCap } from 'lucide-react';
@@ -7,9 +7,9 @@ import * as topojson3 from 'topojson-client';
 import dynamic from 'next/dynamic';
 import { Card, CardHeader, CardTitle, CardContent, CardDescription } from '@/components/ui/card';
 import { mean, median } from 'd3-array';
+import { useTheme } from 'next-themes';
 import { ResponsiveContainer, LineChart, CartesianGrid, XAxis, YAxis, Tooltip, Line, ErrorBar, BarChart as BarChart$1, Legend, Bar, Brush, ReferenceArea, Text, ScatterChart, Scatter, ReferenceLine, ComposedChart, Cell, ZAxis, Area } from 'recharts';
 import { Button } from '@/components/ui/button';
-import { useTheme } from 'next-themes';
 import { Label } from '@/components/ui/label';
 import { Switch } from '@/components/ui/switch';
 import { Tabs, TabsList, TabsTrigger, TabsContent } from '@/components/ui/tabs';
@@ -43,7 +43,7 @@ function PlotContainer({
   useEffect(() => {
     if (!containerRef.current) return;
     const finalWidth = width === "responsive" ? containerWidth : width;
-    const plot33 = Plot24.plot({
+    const plot34 = Plot24.plot({
       ...plotSpec,
       width: finalWidth,
       height
@@ -51,9 +51,9 @@ function PlotContainer({
     if (plotRef.current) {
       plotRef.current.remove();
     }
-    containerRef.current.appendChild(plot33);
-    plotRef.current = plot33;
-    onPlotCreated?.(plot33);
+    containerRef.current.appendChild(plot34);
+    plotRef.current = plot34;
+    onPlotCreated?.(plot34);
     return () => {
       if (plotRef.current) {
         plotRef.current.remove();
@@ -257,8 +257,8 @@ var StateMap = ({
     valueSuffix = "",
     valuePrefix = ""
   } = labels;
-  const containerRef = React24.useRef(null);
-  React24.useEffect(() => {
+  const containerRef = React25.useRef(null);
+  React25.useEffect(() => {
     if (!containerRef.current || !usTopoJSON || !data || data.length === 0) return;
     containerRef.current.innerHTML = "";
     const stateToValueMap = new Map(
@@ -284,7 +284,7 @@ var StateMap = ({
       usTopoJSON,
       usTopoJSON.objects.nation
     );
-    const plot33 = Plot24.plot({
+    const plot34 = Plot24.plot({
       caption,
       projection,
       color: {
@@ -321,9 +321,9 @@ var StateMap = ({
         )
       ]
     });
-    containerRef.current.appendChild(plot33);
+    containerRef.current.appendChild(plot34);
     return () => {
-      plot33.remove();
+      plot34.remove();
     };
   }, [usTopoJSON, data, width, height, title, subtitle, caption, valueSuffix, valuePrefix, colorScheme, quantiles, reverseColors, projection]);
   return /* @__PURE__ */ jsx("div", { ref: containerRef, className });
@@ -373,7 +373,7 @@ function BubbleMap({
         tip: true
       })
     ];
-    const plot33 = Plot24.plot({
+    const plot34 = Plot24.plot({
       width,
       height,
       title,
@@ -388,9 +388,9 @@ function BubbleMap({
       },
       marks
     });
-    containerRef.current.appendChild(plot33);
+    containerRef.current.appendChild(plot34);
     return () => {
-      plot33?.remove();
+      plot34?.remove();
     };
   }, [data, longitudeKey, latitudeKey, sizeKey, colorKey, nameKey, title, subtitle, fill, fillOpacity, stroke, strokeWidth, width, height, projection]);
   return /* @__PURE__ */ jsx("div", { ref: containerRef, className });
@@ -419,7 +419,7 @@ function BoxPlot({
   useEffect(() => {
     if (!containerRef.current || !data || data.length === 0) return;
     containerRef.current.innerHTML = "";
-    const plot33 = Plot24.plot({
+    const plot34 = Plot24.plot({
       width,
       height,
       marginLeft,
@@ -451,9 +451,9 @@ function BoxPlot({
         })
       ]
     });
-    containerRef.current.appendChild(plot33);
+    containerRef.current.appendChild(plot34);
     return () => {
-      plot33?.remove();
+      plot34?.remove();
     };
   }, [data, x, y, title, xLabel, yLabel, fill, fillOpacity, stroke, strokeWidth, outlierRadius, width, height, marginLeft, marginBottom, xTickRotate]);
   return /* @__PURE__ */ jsx("div", { ref: containerRef, className });
@@ -488,7 +488,7 @@ function BoxPlotGrouped({
     const middleGroupIndex = Math.ceil((groups.length - 1) / 2);
     const tickValues = categories.flatMap((cat) => `${cat}__${groups[middleGroupIndex]}`);
     const tickFormat = (d) => d.split("__")[0];
-    const plot33 = Plot24.plot({
+    const plot34 = Plot24.plot({
       width,
       height,
       marginTop: title ? 40 : 20,
@@ -526,9 +526,9 @@ function BoxPlotGrouped({
         })
       ]
     });
-    plot33.setAttribute("role", "img");
-    plot33.setAttribute("aria-label", ariaLabel);
-    containerRef.current.appendChild(plot33);
+    plot34.setAttribute("role", "img");
+    plot34.setAttribute("aria-label", ariaLabel);
+    containerRef.current.appendChild(plot34);
     return () => {
       if (containerRef.current) {
         containerRef.current.innerHTML = "";
@@ -555,7 +555,7 @@ function BoxPlotFaceted({
   useEffect(() => {
     if (!containerRef.current || !data || data.length === 0) return;
     containerRef.current.innerHTML = "";
-    const plot33 = Plot24.plot({
+    const plot34 = Plot24.plot({
       width,
       height,
       marginTop: title ? 50 : 40,
@@ -593,9 +593,9 @@ function BoxPlotFaceted({
         Plot24.frame()
       ]
     });
-    plot33.setAttribute("role", "img");
-    plot33.setAttribute("aria-label", ariaLabel);
-    containerRef.current.appendChild(plot33);
+    plot34.setAttribute("role", "img");
+    plot34.setAttribute("aria-label", ariaLabel);
+    containerRef.current.appendChild(plot34);
     return () => {
       if (containerRef.current) {
         containerRef.current.innerHTML = "";
@@ -634,7 +634,7 @@ function BoxPlotFacetedGrouped({
     const middleGroupIndex = Math.ceil((groups.length - 1) / 2);
     const tickValues = categories.flatMap((cat) => `${cat}__${groups[middleGroupIndex]}`);
     const tickFormat = (d) => d.split("__")[0];
-    const plot33 = Plot24.plot({
+    const plot34 = Plot24.plot({
       width,
       height,
       marginTop: title ? 50 : 40,
@@ -682,9 +682,9 @@ function BoxPlotFacetedGrouped({
         Plot24.frame()
       ]
     });
-    plot33.setAttribute("role", "img");
-    plot33.setAttribute("aria-label", ariaLabel);
-    containerRef.current.appendChild(plot33);
+    plot34.setAttribute("role", "img");
+    plot34.setAttribute("aria-label", ariaLabel);
+    containerRef.current.appendChild(plot34);
     return () => {
       if (containerRef.current) {
         containerRef.current.innerHTML = "";
@@ -848,7 +848,7 @@ function DistributionPlot({
         );
       }
     }
-    const plot33 = Plot24.plot({
+    const plot34 = Plot24.plot({
       width,
       height,
       marginTop: title ? 40 : 20,
@@ -866,9 +866,9 @@ function DistributionPlot({
       },
       marks
     });
-    plot33.setAttribute("role", "img");
-    plot33.setAttribute("aria-label", ariaLabel);
-    containerRef.current.appendChild(plot33);
+    plot34.setAttribute("role", "img");
+    plot34.setAttribute("aria-label", ariaLabel);
+    containerRef.current.appendChild(plot34);
     return () => {
       if (containerRef.current) {
         containerRef.current.innerHTML = "";
@@ -991,7 +991,7 @@ function RegressionPlot({
         );
       }
     }
-    const plot33 = Plot24.plot({
+    const plot34 = Plot24.plot({
       width,
       height,
       marginTop: title ? 40 : 20,
@@ -1009,9 +1009,9 @@ function RegressionPlot({
       },
       marks
     });
-    plot33.setAttribute("role", "img");
-    plot33.setAttribute("aria-label", ariaLabel);
-    containerRef.current.appendChild(plot33);
+    plot34.setAttribute("role", "img");
+    plot34.setAttribute("aria-label", ariaLabel);
+    containerRef.current.appendChild(plot34);
     if (showRSquared && !hasGroups) {
       const xMean = plotData.reduce((sum, d) => sum + d.x, 0) / plotData.length;
       const yMean = plotData.reduce((sum, d) => sum + d.y, 0) / plotData.length;
@@ -1026,7 +1026,7 @@ function RegressionPlot({
       rText.setAttribute("font-size", "14");
       rText.setAttribute("fill", "#666");
       rText.textContent = `R\xB2 = ${rSquared.toFixed(3)}`;
-      plot33.appendChild(rText);
+      plot34.appendChild(rText);
     }
     return () => {
       if (containerRef.current) {
@@ -1068,7 +1068,7 @@ function QQPlot({
     const sampleMax = Math.max(...sortedData);
     const slope = (sampleMax - sampleMin) / (maxVal - minVal);
     const intercept = sampleMin - slope * minVal;
-    const plot33 = Plot24.plot({
+    const plot34 = Plot24.plot({
       width,
       height,
       marginTop: title ? 40 : 20,
@@ -1109,9 +1109,9 @@ function QQPlot({
         })
       ]
     });
-    plot33.setAttribute("role", "img");
-    plot33.setAttribute("aria-label", ariaLabel);
-    containerRef.current.appendChild(plot33);
+    plot34.setAttribute("role", "img");
+    plot34.setAttribute("aria-label", ariaLabel);
+    containerRef.current.appendChild(plot34);
     return () => {
       if (containerRef.current) {
         containerRef.current.innerHTML = "";
@@ -1155,7 +1155,7 @@ function ResidualPlot({
       const residual = d.y - fitted;
       return { fitted, residual };
     });
-    const plot33 = Plot24.plot({
+    const plot34 = Plot24.plot({
       width,
       height,
       marginTop: title ? 40 : 20,
@@ -1188,9 +1188,9 @@ function ResidualPlot({
         })
       ]
     });
-    plot33.setAttribute("role", "img");
-    plot33.setAttribute("aria-label", ariaLabel);
-    containerRef.current.appendChild(plot33);
+    plot34.setAttribute("role", "img");
+    plot34.setAttribute("aria-label", ariaLabel);
+    containerRef.current.appendChild(plot34);
     return () => {
       if (containerRef.current) {
         containerRef.current.innerHTML = "";
@@ -1216,7 +1216,7 @@ function SwarmPlot({
   useEffect(() => {
     if (!containerRef.current || !data || data.length === 0) return;
     containerRef.current.innerHTML = "";
-    const plot33 = Plot24.plot({
+    const plot34 = Plot24.plot({
       width,
       height,
       marginTop: title ? 40 : 20,
@@ -1252,9 +1252,9 @@ function SwarmPlot({
         )
       ]
     });
-    plot33.setAttribute("role", "img");
-    plot33.setAttribute("aria-label", ariaLabel);
-    containerRef.current.appendChild(plot33);
+    plot34.setAttribute("role", "img");
+    plot34.setAttribute("aria-label", ariaLabel);
+    containerRef.current.appendChild(plot34);
     return () => {
       if (containerRef.current) {
         containerRef.current.innerHTML = "";
@@ -1281,7 +1281,7 @@ function StripPlot({
   useEffect(() => {
     if (!containerRef.current || !data || data.length === 0) return;
     containerRef.current.innerHTML = "";
-    const plot33 = Plot24.plot({
+    const plot34 = Plot24.plot({
       width,
       height,
       marginTop: title ? 40 : 20,
@@ -1313,9 +1313,9 @@ function StripPlot({
         })
       ]
     });
-    plot33.setAttribute("role", "img");
-    plot33.setAttribute("aria-label", ariaLabel);
-    containerRef.current.appendChild(plot33);
+    plot34.setAttribute("role", "img");
+    plot34.setAttribute("aria-label", ariaLabel);
+    containerRef.current.appendChild(plot34);
     return () => {
       if (containerRef.current) {
         containerRef.current.innerHTML = "";
@@ -1400,7 +1400,7 @@ function ForestPlot({
         r: 5
       })
     );
-    const plot33 = Plot24.plot({
+    const plot34 = Plot24.plot({
       width,
       height,
       marginTop: title ? 40 : 20,
@@ -1419,9 +1419,9 @@ function ForestPlot({
       },
       marks
     });
-    plot33.setAttribute("role", "img");
-    plot33.setAttribute("aria-label", ariaLabel);
-    containerRef.current.appendChild(plot33);
+    plot34.setAttribute("role", "img");
+    plot34.setAttribute("aria-label", ariaLabel);
+    containerRef.current.appendChild(plot34);
     if (showPValues) {
       sortedData.forEach((d, i) => {
         if (d.pvalue !== void 0) {
@@ -1437,7 +1437,7 @@ function ForestPlot({
             starText.setAttribute("font-size", "14");
             starText.setAttribute("fill", "#666");
             starText.textContent = stars;
-            plot33.appendChild(starText);
+            plot34.appendChild(starText);
           }
         }
       });
@@ -1466,8 +1466,8 @@ var SplitBar = ({
   marginLeft = 150,
   showValueLabels = true
 }) => {
-  const containerRef = React24.useRef(null);
-  React24.useEffect(() => {
+  const containerRef = React25.useRef(null);
+  React25.useEffect(() => {
     if (!containerRef.current || !data || data.length === 0) return;
     if (subcategories.length !== 2) {
       console.error("SplitBar requires exactly 2 subcategories");
@@ -1498,7 +1498,7 @@ var SplitBar = ({
     );
     const minValue = Math.min(...allValues);
     const maxValue = Math.max(...allValues);
-    const plot33 = Plot24.plot({
+    const plot34 = Plot24.plot({
       caption,
       style: {
         backgroundColor: "white",
@@ -1558,9 +1558,9 @@ var SplitBar = ({
         Plot24.ruleX([minValue])
       ]
     });
-    containerRef.current.appendChild(plot33);
+    containerRef.current.appendChild(plot34);
     return () => {
-      plot33.remove();
+      plot34.remove();
     };
   }, [
     data,
@@ -1614,7 +1614,7 @@ function DotPlot({
         };
       }
     }
-    const plot33 = Plot24.plot({
+    const plot34 = Plot24.plot({
       title,
       subtitle,
       style: {
@@ -1647,9 +1647,9 @@ function DotPlot({
       height,
       marginLeft
     });
-    containerRef.current.appendChild(plot33);
+    containerRef.current.appendChild(plot34);
     return () => {
-      plot33?.remove();
+      plot34?.remove();
     };
   }, [data, x, y, fill, title, subtitle, xLabel, yLabel, radius, fillOpacity, width, height, marginLeft, colorScheme, tipFormat]);
   return /* @__PURE__ */ jsx("div", { ref: containerRef, className });
@@ -1699,7 +1699,7 @@ function BarChart({
         })
       );
     }
-    const plot33 = Plot24.plot({
+    const plot34 = Plot24.plot({
       width,
       height,
       marginBottom,
@@ -1724,9 +1724,9 @@ function BarChart({
       },
       marks
     });
-    containerRef.current.appendChild(plot33);
+    containerRef.current.appendChild(plot34);
     return () => {
-      plot33?.remove();
+      plot34?.remove();
     };
   }, [data, x, y, errorY, title, subtitle, caption, xLabel, yLabel, fill, errorStroke, errorStrokeWidth, width, height, marginBottom, xTickRotate, xTickFormat, xTicks]);
   return /* @__PURE__ */ jsx("div", { ref: containerRef, className });
@@ -1818,7 +1818,7 @@ function Sparkline({
         })
       );
     }
-    const plot33 = Plot24.plot({
+    const plot34 = Plot24.plot({
       width,
       height,
       marginTop: 5,
@@ -1833,11 +1833,11 @@ function Sparkline({
       },
       marks
     });
-    plot33.setAttribute("role", "img");
-    plot33.setAttribute("aria-label", ariaLabel);
-    containerRef.current.appendChild(plot33);
+    plot34.setAttribute("role", "img");
+    plot34.setAttribute("aria-label", ariaLabel);
+    containerRef.current.appendChild(plot34);
     return () => {
-      plot33?.remove();
+      plot34?.remove();
     };
   }, [data, variant, width, height, showMinMax, positiveColor, negativeColor, neutralColor, ariaLabel]);
   return /* @__PURE__ */ jsx("div", { ref: containerRef, className });
@@ -1939,7 +1939,7 @@ function SlopeChart({
         })
       );
     }
-    const plot33 = Plot24.plot({
+    const plot34 = Plot24.plot({
       width,
       height,
       marginLeft,
@@ -1959,9 +1959,9 @@ function SlopeChart({
       },
       marks
     });
-    containerRef.current.appendChild(plot33);
+    containerRef.current.appendChild(plot34);
     return () => {
-      plot33?.remove();
+      plot34?.remove();
     };
   }, [
     data,
@@ -2068,7 +2068,7 @@ function BulletChart({
         })
       );
     }
-    const plot33 = Plot24.plot({
+    const plot34 = Plot24.plot({
       width,
       height,
       marginLeft: 100,
@@ -2086,9 +2086,9 @@ function BulletChart({
       },
       marks
     });
-    containerRef.current.appendChild(plot33);
+    containerRef.current.appendChild(plot34);
     return () => {
-      plot33?.remove();
+      plot34?.remove();
     };
   }, [title, value, target, ranges, width, height, valueColor, targetColor, showLabels]);
   return /* @__PURE__ */ jsx("div", { ref: containerRef, className });
@@ -2152,7 +2152,7 @@ function DivergingBar({
         title: (d) => `${d[categoryKey]}: ${Math.abs(d[negativeKey])}% ${negativeLabel}`
       })
     );
-    const plot33 = Plot24.plot({
+    const plot34 = Plot24.plot({
       width,
       height,
       marginLeft,
@@ -2173,9 +2173,9 @@ function DivergingBar({
       },
       marks
     });
-    containerRef.current.appendChild(plot33);
+    containerRef.current.appendChild(plot34);
     return () => {
-      plot33?.remove();
+      plot34?.remove();
     };
   }, [
     data,
@@ -2297,7 +2297,7 @@ function FacetedPlot({
         );
         break;
     }
-    const plot33 = Plot24.plot({
+    const plot34 = Plot24.plot({
       width,
       height,
       marginTop: title ? 50 : 30,
@@ -2327,9 +2327,9 @@ function FacetedPlot({
       },
       marks
     });
-    plot33.setAttribute("role", "img");
-    plot33.setAttribute("aria-label", ariaLabel);
-    containerRef.current.appendChild(plot33);
+    plot34.setAttribute("role", "img");
+    plot34.setAttribute("aria-label", ariaLabel);
+    containerRef.current.appendChild(plot34);
     return () => {
       if (containerRef.current) {
         containerRef.current.innerHTML = "";
@@ -2357,7 +2357,7 @@ var CorrelationHeatmap = ({
     };
     const xDomain = [...new Set(convertedData.map((d) => d.x))];
     const yDomain = [...new Set(convertedData.map((d) => d.y))].reverse();
-    const plot33 = Plot24.plot({
+    const plot34 = Plot24.plot({
       title,
       subtitle,
       caption,
@@ -2413,9 +2413,9 @@ var CorrelationHeatmap = ({
       width,
       height
     });
-    containerRef.current.appendChild(plot33);
+    containerRef.current.appendChild(plot34);
     return () => {
-      if (plot33) plot33.remove();
+      if (plot34) plot34.remove();
     };
   }, [data, width, height, title, subtitle, caption]);
   return /* @__PURE__ */ jsxs("div", { className: "w-full", children: [
@@ -3074,7 +3074,7 @@ function HistogramObservable({
         })
       );
     }
-    const plot33 = Plot24.plot({
+    const plot34 = Plot24.plot({
       width,
       height,
       marginLeft: 60,
@@ -3084,8 +3084,8 @@ function HistogramObservable({
       marks
     });
     chartRef.current.innerHTML = "";
-    chartRef.current.appendChild(plot33);
-    return () => plot33.remove();
+    chartRef.current.appendChild(plot34);
+    return () => plot34.remove();
   }, [data, width, height, xlabel, ylabel, bins, showMean, showMedian]);
   return /* @__PURE__ */ jsxs("div", { className: "w-full", children: [
     title && /* @__PURE__ */ jsx("h3", { className: "text-lg font-semibold mb-4", children: title }),
@@ -3355,7 +3355,7 @@ var ChoroplethMap = ({
         label: valueLabel,
         tickFormat: ".1f"
       };
-      const plot33 = Plot24.plot({
+      const plot34 = Plot24.plot({
         title,
         subtitle,
         width: 960,
@@ -3412,9 +3412,9 @@ No data available`;
         marginRight: 140
         // Space for legend
       });
-      mapRef.current.appendChild(plot33);
+      mapRef.current.appendChild(plot34);
       return () => {
-        plot33?.remove();
+        plot34?.remove();
       };
     } catch (error) {
       console.error("Error rendering choropleth map:", error);
@@ -3572,7 +3572,7 @@ var EuropeMap = ({
         }
       };
     });
-    const plot33 = Plot24.plot({
+    const plot34 = Plot24.plot({
       projection: {
         type: "mercator",
         domain: {
@@ -3612,7 +3612,7 @@ var EuropeMap = ({
         })))
       ]
     });
-    mapRef.current.appendChild(plot33);
+    mapRef.current.appendChild(plot34);
   }, [loading, europe, countries.length, countryData.length, colorScheme, valueLabel]);
   if (loading || !europe) {
     return /* @__PURE__ */ jsxs(Card, { className: "w-full", children: [
@@ -3704,6 +3704,308 @@ var ZipMap = ({ data }) => {
   ] }) });
 };
 var ZipMap_default = ZipMap;
+function TimetrendDemo({ defaults, error, data, colors, label }) {
+  console.log("ttd data", data);
+  console.log("ttd defaults", defaults);
+  if (!defaults || !data) {
+    return /* @__PURE__ */ jsx("div", { children: "Loading..." });
+  }
+  const containerRef = useRef(null);
+  const [containerWidth, setContainerWidth] = useState(0);
+  const initialVisibleSeries = data.dataPointMetadata?.find((item) => item.id === defaults.color)?.categories || [];
+  const [visibleSeries, setVisibleSeries] = useState(new Set(initialVisibleSeries));
+  const getColor = (category) => {
+    const categoryColors = colors[defaults.color] || {};
+    return categoryColors[category] || "#cccccc";
+  };
+  const toggleSeries = (series) => {
+    setVisibleSeries((prevVisibleSeries) => {
+      const updatedSet = new Set(prevVisibleSeries);
+      if (updatedSet.has(series)) {
+        updatedSet.delete(series);
+      } else {
+        updatedSet.add(series);
+      }
+      return updatedSet;
+    });
+  };
+  const { theme } = useTheme();
+  const USEPREZ = typeof defaults.plotBands !== "undefined" && defaults.plotBands === "PrezEra";
+  const colorPal = colors[defaults.color] || {};
+  useEffect(() => {
+    if (!containerRef.current) return;
+    const updateWidth = () => {
+      if (containerRef.current) {
+        setContainerWidth(containerRef.current.offsetWidth);
+      }
+    };
+    updateWidth();
+    window.addEventListener("resize", updateWidth);
+    return () => window.removeEventListener("resize", updateWidth);
+  }, []);
+  useEffect(() => {
+    if (!data || !defaults || containerWidth === 0) return;
+    const xFormedData = data.dataPoints.map((d) => ({
+      ...d,
+      year: +d["year"]
+    }));
+    const average = xFormedData.reduce(
+      (total, d) => total + d[defaults.y],
+      0
+    ) / xFormedData.length;
+    const yaxisMin = Math.max(
+      0,
+      Math.min(
+        ...xFormedData.map((d) => d[defaults.y])
+      ) - 0.2 * average
+    );
+    const yaxisMax = Math.max(
+      ...xFormedData.map((d) => d[defaults.y])
+    ) + 0.2 * average;
+    const yaxisMinEb = Math.floor(
+      Math.min(
+        ...data.dataPoints.filter((d) => d.ci_lower !== void 0).map((d) => d.ci_lower)
+      )
+    );
+    const yaxisMaxEb = Math.round(
+      Math.max(
+        ...data.dataPoints.filter((d) => d.ci_upper !== void 0).map((d) => d.ci_upper)
+      )
+    );
+    const lastValue = data.dataPointMetadata.find((d) => d.id == defaults.x).categories.slice(-1)[0];
+    const lastYearData = xFormedData.filter((d) => d[defaults.x] === lastValue).sort(
+      (a, b) => a[defaults.y] - b[defaults.y]
+    );
+    lastYearData.map(
+      (d, i, arr) => {
+        const valueDiff = i > 0 ? d[defaults.y] - arr[i - 1][defaults.y] : void 0;
+        const valueDiffRev = i < arr.length - 1 ? d[defaults.y] - arr[i + 1][defaults.y] : void 0;
+        return {
+          ...d,
+          valueDiff,
+          valueDiffRev,
+          diffSmall: valueDiff !== void 0 ? valueDiff / (yaxisMax - yaxisMin) : void 0,
+          diffSmallRev: valueDiffRev !== void 0 ? -valueDiffRev / (yaxisMax - yaxisMin) : void 0
+        };
+      }
+    );
+    const PresEras = [
+      { startYear: 1972, endYear: 1977, politicalParty: "Republican", president: "Nixon/Ford" },
+      { startYear: 1977, endYear: 1981, politicalParty: "Democratic", president: "Carter" },
+      { startYear: 1981, endYear: 1993, politicalParty: "Republican", president: "Reagan/Bush" },
+      { startYear: 1993, endYear: 2001, politicalParty: "Democratic", president: "Clinton" },
+      { startYear: 2001, endYear: 2009, politicalParty: "Republican", president: "Bush2" },
+      { startYear: 2009, endYear: 2017, politicalParty: "Democratic", president: "Obama" },
+      { startYear: 2017, endYear: 2021, politicalParty: "Republican", president: "Trump" },
+      { startYear: 2021, endYear: 2023, politicalParty: "Democratic", president: "Biden" }
+    ];
+    const dataDates = data.dataPoints.map((d) => d[defaults.x]);
+    const dataStartDate = Math.min(...dataDates);
+    const dataEndDate = Math.max(...dataDates);
+    const filteredByDate = PresEras.filter((period) => {
+      return period.endYear >= dataStartDate && period.startYear <= dataEndDate;
+    }).map((period) => {
+      return {
+        ...period,
+        startYear: Math.max(period.startYear, dataStartDate),
+        endYear: Math.min(period.endYear, dataEndDate)
+      };
+    });
+    const filteredDem = filteredByDate.filter((d) => d.politicalParty === "Democratic");
+    const filteredRep = filteredByDate.filter((d) => d.politicalParty === "Republican");
+    data.dataPointMetadata.find(
+      (item) => item.id === defaults.color
+    ).categories.map((category) => colorPal[category] || "#cccccc");
+    const filteredData = xFormedData.filter((d) => visibleSeries.has(d[defaults.color]));
+    const plotHeight = Math.min(400, containerWidth * 0.6);
+    const plot34 = Plot24.plot({
+      caption: `Source: ${data.metadata.source.name}`,
+      height: plotHeight,
+      width: containerWidth,
+      marginTop: 20,
+      marginRight: 40,
+      marginBottom: 50,
+      marginLeft: 60,
+      style: {
+        backgroundColor: "transparent",
+        overflow: "visible"
+      },
+      x: {
+        label: data.dataPointMetadata.find(
+          (item) => item.id === defaults.x
+        ).name,
+        tickFormat: (d) => `${Math.floor(d)}`,
+        labelOffset: 35
+      },
+      y: {
+        grid: true,
+        domain: error === "none" ? [yaxisMin, yaxisMax] : [yaxisMinEb, yaxisMaxEb],
+        label: data.dataPointMetadata.find(
+          (item) => item.id === defaults.y
+        ).name
+      },
+      color: {
+        type: "ordinal",
+        domain: Array.from(visibleSeries),
+        range: Array.from(visibleSeries).map((series) => getColor(series))
+      },
+      marks: [
+        USEPREZ ? Plot24.rect(filteredDem, {
+          x1: "startYear",
+          x2: "endYear",
+          y1: yaxisMinEb,
+          y2: yaxisMaxEb,
+          fillOpacity: 0.1,
+          fill: "#2987f1"
+        }) : null,
+        USEPREZ ? Plot24.rect(filteredRep, {
+          x1: "startYear",
+          x2: "endYear",
+          y1: yaxisMinEb,
+          y2: yaxisMaxEb,
+          fillOpacity: 0.1,
+          fill: "#fa5352"
+        }) : null,
+        Plot24.axisX({
+          tickSize: 5,
+          tickPadding: 5,
+          tickFormat: (d) => `${Math.floor(d)}`
+        }),
+        Plot24.axisY({
+          label: "",
+          tickFormat: data.dataPointMetadata.find(
+            (item) => item.id === defaults.y
+          ).units == "Percent" ? (d) => `${d}${data.dataPointMetadata.find(
+            (item) => item.id === defaults.y
+          ).value_suffix}` : "",
+          tickSize: 0
+        }),
+        Plot24.lineY(filteredData, {
+          x: defaults.x,
+          y: defaults.y,
+          stroke: defaults.color ? defaults.color : void 0,
+          strokeWidth: 2,
+          title: (d) => `${data.dataPointMetadata.find(
+            (item) => item.id === defaults.x
+          ).name}: ${d[defaults.x]} 
+${data.dataPointMetadata.find(
+            (item) => item.id === defaults.y
+          ).name}:
+${d[defaults.y].toFixed(2)}${data.dataPointMetadata.find(
+            (item) => item.id === defaults.y
+          ).units == "Percent" ? data.dataPointMetadata.find(
+            (item) => item.id === defaults.y
+          ).value_suffix : ""}`
+        }),
+        error === "yes" ? Plot24.ruleX(filteredData, {
+          x: defaults.x,
+          y1: "ci_lower",
+          y2: "ci_upper",
+          stroke: defaults.color ? defaults.color : void 0
+        }) : null,
+        Plot24.dot(filteredData, {
+          x: defaults.x,
+          y: defaults.y,
+          stroke: defaults.color ? defaults.color : void 0,
+          r: 4
+        }),
+        Plot24.ruleY([yaxisMinEb]),
+        ...filteredDem.map((president) => Plot24.text(
+          [{
+            x: president.startYear,
+            y: yaxisMinEb,
+            text: president.president
+          }],
+          {
+            rotate: 270,
+            x: "x",
+            y: "y",
+            text: "text",
+            dy: -2,
+            textAnchor: "start"
+          }
+        )),
+        ...filteredRep.map((president) => Plot24.text(
+          [{
+            x: president.startYear,
+            y: yaxisMinEb,
+            text: president.president
+          }],
+          {
+            rotate: 270,
+            x: "x",
+            y: "y",
+            text: "text",
+            dy: -2,
+            textAnchor: "start"
+          }
+        )),
+        Plot24.tip(
+          filteredData,
+          Plot24.pointer({
+            x: defaults.x,
+            y: defaults.y,
+            title: (d) => `${d[defaults.color]} ${d[defaults.x]}: ${d[defaults.y].toFixed(0)}${data.dataPointMetadata.find(
+              (item) => item.id === defaults.y
+            ).units == "Percent" ? data.dataPointMetadata.find(
+              (item) => item.id === defaults.y
+            ).value_suffix : ""}`,
+            fill: theme === "dark" ? "#000000" : "#FFFFFF"
+          })
+        )
+      ]
+    });
+    if (containerRef.current) {
+      containerRef.current.innerHTML = "";
+      containerRef.current.appendChild(plot34);
+    }
+  }, [data, defaults, error, containerWidth, visibleSeries, theme, colorPal]);
+  const colorsinfo = data.dataPointMetadata.find((item) => item.id === defaults.color).categories;
+  return /* @__PURE__ */ jsxs("div", { className: "w-full", children: [
+    /* @__PURE__ */ jsx("div", { className: "text-xl font-semibold mb-1", children: data.metadata.title }),
+    /* @__PURE__ */ jsx("div", { className: "text-md text-gray-600 dark:text-gray-300 mb-2", children: data.metadata.subtitle }),
+    /* @__PURE__ */ jsxs("div", { style: { display: "flex", alignItems: "center", flexWrap: "wrap", gap: "8px", marginBottom: "12px" }, children: [
+      /* @__PURE__ */ jsx("span", { className: "text-xs", children: label }),
+      colorsinfo.map((series) => /* @__PURE__ */ jsxs(
+        "div",
+        {
+          className: "legend-item text-xs cursor-pointer flex items-center",
+          onClick: () => toggleSeries(series),
+          children: [
+            /* @__PURE__ */ jsx(
+              "div",
+              {
+                className: "legend-icon mr-1 relative",
+                style: {
+                  width: "12px",
+                  height: "12px",
+                  backgroundColor: visibleSeries.has(series) ? getColor(series) : "#ccc",
+                  display: "inline-block"
+                },
+                children: !visibleSeries.has(series) && /* @__PURE__ */ jsx(
+                  "div",
+                  {
+                    style: {
+                      position: "absolute",
+                      top: 0,
+                      left: 0,
+                      right: 0,
+                      bottom: 0,
+                      background: `linear-gradient(to bottom right, transparent, black 50%, transparent)`
+                    }
+                  }
+                )
+              }
+            ),
+            /* @__PURE__ */ jsx("span", { style: { color: visibleSeries.has(series) ? "inherit" : "#ccc" }, children: series })
+          ]
+        },
+        series
+      ))
+    ] }),
+    /* @__PURE__ */ jsx("div", { ref: containerRef, className: "w-full" })
+  ] });
+}
 function TimeSeriesChart({
   data,
   metadata,
@@ -3952,7 +4254,7 @@ function AbortionOpinionChart({ data }) {
     const educationMatch = selectedEducation === "All" || point.Education === selectedEducation;
     return regionMatch && educationMatch;
   });
-  const groupedData = React24__default.useMemo(() => {
+  const groupedData = React25__default.useMemo(() => {
     const groups = {};
     filteredData.forEach((point) => {
       const key = `${point.Census_Region} - ${point.Education}`;
@@ -5167,7 +5469,7 @@ var DualAxisChart = ({
   const colors = {
     series1: "#4299e1",
     series2: "#f59e0b"};
-  const filteredData = React24__default.useMemo(() => {
+  const filteredData = React25__default.useMemo(() => {
     if (!series1Data?.length || !series2Data?.length) return [];
     const now = /* @__PURE__ */ new Date();
     let startDate;
@@ -5238,7 +5540,7 @@ var DualAxisChart = ({
     }
     return null;
   };
-  const yAxis1Domain = React24__default.useMemo(() => {
+  const yAxis1Domain = React25__default.useMemo(() => {
     if (!filteredData.length) return [0, 0];
     const values = filteredData.map((item) => Number(item[series1Name])).filter(
       (value) => value !== void 0 && !isNaN(value)
@@ -5248,7 +5550,7 @@ var DualAxisChart = ({
     const margin = (max - min) * 0.1;
     return [min - margin, max + margin];
   }, [filteredData, series1Name]);
-  const yAxis2Domain = React24__default.useMemo(() => {
+  const yAxis2Domain = React25__default.useMemo(() => {
     if (!filteredData.length) return [0, 0];
     const values = filteredData.map((item) => Number(item[series2Name])).filter(
       (value) => value !== void 0 && !isNaN(value)
@@ -5786,7 +6088,7 @@ function DemographicLineChart({
 }) {
   const [activeTab, setActiveTab] = useState(null);
   const [demographicCategories, setDemographicCategories] = useState([]);
-  React24__default.useEffect(() => {
+  React25__default.useEffect(() => {
     if (!data || typeof data !== "object") return;
     const categories = Object.entries(data).filter(
       ([_, categoryData]) => categoryData && typeof categoryData === "object" && Object.values(categoryData).some((value) => value !== null)
@@ -5954,7 +6256,7 @@ function DemographicDotPlot({
 }) {
   const [activeTab, setActiveTab] = useState(null);
   const [demographicCategories, setDemographicCategories] = useState([]);
-  React24__default.useEffect(() => {
+  React25__default.useEffect(() => {
     if (!data || typeof data !== "object") return;
     const categories = Object.entries(data).filter(
       ([_, categoryData]) => categoryData && typeof categoryData === "object" && Object.values(categoryData).some((value) => value !== null)
@@ -6654,6 +6956,6 @@ function ViolinPlot({
   ] });
 }
 
-export { AbortionOpinionChart, basic_bar_v1_default as BarChart, stat_boxplot_v1_default as BoxPlot, BoxPlotFaceted, BoxPlotFacetedGrouped, BoxPlotGrouped, geo_bubble_v1_default as BubbleMap, BulletChart, ChoroplethMap_default as ChoroplethMap, CorrelationHeatmap_default as CorrelationHeatmap, stat_demographic_bar_v1_default as DemographicBarChart, DemographicDotPlot, DemographicLineChart, stat_density_v1_default as DensityPlot, DistributionPlot, DivergingBar, basic_dot_v1_default as DotPlot, DualAxisChart_default as DualAxisChart, EuropeMap_default as EuropeMap, FacetedPlot, ForestPlot, GeoDensityMap_default as GeoDensityMap, HealthScatterplot_default as HealthScatterplot, HistogramObservable, HistogramRecharts, LineChart_default as LineChart, OddsRatio_default as OddsRatio, PcaPlot, PlotContainer, PlotExport, PlotThemeProvider, QQPlot, RegressionPlot, ResidualPlot, HappinessCorrelatesPanel as ScatterplotRegression, SlopeChart, Sparkline, stat_splitbar_v1_default as SplitBar, StateBarChart, geo_state_map_v1_default as StateMap, StripPlot, SwarmPlot, TimeSeries_default as TimeSeries, TimeSeriesChart2 as TimeSeriesChart, TimeSeriesIndex_default as TimeSeriesIndex, TimeSeriesChart as TimeSeriesLine, TimeTrendDemoChart, ViolinPlot, ZipMap_default as ZipMap, defaultDarkTheme, defaultLightTheme, usePlotTheme };
+export { AbortionOpinionChart, basic_bar_v1_default as BarChart, stat_boxplot_v1_default as BoxPlot, BoxPlotFaceted, BoxPlotFacetedGrouped, BoxPlotGrouped, geo_bubble_v1_default as BubbleMap, BulletChart, ChoroplethMap_default as ChoroplethMap, CorrelationHeatmap_default as CorrelationHeatmap, stat_demographic_bar_v1_default as DemographicBarChart, DemographicDotPlot, DemographicLineChart, stat_density_v1_default as DensityPlot, DistributionPlot, DivergingBar, basic_dot_v1_default as DotPlot, DualAxisChart_default as DualAxisChart, EuropeMap_default as EuropeMap, FacetedPlot, ForestPlot, GeoDensityMap_default as GeoDensityMap, HealthScatterplot_default as HealthScatterplot, HistogramObservable, HistogramRecharts, LineChart_default as LineChart, OddsRatio_default as OddsRatio, PcaPlot, PlotContainer, PlotExport, PlotThemeProvider, QQPlot, RegressionPlot, ResidualPlot, HappinessCorrelatesPanel as ScatterplotRegression, SlopeChart, Sparkline, stat_splitbar_v1_default as SplitBar, StateBarChart, geo_state_map_v1_default as StateMap, StripPlot, SwarmPlot, TimeSeries_default as TimeSeries, TimeSeriesChart2 as TimeSeriesChart, TimeSeriesIndex_default as TimeSeriesIndex, TimeSeriesChart as TimeSeriesLine, TimetrendDemo as TimeTrendDemo, TimeTrendDemoChart, ViolinPlot, ZipMap_default as ZipMap, defaultDarkTheme, defaultLightTheme, usePlotTheme };
 //# sourceMappingURL=index.mjs.map
 //# sourceMappingURL=index.mjs.map

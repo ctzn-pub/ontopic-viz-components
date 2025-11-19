@@ -86,5 +86,5 @@ export { default as ChoroplethMap } from './ChoroplethMap';
 export { default as EuropeMap } from './EuropeMap';
 export { default as ZipMap } from './ZipMap';
 
-// TimeTrendDemo with DemoColors dependency - needs color passed as prop
-// export { default as TimeTrendDemo } from './TimeTrendDemo';
+// TimeTrendDemo (now accepts colors as prop)
+export { default as TimeTrendDemo } from './TimeTrendDemo';

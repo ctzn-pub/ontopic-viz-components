@@ -1,11 +1,10 @@
 import React, { useEffect, useState, useRef } from 'react';
 import * as Plot from "@observablehq/plot"
 import { useTheme } from "next-themes"
-import DemoColors from "@/lib/colors/demoColors"
 
 interface TimetrendProps {
   defaults: {
-    color: keyof typeof DemoColors;
+    color: string;
     plotBands?: string;
     errorbar?: string;
     x: string;
@@ -13,7 +12,7 @@ interface TimetrendProps {
   };
   data: any;
   error: any;
-  colors: any;
+  colors: Record<string, Record<string, string>>;
   label: any;
 }
 
@@ -32,7 +31,7 @@ export default function TimetrendDemo({ defaults, error, data, colors, label }: 
   const [visibleSeries, setVisibleSeries] = useState(new Set(initialVisibleSeries));
 
   const getColor = (category: any) => {
-    const categoryColors: { [key: string]: string } = DemoColors[defaults.color] || {};
+    const categoryColors: { [key: string]: string } = colors[defaults.color] || {};
     return categoryColors[category] || "#cccccc";
   };
 
@@ -50,7 +49,7 @@ export default function TimetrendDemo({ defaults, error, data, colors, label }: 
 
   const { theme } = useTheme();
   const USEPREZ = typeof defaults.plotBands !== 'undefined' && defaults.plotBands === "PrezEra";
-  const colorPal = DemoColors[defaults.color] || {};
+  const colorPal = colors[defaults.color] || {};
 
   useEffect(() => {
     if (!containerRef.current) return;

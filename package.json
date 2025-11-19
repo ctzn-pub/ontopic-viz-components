@@ -52,11 +52,11 @@
     "directory": "packages/components"
   },
   "peerDependencies": {
+    "@observablehq/plot": "^0.6.0",
+    "lucide-react": "^0.454.0",
     "react": "^18.0.0 || ^19.0.0",
     "react-dom": "^18.0.0 || ^19.0.0",
-    "@observablehq/plot": "^0.6.0",
-    "recharts": "^2.15.0",
-    "lucide-react": "^0.454.0"
+    "recharts": "^2.15.0"
   },
   "peerDependenciesMeta": {
     "react": {
@@ -76,19 +76,20 @@
     }
   },
   "dependencies": {
+    "@ontopic/viz-components": "github:ctzn-pub/ontopic-viz-components#main",
     "@ontopic/viz-core": "git+ssh://git@github.com:ctzn-pub/ontopic-core.git#v1.0.0",
-    "topojson-client": "^3.1.0",
-    "clsx": "^2.1.0"
+    "clsx": "^2.1.0",
+    "topojson-client": "^3.1.0"
   },
   "devDependencies": {
+    "@observablehq/plot": "^0.6.17",
     "@types/node": "^20.11.0",
     "@types/react": "^18.2.48",
     "@types/react-dom": "^18.2.18",
-    "@observablehq/plot": "^0.6.17",
-    "recharts": "2.15.4",
     "lucide-react": "^0.454.0",
     "react": "^18.2.0",
     "react-dom": "^18.2.0",
+    "recharts": "2.15.4",
     "tsup": "^8.0.1",
     "typescript": "^5.3.3"
   },
