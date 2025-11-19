@@ -6,7 +6,6 @@ var jsxRuntime = require('react/jsx-runtime');
 var lucideReact = require('lucide-react');
 var topojson3 = require('topojson-client');
 var dynamic = require('next/dynamic');
-var card = require('@/components/ui/card');
 var d3Array = require('d3-array');
 var nextThemes = require('next-themes');
 
@@ -2967,12 +2966,12 @@ var OddsRatio = ({ data }) => {
   }, [data, plotData]);
   return /* @__PURE__ */ jsxRuntime.jsxs("div", { className: "space-y-6", children: [
     /* @__PURE__ */ jsxRuntime.jsx("div", { className: "mb-6", children: /* @__PURE__ */ jsxRuntime.jsx("p", { className: "text-gray-600", children: "Statistical odds ratio analysis demonstrating multiple visualization approaches. Each method emphasizes different aspects of the statistical relationships and confidence intervals." }) }),
-    /* @__PURE__ */ jsxRuntime.jsxs(card.Card, { children: [
-      /* @__PURE__ */ jsxRuntime.jsxs(card.CardHeader, { children: [
-        /* @__PURE__ */ jsxRuntime.jsx(card.CardTitle, { children: "Basic Odds Ratio Plot" }),
-        /* @__PURE__ */ jsxRuntime.jsx("p", { className: "text-sm text-muted-foreground", children: "Standard odds ratio visualization with confidence intervals" })
+    /* @__PURE__ */ jsxRuntime.jsxs("div", { className: "border rounded-lg p-6", children: [
+      /* @__PURE__ */ jsxRuntime.jsxs("div", { className: "mb-4", children: [
+        /* @__PURE__ */ jsxRuntime.jsx("h3", { className: "text-lg font-semibold", children: "Basic Odds Ratio Plot" }),
+        /* @__PURE__ */ jsxRuntime.jsx("p", { className: "text-sm text-gray-600", children: "Standard odds ratio visualization with confidence intervals" })
       ] }),
-      /* @__PURE__ */ jsxRuntime.jsxs(card.CardContent, { children: [
+      /* @__PURE__ */ jsxRuntime.jsxs("div", { children: [
         /* @__PURE__ */ jsxRuntime.jsx("div", { ref: observablePlotRef, className: "flex justify-center" }),
         /* @__PURE__ */ jsxRuntime.jsx("div", { className: "mt-4 text-sm text-gray-600", children: /* @__PURE__ */ jsxRuntime.jsxs("p", { children: [
           /* @__PURE__ */ jsxRuntime.jsx("strong", { children: "Features:" }),
@@ -2980,12 +2979,12 @@ var OddsRatio = ({ data }) => {
         ] }) })
       ] })
     ] }),
-    /* @__PURE__ */ jsxRuntime.jsxs(card.Card, { children: [
-      /* @__PURE__ */ jsxRuntime.jsxs(card.CardHeader, { children: [
-        /* @__PURE__ */ jsxRuntime.jsx(card.CardTitle, { children: "Forest Plot Analysis" }),
-        /* @__PURE__ */ jsxRuntime.jsx("p", { className: "text-sm text-muted-foreground", children: "Advanced forest plot with enhanced statistical visualization features" })
+    /* @__PURE__ */ jsxRuntime.jsxs("div", { className: "border rounded-lg p-6", children: [
+      /* @__PURE__ */ jsxRuntime.jsxs("div", { className: "mb-4", children: [
+        /* @__PURE__ */ jsxRuntime.jsx("h3", { className: "text-lg font-semibold", children: "Forest Plot Analysis" }),
+        /* @__PURE__ */ jsxRuntime.jsx("p", { className: "text-sm text-gray-600", children: "Advanced forest plot with enhanced statistical visualization features" })
       ] }),
-      /* @__PURE__ */ jsxRuntime.jsxs(card.CardContent, { children: [
+      /* @__PURE__ */ jsxRuntime.jsxs("div", { children: [
         /* @__PURE__ */ jsxRuntime.jsx("div", { ref: forestPlotRef, className: "flex justify-center" }),
         /* @__PURE__ */ jsxRuntime.jsx("div", { className: "mt-4 text-sm text-gray-600", children: /* @__PURE__ */ jsxRuntime.jsxs("p", { children: [
           /* @__PURE__ */ jsxRuntime.jsx("strong", { children: "Features:" }),
@@ -2993,12 +2992,12 @@ var OddsRatio = ({ data }) => {
         ] }) })
       ] })
     ] }),
-    /* @__PURE__ */ jsxRuntime.jsxs(card.Card, { children: [
-      /* @__PURE__ */ jsxRuntime.jsxs(card.CardHeader, { children: [
-        /* @__PURE__ */ jsxRuntime.jsx(card.CardTitle, { children: "Precision-Weighted Dot Plot" }),
-        /* @__PURE__ */ jsxRuntime.jsx("p", { className: "text-sm text-muted-foreground", children: "Dot plot where marker size reflects statistical precision (inverse of confidence interval width)" })
+    /* @__PURE__ */ jsxRuntime.jsxs("div", { className: "border rounded-lg p-6", children: [
+      /* @__PURE__ */ jsxRuntime.jsxs("div", { className: "mb-4", children: [
+        /* @__PURE__ */ jsxRuntime.jsx("h3", { className: "text-lg font-semibold", children: "Precision-Weighted Dot Plot" }),
+        /* @__PURE__ */ jsxRuntime.jsx("p", { className: "text-sm text-gray-600", children: "Dot plot where marker size reflects statistical precision (inverse of confidence interval width)" })
       ] }),
-      /* @__PURE__ */ jsxRuntime.jsxs(card.CardContent, { children: [
+      /* @__PURE__ */ jsxRuntime.jsxs("div", { children: [
         /* @__PURE__ */ jsxRuntime.jsx("div", { ref: dotPlotRef, className: "flex justify-center" }),
         /* @__PURE__ */ jsxRuntime.jsx("div", { className: "mt-4 text-sm text-gray-600", children: /* @__PURE__ */ jsxRuntime.jsxs("p", { children: [
           /* @__PURE__ */ jsxRuntime.jsx("strong", { children: "Features:" }),
@@ -3192,22 +3191,22 @@ var DensityPlot = ({ data }) => {
   }, [data, mentalHealthData, cleanData]);
   return /* @__PURE__ */ jsxRuntime.jsxs("div", { className: "space-y-6", children: [
     /* @__PURE__ */ jsxRuntime.jsx("div", { className: "mb-6", children: /* @__PURE__ */ jsxRuntime.jsx("p", { className: "text-gray-600", children: "Density plot analysis showing the distribution patterns of health metrics across counties. These visualizations reveal the shape, spread, and central tendencies of population health indicators." }) }),
-    /* @__PURE__ */ jsxRuntime.jsxs(card.Card, { children: [
-      /* @__PURE__ */ jsxRuntime.jsxs(card.CardHeader, { children: [
-        /* @__PURE__ */ jsxRuntime.jsx(card.CardTitle, { children: "Single Distribution" }),
-        /* @__PURE__ */ jsxRuntime.jsx("p", { className: "text-sm text-muted-foreground", children: "Distribution of mental health rates across counties" })
+    /* @__PURE__ */ jsxRuntime.jsxs("div", { className: "border rounded-lg p-6", children: [
+      /* @__PURE__ */ jsxRuntime.jsxs("div", { className: "mb-4", children: [
+        /* @__PURE__ */ jsxRuntime.jsx("h3", { className: "text-lg font-semibold", children: "Single Distribution" }),
+        /* @__PURE__ */ jsxRuntime.jsx("p", { className: "text-sm text-gray-600", children: "Distribution of mental health rates across counties" })
       ] }),
-      /* @__PURE__ */ jsxRuntime.jsxs(card.CardContent, { children: [
+      /* @__PURE__ */ jsxRuntime.jsxs("div", { children: [
         /* @__PURE__ */ jsxRuntime.jsx("div", { ref: singleRef, className: "flex justify-center" }),
         /* @__PURE__ */ jsxRuntime.jsx("p", { className: "text-sm text-gray-600 mt-4", children: "This histogram shows the frequency distribution of mental health prevalence rates, with both area and line representations of the density. The combined area and line approach emphasizes both the overall distribution shape and precise bin boundaries." })
       ] })
     ] }),
-    /* @__PURE__ */ jsxRuntime.jsxs(card.Card, { children: [
-      /* @__PURE__ */ jsxRuntime.jsxs(card.CardHeader, { children: [
-        /* @__PURE__ */ jsxRuntime.jsx(card.CardTitle, { children: "Overlay Comparison" }),
-        /* @__PURE__ */ jsxRuntime.jsx("p", { className: "text-sm text-muted-foreground", children: "Comparison of obesity rate distributions by demographic category" })
+    /* @__PURE__ */ jsxRuntime.jsxs("div", { className: "border rounded-lg p-6", children: [
+      /* @__PURE__ */ jsxRuntime.jsxs("div", { className: "mb-4", children: [
+        /* @__PURE__ */ jsxRuntime.jsx("h3", { className: "text-lg font-semibold", children: "Overlay Comparison" }),
+        /* @__PURE__ */ jsxRuntime.jsx("p", { className: "text-sm text-gray-600", children: "Comparison of obesity rate distributions by demographic category" })
       ] }),
-      /* @__PURE__ */ jsxRuntime.jsxs(card.CardContent, { children: [
+      /* @__PURE__ */ jsxRuntime.jsxs("div", { children: [
         /* @__PURE__ */ jsxRuntime.jsx("div", { ref: overlayRef, className: "flex justify-center" }),
         /* @__PURE__ */ jsxRuntime.jsx("p", { className: "text-sm text-gray-600 mt-4", children: "Multiple density curves overlaid to compare obesity rate distributions across different demographic groups, allowing for direct comparison of patterns. This approach reveals differences in distribution shapes, central tendencies, and spread between groups." })
       ] })

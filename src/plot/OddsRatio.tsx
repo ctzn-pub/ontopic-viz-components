@@ -2,7 +2,6 @@
 
 import React, { useRef, useEffect, useMemo } from 'react';
 import * as Plot from "@observablehq/plot";
-import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 
 interface OddsRatioData {
   odds_ratios: Record<string, number>;
@@ -267,53 +266,53 @@ const OddsRatio: React.FC<OddsRatioProps> = ({ data }) => {
         </p>
       </div>
 
-      <Card>
-        <CardHeader>
-          <CardTitle>Basic Odds Ratio Plot</CardTitle>
-          <p className="text-sm text-muted-foreground">
+      <div className="border rounded-lg p-6">
+        <div className="mb-4">
+          <h3 className="text-lg font-semibold">Basic Odds Ratio Plot</h3>
+          <p className="text-sm text-gray-600">
             Standard odds ratio visualization with confidence intervals
           </p>
-        </CardHeader>
-        <CardContent>
+        </div>
+        <div>
           <div ref={observablePlotRef} className="flex justify-center" />
           <div className="mt-4 text-sm text-gray-600">
             <p><strong>Features:</strong> Logarithmic scale, conditional coloring (red &lt; 1, green &gt; 1),
             interactive tooltips, confidence interval lines, null effect reference line</p>
           </div>
-        </CardContent>
-      </Card>
+        </div>
+      </div>
 
-      <Card>
-        <CardHeader>
-          <CardTitle>Forest Plot Analysis</CardTitle>
-          <p className="text-sm text-muted-foreground">
+      <div className="border rounded-lg p-6">
+        <div className="mb-4">
+          <h3 className="text-lg font-semibold">Forest Plot Analysis</h3>
+          <p className="text-sm text-gray-600">
             Advanced forest plot with enhanced statistical visualization features
           </p>
-        </CardHeader>
-        <CardContent>
+        </div>
+        <div>
           <div ref={forestPlotRef} className="flex justify-center" />
           <div className="mt-4 text-sm text-gray-600">
             <p><strong>Features:</strong> Square markers for point estimates, confidence interval rectangles,
             end caps on intervals, enhanced color coding, traditional forest plot layout</p>
           </div>
-        </CardContent>
-      </Card>
+        </div>
+      </div>
 
-      <Card>
-        <CardHeader>
-          <CardTitle>Precision-Weighted Dot Plot</CardTitle>
-          <p className="text-sm text-muted-foreground">
+      <div className="border rounded-lg p-6">
+        <div className="mb-4">
+          <h3 className="text-lg font-semibold">Precision-Weighted Dot Plot</h3>
+          <p className="text-sm text-gray-600">
             Dot plot where marker size reflects statistical precision (inverse of confidence interval width)
           </p>
-        </CardHeader>
-        <CardContent>
+        </div>
+        <div>
           <div ref={dotPlotRef} className="flex justify-center" />
           <div className="mt-4 text-sm text-gray-600">
             <p><strong>Features:</strong> Size-encoded precision, larger dots indicate more precise estimates,
             confidence interval lines, statistical significance visual weighting</p>
           </div>
-        </CardContent>
-      </Card>
+        </div>
+      </div>
 
       <div className="mt-6 p-4 bg-gray-50 rounded-lg">
         <h3 className="font-semibold mb-2">Statistical Visualization Techniques</h3>

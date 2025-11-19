@@ -13,7 +13,6 @@ import {
   Legend,
   Brush 
 } from 'recharts';
-import { Card, CardHeader, CardTitle, CardContent } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
 import { Grid3X3 } from 'lucide-react';
 import { useTheme } from 'next-themes';
@@ -208,14 +207,14 @@ const IndexChart: React.FC<IndexChartProps> = ({ series1, series2 }) => {
   };
 
   return (
-    <Card className="w-full bg-background shadow-lg rounded-lg border-border">
-      <CardHeader className="pb-0">
+    <div className="w-full bg-background shadow-lg rounded-lg border">
+      <div className="pb-0 p-6">
         <div className="flex flex-col md:flex-row justify-between items-start space-y-4 md:space-y-0 md:space-x-4">
           <div>
-            <CardTitle className="text-2xl font-bold text-foreground">
+            <h3 className="text-2xl font-bold text-foreground">
               Index Chart
-            </CardTitle>
-            <div className="text-muted-foreground text-sm mt-2">
+            </h3>
+            <div className="text-gray-600 text-sm mt-2">
               {series1.title} vs {series2.title}
             </div>
           </div>
@@ -233,8 +232,8 @@ const IndexChart: React.FC<IndexChartProps> = ({ series1, series2 }) => {
             </div>
           </div>
         </div>
-      </CardHeader>
-      <CardContent>
+      </div>
+      <div className="p-6 pt-0">
         <div className="h-[500px]">
           <ResponsiveContainer width="100%" height="100%">
             <LineChart
@@ -334,8 +333,8 @@ const IndexChart: React.FC<IndexChartProps> = ({ series1, series2 }) => {
             </LineChart>
           </ResponsiveContainer>
         </div>
-      </CardContent>
-    </Card>
+      </div>
+    </div>
   );
 };
 
@@ -353,7 +352,7 @@ const SeriesComparison: React.FC<SeriesComparisonProps> = ({
         series2={series2}
       />
       {description && (
-        <div className="mt-4 text-sm text-muted-foreground">
+        <div className="mt-4 text-sm text-gray-600">
           <p>{description}</p>
         </div>
       )}

@@ -18,12 +18,6 @@ import {
     Palette,
     LucideIcon,
 } from 'lucide-react';
-import {
-    Card,
-    CardContent,
-    CardHeader,
-    CardTitle,
-} from '@/components/ui/card';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 
 interface DataPoint {
@@ -141,23 +135,23 @@ export default function DemographicLineChart({
 
     if (demographicCategories.length === 0) {
         return (
-            <Card>
-                <CardContent className="p-6">
-                    <p className="text-muted-foreground">No demographic data available</p>
-                </CardContent>
-            </Card>
+            <div className="border rounded-lg p-6">
+                <div>
+                    <p className="text-gray-600">No demographic data available</p>
+                </div>
+            </div>
         );
     }
 
     return (
-        <Card>
-            <CardHeader>
-                <CardTitle className="flex items-center gap-2">
+        <div className="border rounded-lg p-6">
+            <div className="mb-4">
+                <h3 className="text-lg font-semibold flex items-center gap-2">
                     <Users className="w-5 h-5" />
                     Demographic Line Chart with Error Bars
-                </CardTitle>
-            </CardHeader>
-            <CardContent>
+                </h3>
+            </div>
+            <div>
                 <Tabs value={activeTab || undefined} onValueChange={setActiveTab}>
                     <TabsList className="grid w-full" style={{ gridTemplateColumns: `repeat(${demographicCategories.length}, 1fr)` }}>
                         {demographicCategories.map((category) => {
@@ -231,13 +225,13 @@ export default function DemographicLineChart({
                                 </LineChart>
                             </div>
 
-                            <p className="text-sm text-muted-foreground text-center">
+                            <p className="text-sm text-gray-600 text-center">
                                 Error bars represent 95% confidence intervals
                             </p>
                         </TabsContent>
                     ))}
                 </Tabs>
-            </CardContent>
-        </Card>
+            </div>
+        </div>
     );
 }

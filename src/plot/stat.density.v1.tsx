@@ -2,7 +2,6 @@
 
 import React, { useRef, useEffect, useMemo } from 'react';
 import * as Plot from "@observablehq/plot";
-import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 
 interface DensityDataPoint {
   OBESITY_AdjPrev?: number;
@@ -111,39 +110,39 @@ export const DensityPlot: React.FC<DensityPlotProps> = ({ data }) => {
         </p>
       </div>
 
-      <Card>
-        <CardHeader>
-          <CardTitle>Single Distribution</CardTitle>
-          <p className="text-sm text-muted-foreground">
+      <div className="border rounded-lg p-6">
+        <div className="mb-4">
+          <h3 className="text-lg font-semibold">Single Distribution</h3>
+          <p className="text-sm text-gray-600">
             Distribution of mental health rates across counties
           </p>
-        </CardHeader>
-        <CardContent>
+        </div>
+        <div>
           <div ref={singleRef} className="flex justify-center" />
           <p className="text-sm text-gray-600 mt-4">
             This histogram shows the frequency distribution of mental health prevalence rates,
             with both area and line representations of the density. The combined area and line approach
             emphasizes both the overall distribution shape and precise bin boundaries.
           </p>
-        </CardContent>
-      </Card>
+        </div>
+      </div>
 
-      <Card>
-        <CardHeader>
-          <CardTitle>Overlay Comparison</CardTitle>
-          <p className="text-sm text-muted-foreground">
+      <div className="border rounded-lg p-6">
+        <div className="mb-4">
+          <h3 className="text-lg font-semibold">Overlay Comparison</h3>
+          <p className="text-sm text-gray-600">
             Comparison of obesity rate distributions by demographic category
           </p>
-        </CardHeader>
-        <CardContent>
+        </div>
+        <div>
           <div ref={overlayRef} className="flex justify-center" />
           <p className="text-sm text-gray-600 mt-4">
             Multiple density curves overlaid to compare obesity rate distributions across
             different demographic groups, allowing for direct comparison of patterns. This approach
             reveals differences in distribution shapes, central tendencies, and spread between groups.
           </p>
-        </CardContent>
-      </Card>
+        </div>
+      </div>
 
       <div className="mt-6 p-4 bg-gray-50 rounded-lg">
         <h3 className="font-semibold mb-2">Density Plot techniques</h3>

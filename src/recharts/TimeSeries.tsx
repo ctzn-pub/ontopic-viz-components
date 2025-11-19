@@ -1,7 +1,6 @@
 'use client' 
 import React, { useState, useEffect, useMemo } from 'react';
 import { LineChart, Line, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer, ReferenceLine, ReferenceArea, Brush } from 'recharts';
-import { Card, CardHeader, CardTitle, CardContent } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
 import { TrendingUp, TrendingDown, Grid3X3 } from 'lucide-react';
 import { useTheme } from 'next-themes';
@@ -166,20 +165,20 @@ const TimeSeries: React.FC<TimeSeriesProps> = ({ data }) => {
   };
 
   return (
-    <Card className="w-full bg-background shadow-lg rounded-lg border-border">
-      <CardHeader className="pb-4">
+    <div className="w-full bg-background shadow-lg rounded-lg border">
+      <div className="pb-4 p-6">
         <div className="flex flex-col md:flex-row justify-between items-start space-y-4 md:space-y-0 md:space-x-4">
           <div>
-            <CardTitle className="text-2xl font-bold text-foreground">
+            <h3 className="text-2xl font-bold text-foreground">
               {data.short_title || data.title.split(':')[0]}
-            </CardTitle>
-            <p className="text-sm text-muted-foreground mt-1">
+            </h3>
+            <p className="text-sm text-gray-600 mt-1">
               {data.title}
             </p>
           </div>
         </div>
-      </CardHeader>
-      <CardContent>
+      </div>
+      <div className="p-6 pt-0">
         <div className="h-[400px]">
           <ResponsiveContainer width="100%" height="100%">
             <LineChart
@@ -245,11 +244,11 @@ const TimeSeries: React.FC<TimeSeriesProps> = ({ data }) => {
                 />
               ))}
             </LineChart>
-            
+
           </ResponsiveContainer>
         </div>
-      </CardContent>
-    </Card>
+      </div>
+    </div>
   );
 };
 

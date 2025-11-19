@@ -5,7 +5,6 @@ import { jsx, jsxs } from 'react/jsx-runtime';
 import { Download } from 'lucide-react';
 import * as topojson3 from 'topojson-client';
 import dynamic from 'next/dynamic';
-import { Card, CardHeader, CardTitle, CardContent } from '@/components/ui/card';
 import { mean, median } from 'd3-array';
 import { useTheme } from 'next-themes';
 
@@ -2941,12 +2940,12 @@ var OddsRatio = ({ data }) => {
   }, [data, plotData]);
   return /* @__PURE__ */ jsxs("div", { className: "space-y-6", children: [
     /* @__PURE__ */ jsx("div", { className: "mb-6", children: /* @__PURE__ */ jsx("p", { className: "text-gray-600", children: "Statistical odds ratio analysis demonstrating multiple visualization approaches. Each method emphasizes different aspects of the statistical relationships and confidence intervals." }) }),
-    /* @__PURE__ */ jsxs(Card, { children: [
-      /* @__PURE__ */ jsxs(CardHeader, { children: [
-        /* @__PURE__ */ jsx(CardTitle, { children: "Basic Odds Ratio Plot" }),
-        /* @__PURE__ */ jsx("p", { className: "text-sm text-muted-foreground", children: "Standard odds ratio visualization with confidence intervals" })
+    /* @__PURE__ */ jsxs("div", { className: "border rounded-lg p-6", children: [
+      /* @__PURE__ */ jsxs("div", { className: "mb-4", children: [
+        /* @__PURE__ */ jsx("h3", { className: "text-lg font-semibold", children: "Basic Odds Ratio Plot" }),
+        /* @__PURE__ */ jsx("p", { className: "text-sm text-gray-600", children: "Standard odds ratio visualization with confidence intervals" })
       ] }),
-      /* @__PURE__ */ jsxs(CardContent, { children: [
+      /* @__PURE__ */ jsxs("div", { children: [
         /* @__PURE__ */ jsx("div", { ref: observablePlotRef, className: "flex justify-center" }),
         /* @__PURE__ */ jsx("div", { className: "mt-4 text-sm text-gray-600", children: /* @__PURE__ */ jsxs("p", { children: [
           /* @__PURE__ */ jsx("strong", { children: "Features:" }),
@@ -2954,12 +2953,12 @@ var OddsRatio = ({ data }) => {
         ] }) })
       ] })
     ] }),
-    /* @__PURE__ */ jsxs(Card, { children: [
-      /* @__PURE__ */ jsxs(CardHeader, { children: [
-        /* @__PURE__ */ jsx(CardTitle, { children: "Forest Plot Analysis" }),
-        /* @__PURE__ */ jsx("p", { className: "text-sm text-muted-foreground", children: "Advanced forest plot with enhanced statistical visualization features" })
+    /* @__PURE__ */ jsxs("div", { className: "border rounded-lg p-6", children: [
+      /* @__PURE__ */ jsxs("div", { className: "mb-4", children: [
+        /* @__PURE__ */ jsx("h3", { className: "text-lg font-semibold", children: "Forest Plot Analysis" }),
+        /* @__PURE__ */ jsx("p", { className: "text-sm text-gray-600", children: "Advanced forest plot with enhanced statistical visualization features" })
       ] }),
-      /* @__PURE__ */ jsxs(CardContent, { children: [
+      /* @__PURE__ */ jsxs("div", { children: [
         /* @__PURE__ */ jsx("div", { ref: forestPlotRef, className: "flex justify-center" }),
         /* @__PURE__ */ jsx("div", { className: "mt-4 text-sm text-gray-600", children: /* @__PURE__ */ jsxs("p", { children: [
           /* @__PURE__ */ jsx("strong", { children: "Features:" }),
@@ -2967,12 +2966,12 @@ var OddsRatio = ({ data }) => {
         ] }) })
       ] })
     ] }),
-    /* @__PURE__ */ jsxs(Card, { children: [
-      /* @__PURE__ */ jsxs(CardHeader, { children: [
-        /* @__PURE__ */ jsx(CardTitle, { children: "Precision-Weighted Dot Plot" }),
-        /* @__PURE__ */ jsx("p", { className: "text-sm text-muted-foreground", children: "Dot plot where marker size reflects statistical precision (inverse of confidence interval width)" })
+    /* @__PURE__ */ jsxs("div", { className: "border rounded-lg p-6", children: [
+      /* @__PURE__ */ jsxs("div", { className: "mb-4", children: [
+        /* @__PURE__ */ jsx("h3", { className: "text-lg font-semibold", children: "Precision-Weighted Dot Plot" }),
+        /* @__PURE__ */ jsx("p", { className: "text-sm text-gray-600", children: "Dot plot where marker size reflects statistical precision (inverse of confidence interval width)" })
       ] }),
-      /* @__PURE__ */ jsxs(CardContent, { children: [
+      /* @__PURE__ */ jsxs("div", { children: [
         /* @__PURE__ */ jsx("div", { ref: dotPlotRef, className: "flex justify-center" }),
         /* @__PURE__ */ jsx("div", { className: "mt-4 text-sm text-gray-600", children: /* @__PURE__ */ jsxs("p", { children: [
           /* @__PURE__ */ jsx("strong", { children: "Features:" }),
@@ -3166,22 +3165,22 @@ var DensityPlot = ({ data }) => {
   }, [data, mentalHealthData, cleanData]);
   return /* @__PURE__ */ jsxs("div", { className: "space-y-6", children: [
     /* @__PURE__ */ jsx("div", { className: "mb-6", children: /* @__PURE__ */ jsx("p", { className: "text-gray-600", children: "Density plot analysis showing the distribution patterns of health metrics across counties. These visualizations reveal the shape, spread, and central tendencies of population health indicators." }) }),
-    /* @__PURE__ */ jsxs(Card, { children: [
-      /* @__PURE__ */ jsxs(CardHeader, { children: [
-        /* @__PURE__ */ jsx(CardTitle, { children: "Single Distribution" }),
-        /* @__PURE__ */ jsx("p", { className: "text-sm text-muted-foreground", children: "Distribution of mental health rates across counties" })
+    /* @__PURE__ */ jsxs("div", { className: "border rounded-lg p-6", children: [
+      /* @__PURE__ */ jsxs("div", { className: "mb-4", children: [
+        /* @__PURE__ */ jsx("h3", { className: "text-lg font-semibold", children: "Single Distribution" }),
+        /* @__PURE__ */ jsx("p", { className: "text-sm text-gray-600", children: "Distribution of mental health rates across counties" })
       ] }),
-      /* @__PURE__ */ jsxs(CardContent, { children: [
+      /* @__PURE__ */ jsxs("div", { children: [
         /* @__PURE__ */ jsx("div", { ref: singleRef, className: "flex justify-center" }),
         /* @__PURE__ */ jsx("p", { className: "text-sm text-gray-600 mt-4", children: "This histogram shows the frequency distribution of mental health prevalence rates, with both area and line representations of the density. The combined area and line approach emphasizes both the overall distribution shape and precise bin boundaries." })
       ] })
     ] }),
-    /* @__PURE__ */ jsxs(Card, { children: [
-      /* @__PURE__ */ jsxs(CardHeader, { children: [
-        /* @__PURE__ */ jsx(CardTitle, { children: "Overlay Comparison" }),
-        /* @__PURE__ */ jsx("p", { className: "text-sm text-muted-foreground", children: "Comparison of obesity rate distributions by demographic category" })
+    /* @__PURE__ */ jsxs("div", { className: "border rounded-lg p-6", children: [
+      /* @__PURE__ */ jsxs("div", { className: "mb-4", children: [
+        /* @__PURE__ */ jsx("h3", { className: "text-lg font-semibold", children: "Overlay Comparison" }),
+        /* @__PURE__ */ jsx("p", { className: "text-sm text-gray-600", children: "Comparison of obesity rate distributions by demographic category" })
       ] }),
-      /* @__PURE__ */ jsxs(CardContent, { children: [
+      /* @__PURE__ */ jsxs("div", { children: [
         /* @__PURE__ */ jsx("div", { ref: overlayRef, className: "flex justify-center" }),
         /* @__PURE__ */ jsx("p", { className: "text-sm text-gray-600 mt-4", children: "Multiple density curves overlaid to compare obesity rate distributions across different demographic groups, allowing for direct comparison of patterns. This approach reveals differences in distribution shapes, central tendencies, and spread between groups." })
       ] })

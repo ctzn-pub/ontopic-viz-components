@@ -1,7 +1,6 @@
 'use client'
 
 import React, { useState } from 'react';
-import { Card, CardHeader, CardTitle, CardContent } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
 import { LineChart, Line, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer, ReferenceArea, Legend, Brush } from 'recharts';
 import { useTheme } from 'next-themes';
@@ -188,11 +187,11 @@ const DualAxisChart: React.FC<DualAxisChartProps> = ({
 
 
   return (
-    <Card className="w-full bg-background shadow-lg rounded-lg border-border">
-      <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
-        <CardTitle className="text-base font-medium">
+    <div className="w-full bg-background shadow-lg rounded-lg border">
+      <div className="flex flex-row items-center justify-between space-y-0 pb-2 p-6">
+        <h3 className="text-base font-medium">
           {title}
-        </CardTitle>
+        </h3>
         <div className="flex items-center space-x-2">
           {timeRanges.map((range) => (
             <TimeRangeButton
@@ -204,11 +203,11 @@ const DualAxisChart: React.FC<DualAxisChartProps> = ({
             </TimeRangeButton>
           ))}
         </div>
-      </CardHeader>
-      
-      <CardContent>
+      </div>
+
+      <div className="p-6 pt-0">
         {description && (
-          <p className="text-sm text-muted-foreground mb-6">{description}</p>
+          <p className="text-sm text-gray-600 mb-6">{description}</p>
         )}
         <div className="h-96">
           <ResponsiveContainer width="100%" height="100%">
@@ -325,8 +324,8 @@ const DualAxisChart: React.FC<DualAxisChartProps> = ({
             </LineChart>
           </ResponsiveContainer>
         </div>
-      </CardContent>
-    </Card>
+      </div>
+    </div>
   );
 };
 

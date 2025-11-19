@@ -2,7 +2,6 @@
 
 import React, { useRef, useEffect, useMemo } from 'react';
 import * as Plot from "@observablehq/plot";
-import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 
 interface LineChartProps {
   data?: any[];
@@ -201,37 +200,37 @@ const LineChart: React.FC<LineChartProps> = ({ data = [] }) => {
         </p>
       </div>
 
-      <Card>
-        <CardHeader>
-          <CardTitle>Basic Trend Lines</CardTitle>
-          <p className="text-sm text-muted-foreground">
+      <div className="border rounded-lg p-6">
+        <div className="mb-4">
+          <h3 className="text-lg font-semibold">Basic Trend Lines</h3>
+          <p className="text-sm text-gray-600">
             Clean line chart showing support trends by church attendance frequency
           </p>
-        </CardHeader>
-        <CardContent>
+        </div>
+        <div>
           <div ref={basicRef} className="flex justify-center" style={{ minHeight: '400px' }} />
           <p className="text-sm text-gray-600 mt-4">
             This simplified view shows the clear trend patterns: those who rarely attend church show the highest and fastest-growing support,
             while those who attend weekly show the lowest but steadily increasing support over time.
           </p>
-        </CardContent>
-      </Card>
+        </div>
+      </div>
 
-      <Card>
-        <CardHeader>
-          <CardTitle>Trends with Error Bars</CardTitle>
-          <p className="text-sm text-muted-foreground">
+      <div className="border rounded-lg p-6">
+        <div className="mb-4">
+          <h3 className="text-lg font-semibold">Trends with Error Bars</h3>
+          <p className="text-sm text-gray-600">
             Complete analysis including confidence intervals showing statistical uncertainty
           </p>
-        </CardHeader>
-        <CardContent>
+        </div>
+        <div>
           <div ref={errorBarsRef} className="flex justify-center" style={{ minHeight: '400px' }} />
           <p className="text-sm text-gray-600 mt-4">
             The error bars show 95% confidence intervals around each estimate. Larger error bars indicate greater statistical uncertainty,
             often due to smaller sample sizes. This matches the original Observable Framework visualization design.
           </p>
-        </CardContent>
-      </Card>
+        </div>
+      </div>
 
       <div className="mt-6 p-4 bg-gray-50 rounded-lg">
         <h3 className="font-semibold mb-2">Key Findings</h3>

@@ -2,7 +2,6 @@ import { ResponsiveContainer, LineChart, CartesianGrid, XAxis, YAxis, Tooltip, L
 import { jsx, jsxs, Fragment } from 'react/jsx-runtime';
 import React5, { useState, useRef, useEffect, useMemo } from 'react';
 import * as Plot2 from '@observablehq/plot';
-import { Card, CardHeader, CardTitle, CardContent } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
 import { useTheme } from 'next-themes';
 import { Label } from '@/components/ui/label';
@@ -938,22 +937,22 @@ var LineChart3 = ({ data = [] }) => {
   }, []);
   return /* @__PURE__ */ jsxs("div", { className: "space-y-6", children: [
     /* @__PURE__ */ jsx("div", { className: "mb-6", children: /* @__PURE__ */ jsx("p", { className: "text-gray-600", children: "Analysis of public opinion on marijuana legalization from the General Social Survey (1975-2022). Shows how attitudes vary by church attendance frequency, with confidence intervals showing statistical uncertainty." }) }),
-    /* @__PURE__ */ jsxs(Card, { children: [
-      /* @__PURE__ */ jsxs(CardHeader, { children: [
-        /* @__PURE__ */ jsx(CardTitle, { children: "Basic Trend Lines" }),
-        /* @__PURE__ */ jsx("p", { className: "text-sm text-muted-foreground", children: "Clean line chart showing support trends by church attendance frequency" })
+    /* @__PURE__ */ jsxs("div", { className: "border rounded-lg p-6", children: [
+      /* @__PURE__ */ jsxs("div", { className: "mb-4", children: [
+        /* @__PURE__ */ jsx("h3", { className: "text-lg font-semibold", children: "Basic Trend Lines" }),
+        /* @__PURE__ */ jsx("p", { className: "text-sm text-gray-600", children: "Clean line chart showing support trends by church attendance frequency" })
       ] }),
-      /* @__PURE__ */ jsxs(CardContent, { children: [
+      /* @__PURE__ */ jsxs("div", { children: [
         /* @__PURE__ */ jsx("div", { ref: basicRef, className: "flex justify-center", style: { minHeight: "400px" } }),
         /* @__PURE__ */ jsx("p", { className: "text-sm text-gray-600 mt-4", children: "This simplified view shows the clear trend patterns: those who rarely attend church show the highest and fastest-growing support, while those who attend weekly show the lowest but steadily increasing support over time." })
       ] })
     ] }),
-    /* @__PURE__ */ jsxs(Card, { children: [
-      /* @__PURE__ */ jsxs(CardHeader, { children: [
-        /* @__PURE__ */ jsx(CardTitle, { children: "Trends with Error Bars" }),
-        /* @__PURE__ */ jsx("p", { className: "text-sm text-muted-foreground", children: "Complete analysis including confidence intervals showing statistical uncertainty" })
+    /* @__PURE__ */ jsxs("div", { className: "border rounded-lg p-6", children: [
+      /* @__PURE__ */ jsxs("div", { className: "mb-4", children: [
+        /* @__PURE__ */ jsx("h3", { className: "text-lg font-semibold", children: "Trends with Error Bars" }),
+        /* @__PURE__ */ jsx("p", { className: "text-sm text-gray-600", children: "Complete analysis including confidence intervals showing statistical uncertainty" })
       ] }),
-      /* @__PURE__ */ jsxs(CardContent, { children: [
+      /* @__PURE__ */ jsxs("div", { children: [
         /* @__PURE__ */ jsx("div", { ref: errorBarsRef, className: "flex justify-center", style: { minHeight: "400px" } }),
         /* @__PURE__ */ jsx("p", { className: "text-sm text-gray-600 mt-4", children: "The error bars show 95% confidence intervals around each estimate. Larger error bars indicate greater statistical uncertainty, often due to smaller sample sizes. This matches the original Observable Framework visualization design." })
       ] })
@@ -1069,12 +1068,12 @@ var TimeSeries = ({ data }) => {
       ] })
     ] });
   };
-  return /* @__PURE__ */ jsxs(Card, { className: "w-full bg-background shadow-lg rounded-lg border-border", children: [
-    /* @__PURE__ */ jsx(CardHeader, { className: "pb-4", children: /* @__PURE__ */ jsx("div", { className: "flex flex-col md:flex-row justify-between items-start space-y-4 md:space-y-0 md:space-x-4", children: /* @__PURE__ */ jsxs("div", { children: [
-      /* @__PURE__ */ jsx(CardTitle, { className: "text-2xl font-bold text-foreground", children: data.short_title || data.title.split(":")[0] }),
-      /* @__PURE__ */ jsx("p", { className: "text-sm text-muted-foreground mt-1", children: data.title })
+  return /* @__PURE__ */ jsxs("div", { className: "w-full bg-background shadow-lg rounded-lg border", children: [
+    /* @__PURE__ */ jsx("div", { className: "pb-4 p-6", children: /* @__PURE__ */ jsx("div", { className: "flex flex-col md:flex-row justify-between items-start space-y-4 md:space-y-0 md:space-x-4", children: /* @__PURE__ */ jsxs("div", { children: [
+      /* @__PURE__ */ jsx("h3", { className: "text-2xl font-bold text-foreground", children: data.short_title || data.title.split(":")[0] }),
+      /* @__PURE__ */ jsx("p", { className: "text-sm text-gray-600 mt-1", children: data.title })
     ] }) }) }),
-    /* @__PURE__ */ jsx(CardContent, { children: /* @__PURE__ */ jsx("div", { className: "h-[400px]", children: /* @__PURE__ */ jsx(ResponsiveContainer, { width: "100%", height: "100%", children: /* @__PURE__ */ jsxs(
+    /* @__PURE__ */ jsx("div", { className: "p-6 pt-0", children: /* @__PURE__ */ jsx("div", { className: "h-[400px]", children: /* @__PURE__ */ jsx(ResponsiveContainer, { width: "100%", height: "100%", children: /* @__PURE__ */ jsxs(
       LineChart,
       {
         data: filteredData,
@@ -1272,11 +1271,11 @@ var IndexChart = ({ series1, series2 }) => {
     }
     return null;
   };
-  return /* @__PURE__ */ jsxs(Card, { className: "w-full bg-background shadow-lg rounded-lg border-border", children: [
-    /* @__PURE__ */ jsx(CardHeader, { className: "pb-0", children: /* @__PURE__ */ jsxs("div", { className: "flex flex-col md:flex-row justify-between items-start space-y-4 md:space-y-0 md:space-x-4", children: [
+  return /* @__PURE__ */ jsxs("div", { className: "w-full bg-background shadow-lg rounded-lg border", children: [
+    /* @__PURE__ */ jsx("div", { className: "pb-0 p-6", children: /* @__PURE__ */ jsxs("div", { className: "flex flex-col md:flex-row justify-between items-start space-y-4 md:space-y-0 md:space-x-4", children: [
       /* @__PURE__ */ jsxs("div", { children: [
-        /* @__PURE__ */ jsx(CardTitle, { className: "text-2xl font-bold text-foreground", children: "Index Chart" }),
-        /* @__PURE__ */ jsxs("div", { className: "text-muted-foreground text-sm mt-2", children: [
+        /* @__PURE__ */ jsx("h3", { className: "text-2xl font-bold text-foreground", children: "Index Chart" }),
+        /* @__PURE__ */ jsxs("div", { className: "text-gray-600 text-sm mt-2", children: [
           series1.title,
           " vs ",
           series2.title
@@ -1292,7 +1291,7 @@ var IndexChart = ({ series1, series2 }) => {
         range
       )) }) })
     ] }) }),
-    /* @__PURE__ */ jsx(CardContent, { children: /* @__PURE__ */ jsx("div", { className: "h-[500px]", children: /* @__PURE__ */ jsx(ResponsiveContainer, { width: "100%", height: "100%", children: /* @__PURE__ */ jsxs(
+    /* @__PURE__ */ jsx("div", { className: "p-6 pt-0", children: /* @__PURE__ */ jsx("div", { className: "h-[500px]", children: /* @__PURE__ */ jsx(ResponsiveContainer, { width: "100%", height: "100%", children: /* @__PURE__ */ jsxs(
       LineChart,
       {
         data: filteredData,
@@ -1433,7 +1432,7 @@ var SeriesComparison = ({
         series2
       }
     ),
-    description && /* @__PURE__ */ jsx("div", { className: "mt-4 text-sm text-muted-foreground", children: /* @__PURE__ */ jsx("p", { children: description }) })
+    description && /* @__PURE__ */ jsx("div", { className: "mt-4 text-sm text-gray-600", children: /* @__PURE__ */ jsx("p", { children: description }) })
   ] });
 };
 var TimeSeriesIndex_default = SeriesComparison;
@@ -1565,9 +1564,9 @@ var DualAxisChart = ({
     const margin = (max - min) * 0.1;
     return [min - margin, max + margin];
   }, [filteredData, series2Name]);
-  return /* @__PURE__ */ jsxs(Card, { className: "w-full bg-background shadow-lg rounded-lg border-border", children: [
-    /* @__PURE__ */ jsxs(CardHeader, { className: "flex flex-row items-center justify-between space-y-0 pb-2", children: [
-      /* @__PURE__ */ jsx(CardTitle, { className: "text-base font-medium", children: title }),
+  return /* @__PURE__ */ jsxs("div", { className: "w-full bg-background shadow-lg rounded-lg border", children: [
+    /* @__PURE__ */ jsxs("div", { className: "flex flex-row items-center justify-between space-y-0 pb-2 p-6", children: [
+      /* @__PURE__ */ jsx("h3", { className: "text-base font-medium", children: title }),
       /* @__PURE__ */ jsx("div", { className: "flex items-center space-x-2", children: timeRanges.map((range) => /* @__PURE__ */ jsx(
         TimeRangeButton2,
         {
@@ -1578,8 +1577,8 @@ var DualAxisChart = ({
         range
       )) })
     ] }),
-    /* @__PURE__ */ jsxs(CardContent, { children: [
-      description && /* @__PURE__ */ jsx("p", { className: "text-sm text-muted-foreground mb-6", children: description }),
+    /* @__PURE__ */ jsxs("div", { className: "p-6 pt-0", children: [
+      description && /* @__PURE__ */ jsx("p", { className: "text-sm text-gray-600 mb-6", children: description }),
       /* @__PURE__ */ jsx("div", { className: "h-96", children: /* @__PURE__ */ jsx(ResponsiveContainer, { width: "100%", height: "100%", children: /* @__PURE__ */ jsxs(
         LineChart,
         {
@@ -2122,14 +2121,14 @@ function DemographicLineChart({
     }
   }, [data, activeTab]);
   if (demographicCategories.length === 0) {
-    return /* @__PURE__ */ jsx(Card, { children: /* @__PURE__ */ jsx(CardContent, { className: "p-6", children: /* @__PURE__ */ jsx("p", { className: "text-muted-foreground", children: "No demographic data available" }) }) });
+    return /* @__PURE__ */ jsx("div", { className: "border rounded-lg p-6", children: /* @__PURE__ */ jsx("div", { children: /* @__PURE__ */ jsx("p", { className: "text-gray-600", children: "No demographic data available" }) }) });
   }
-  return /* @__PURE__ */ jsxs(Card, { children: [
-    /* @__PURE__ */ jsx(CardHeader, { children: /* @__PURE__ */ jsxs(CardTitle, { className: "flex items-center gap-2", children: [
+  return /* @__PURE__ */ jsxs("div", { className: "border rounded-lg p-6", children: [
+    /* @__PURE__ */ jsx("div", { className: "mb-4", children: /* @__PURE__ */ jsxs("h3", { className: "text-lg font-semibold flex items-center gap-2", children: [
       /* @__PURE__ */ jsx(Users, { className: "w-5 h-5" }),
       "Demographic Line Chart with Error Bars"
     ] }) }),
-    /* @__PURE__ */ jsx(CardContent, { children: /* @__PURE__ */ jsxs(Tabs, { value: activeTab || void 0, onValueChange: setActiveTab, children: [
+    /* @__PURE__ */ jsx("div", { children: /* @__PURE__ */ jsxs(Tabs, { value: activeTab || void 0, onValueChange: setActiveTab, children: [
       /* @__PURE__ */ jsx(TabsList, { className: "grid w-full", style: { gridTemplateColumns: `repeat(${demographicCategories.length}, 1fr)` }, children: demographicCategories.map((category) => {
         const Icon = category.icon;
         return /* @__PURE__ */ jsxs(TabsTrigger, { value: category.key, children: [
@@ -2211,7 +2210,7 @@ function DemographicLineChart({
             ]
           }
         ) }),
-        /* @__PURE__ */ jsx("p", { className: "text-sm text-muted-foreground text-center", children: "Error bars represent 95% confidence intervals" })
+        /* @__PURE__ */ jsx("p", { className: "text-sm text-gray-600 text-center", children: "Error bars represent 95% confidence intervals" })
       ] }, category.key))
     ] }) })
   ] });
@@ -2290,14 +2289,14 @@ function DemographicDotPlot({
     }
   }, [data, activeTab]);
   if (demographicCategories.length === 0) {
-    return /* @__PURE__ */ jsx(Card, { children: /* @__PURE__ */ jsx(CardContent, { className: "p-6", children: /* @__PURE__ */ jsx("p", { className: "text-muted-foreground", children: "No demographic data available" }) }) });
+    return /* @__PURE__ */ jsx("div", { className: "border rounded-lg p-6", children: /* @__PURE__ */ jsx("div", { children: /* @__PURE__ */ jsx("p", { className: "text-gray-600", children: "No demographic data available" }) }) });
   }
-  return /* @__PURE__ */ jsxs(Card, { children: [
-    /* @__PURE__ */ jsx(CardHeader, { children: /* @__PURE__ */ jsxs(CardTitle, { className: "flex items-center gap-2", children: [
+  return /* @__PURE__ */ jsxs("div", { className: "border rounded-lg p-6", children: [
+    /* @__PURE__ */ jsx("div", { className: "mb-4", children: /* @__PURE__ */ jsxs("h3", { className: "text-lg font-semibold flex items-center gap-2", children: [
       /* @__PURE__ */ jsx(Users, { className: "w-5 h-5" }),
       "Demographic Dot Plot with Error Bars"
     ] }) }),
-    /* @__PURE__ */ jsx(CardContent, { children: /* @__PURE__ */ jsxs(Tabs, { value: activeTab || void 0, onValueChange: setActiveTab, children: [
+    /* @__PURE__ */ jsx("div", { children: /* @__PURE__ */ jsxs(Tabs, { value: activeTab || void 0, onValueChange: setActiveTab, children: [
       /* @__PURE__ */ jsx(TabsList, { className: "grid w-full", style: { gridTemplateColumns: `repeat(${demographicCategories.length}, 1fr)` }, children: demographicCategories.map((category) => {
         const Icon = category.icon;
         return /* @__PURE__ */ jsxs(TabsTrigger, { value: category.key, children: [
@@ -2370,7 +2369,7 @@ function DemographicDotPlot({
             ]
           }
         ) }),
-        /* @__PURE__ */ jsx("p", { className: "text-sm text-muted-foreground text-center", children: "Error bars represent 95% confidence intervals" })
+        /* @__PURE__ */ jsx("p", { className: "text-sm text-gray-600 text-center", children: "Error bars represent 95% confidence intervals" })
       ] }, category.key))
     ] }) })
   ] });
@@ -2601,32 +2600,32 @@ Population: ${d.population?.toLocaleString()}`,
   }, [data, cleanData]);
   return /* @__PURE__ */ jsxs("div", { className: "space-y-6", children: [
     /* @__PURE__ */ jsx("div", { className: "mb-6", children: /* @__PURE__ */ jsx("p", { className: "text-gray-600", children: "Scatterplot analysis exploring relationships between county-level health indicators. Each visualization reveals different aspects of the obesity-diabetes correlation using various analytical approaches." }) }),
-    /* @__PURE__ */ jsxs(Card, { children: [
-      /* @__PURE__ */ jsxs(CardHeader, { children: [
-        /* @__PURE__ */ jsx(CardTitle, { children: "Basic Scatterplot" }),
-        /* @__PURE__ */ jsx("p", { className: "text-sm text-muted-foreground", children: "Simple scatter plot showing the relationship between obesity and diabetes rates" })
+    /* @__PURE__ */ jsxs("div", { className: "border rounded-lg p-6", children: [
+      /* @__PURE__ */ jsxs("div", { className: "mb-4", children: [
+        /* @__PURE__ */ jsx("h3", { className: "text-lg font-semibold", children: "Basic Scatterplot" }),
+        /* @__PURE__ */ jsx("p", { className: "text-sm text-gray-600", children: "Simple scatter plot showing the relationship between obesity and diabetes rates" })
       ] }),
-      /* @__PURE__ */ jsxs(CardContent, { children: [
+      /* @__PURE__ */ jsxs("div", { children: [
         /* @__PURE__ */ jsx("div", { ref: singleRef, className: "flex justify-center" }),
         /* @__PURE__ */ jsx("p", { className: "text-sm text-gray-600 mt-4", children: "Each point represents a county. Point size reflects population, and color indicates demographic grouping. The clear clustering pattern suggests a strong positive relationship between these health metrics." })
       ] })
     ] }),
-    /* @__PURE__ */ jsxs(Card, { children: [
-      /* @__PURE__ */ jsxs(CardHeader, { children: [
-        /* @__PURE__ */ jsx(CardTitle, { children: "Regression Analysis" }),
-        /* @__PURE__ */ jsx("p", { className: "text-sm text-muted-foreground", children: "Same data with linear regression line showing the overall trend" })
+    /* @__PURE__ */ jsxs("div", { className: "border rounded-lg p-6", children: [
+      /* @__PURE__ */ jsxs("div", { className: "mb-4", children: [
+        /* @__PURE__ */ jsx("h3", { className: "text-lg font-semibold", children: "Regression Analysis" }),
+        /* @__PURE__ */ jsx("p", { className: "text-sm text-gray-600", children: "Same data with linear regression line showing the overall trend" })
       ] }),
-      /* @__PURE__ */ jsxs(CardContent, { children: [
+      /* @__PURE__ */ jsxs("div", { children: [
         /* @__PURE__ */ jsx("div", { ref: regressionRef, className: "flex justify-center" }),
         /* @__PURE__ */ jsx("p", { className: "text-sm text-gray-600 mt-4", children: "The orange regression line shows the positive correlation between obesity and diabetes rates across counties. The linear trend confirms the strong association between these health conditions at the population level." })
       ] })
     ] }),
-    /* @__PURE__ */ jsxs(Card, { children: [
-      /* @__PURE__ */ jsxs(CardHeader, { children: [
-        /* @__PURE__ */ jsx(CardTitle, { children: "Faceted Analysis" }),
-        /* @__PURE__ */ jsx("p", { className: "text-sm text-muted-foreground", children: "Separate panels for each demographic category with individual regression lines" })
+    /* @__PURE__ */ jsxs("div", { className: "border rounded-lg p-6", children: [
+      /* @__PURE__ */ jsxs("div", { className: "mb-4", children: [
+        /* @__PURE__ */ jsx("h3", { className: "text-lg font-semibold", children: "Faceted Analysis" }),
+        /* @__PURE__ */ jsx("p", { className: "text-sm text-gray-600", children: "Separate panels for each demographic category with individual regression lines" })
       ] }),
-      /* @__PURE__ */ jsxs(CardContent, { children: [
+      /* @__PURE__ */ jsxs("div", { children: [
         /* @__PURE__ */ jsx("div", { ref: facetRef, className: "flex justify-center" }),
         /* @__PURE__ */ jsx("p", { className: "text-sm text-gray-600 mt-4", children: "Faceted view allows comparison of obesity-diabetes relationships across different demographic groups, each with its own regression line. This reveals how the correlation strength may vary by population characteristics." })
       ] })

@@ -2,7 +2,6 @@
 
 import React, { useRef, useEffect, useMemo } from 'react';
 import * as Plot from "@observablehq/plot";
-import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 
 interface HealthDataPoint {
   OBESITY_AdjPrev: number;
@@ -177,53 +176,53 @@ const HealthScatterplot: React.FC<HealthScatterplotProps> = ({ data }) => {
         </p>
       </div>
 
-      <Card>
-        <CardHeader>
-          <CardTitle>Basic Scatterplot</CardTitle>
-          <p className="text-sm text-muted-foreground">
+      <div className="border rounded-lg p-6">
+        <div className="mb-4">
+          <h3 className="text-lg font-semibold">Basic Scatterplot</h3>
+          <p className="text-sm text-gray-600">
             Simple scatter plot showing the relationship between obesity and diabetes rates
           </p>
-        </CardHeader>
-        <CardContent>
+        </div>
+        <div>
           <div ref={singleRef} className="flex justify-center" />
           <p className="text-sm text-gray-600 mt-4">
             Each point represents a county. Point size reflects population, and color indicates demographic grouping.
             The clear clustering pattern suggests a strong positive relationship between these health metrics.
           </p>
-        </CardContent>
-      </Card>
+        </div>
+      </div>
 
-      <Card>
-        <CardHeader>
-          <CardTitle>Regression Analysis</CardTitle>
-          <p className="text-sm text-muted-foreground">
+      <div className="border rounded-lg p-6">
+        <div className="mb-4">
+          <h3 className="text-lg font-semibold">Regression Analysis</h3>
+          <p className="text-sm text-gray-600">
             Same data with linear regression line showing the overall trend
           </p>
-        </CardHeader>
-        <CardContent>
+        </div>
+        <div>
           <div ref={regressionRef} className="flex justify-center" />
           <p className="text-sm text-gray-600 mt-4">
             The orange regression line shows the positive correlation between obesity and diabetes rates across counties.
             The linear trend confirms the strong association between these health conditions at the population level.
           </p>
-        </CardContent>
-      </Card>
+        </div>
+      </div>
 
-      <Card>
-        <CardHeader>
-          <CardTitle>Faceted Analysis</CardTitle>
-          <p className="text-sm text-muted-foreground">
+      <div className="border rounded-lg p-6">
+        <div className="mb-4">
+          <h3 className="text-lg font-semibold">Faceted Analysis</h3>
+          <p className="text-sm text-gray-600">
             Separate panels for each demographic category with individual regression lines
           </p>
-        </CardHeader>
-        <CardContent>
+        </div>
+        <div>
           <div ref={facetRef} className="flex justify-center" />
           <p className="text-sm text-gray-600 mt-4">
             Faceted view allows comparison of obesity-diabetes relationships across different demographic groups,
             each with its own regression line. This reveals how the correlation strength may vary by population characteristics.
           </p>
-        </CardContent>
-      </Card>
+        </div>
+      </div>
 
       <div className="mt-6 p-4 bg-gray-50 rounded-lg">
         <h3 className="font-semibold mb-2">Scatterplot Techniques</h3>
