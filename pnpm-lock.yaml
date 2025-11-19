@@ -26,6 +26,9 @@ importers:
 
   packages/components:
     dependencies:
+      '@ontopic/viz-components':
+        specifier: github:ctzn-pub/ontopic-viz-components#main
+        version: git+https://git@github.com:ctzn-pub/ontopic-viz-components.git#5f7cb46917a626674a66a08088fbb7ab2c933230(@observablehq/plot@0.6.17)(lucide-react@0.454.0(react@18.3.1))(react-dom@18.3.1(react@18.3.1))(react@18.3.1)(recharts@2.15.4(react-dom@18.3.1(react@18.3.1))(react@18.3.1))
       '@ontopic/viz-core':
         specifier: git+ssh://git@github.com:ctzn-pub/ontopic-core.git#v1.0.0
         version: git+https://git@github.com:ctzn-pub/ontopic-core.git#9449866481389c649feb631c196c9d6a49536800
@@ -48,9 +51,6 @@ importers:
       '@types/react-dom':
         specifier: ^18.2.18
         version: 18.3.7(@types/react@18.3.27)
-      '@types/topojson-client':
-        specifier: ^3.1.5
-        version: 3.1.5
       lucide-react:
         specifier: ^0.454.0
         version: 0.454.0(react@18.3.1)
@@ -285,6 +285,16 @@ packages:
       react-dom: ^18.0.0 || ^19.0.0
       recharts: ^2.15.0
 
+  '@ontopic/viz-components@git+https://git@github.com:ctzn-pub/ontopic-viz-components.git#5f7cb46917a626674a66a08088fbb7ab2c933230':
+    resolution: {commit: 5f7cb46917a626674a66a08088fbb7ab2c933230, repo: git@github.com:ctzn-pub/ontopic-viz-components.git, type: git}
+    version: 1.0.0
+    peerDependencies:
+      '@observablehq/plot': ^0.6.0
+      lucide-react: ^0.454.0
+      react: ^18.0.0 || ^19.0.0
+      react-dom: ^18.0.0 || ^19.0.0
+      recharts: ^2.15.0
+
   '@ontopic/viz-core@git+https://git@github.com:ctzn-pub/ontopic-core.git#9449866481389c649feb631c196c9d6a49536800':
     resolution: {commit: 9449866481389c649feb631c196c9d6a49536800, repo: git@github.com:ctzn-pub/ontopic-core.git, type: git}
     version: 1.0.0
@@ -433,9 +443,6 @@ packages:
   '@types/estree@1.0.8':
     resolution: {integrity: sha512-dWHzHa2WqEXI/O1E9OjrocMTKJl2mSrEolh1Iomrv6U+JuNwaHXsXx9bLu5gG7BUWFIN0skIQJQ/L1rIex4X6w==}
 
-  '@types/geojson@7946.0.16':
-    resolution: {integrity: sha512-6C8nqWur3j98U6+lXDfTUWIfgvZU+EumvpHKcYjujKH7woYyLj2sUmff0tRhrqM7BohUw7Pz3ZB1jj2gW9Fvmg==}
-
   '@types/node@20.19.25':
     resolution: {integrity: sha512-ZsJzA5thDQMSQO788d7IocwwQbI8B5OPzmqNvpf3NY/+MHDAS759Wo0gd2WQeXYt5AAAQjzcrTVC6SKCuYgoCQ==}
 
@@ -449,12 +456,6 @@ packages:
 
   '@types/react@18.3.27':
     resolution: {integrity: sha512-cisd7gxkzjBKU2GgdYrTdtQx1SORymWyaAFhaxQPK9bYO9ot3Y5OikQRvY0VYQtvwjeQnizCINJAenh/V7MK2w==}
-
-  '@types/topojson-client@3.1.5':
-    resolution: {integrity: sha512-C79rySTyPxnQNNguTZNI1Ct4D7IXgvyAs3p9HPecnl6mNrJ5+UhvGNYcZfpROYV2lMHI48kJPxwR+F9C6c7nmw==}
-
-  '@types/topojson-specification@1.0.5':
-    resolution: {integrity: sha512-C7KvcQh+C2nr6Y2Ub4YfgvWvWCgP2nOQMtfhlnwsRL4pYmmwzBS7HclGiS87eQfDOU/DLQpX6GEscviaz4yLIQ==}
 
   acorn@8.15.0:
     resolution: {integrity: sha512-NZyJarBfL7nWwIq+FDL6Zp/yHEhePMNnnJ0y3qfieCrmNvYct8uvtiV41UvlSe6apAfk0fY1FbWx+NwfmpvtTg==}
@@ -1158,6 +1159,17 @@ snapshots:
       recharts: 2.15.4(react-dom@18.3.1(react@18.3.1))(react@18.3.1)
       topojson-client: 3.1.0
 
+  '@ontopic/viz-components@git+https://git@github.com:ctzn-pub/ontopic-viz-components.git#5f7cb46917a626674a66a08088fbb7ab2c933230(@observablehq/plot@0.6.17)(lucide-react@0.454.0(react@18.3.1))(react-dom@18.3.1(react@18.3.1))(react@18.3.1)(recharts@2.15.4(react-dom@18.3.1(react@18.3.1))(react@18.3.1))':
+    dependencies:
+      '@observablehq/plot': 0.6.17
+      '@ontopic/viz-core': git+https://git@github.com:ctzn-pub/ontopic-core.git#9449866481389c649feb631c196c9d6a49536800
+      clsx: 2.1.1
+      lucide-react: 0.454.0(react@18.3.1)
+      react: 18.3.1
+      react-dom: 18.3.1(react@18.3.1)
+      recharts: 2.15.4(react-dom@18.3.1(react@18.3.1))(react@18.3.1)
+      topojson-client: 3.1.0
+
   '@ontopic/viz-core@git+https://git@github.com:ctzn-pub/ontopic-core.git#9449866481389c649feb631c196c9d6a49536800':
     dependencies:
       zod: 3.25.76
@@ -1257,8 +1269,6 @@ snapshots:
 
   '@types/estree@1.0.8': {}
 
-  '@types/geojson@7946.0.16': {}
-
   '@types/node@20.19.25':
     dependencies:
       undici-types: 6.21.0
@@ -1273,15 +1283,6 @@ snapshots:
     dependencies:
       '@types/prop-types': 15.7.15
       csstype: 3.2.3
-
-  '@types/topojson-client@3.1.5':
-    dependencies:
-      '@types/geojson': 7946.0.16
-      '@types/topojson-specification': 1.0.5
-
-  '@types/topojson-specification@1.0.5':
-    dependencies:
-      '@types/geojson': 7946.0.16
 
   acorn@8.15.0: {}
 
