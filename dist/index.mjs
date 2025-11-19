@@ -4547,6 +4547,31 @@ var REGION_COLORS = {
   Other: "#22c55e"
   // green-500
 };
+function normalizeReligion(s) {
+  const v = (s || "").toLowerCase();
+  if (v.includes("catholic")) return "Catholic";
+  if (v.includes("protestant")) return "Protestant";
+  if (v.includes("orthodox")) return "Orthodox";
+  if (v.includes("muslim") || v.includes("islam")) return "Muslim";
+  return "Other";
+}
+function prepareEssRows(rows, opts = {}) {
+  const { happinessKey = "happiness" } = opts;
+  return rows.map((r) => {
+    const region = normalizeReligion(r.religion);
+    const happiness = Number(r[happinessKey]);
+    return {
+      name: r.cntry,
+      religion: r.religion || region,
+      region,
+      population_m: Number(r.population ?? 0),
+      happiness: isFinite(happiness) ? happiness : NaN,
+      hdi: Number(r.hdi),
+      gdp: Number(r.gdp),
+      education: Number(r.education)
+    };
+  });
+}
 function fmtGDP(v) {
   if (!isFinite(v)) return "";
   if (Math.abs(v) >= 1e3) return `${Math.round(v / 1e3)}k`;
@@ -7111,6 +7136,6 @@ function ViolinPlot({
   ] });
 }
 
-export { AbortionOpinionChart, basic_bar_v1_default as BarChart, stat_boxplot_v1_default as BoxPlot, BoxPlotFaceted, BoxPlotFacetedGrouped, BoxPlotGrouped, geo_bubble_v1_default as BubbleMap, BulletChart, ChoroplethMap_default as ChoroplethMap, CorrelationHeatmap_default as CorrelationHeatmap, stat_demographic_bar_v1_default as DemographicBarChart, DemographicDotPlot, DemographicLineChart, stat_density_v1_default as DensityPlot, DistributionPlot, DivergingBar, basic_dot_v1_default as DotPlot, DualAxisChart_default as DualAxisChart, EuropeMap_default as EuropeMap, FacetedPlot, ForestPlot, GeoDensityMap_default as GeoDensityMap, HealthScatterplot_default as HealthScatterplot, HistogramObservable, HistogramRecharts, LineChart_default as LineChart, OddsRatio_default as OddsRatio, PcaPlot, PlotContainer, PlotExport, PlotThemeProvider, QQPlot, RegressionPlot, ResidualPlot, HappinessCorrelatesPanel as ScatterplotRegression, SlopeChart, Sparkline, stat_splitbar_v1_default as SplitBar, StateBarChart, geo_state_map_v1_default as StateMap, StripPlot, SwarmPlot, TimeSeries_default as TimeSeries, TimeSeriesChart2 as TimeSeriesChart, TimeSeriesIndex_default as TimeSeriesIndex, TimeSeriesChart as TimeSeriesLine, TimetrendDemo as TimeTrendDemo, TimeTrendDemoChart, ViolinPlot, ZipMap_default as ZipMap, defaultDarkTheme, defaultLightTheme, usePlotTheme };
+export { AbortionOpinionChart, basic_bar_v1_default as BarChart, stat_boxplot_v1_default as BoxPlot, BoxPlotFaceted, BoxPlotFacetedGrouped, BoxPlotGrouped, geo_bubble_v1_default as BubbleMap, BulletChart, ChoroplethMap_default as ChoroplethMap, CorrelationHeatmap_default as CorrelationHeatmap, stat_demographic_bar_v1_default as DemographicBarChart, DemographicDotPlot, DemographicLineChart, stat_density_v1_default as DensityPlot, DistributionPlot, DivergingBar, basic_dot_v1_default as DotPlot, DualAxisChart_default as DualAxisChart, EuropeMap_default as EuropeMap, FacetedPlot, ForestPlot, GeoDensityMap_default as GeoDensityMap, HealthScatterplot_default as HealthScatterplot, HistogramObservable, HistogramRecharts, LineChart_default as LineChart, OddsRatio_default as OddsRatio, PcaPlot, PlotContainer, PlotExport, PlotThemeProvider, QQPlot, RegressionPlot, ResidualPlot, HappinessCorrelatesPanel as ScatterplotRegression, SlopeChart, Sparkline, stat_splitbar_v1_default as SplitBar, StateBarChart, geo_state_map_v1_default as StateMap, StripPlot, SwarmPlot, TimeSeries_default as TimeSeries, TimeSeriesChart2 as TimeSeriesChart, TimeSeriesIndex_default as TimeSeriesIndex, TimeSeriesChart as TimeSeriesLine, TimetrendDemo as TimeTrendDemo, TimeTrendDemoChart, ViolinPlot, ZipMap_default as ZipMap, defaultDarkTheme, defaultLightTheme, prepareEssRows, usePlotTheme };
 //# sourceMappingURL=index.mjs.map
 //# sourceMappingURL=index.mjs.map

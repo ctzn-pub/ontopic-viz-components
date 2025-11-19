@@ -8,7 +8,7 @@ export { default as AbortionOpinionChart } from './AbortionOpinionChart';
 export { default as DemographicBarChart } from './stat.demographic_bar.v1';
 
 // Scatterplot components (clean)
-export { default as ScatterplotRegression } from './ScatterplotRegression';
+export { default as ScatterplotRegression, prepareEssRows, type EssRow } from './ScatterplotRegression';
 
 // Additional Recharts components (only use shadcn/ui which is external)
 export { default as LineChart } from './LineChart';

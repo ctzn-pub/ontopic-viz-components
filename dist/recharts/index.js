@@ -586,6 +586,31 @@ var REGION_COLORS = {
   Other: "#22c55e"
   // green-500
 };
+function normalizeReligion(s) {
+  const v = (s || "").toLowerCase();
+  if (v.includes("catholic")) return "Catholic";
+  if (v.includes("protestant")) return "Protestant";
+  if (v.includes("orthodox")) return "Orthodox";
+  if (v.includes("muslim") || v.includes("islam")) return "Muslim";
+  return "Other";
+}
+function prepareEssRows(rows, opts = {}) {
+  const { happinessKey = "happiness" } = opts;
+  return rows.map((r) => {
+    const region = normalizeReligion(r.religion);
+    const happiness = Number(r[happinessKey]);
+    return {
+      name: r.cntry,
+      religion: r.religion || region,
+      region,
+      population_m: Number(r.population ?? 0),
+      happiness: isFinite(happiness) ? happiness : NaN,
+      hdi: Number(r.hdi),
+      gdp: Number(r.gdp),
+      education: Number(r.education)
+    };
+  });
+}
 function fmtGDP(v) {
   if (!isFinite(v)) return "";
   if (Math.abs(v) >= 1e3) return `${Math.round(v / 1e3)}k`;
@@ -3166,5 +3191,6 @@ exports.TimeSeriesIndex = TimeSeriesIndex_default;
 exports.TimeSeriesLine = TimeSeriesChart;
 exports.TimeTrendDemoChart = TimeTrendDemoChart;
 exports.ViolinPlot = ViolinPlot;
+exports.prepareEssRows = prepareEssRows;
 //# sourceMappingURL=index.js.map
 //# sourceMappingURL=index.js.map

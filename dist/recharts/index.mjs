@@ -558,6 +558,31 @@ var REGION_COLORS = {
   Other: "#22c55e"
   // green-500
 };
+function normalizeReligion(s) {
+  const v = (s || "").toLowerCase();
+  if (v.includes("catholic")) return "Catholic";
+  if (v.includes("protestant")) return "Protestant";
+  if (v.includes("orthodox")) return "Orthodox";
+  if (v.includes("muslim") || v.includes("islam")) return "Muslim";
+  return "Other";
+}
+function prepareEssRows(rows, opts = {}) {
+  const { happinessKey = "happiness" } = opts;
+  return rows.map((r) => {
+    const region = normalizeReligion(r.religion);
+    const happiness = Number(r[happinessKey]);
+    return {
+      name: r.cntry,
+      religion: r.religion || region,
+      region,
+      population_m: Number(r.population ?? 0),
+      happiness: isFinite(happiness) ? happiness : NaN,
+      hdi: Number(r.hdi),
+      gdp: Number(r.gdp),
+      education: Number(r.education)
+    };
+  });
+}
 function fmtGDP(v) {
   if (!isFinite(v)) return "";
   if (Math.abs(v) >= 1e3) return `${Math.round(v / 1e3)}k`;
@@ -3122,6 +3147,6 @@ function ViolinPlot({
   ] });
 }
 
-export { AbortionOpinionChart, stat_demographic_bar_v1_default as DemographicBarChart, DemographicDotPlot, DemographicLineChart, DualAxisChart_default as DualAxisChart, HealthScatterplot_default as HealthScatterplot, HistogramRecharts, LineChart_default as LineChart, HappinessCorrelatesPanel as ScatterplotRegression, StateBarChart, TimeSeries_default as TimeSeries, TimeSeriesChart2 as TimeSeriesChart, TimeSeriesIndex_default as TimeSeriesIndex, TimeSeriesChart as TimeSeriesLine, TimeTrendDemoChart, ViolinPlot };
+export { AbortionOpinionChart, stat_demographic_bar_v1_default as DemographicBarChart, DemographicDotPlot, DemographicLineChart, DualAxisChart_default as DualAxisChart, HealthScatterplot_default as HealthScatterplot, HistogramRecharts, LineChart_default as LineChart, HappinessCorrelatesPanel as ScatterplotRegression, StateBarChart, TimeSeries_default as TimeSeries, TimeSeriesChart2 as TimeSeriesChart, TimeSeriesIndex_default as TimeSeriesIndex, TimeSeriesChart as TimeSeriesLine, TimeTrendDemoChart, ViolinPlot, prepareEssRows };
 //# sourceMappingURL=index.mjs.map
 //# sourceMappingURL=index.mjs.map
