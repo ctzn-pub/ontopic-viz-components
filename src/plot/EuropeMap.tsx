@@ -3,7 +3,6 @@
 import React, { useRef, useEffect, useState, useMemo } from 'react';
 import * as Plot from "@observablehq/plot";
 import * as topojson from "topojson-client";
-import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 
 const TOPOLOGY_BASE_URL = 'https://ontopic-public-data.t3.storage.dev/geo';
 
@@ -182,34 +181,26 @@ const EuropeMap: React.FC<EuropeMapProps> = ({
 
   if (loading || !europe) {
     return (
-      <Card className="w-full">
-        <CardHeader>
-          <CardTitle>{title}</CardTitle>
-          {subtitle && <p className="text-sm text-gray-600">{subtitle}</p>}
-        </CardHeader>
-        <CardContent>
-          <div className="flex items-center justify-center h-96">
-            <div className="text-gray-500">Loading map...</div>
-          </div>
-        </CardContent>
-      </Card>
+      <div className="w-full">
+        {title && <h3 className="text-lg font-semibold mb-2">{title}</h3>}
+        {subtitle && <p className="text-sm text-gray-600 mb-4">{subtitle}</p>}
+        <div className="flex items-center justify-center h-96">
+          <div className="text-gray-500">Loading map...</div>
+        </div>
+      </div>
     );
   }
 
   return (
-    <Card className="w-full">
-      <CardHeader>
-        <CardTitle>{title}</CardTitle>
-        {subtitle && <p className="text-sm text-gray-600">{subtitle}</p>}
-      </CardHeader>
-      <CardContent>
-        <div ref={mapRef} className="w-full"></div>
-        <div className="mt-4 text-xs text-gray-500">
-          Data shows {valueLabel.toLowerCase()} across European countries.
-          Values are sample data for demonstration purposes.
-        </div>
-      </CardContent>
-    </Card>
+    <div className="w-full">
+      {title && <h3 className="text-lg font-semibold mb-2">{title}</h3>}
+      {subtitle && <p className="text-sm text-gray-600 mb-4">{subtitle}</p>}
+      <div ref={mapRef} className="w-full"></div>
+      <div className="mt-4 text-xs text-gray-500">
+        Data shows {valueLabel.toLowerCase()} across European countries.
+        Values are sample data for demonstration purposes.
+      </div>
+    </div>
   );
 };
 

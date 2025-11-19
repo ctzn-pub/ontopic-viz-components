@@ -3,7 +3,6 @@
 import React, { useRef, useEffect, useState, useMemo } from 'react';
 import * as Plot from "@observablehq/plot";
 import * as topojson from "topojson-client";
-import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 
 const TOPOLOGY_BASE_URL = 'https://ontopic-public-data.t3.storage.dev/geo';
 
@@ -171,13 +170,11 @@ const ChoroplethMap: React.FC<ChoroplethMapProps> = ({
         <div className="mb-6">
           <p className="text-gray-600">Loading county health data...</p>
         </div>
-        <Card>
-          <CardContent>
-            <div className="flex justify-center items-center" style={{ minHeight: '600px' }}>
-              <div className="animate-spin rounded-full h-32 w-32 border-b-2 border-gray-900"></div>
-            </div>
-          </CardContent>
-        </Card>
+        <div>
+          <div className="flex justify-center items-center" style={{ minHeight: '600px' }}>
+            <div className="animate-spin rounded-full h-32 w-32 border-b-2 border-gray-900"></div>
+          </div>
+        </div>
       </div>
     );
   }
@@ -192,22 +189,22 @@ const ChoroplethMap: React.FC<ChoroplethMapProps> = ({
         </p>
       </div>
 
-      <Card>
-        <CardHeader>
-          <CardTitle>County Mental Health Prevalence Map</CardTitle>
-          <p className="text-sm text-muted-foreground">
+      <div>
+        <div className="mb-4">
+          <h3 className="text-lg font-semibold">County Mental Health Prevalence Map</h3>
+          <p className="text-sm text-gray-600">
             Percentage of adults reporting poor mental health for 14+ days per month
           </p>
-        </CardHeader>
-        <CardContent>
+        </div>
+        <div>
           <div ref={mapRef} className="flex justify-center" style={{ minHeight: '600px' }} />
           <p className="text-sm text-gray-600 mt-4">
             This choropleth map uses quantile scaling to divide {countyData.length} counties into equal-sized groups,
             ensuring good color distribution across geographic regions. Hover over counties for detailed information
             including population data.
           </p>
-        </CardContent>
-      </Card>
+        </div>
+      </div>
 
       <div className="mt-6 p-4 bg-gray-50 rounded-lg">
         <h3 className="font-semibold mb-2">Choropleth Map Features</h3>

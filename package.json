@@ -75,6 +75,7 @@
     }
   },
   "dependencies": {
+    "@ontopic/viz-components": "github:ctzn-pub/ontopic-viz-components#main",
     "@ontopic/viz-core": "git+ssh://git@github.com:ctzn-pub/ontopic-core.git#v1.0.0",
     "clsx": "^2.1.0",
     "topojson-client": "^3.1.0"

@@ -3,7 +3,6 @@
 import React, { useRef, useEffect, useState } from 'react';
 import * as Plot from "@observablehq/plot";
 import * as topojson from "topojson-client";
-import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 
 const TOPOLOGY_BASE_URL = 'https://ontopic-public-data.t3.storage.dev/geo';
 
@@ -83,34 +82,30 @@ const ZipMap: React.FC<ZipMapProps> = ({ data }) => {
   if (loading) {
     return (
       <div className="space-y-6">
-        <Card>
-          <CardContent>
-            <div className="flex justify-center items-center" style={{ minHeight: '600px' }}>
-              <div className="animate-spin rounded-full h-32 w-32 border-b-2 border-gray-900"></div>
-            </div>
-          </CardContent>
-        </Card>
+        <div>
+          <div className="flex justify-center items-center" style={{ minHeight: '600px' }}>
+            <div className="animate-spin rounded-full h-32 w-32 border-b-2 border-gray-900"></div>
+          </div>
+        </div>
       </div>
     );
   }
 
   return (
     <div className="space-y-6">
-      <Card>
-        <CardHeader>
-          <CardTitle>ZIP Code Density Map</CardTitle>
-          <p className="text-sm text-muted-foreground">
-            Geographic distribution of health data with size and color encoding
-          </p>
-        </CardHeader>
-        <CardContent>
-          <div ref={mapRef} className="flex justify-center" />
-          <p className="text-sm text-gray-600 mt-4">
-            Each dot represents a ZIP code area. Dot size and color both encode obesity rates,
-            with larger and redder dots indicating higher rates.
-          </p>
-        </CardContent>
-      </Card>
+      <div className="mb-4">
+        <h3 className="text-lg font-semibold">ZIP Code Density Map</h3>
+        <p className="text-sm text-gray-600">
+          Geographic distribution of health data with size and color encoding
+        </p>
+      </div>
+      <div>
+        <div ref={mapRef} className="flex justify-center" />
+        <p className="text-sm text-gray-600 mt-4">
+          Each dot represents a ZIP code area. Dot size and color both encode obesity rates,
+          with larger and redder dots indicating higher rates.
+        </p>
+      </div>
     </div>
   );
 };

@@ -3,7 +3,6 @@
 import React, { useRef, useEffect, useState } from 'react';
 import * as Plot from "@observablehq/plot";
 import * as topojson from "topojson-client";
-import { Card, CardContent, CardHeader, CardTitle, CardDescription } from "@/components/ui/card";
 
 const TOPOLOGY_BASE_URL = 'https://ontopic-public-data.t3.storage.dev/geo';
 
@@ -105,35 +104,35 @@ const GeoDensityMap: React.FC<GeoDensityMapProps> = ({
 
   if (loading) {
     return (
-      <Card>
-        <CardHeader>
-          <CardTitle>{title}</CardTitle>
-          {description && <CardDescription>{description}</CardDescription>}
-        </CardHeader>
-        <CardContent>
+      <div className="space-y-6">
+        <div className="mb-4">
+          <h3 className="text-lg font-semibold">{title}</h3>
+          {description && <p className="text-sm text-gray-600">{description}</p>}
+        </div>
+        <div>
           <div className="flex justify-center items-center" style={{ minHeight: `${height}px` }}>
             <div className="animate-spin rounded-full h-32 w-32 border-b-2 border-gray-900"></div>
           </div>
-        </CardContent>
-      </Card>
+        </div>
+      </div>
     );
   }
 
   return (
-    <Card>
-      <CardHeader>
-        <CardTitle>{title}</CardTitle>
-        {description && <CardDescription>{description}</CardDescription>}
-      </CardHeader>
-      <CardContent>
+    <div className="space-y-6">
+      <div className="mb-4">
+        <h3 className="text-lg font-semibold">{title}</h3>
+        {description && <p className="text-sm text-gray-600">{description}</p>}
+      </div>
+      <div>
         <div ref={mapRef} className="flex justify-center" />
         <p className="text-sm text-gray-600 mt-4">
           Density map showing geographic concentration across locations.
           Darker areas indicate higher concentration of data points.
           State and county boundaries are overlaid for geographic reference.
         </p>
-      </CardContent>
-    </Card>
+      </div>
+    </div>
   );
 };
 

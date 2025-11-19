@@ -5,7 +5,7 @@ import { jsx, jsxs, Fragment } from 'react/jsx-runtime';
 import { Download, Users, ArrowUpDown, ChevronUp, ChevronDown, Palette, DollarSign, UserCircle2, GraduationCap } from 'lucide-react';
 import * as topojson3 from 'topojson-client';
 import dynamic from 'next/dynamic';
-import { Card, CardHeader, CardTitle, CardContent, CardDescription } from '@/components/ui/card';
+import { Card, CardHeader, CardTitle, CardContent } from '@/components/ui/card';
 import { mean, median } from 'd3-array';
 import { useTheme } from 'next-themes';
 import { ResponsiveContainer, LineChart, CartesianGrid, XAxis, YAxis, Tooltip, Line, ErrorBar, BarChart as BarChart$1, Legend, Bar, Brush, ReferenceArea, Text, ScatterChart, Scatter, ReferenceLine, ComposedChart, Cell, ZAxis, Area } from 'recharts';
@@ -3282,20 +3282,20 @@ var GeoDensityMap = ({
     };
   }, [data, width, height, us, loading, colorScheme, legendLabel]);
   if (loading) {
-    return /* @__PURE__ */ jsxs(Card, { children: [
-      /* @__PURE__ */ jsxs(CardHeader, { children: [
-        /* @__PURE__ */ jsx(CardTitle, { children: title }),
-        description && /* @__PURE__ */ jsx(CardDescription, { children: description })
+    return /* @__PURE__ */ jsxs("div", { className: "space-y-6", children: [
+      /* @__PURE__ */ jsxs("div", { className: "mb-4", children: [
+        /* @__PURE__ */ jsx("h3", { className: "text-lg font-semibold", children: title }),
+        description && /* @__PURE__ */ jsx("p", { className: "text-sm text-gray-600", children: description })
       ] }),
-      /* @__PURE__ */ jsx(CardContent, { children: /* @__PURE__ */ jsx("div", { className: "flex justify-center items-center", style: { minHeight: `${height}px` }, children: /* @__PURE__ */ jsx("div", { className: "animate-spin rounded-full h-32 w-32 border-b-2 border-gray-900" }) }) })
+      /* @__PURE__ */ jsx("div", { children: /* @__PURE__ */ jsx("div", { className: "flex justify-center items-center", style: { minHeight: `${height}px` }, children: /* @__PURE__ */ jsx("div", { className: "animate-spin rounded-full h-32 w-32 border-b-2 border-gray-900" }) }) })
     ] });
   }
-  return /* @__PURE__ */ jsxs(Card, { children: [
-    /* @__PURE__ */ jsxs(CardHeader, { children: [
-      /* @__PURE__ */ jsx(CardTitle, { children: title }),
-      description && /* @__PURE__ */ jsx(CardDescription, { children: description })
+  return /* @__PURE__ */ jsxs("div", { className: "space-y-6", children: [
+    /* @__PURE__ */ jsxs("div", { className: "mb-4", children: [
+      /* @__PURE__ */ jsx("h3", { className: "text-lg font-semibold", children: title }),
+      description && /* @__PURE__ */ jsx("p", { className: "text-sm text-gray-600", children: description })
     ] }),
-    /* @__PURE__ */ jsxs(CardContent, { children: [
+    /* @__PURE__ */ jsxs("div", { children: [
       /* @__PURE__ */ jsx("div", { ref: mapRef, className: "flex justify-center" }),
       /* @__PURE__ */ jsx("p", { className: "text-sm text-gray-600 mt-4", children: "Density map showing geographic concentration across locations. Darker areas indicate higher concentration of data points. State and county boundaries are overlaid for geographic reference." })
     ] })
@@ -3426,17 +3426,17 @@ No data available`;
   if (loading || !us) {
     return /* @__PURE__ */ jsxs("div", { className: "space-y-6", children: [
       /* @__PURE__ */ jsx("div", { className: "mb-6", children: /* @__PURE__ */ jsx("p", { className: "text-gray-600", children: "Loading county health data..." }) }),
-      /* @__PURE__ */ jsx(Card, { children: /* @__PURE__ */ jsx(CardContent, { children: /* @__PURE__ */ jsx("div", { className: "flex justify-center items-center", style: { minHeight: "600px" }, children: /* @__PURE__ */ jsx("div", { className: "animate-spin rounded-full h-32 w-32 border-b-2 border-gray-900" }) }) }) })
+      /* @__PURE__ */ jsx("div", { children: /* @__PURE__ */ jsx("div", { className: "flex justify-center items-center", style: { minHeight: "600px" }, children: /* @__PURE__ */ jsx("div", { className: "animate-spin rounded-full h-32 w-32 border-b-2 border-gray-900" }) }) })
     ] });
   }
   return /* @__PURE__ */ jsxs("div", { className: "space-y-6", children: [
     /* @__PURE__ */ jsx("div", { className: "mb-6", children: /* @__PURE__ */ jsx("p", { className: "text-gray-600", children: "Interactive county-level choropleth map showing mental health prevalence across US counties. Colors represent different prevalence ranges using quantile scaling for optimal contrast. Data source: CDC Behavioral Risk Factor Surveillance System (BRFSS)." }) }),
-    /* @__PURE__ */ jsxs(Card, { children: [
-      /* @__PURE__ */ jsxs(CardHeader, { children: [
-        /* @__PURE__ */ jsx(CardTitle, { children: "County Mental Health Prevalence Map" }),
-        /* @__PURE__ */ jsx("p", { className: "text-sm text-muted-foreground", children: "Percentage of adults reporting poor mental health for 14+ days per month" })
+    /* @__PURE__ */ jsxs("div", { children: [
+      /* @__PURE__ */ jsxs("div", { className: "mb-4", children: [
+        /* @__PURE__ */ jsx("h3", { className: "text-lg font-semibold", children: "County Mental Health Prevalence Map" }),
+        /* @__PURE__ */ jsx("p", { className: "text-sm text-gray-600", children: "Percentage of adults reporting poor mental health for 14+ days per month" })
       ] }),
-      /* @__PURE__ */ jsxs(CardContent, { children: [
+      /* @__PURE__ */ jsxs("div", { children: [
         /* @__PURE__ */ jsx("div", { ref: mapRef, className: "flex justify-center", style: { minHeight: "600px" } }),
         /* @__PURE__ */ jsxs("p", { className: "text-sm text-gray-600 mt-4", children: [
           "This choropleth map uses quantile scaling to divide ",
@@ -3615,26 +3615,20 @@ var EuropeMap = ({
     mapRef.current.appendChild(plot34);
   }, [loading, europe, countries.length, countryData.length, colorScheme, valueLabel]);
   if (loading || !europe) {
-    return /* @__PURE__ */ jsxs(Card, { className: "w-full", children: [
-      /* @__PURE__ */ jsxs(CardHeader, { children: [
-        /* @__PURE__ */ jsx(CardTitle, { children: title }),
-        subtitle && /* @__PURE__ */ jsx("p", { className: "text-sm text-gray-600", children: subtitle })
-      ] }),
-      /* @__PURE__ */ jsx(CardContent, { children: /* @__PURE__ */ jsx("div", { className: "flex items-center justify-center h-96", children: /* @__PURE__ */ jsx("div", { className: "text-gray-500", children: "Loading map..." }) }) })
+    return /* @__PURE__ */ jsxs("div", { className: "w-full", children: [
+      title && /* @__PURE__ */ jsx("h3", { className: "text-lg font-semibold mb-2", children: title }),
+      subtitle && /* @__PURE__ */ jsx("p", { className: "text-sm text-gray-600 mb-4", children: subtitle }),
+      /* @__PURE__ */ jsx("div", { className: "flex items-center justify-center h-96", children: /* @__PURE__ */ jsx("div", { className: "text-gray-500", children: "Loading map..." }) })
     ] });
   }
-  return /* @__PURE__ */ jsxs(Card, { className: "w-full", children: [
-    /* @__PURE__ */ jsxs(CardHeader, { children: [
-      /* @__PURE__ */ jsx(CardTitle, { children: title }),
-      subtitle && /* @__PURE__ */ jsx("p", { className: "text-sm text-gray-600", children: subtitle })
-    ] }),
-    /* @__PURE__ */ jsxs(CardContent, { children: [
-      /* @__PURE__ */ jsx("div", { ref: mapRef, className: "w-full" }),
-      /* @__PURE__ */ jsxs("div", { className: "mt-4 text-xs text-gray-500", children: [
-        "Data shows ",
-        valueLabel.toLowerCase(),
-        " across European countries. Values are sample data for demonstration purposes."
-      ] })
+  return /* @__PURE__ */ jsxs("div", { className: "w-full", children: [
+    title && /* @__PURE__ */ jsx("h3", { className: "text-lg font-semibold mb-2", children: title }),
+    subtitle && /* @__PURE__ */ jsx("p", { className: "text-sm text-gray-600 mb-4", children: subtitle }),
+    /* @__PURE__ */ jsx("div", { ref: mapRef, className: "w-full" }),
+    /* @__PURE__ */ jsxs("div", { className: "mt-4 text-xs text-gray-500", children: [
+      "Data shows ",
+      valueLabel.toLowerCase(),
+      " across European countries. Values are sample data for demonstration purposes."
     ] })
   ] });
 };
@@ -3690,18 +3684,18 @@ var ZipMap = ({ data }) => {
     return () => mapPlot?.remove();
   }, [data, us, loading]);
   if (loading) {
-    return /* @__PURE__ */ jsx("div", { className: "space-y-6", children: /* @__PURE__ */ jsx(Card, { children: /* @__PURE__ */ jsx(CardContent, { children: /* @__PURE__ */ jsx("div", { className: "flex justify-center items-center", style: { minHeight: "600px" }, children: /* @__PURE__ */ jsx("div", { className: "animate-spin rounded-full h-32 w-32 border-b-2 border-gray-900" }) }) }) }) });
+    return /* @__PURE__ */ jsx("div", { className: "space-y-6", children: /* @__PURE__ */ jsx("div", { children: /* @__PURE__ */ jsx("div", { className: "flex justify-center items-center", style: { minHeight: "600px" }, children: /* @__PURE__ */ jsx("div", { className: "animate-spin rounded-full h-32 w-32 border-b-2 border-gray-900" }) }) }) });
   }
-  return /* @__PURE__ */ jsx("div", { className: "space-y-6", children: /* @__PURE__ */ jsxs(Card, { children: [
-    /* @__PURE__ */ jsxs(CardHeader, { children: [
-      /* @__PURE__ */ jsx(CardTitle, { children: "ZIP Code Density Map" }),
-      /* @__PURE__ */ jsx("p", { className: "text-sm text-muted-foreground", children: "Geographic distribution of health data with size and color encoding" })
+  return /* @__PURE__ */ jsxs("div", { className: "space-y-6", children: [
+    /* @__PURE__ */ jsxs("div", { className: "mb-4", children: [
+      /* @__PURE__ */ jsx("h3", { className: "text-lg font-semibold", children: "ZIP Code Density Map" }),
+      /* @__PURE__ */ jsx("p", { className: "text-sm text-gray-600", children: "Geographic distribution of health data with size and color encoding" })
     ] }),
-    /* @__PURE__ */ jsxs(CardContent, { children: [
+    /* @__PURE__ */ jsxs("div", { children: [
       /* @__PURE__ */ jsx("div", { ref: mapRef, className: "flex justify-center" }),
       /* @__PURE__ */ jsx("p", { className: "text-sm text-gray-600 mt-4", children: "Each dot represents a ZIP code area. Dot size and color both encode obesity rates, with larger and redder dots indicating higher rates." })
     ] })
-  ] }) });
+  ] });
 };
 var ZipMap_default = ZipMap;
 function TimetrendDemo({ defaults, error, data, colors, label }) {
