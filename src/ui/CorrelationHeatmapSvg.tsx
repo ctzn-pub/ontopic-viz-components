@@ -1,5 +1,5 @@
 "use client"
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card"
+import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "./card"
 
 const correlationMatrix = {
   ACCESS2: { ACCESS2: 1.0, ARTHRITIS: -0.01, BINGE: -0.44, BPHIGH: 0.43, CANCER: -0.66, DIABETES: 0.64, OBESITY: 0.37 },

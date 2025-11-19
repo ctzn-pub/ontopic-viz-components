@@ -1,7 +1,7 @@
 'use client' 
 import React, { useState, useEffect, useMemo } from 'react';
 import { LineChart, Line, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer, ReferenceLine, ReferenceArea, Brush } from 'recharts';
-import { Button } from '@/components/ui/button';
+import { Button } from '../ui/button';
 import { TrendingUp, TrendingDown, Grid3X3 } from 'lucide-react';
 import { useTheme } from 'next-themes';
 

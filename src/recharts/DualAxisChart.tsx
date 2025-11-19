@@ -1,7 +1,7 @@
 'use client'
 
 import React, { useState } from 'react';
-import { Button } from '@/components/ui/button';
+import { Button } from '../ui/button';
 import { LineChart, Line, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer, ReferenceArea, Legend, Brush } from 'recharts';
 import { useTheme } from 'next-themes';
 import { TooltipProps } from 'recharts';

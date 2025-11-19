@@ -9,11 +9,13 @@ var dynamic = require('next/dynamic');
 var d3Array = require('d3-array');
 var nextThemes = require('next-themes');
 var recharts = require('recharts');
-var button = require('@/components/ui/button');
-var label = require('@/components/ui/label');
-var _switch = require('@/components/ui/switch');
-var tabs = require('@/components/ui/tabs');
-var input = require('@/components/ui/input');
+var reactSlot = require('@radix-ui/react-slot');
+var classVarianceAuthority = require('class-variance-authority');
+var clsx = require('clsx');
+var tailwindMerge = require('tailwind-merge');
+var LabelPrimitive = require('@radix-ui/react-label');
+var SwitchPrimitive = require('@radix-ui/react-switch');
+var TabsPrimitive = require('@radix-ui/react-tabs');
 
 function _interopDefault (e) { return e && e.__esModule ? e : { default: e }; }
 
@@ -39,6 +41,9 @@ var React25__namespace = /*#__PURE__*/_interopNamespace(React25);
 var Plot24__namespace = /*#__PURE__*/_interopNamespace(Plot24);
 var topojson3__namespace = /*#__PURE__*/_interopNamespace(topojson3);
 var dynamic__default = /*#__PURE__*/_interopDefault(dynamic);
+var LabelPrimitive__namespace = /*#__PURE__*/_interopNamespace(LabelPrimitive);
+var SwitchPrimitive__namespace = /*#__PURE__*/_interopNamespace(SwitchPrimitive);
+var TabsPrimitive__namespace = /*#__PURE__*/_interopNamespace(TabsPrimitive);
 
 function cn(...classes) {
   return classes.filter(Boolean).join(" ");
@@ -172,7 +177,7 @@ function PlotExport({
   plotRef,
   filename = "chart",
   formats = ["svg", "png"],
-  Button: Button5,
+  Button: Button2,
   DropdownMenu,
   DropdownMenuTrigger,
   DropdownMenuContent,
@@ -227,7 +232,7 @@ function PlotExport({
     a.click();
     URL.revokeObjectURL(url);
   };
-  if (!Button5 || !DropdownMenu) {
+  if (!Button2 || !DropdownMenu) {
     return /* @__PURE__ */ jsxRuntime.jsxs("div", { className: "plot-export", children: [
       /* @__PURE__ */ jsxRuntime.jsxs(
         "button",
@@ -253,7 +258,7 @@ function PlotExport({
     ] });
   }
   return /* @__PURE__ */ jsxRuntime.jsxs(DropdownMenu, { children: [
-    /* @__PURE__ */ jsxRuntime.jsx(DropdownMenuTrigger, { asChild: true, children: /* @__PURE__ */ jsxRuntime.jsxs(Button5, { variant: "outline", size: "sm", disabled: isExporting, children: [
+    /* @__PURE__ */ jsxRuntime.jsx(DropdownMenuTrigger, { asChild: true, children: /* @__PURE__ */ jsxRuntime.jsxs(Button2, { variant: "outline", size: "sm", disabled: isExporting, children: [
       /* @__PURE__ */ jsxRuntime.jsx(lucideReact.Download, { className: "h-4 w-4 mr-2" }),
       isExporting ? "Exporting..." : "Export"
     ] }) }),
@@ -5007,6 +5012,51 @@ var LineChart3 = ({ data = [] }) => {
   ] });
 };
 var LineChart_default = LineChart3;
+function cn2(...inputs) {
+  return tailwindMerge.twMerge(clsx.clsx(inputs));
+}
+var buttonVariants = classVarianceAuthority.cva(
+  "inline-flex items-center justify-center gap-2 whitespace-nowrap rounded-md text-sm font-medium transition-all disabled:pointer-events-none disabled:opacity-50 [&_svg]:pointer-events-none [&_svg:not([class*='size-'])]:size-4 shrink-0 [&_svg]:shrink-0 outline-none focus-visible:border-ring focus-visible:ring-ring/50 focus-visible:ring-[3px] aria-invalid:ring-destructive/20 dark:aria-invalid:ring-destructive/40 aria-invalid:border-destructive",
+  {
+    variants: {
+      variant: {
+        default: "bg-primary text-primary-foreground shadow-xs hover:bg-primary/90",
+        destructive: "bg-destructive text-white shadow-xs hover:bg-destructive/90 focus-visible:ring-destructive/20 dark:focus-visible:ring-destructive/40 dark:bg-destructive/60",
+        outline: "border bg-background shadow-xs hover:bg-accent hover:text-accent-foreground dark:bg-input/30 dark:border-input dark:hover:bg-input/50",
+        secondary: "bg-secondary text-secondary-foreground shadow-xs hover:bg-secondary/80",
+        ghost: "hover:bg-accent hover:text-accent-foreground dark:hover:bg-accent/50",
+        link: "text-primary underline-offset-4 hover:underline"
+      },
+      size: {
+        default: "h-9 px-4 py-2 has-[>svg]:px-3",
+        sm: "h-8 rounded-md gap-1.5 px-3 has-[>svg]:px-2.5",
+        lg: "h-10 rounded-md px-6 has-[>svg]:px-4",
+        icon: "size-9"
+      }
+    },
+    defaultVariants: {
+      variant: "default",
+      size: "default"
+    }
+  }
+);
+function Button({
+  className,
+  variant,
+  size,
+  asChild = false,
+  ...props
+}) {
+  const Comp = asChild ? reactSlot.Slot : "button";
+  return /* @__PURE__ */ jsxRuntime.jsx(
+    Comp,
+    {
+      "data-slot": "button",
+      className: cn2(buttonVariants({ variant, size, className })),
+      ...props
+    }
+  );
+}
 var formatValue = (value) => {
   return value.toLocaleString("en-US");
 };
@@ -5175,7 +5225,7 @@ var TimeSeries = ({ data }) => {
 };
 var TimeSeries_default = TimeSeries;
 var TimeRangeButton = ({ active, onClick, children }) => /* @__PURE__ */ jsxRuntime.jsx(
-  button.Button,
+  Button,
   {
     variant: active ? "default" : "ghost",
     size: "sm",
@@ -5452,7 +5502,7 @@ var SeriesComparison = ({
 };
 var TimeSeriesIndex_default = SeriesComparison;
 var TimeRangeButton2 = ({ active, onClick, children }) => /* @__PURE__ */ jsxRuntime.jsx(
-  button.Button,
+  Button,
   {
     variant: active ? "default" : "ghost",
     size: "sm",
@@ -5737,6 +5787,47 @@ var DualAxisChart = ({
   ] });
 };
 var DualAxisChart_default = DualAxisChart;
+function Label({
+  className,
+  ...props
+}) {
+  return /* @__PURE__ */ jsxRuntime.jsx(
+    LabelPrimitive__namespace.Root,
+    {
+      "data-slot": "label",
+      className: cn2(
+        "flex items-center gap-2 text-sm leading-none font-medium select-none group-data-[disabled=true]:pointer-events-none group-data-[disabled=true]:opacity-50 peer-disabled:cursor-not-allowed peer-disabled:opacity-50",
+        className
+      ),
+      ...props
+    }
+  );
+}
+function Switch({
+  className,
+  ...props
+}) {
+  return /* @__PURE__ */ jsxRuntime.jsx(
+    SwitchPrimitive__namespace.Root,
+    {
+      "data-slot": "switch",
+      className: cn2(
+        "peer data-[state=checked]:bg-primary data-[state=unchecked]:bg-input focus-visible:border-ring focus-visible:ring-ring/50 dark:data-[state=unchecked]:bg-input/80 inline-flex h-[1.15rem] w-8 shrink-0 items-center rounded-full border border-transparent shadow-xs transition-all outline-none focus-visible:ring-[3px] disabled:cursor-not-allowed disabled:opacity-50",
+        className
+      ),
+      ...props,
+      children: /* @__PURE__ */ jsxRuntime.jsx(
+        SwitchPrimitive__namespace.Thumb,
+        {
+          "data-slot": "switch-thumb",
+          className: cn2(
+            "bg-background dark:data-[state=unchecked]:bg-foreground dark:data-[state=checked]:bg-primary-foreground pointer-events-none block size-4 rounded-full ring-0 transition-transform data-[state=checked]:translate-x-[calc(100%-2px)] data-[state=unchecked]:translate-x-0"
+          )
+        }
+      )
+    }
+  );
+}
 var COLORS = ["#2196f3", "#f44336", "#4caf50", "#ff9800", "#9c27b0", "#795548", "#607d8b"];
 var presidentialTerms = [
   { start: 1971, end: 1976, party: "Republican", president: "Nixon/Ford" },
@@ -6049,7 +6140,7 @@ function TimeTrendDemoChart({
       ] }),
       /* @__PURE__ */ jsxRuntime.jsxs("div", { className: "flex items-center space-x-2 order-2 sm:order-none", children: [
         /* @__PURE__ */ jsxRuntime.jsx(
-          _switch.Switch,
+          Switch,
           {
             id: "show-ci",
             checked: showCI,
@@ -6057,10 +6148,68 @@ function TimeTrendDemoChart({
             disabled: !hasCIData
           }
         ),
-        /* @__PURE__ */ jsxRuntime.jsx(label.Label, { htmlFor: "show-ci", className: `text-xs ${!hasCIData ? "text-gray-400" : "text-gray-600"}`, children: "Show 95% CI" })
+        /* @__PURE__ */ jsxRuntime.jsx(Label, { htmlFor: "show-ci", className: `text-xs ${!hasCIData ? "text-gray-400" : "text-gray-600"}`, children: "Show 95% CI" })
       ] })
     ] })
   ] });
+}
+function Tabs({
+  className,
+  ...props
+}) {
+  return /* @__PURE__ */ jsxRuntime.jsx(
+    TabsPrimitive__namespace.Root,
+    {
+      "data-slot": "tabs",
+      className: cn2("flex flex-col gap-2", className),
+      ...props
+    }
+  );
+}
+function TabsList({
+  className,
+  ...props
+}) {
+  return /* @__PURE__ */ jsxRuntime.jsx(
+    TabsPrimitive__namespace.List,
+    {
+      "data-slot": "tabs-list",
+      className: cn2(
+        "bg-muted text-muted-foreground inline-flex h-9 w-fit items-center justify-center rounded-lg p-[3px]",
+        className
+      ),
+      ...props
+    }
+  );
+}
+function TabsTrigger({
+  className,
+  ...props
+}) {
+  return /* @__PURE__ */ jsxRuntime.jsx(
+    TabsPrimitive__namespace.Trigger,
+    {
+      "data-slot": "tabs-trigger",
+      className: cn2(
+        "data-[state=active]:bg-background dark:data-[state=active]:text-foreground focus-visible:border-ring focus-visible:ring-ring/50 focus-visible:outline-ring dark:data-[state=active]:border-input dark:data-[state=active]:bg-input/30 text-foreground dark:text-muted-foreground inline-flex h-[calc(100%-1px)] flex-1 items-center justify-center gap-1.5 rounded-md border border-transparent px-2 py-1 text-sm font-medium whitespace-nowrap transition-[color,box-shadow] focus-visible:ring-[3px] focus-visible:outline-1 disabled:pointer-events-none disabled:opacity-50 data-[state=active]:shadow-sm [&_svg]:pointer-events-none [&_svg]:shrink-0 [&_svg:not([class*='size-'])]:size-4",
+        className
+      ),
+      ...props
+    }
+  );
+}
+function TabsContent({
+  className,
+  ...props
+}) {
+  return /* @__PURE__ */ jsxRuntime.jsx(
+    TabsPrimitive__namespace.Content,
+    {
+      "data-slot": "tabs-content",
+      className: cn2("flex-1 outline-none", className),
+      ...props
+    }
+  );
 }
 var domains = {
   "Age Group": ["18-24", "25-34", "35-44", "45-54", "55-64", "65+"],
@@ -6143,15 +6292,15 @@ function DemographicLineChart({
       /* @__PURE__ */ jsxRuntime.jsx(lucideReact.Users, { className: "w-5 h-5" }),
       "Demographic Line Chart with Error Bars"
     ] }) }),
-    /* @__PURE__ */ jsxRuntime.jsx("div", { children: /* @__PURE__ */ jsxRuntime.jsxs(tabs.Tabs, { value: activeTab || void 0, onValueChange: setActiveTab, children: [
-      /* @__PURE__ */ jsxRuntime.jsx(tabs.TabsList, { className: "grid w-full", style: { gridTemplateColumns: `repeat(${demographicCategories.length}, 1fr)` }, children: demographicCategories.map((category) => {
+    /* @__PURE__ */ jsxRuntime.jsx("div", { children: /* @__PURE__ */ jsxRuntime.jsxs(Tabs, { value: activeTab || void 0, onValueChange: setActiveTab, children: [
+      /* @__PURE__ */ jsxRuntime.jsx(TabsList, { className: "grid w-full", style: { gridTemplateColumns: `repeat(${demographicCategories.length}, 1fr)` }, children: demographicCategories.map((category) => {
         const Icon = category.icon;
-        return /* @__PURE__ */ jsxRuntime.jsxs(tabs.TabsTrigger, { value: category.key, children: [
+        return /* @__PURE__ */ jsxRuntime.jsxs(TabsTrigger, { value: category.key, children: [
           /* @__PURE__ */ jsxRuntime.jsx(Icon, { className: `w-4 h-4 mr-2 ${category.color}` }),
           category.key
         ] }, category.key);
       }) }),
-      demographicCategories.map((category) => /* @__PURE__ */ jsxRuntime.jsxs(tabs.TabsContent, { value: category.key, className: "space-y-4", children: [
+      demographicCategories.map((category) => /* @__PURE__ */ jsxRuntime.jsxs(TabsContent, { value: category.key, className: "space-y-4", children: [
         /* @__PURE__ */ jsxRuntime.jsx("div", { className: "flex justify-center mt-4", children: /* @__PURE__ */ jsxRuntime.jsxs(
           recharts.LineChart,
           {
@@ -6311,15 +6460,15 @@ function DemographicDotPlot({
       /* @__PURE__ */ jsxRuntime.jsx(lucideReact.Users, { className: "w-5 h-5" }),
       "Demographic Dot Plot with Error Bars"
     ] }) }),
-    /* @__PURE__ */ jsxRuntime.jsx("div", { children: /* @__PURE__ */ jsxRuntime.jsxs(tabs.Tabs, { value: activeTab || void 0, onValueChange: setActiveTab, children: [
-      /* @__PURE__ */ jsxRuntime.jsx(tabs.TabsList, { className: "grid w-full", style: { gridTemplateColumns: `repeat(${demographicCategories.length}, 1fr)` }, children: demographicCategories.map((category) => {
+    /* @__PURE__ */ jsxRuntime.jsx("div", { children: /* @__PURE__ */ jsxRuntime.jsxs(Tabs, { value: activeTab || void 0, onValueChange: setActiveTab, children: [
+      /* @__PURE__ */ jsxRuntime.jsx(TabsList, { className: "grid w-full", style: { gridTemplateColumns: `repeat(${demographicCategories.length}, 1fr)` }, children: demographicCategories.map((category) => {
         const Icon = category.icon;
-        return /* @__PURE__ */ jsxRuntime.jsxs(tabs.TabsTrigger, { value: category.key, children: [
+        return /* @__PURE__ */ jsxRuntime.jsxs(TabsTrigger, { value: category.key, children: [
           /* @__PURE__ */ jsxRuntime.jsx(Icon, { className: `w-4 h-4 mr-2 ${category.color}` }),
           category.key
         ] }, category.key);
       }) }),
-      demographicCategories.map((category) => /* @__PURE__ */ jsxRuntime.jsxs(tabs.TabsContent, { value: category.key, className: "space-y-4", children: [
+      demographicCategories.map((category) => /* @__PURE__ */ jsxRuntime.jsxs(TabsContent, { value: category.key, className: "space-y-4", children: [
         /* @__PURE__ */ jsxRuntime.jsx("div", { className: "flex justify-center mt-4", children: /* @__PURE__ */ jsxRuntime.jsxs(
           recharts.ScatterChart,
           {
@@ -6389,6 +6538,22 @@ function DemographicDotPlot({
     ] }) })
   ] });
 }
+function Input({ className, type, ...props }) {
+  return /* @__PURE__ */ jsxRuntime.jsx(
+    "input",
+    {
+      type,
+      "data-slot": "input",
+      className: cn2(
+        "file:text-foreground placeholder:text-muted-foreground selection:bg-primary selection:text-primary-foreground dark:bg-input/30 border-input flex h-9 w-full min-w-0 rounded-md border bg-transparent px-3 py-1 text-base shadow-xs transition-[color,box-shadow] outline-none file:inline-flex file:h-7 file:border-0 file:bg-transparent file:text-sm file:font-medium disabled:pointer-events-none disabled:cursor-not-allowed disabled:opacity-50 md:text-sm",
+        "focus-visible:border-ring focus-visible:ring-ring/50 focus-visible:ring-[3px]",
+        "aria-invalid:ring-destructive/20 dark:aria-invalid:ring-destructive/40 aria-invalid:border-destructive",
+        className
+      ),
+      ...props
+    }
+  );
+}
 function StateBarChart({ data }) {
   const [sortOrder, setSortOrder] = React25.useState("desc");
   const [searchTerm, setSearchTerm] = React25.useState("");
@@ -6416,7 +6581,7 @@ function StateBarChart({ data }) {
       /* @__PURE__ */ jsxRuntime.jsx("div", { className: "flex items-center gap-2 mb-4", children: /* @__PURE__ */ jsxRuntime.jsx("span", { className: "text-md text-gray-500", children: data.question }) }),
       /* @__PURE__ */ jsxRuntime.jsxs("div", { className: "flex justify-between items-center mb-4", children: [
         /* @__PURE__ */ jsxRuntime.jsx(
-          input.Input,
+          Input,
           {
             placeholder: "Search states...",
             value: searchTerm,
@@ -6424,7 +6589,7 @@ function StateBarChart({ data }) {
             className: "max-w-sm"
           }
         ),
-        /* @__PURE__ */ jsxRuntime.jsxs(button.Button, { onClick: toggleSort, variant: "outline", children: [
+        /* @__PURE__ */ jsxRuntime.jsxs(Button, { onClick: toggleSort, variant: "outline", children: [
           "Sort ",
           sortOrder === "desc" ? "Ascending" : "Descending",
           /* @__PURE__ */ jsxRuntime.jsx(lucideReact.ArrowUpDown, { className: "ml-2 h-4 w-4" })
@@ -6460,7 +6625,7 @@ function StateBarChart({ data }) {
       ),
       /* @__PURE__ */ jsxRuntime.jsx(recharts.Bar, { dataKey: "overall", fill: "#4A4A4A" })
     ] }) }) }),
-    /* @__PURE__ */ jsxRuntime.jsx("div", { className: "flex justify-center mt-4", children: /* @__PURE__ */ jsxRuntime.jsx(button.Button, { onClick: () => setIsExpanded(!isExpanded), variant: "outline", children: isExpanded ? /* @__PURE__ */ jsxRuntime.jsxs(jsxRuntime.Fragment, { children: [
+    /* @__PURE__ */ jsxRuntime.jsx("div", { className: "flex justify-center mt-4", children: /* @__PURE__ */ jsxRuntime.jsx(Button, { onClick: () => setIsExpanded(!isExpanded), variant: "outline", children: isExpanded ? /* @__PURE__ */ jsxRuntime.jsxs(jsxRuntime.Fragment, { children: [
       "See less ",
       /* @__PURE__ */ jsxRuntime.jsx(lucideReact.ChevronUp, { className: "ml-2 h-4 w-4" })
     ] }) : /* @__PURE__ */ jsxRuntime.jsxs(jsxRuntime.Fragment, { children: [

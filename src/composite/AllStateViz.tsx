@@ -2,11 +2,11 @@
 
 import { useState, useMemo } from 'react'
 import { BarChart, Bar, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer } from 'recharts'
-import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table"
-import { Card, CardContent } from "@/components/ui/card"
-import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs"
-import { Input } from "@/components/ui/input"
-import { Button } from "@/components/ui/button"
+import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "../ui/table"
+import { Card, CardContent } from "../ui/card"
+import { Tabs, TabsContent, TabsList, TabsTrigger } from "../ui/tabs"
+import { Input } from "../ui/input"
+import { Button } from "../ui/button"
 import { ArrowUpDown, ChevronDown, ChevronUp } from "lucide-react"
 import StateMap from '@/components/geo/State'
 import { Earth, Table as TableIcon, ChartBarDecreasing } from 'lucide-react'

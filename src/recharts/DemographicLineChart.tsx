@@ -18,7 +18,7 @@ import {
     Palette,
     LucideIcon,
 } from 'lucide-react';
-import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
+import { Tabs, TabsContent, TabsList, TabsTrigger } from '../ui/tabs';
 
 interface DataPoint {
     break_out: string;

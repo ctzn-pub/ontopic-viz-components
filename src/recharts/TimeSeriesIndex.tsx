@@ -13,7 +13,7 @@ import {
   Legend,
   Brush 
 } from 'recharts';
-import { Button } from '@/components/ui/button';
+import { Button } from '../ui/button';
 import { Grid3X3 } from 'lucide-react';
 import { useTheme } from 'next-themes';
 

@@ -3,7 +3,7 @@
 import React, { useRef, useEffect, useState } from 'react';
 import * as Plot from "@observablehq/plot";
 import * as topojson from "topojson-client";
-import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
+import { Card, CardContent, CardHeader, CardTitle } from "../ui/card";
 import { getDataUrl } from '@/lib/config';
 
 interface ZipDataPoint {

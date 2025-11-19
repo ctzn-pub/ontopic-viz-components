@@ -14,8 +14,8 @@ import {
     ReferenceArea,
     Text // Ensure Text is imported
 } from 'recharts';
-import { Label } from "@/components/ui/label"; // Assuming shadcn/ui Label
-import { Switch } from "@/components/ui/switch"; // Assuming shadcn/ui Switch
+import { Label } from "../ui/label"; // Assuming shadcn/ui Label
+import { Switch } from "../ui/switch"; // Assuming shadcn/ui Switch
 
 // --- Type Definitions ---
 interface DataPoint {
