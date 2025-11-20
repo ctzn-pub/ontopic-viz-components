@@ -2036,13 +2036,25 @@ function TimeTrendDemoChart({
       })
     ] });
   };
+  console.log("[TimeTrendDemoChart] Rendering with:", {
+    demographicGroups,
+    demographic,
+    visibleGroups: Array.from(visibleGroups),
+    groupedDataLength: groupedData.length,
+    groupedDataSample: groupedData.map((g) => ({ name: g.name, dataLength: g.data.length })),
+    yDomain,
+    xAxisMin,
+    xAxisMax,
+    hasCIData,
+    showCI
+  });
   return /* @__PURE__ */ jsxRuntime.jsxs("div", { className: "w-full bg-white p-4 md:p-6 rounded-lg shadow", children: [
     /* @__PURE__ */ jsxRuntime.jsxs("div", { className: "mb-4", children: [
       /* @__PURE__ */ jsxRuntime.jsx("h2", { className: "text-xl font-semibold text-gray-800", children: data.metadata.title }),
       data.metadata.subtitle && /* @__PURE__ */ jsxRuntime.jsx("p", { className: "text-sm text-gray-600 mt-1", children: data.metadata.subtitle }),
       data.metadata.question && /* @__PURE__ */ jsxRuntime.jsx("p", { className: "text-sm text-gray-500 italic mt-1", children: data.metadata.question })
     ] }),
-    /* @__PURE__ */ jsxRuntime.jsx("div", { className: "h-[450px] md:h-[500px] w-full", children: /* @__PURE__ */ jsxRuntime.jsx(recharts.ResponsiveContainer, { width: "100%", height: "100%", children: /* @__PURE__ */ jsxRuntime.jsxs(
+    /* @__PURE__ */ jsxRuntime.jsx("div", { className: "h-[450px] md:h-[500px] w-full", style: { border: "2px solid blue" }, children: /* @__PURE__ */ jsxRuntime.jsx(recharts.ResponsiveContainer, { width: "100%", height: "100%", children: /* @__PURE__ */ jsxRuntime.jsxs(
       recharts.LineChart,
       {
         margin: { top: 20, right: 20, left: 10, bottom: 5 },

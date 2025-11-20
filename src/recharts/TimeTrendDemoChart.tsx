@@ -286,6 +286,20 @@ export default function TimeTrendDemoChart({
     };
 
 
+    // --- DEBUG LOGGING ---
+    console.log('[TimeTrendDemoChart] Rendering with:', {
+        demographicGroups,
+        demographic,
+        visibleGroups: Array.from(visibleGroups),
+        groupedDataLength: groupedData.length,
+        groupedDataSample: groupedData.map(g => ({ name: g.name, dataLength: g.data.length })),
+        yDomain,
+        xAxisMin,
+        xAxisMax,
+        hasCIData,
+        showCI
+    });
+
     // --- Render Chart ---
     return (
         <div className="w-full bg-white p-4 md:p-6 rounded-lg shadow">
@@ -297,7 +311,7 @@ export default function TimeTrendDemoChart({
             </div>
 
             {/* Chart Container */}
-            <div className="h-[450px] md:h-[500px] w-full">
+            <div className="h-[450px] md:h-[500px] w-full" style={{ border: '2px solid blue' }}>
                 <ResponsiveContainer width="100%" height="100%">
                     <LineChart
                         key={`${demographic}-${showCI}`} // Add showCI to key for re-render on toggle
