@@ -1,0 +1,45 @@
+import { defineConfig } from 'tsup';
+
+export default defineConfig({
+  entry: [
+    'src/index.ts',
+    'src/plot/index.ts',
+    'src/recharts/index.ts'
+  ],
+  format: ['cjs', 'esm'],
+  dts: false, // Temporarily disabled due to strict Plot types
+  splitting: false,
+  sourcemap: true,
+  clean: true,
+  treeshake: true,
+  minify: false,
+  external: [
+    'react',
+    'react-dom',
+    '@observablehq/plot',
+    'recharts',
+    'lucide-react',
+    'topojson-client',
+    'd3-array',
+    'highcharts',
+    'highcharts-react-official',
+    'next/dynamic',
+    'next-themes',
+    // shadcn/ui components (expected from consuming app)
+    '@/components/ui/card',
+    '@/components/ui/button',
+    '@/components/ui/table',
+    '@/components/ui/tabs',
+    '@/components/ui/input',
+    '@/components/ui/label',
+    '@/components/ui/select',
+    '@/components/ui/checkbox',
+    '@/components/ui/accordion',
+    '@/components/ui/switch'
+  ],
+  esbuildOptions(options) {
+    options.banner = {
+      js: '"use client";',
+    };
+  },
+});
