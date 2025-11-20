@@ -1877,10 +1877,6 @@ function TimeTrendDemoChart({
     new Set(defaultVisibleGroups || demographicGroups)
   );
   const [showCI, setShowCI] = useState(false);
-  const [isMounted, setIsMounted] = useState(false);
-  useEffect(() => {
-    setIsMounted(true);
-  }, []);
   useEffect(() => {
     setVisibleGroups(new Set(defaultVisibleGroups || demographicGroups));
   }, [demographicGroups, defaultVisibleGroups]);
@@ -2030,7 +2026,7 @@ function TimeTrendDemoChart({
       data.metadata.subtitle && /* @__PURE__ */ jsx("p", { className: "text-sm text-gray-600 mt-1", children: data.metadata.subtitle }),
       data.metadata.question && /* @__PURE__ */ jsx("p", { className: "text-sm text-gray-500 italic mt-1", children: data.metadata.question })
     ] }),
-    /* @__PURE__ */ jsx("div", { className: "h-[450px] md:h-[500px] w-full", style: { border: "2px solid blue" }, children: !isMounted ? /* @__PURE__ */ jsx("div", { className: "flex items-center justify-center h-full", children: /* @__PURE__ */ jsx("p", { className: "text-gray-500", children: "Loading chart..." }) }) : /* @__PURE__ */ jsx(ResponsiveContainer, { width: "100%", height: "100%", children: /* @__PURE__ */ jsxs(
+    /* @__PURE__ */ jsx("div", { className: "h-[450px] md:h-[500px] w-full", style: { border: "2px solid blue" }, children: /* @__PURE__ */ jsx(ResponsiveContainer, { width: "100%", height: "100%", children: /* @__PURE__ */ jsxs(
       LineChart,
       {
         margin: { top: 20, right: 20, left: 10, bottom: 5 },
