@@ -13,11 +13,12 @@ export default defineConfig({
   clean: true,
   treeshake: true,
   minify: false,
+  noExternal: ['recharts'], // Force bundle Recharts to fix React 19 compatibility
   external: [
     'react',
     'react-dom',
     '@observablehq/plot',
-    'recharts',
+    // 'recharts', // BUNDLE recharts into package to fix React 19 compatibility
     'lucide-react',
     'topojson-client',
     'd3-array',
