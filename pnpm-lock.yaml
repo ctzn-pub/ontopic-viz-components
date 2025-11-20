@@ -27,8 +27,8 @@ importers:
   packages/components:
     dependencies:
       '@ontopic/viz-core':
-        specifier: git+ssh://git@github.com:ctzn-pub/ontopic-core.git#v1.0.0
-        version: git+https://git@github.com:ctzn-pub/ontopic-core.git#9449866481389c649feb631c196c9d6a49536800
+        specifier: git+https://github.com/ctzn-pub/ontopic-core.git#v1.0.0
+        version: https://codeload.github.com/ctzn-pub/ontopic-core/tar.gz/9449866481389c649feb631c196c9d6a49536800
       '@radix-ui/react-label':
         specifier: 2.1.1
         version: 2.1.1(@types/react-dom@18.3.7(@types/react@18.3.27))(@types/react@18.3.27)(react-dom@18.3.1(react@18.3.1))(react@18.3.1)
@@ -302,6 +302,10 @@ packages:
 
   '@ontopic/viz-core@git+https://git@github.com:ctzn-pub/ontopic-core.git#9449866481389c649feb631c196c9d6a49536800':
     resolution: {commit: 9449866481389c649feb631c196c9d6a49536800, repo: git@github.com:ctzn-pub/ontopic-core.git, type: git}
+    version: 1.0.0
+
+  '@ontopic/viz-core@https://codeload.github.com/ctzn-pub/ontopic-core/tar.gz/9449866481389c649feb631c196c9d6a49536800':
+    resolution: {tarball: https://codeload.github.com/ctzn-pub/ontopic-core/tar.gz/9449866481389c649feb631c196c9d6a49536800}
     version: 1.0.0
 
   '@pkgjs/parseargs@0.11.0':
@@ -1346,7 +1350,7 @@ snapshots:
   '@ontopic/viz-components@git+https://git@github.com:ctzn-pub/ontopic-viz-components.git#2f976f02d6087ab34f9e1b44be2fd574adb65fe4(@observablehq/plot@0.6.17)(lucide-react@0.454.0(react@18.3.1))(react-dom@18.3.1(react@18.3.1))(react@18.3.1)(recharts@2.15.4(react-dom@18.3.1(react@18.3.1))(react@18.3.1))':
     dependencies:
       '@observablehq/plot': 0.6.17
-      '@ontopic/viz-core': git+https://git@github.com:ctzn-pub/ontopic-core.git#9449866481389c649feb631c196c9d6a49536800
+      '@ontopic/viz-core': https://codeload.github.com/ctzn-pub/ontopic-core/tar.gz/9449866481389c649feb631c196c9d6a49536800
       clsx: 2.1.1
       lucide-react: 0.454.0(react@18.3.1)
       react: 18.3.1
@@ -1355,6 +1359,10 @@ snapshots:
       topojson-client: 3.1.0
 
   '@ontopic/viz-core@git+https://git@github.com:ctzn-pub/ontopic-core.git#9449866481389c649feb631c196c9d6a49536800':
+    dependencies:
+      zod: 3.25.76
+
+  '@ontopic/viz-core@https://codeload.github.com/ctzn-pub/ontopic-core/tar.gz/9449866481389c649feb631c196c9d6a49536800':
     dependencies:
       zod: 3.25.76
 
