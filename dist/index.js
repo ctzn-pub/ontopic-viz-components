@@ -5895,6 +5895,10 @@ function TimeTrendDemoChart({
     new Set(defaultVisibleGroups || demographicGroups)
   );
   const [showCI, setShowCI] = React25.useState(false);
+  const [isMounted, setIsMounted] = React25.useState(false);
+  React25.useEffect(() => {
+    setIsMounted(true);
+  }, []);
   React25.useEffect(() => {
     setVisibleGroups(new Set(defaultVisibleGroups || demographicGroups));
   }, [demographicGroups, defaultVisibleGroups]);
@@ -6044,7 +6048,7 @@ function TimeTrendDemoChart({
       data.metadata.subtitle && /* @__PURE__ */ jsxRuntime.jsx("p", { className: "text-sm text-gray-600 mt-1", children: data.metadata.subtitle }),
       data.metadata.question && /* @__PURE__ */ jsxRuntime.jsx("p", { className: "text-sm text-gray-500 italic mt-1", children: data.metadata.question })
     ] }),
-    /* @__PURE__ */ jsxRuntime.jsx("div", { className: "h-[450px] md:h-[500px] w-full", style: { border: "2px solid blue" }, children: /* @__PURE__ */ jsxRuntime.jsx(recharts.ResponsiveContainer, { width: "100%", height: "100%", children: /* @__PURE__ */ jsxRuntime.jsxs(
+    /* @__PURE__ */ jsxRuntime.jsx("div", { className: "h-[450px] md:h-[500px] w-full", style: { border: "2px solid blue" }, children: !isMounted ? /* @__PURE__ */ jsxRuntime.jsx("div", { className: "flex items-center justify-center h-full", children: /* @__PURE__ */ jsxRuntime.jsx("p", { className: "text-gray-500", children: "Loading chart..." }) }) : /* @__PURE__ */ jsxRuntime.jsx(recharts.ResponsiveContainer, { width: "100%", height: "100%", children: /* @__PURE__ */ jsxRuntime.jsxs(
       recharts.LineChart,
       {
         margin: { top: 20, right: 20, left: 10, bottom: 5 },

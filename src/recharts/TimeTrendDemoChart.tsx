@@ -118,6 +118,12 @@ export default function TimeTrendDemoChart({
         new Set(defaultVisibleGroups || demographicGroups)
     );
     const [showCI, setShowCI] = useState(false);
+    const [isMounted, setIsMounted] = useState(false);
+
+    // Effect to track client-side mounting (fixes React 19 SSR issues with Recharts)
+    useEffect(() => {
+        setIsMounted(true);
+    }, []);
 
     // Effect to update visible groups when props change
     useEffect(() => {
@@ -312,6 +318,11 @@ export default function TimeTrendDemoChart({
 
             {/* Chart Container */}
             <div className="h-[450px] md:h-[500px] w-full" style={{ border: '2px solid blue' }}>
+                {!isMounted ? (
+                    <div className="flex items-center justify-center h-full">
+                        <p className="text-gray-500">Loading chart...</p>
+                    </div>
+                ) : (
                 <ResponsiveContainer width="100%" height="100%">
                     <LineChart
                         key={`${demographic}-${showCI}`} // Add showCI to key for re-render on toggle
@@ -413,6 +424,7 @@ export default function TimeTrendDemoChart({
 
                     </LineChart>
                 </ResponsiveContainer>
+                )}
             </div>
 
             {/* Footer Controls/Info */}
