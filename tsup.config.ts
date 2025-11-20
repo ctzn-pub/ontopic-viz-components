@@ -24,18 +24,8 @@ export default defineConfig({
     'highcharts',
     'highcharts-react-official',
     'next/dynamic',
-    'next-themes',
-    // shadcn/ui components (expected from consuming app)
-    '@/components/ui/card',
-    '@/components/ui/button',
-    '@/components/ui/table',
-    '@/components/ui/tabs',
-    '@/components/ui/input',
-    '@/components/ui/label',
-    '@/components/ui/select',
-    '@/components/ui/checkbox',
-    '@/components/ui/accordion',
-    '@/components/ui/switch'
+    'next-themes'
+    // Removed shadcn/ui components from external - they're now bundled in the package
   ],
   esbuildOptions(options) {
     options.banner = {

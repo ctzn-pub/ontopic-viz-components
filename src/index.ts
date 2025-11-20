@@ -4,9 +4,11 @@ export * from './plot';
 // Export all Recharts components
 export * from './recharts';
 
-// Temporarily commented out - need to resolve app dependencies
+// Export UI components (now bundled in package, not external)
+export * from './ui';
+
+// Temporarily commented out - composite components need refactoring
 // export * from './composite';
-// export * from './ui';
 
 // Export infrastructure
 export * from './infrastructure';
