@@ -6,10 +6,10 @@ A shadcn-style component registry for data visualization. Install components dir
 
 ```bash
 # Install a component with one command
-npx @ontopic/viz add recharts/generic/timeseries-line-v1
+npx @ontopic/viz add recharts/gss/timeseries-line-v1
 
 # Use it in your app
-import TimeseriesLineV1 from '@/viz/components/timeseries-line-v1';
+import TimeseriesLineV1 from '@/viz/components/recharts/gss/timeseries-line-v1';
 ```
 
 ## Why Component Registry?
@@ -46,13 +46,13 @@ npx @ontopic/viz add <framework>/<category>/<component>
 
 **Examples:**
 ```bash
-# Recharts time series
-npx @ontopic/viz add recharts/generic/timeseries-line-v1
+# GSS-specific Recharts time series
+npx @ontopic/viz add recharts/gss/timeseries-line-v1
 
-# Observable Plot histogram
+# Generic Observable Plot histogram
 npx @ontopic/viz add plot/generic/histogram-v1
 
-# Geographic map
+# Geographic state map
 npx @ontopic/viz add plot/geo/state-map-v1
 ```
 
@@ -99,7 +99,7 @@ pnpm add @observablehq/plot d3
 // app/my-chart/page.tsx
 'use client';
 
-import TimeseriesLineV1 from '@/viz/components/timeseries-line-v1';
+import TimeseriesLineV1 from '@/viz/components/recharts/gss/timeseries-line-v1';
 
 export default function MyChartPage() {
   const data = {
@@ -132,7 +132,7 @@ export default function MyChartPage() {
 ### Recharts (18 components)
 
 **Time Series:**
-- `recharts/generic/timeseries-line-v1` - Multi-group trends with presidential backgrounds
+- `recharts/gss/timeseries-line-v1` - Multi-group trends with presidential backgrounds (GSS-specific)
 - `recharts/generic/timeseries-basic-v1` - Basic line chart with error bars
 - `recharts/generic/timeseries-dual-axis-v1` - Dual y-axis charts
 - `recharts/generic/timeseries-index-v1` - Indexed/normalized comparisons
@@ -218,7 +218,7 @@ npx viz add recharts/generic/timeseries-line-v1
 Or run directly:
 
 ```bash
-node /path/to/viz-registry/cli/index.js add recharts/generic/timeseries-line-v1
+node /path/to/viz-registry/cli/index.js add recharts/gss/timeseries-line-v1
 ```
 
 ## Contributing
