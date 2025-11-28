@@ -6,7 +6,7 @@ const path = require('path');
 const https = require('https');
 const { execSync } = require('child_process');
 
-const GITHUB_RAW_BASE = 'https://raw.githubusercontent.com/ctzn-pub/ontopic-viz-components/master/registry';
+const GITHUB_RAW_BASE = 'https://raw.githubusercontent.com/ctzn-pub/ontopic-viz-components/main/registry';
 
 program
   .name('@ontopic/viz')
