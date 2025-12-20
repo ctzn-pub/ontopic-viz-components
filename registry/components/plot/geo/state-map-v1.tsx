@@ -26,6 +26,21 @@ export interface StateMapProps {
     caption?: string;
   };
 
+  /** Title displayed above the map (e.g., "Obesity Prevalence") */
+  title?: string;
+
+  /** Year displayed next to title (e.g., "2022") */
+  year?: string | number;
+
+  /** Description text below title */
+  description?: string;
+
+  /** Source attribution for footer */
+  source?: string;
+
+  /** Show national average value */
+  showAverage?: boolean;
+
   /** Color scheme for choropleth */
   colorScheme?: string;
 
@@ -71,6 +86,11 @@ export const StateMap: React.FC<StateMapProps> = ({
   width = 975,
   height = 610,
   labels = {},
+  title: propTitle,
+  year,
+  description,
+  source,
+  showAverage = true,
   colorScheme = 'prgn',
   quantiles = 5,
   reverseColors = false,
@@ -78,12 +98,24 @@ export const StateMap: React.FC<StateMapProps> = ({
   className = ''
 }) => {
   const {
-    title = '',
+    title: labelTitle = '',
     subtitle = '',
     caption = '',
     valueSuffix = '',
     valuePrefix = ''
   } = labels;
+
+  // Use prop title or fall back to labels.title
+  const displayTitle = propTitle || labelTitle;
+
+  // Calculate national average
+  const average = React.useMemo(() => {
+    if (!data || data.length === 0) return null;
+    const validValues = data.filter(d => d.value != null && !isNaN(d.value));
+    if (validValues.length === 0) return null;
+    const sum = validValues.reduce((acc, d) => acc + d.value, 0);
+    return sum / validValues.length;
+  }, [data]);
 
   const containerRef = React.useRef<HTMLDivElement>(null);
 
@@ -171,9 +203,52 @@ export const StateMap: React.FC<StateMapProps> = ({
     return () => {
       plot.remove();
     };
-  }, [usTopoJSON, data, width, height, title, subtitle, caption, valueSuffix, valuePrefix, colorScheme, quantiles, reverseColors, projection]);
+  }, [usTopoJSON, data, width, height, displayTitle, subtitle, caption, valueSuffix, valuePrefix, colorScheme, quantiles, reverseColors, projection]);
 
-  return <div ref={containerRef} className={className}></div>;
+  // Format average value
+  const formattedAverage = average != null
+    ? `${valuePrefix}${average.toFixed(2)}${valueSuffix}`
+    : null;
+
+  return (
+    <div className={className}>
+      {/* Header */}
+      {(displayTitle || year || description) && (
+        <div className="mb-4">
+          {(displayTitle || year) && (
+            <div className="flex items-baseline gap-2 mb-1">
+              {displayTitle && (
+                <h2 className="text-2xl font-bold">{displayTitle}</h2>
+              )}
+              {year && (
+                <span className="text-lg text-gray-500">({year})</span>
+              )}
+            </div>
+          )}
+          {description && (
+            <p className="text-sm text-gray-600">{description}</p>
+          )}
+        </div>
+      )}
+
+      {/* Average value display */}
+      {showAverage && formattedAverage && (
+        <div className="mb-4">
+          <span className="text-4xl font-bold text-gray-900">{formattedAverage}</span>
+        </div>
+      )}
+
+      {/* Map container */}
+      <div ref={containerRef}></div>
+
+      {/* Source footer */}
+      {source && (
+        <div className="mt-4 text-sm text-gray-500">
+          Source: {source}
+        </div>
+      )}
+    </div>
+  );
 };
 
 export default StateMap;

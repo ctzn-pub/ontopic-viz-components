@@ -13,12 +13,13 @@ import {
 } from 'recharts';
 
 interface DataPoint {
-  year: string;
+  year: string;  // Can be "2023" or "2023-01-01" format
   value: number;
   ci_lower?: number;
   ci_upper?: number;
   n_actual?: number;
   standard_error?: number;
+  date?: string;  // Original date string for display
 }
 
 interface DataPointMetadataItem {
@@ -61,41 +62,44 @@ export default function TimeSeriesChart({
 }: TimeSeriesChartProps) {
   
 
-  // Convert year to a numerical value
-  const numericData = data.map((d) => ({
-    ...d,
-    year: parseInt(d.year, 10), // Convert year to number
-  }));
-
   // Extract metadata for "value" field
   const valueMetadata = dataPointMetadata.find((d) => d.id === 'value');
 
- 
+  // Convert date/year strings to timestamps for proper x-axis scaling
+  const processedData = data.map((d) => {
+    // Try to parse as full date first (e.g., "2023-01-01" or "2023-01")
+    const dateAttempt = new Date(d.year);
+    const timestamp = !isNaN(dateAttempt.getTime())
+      ? dateAttempt.getTime()
+      : new Date(`${d.year}-01-01`).getTime(); // Fallback for year-only strings
 
-  // Check for duplicate years
-  const dataYears = numericData.map((d) => d.year);
-  const uniqueYears = new Set(dataYears);
-  
-  if (dataYears.length !== uniqueYears.size) {
-    // console.warn('Duplicate years found in the data prop!');
+    return {
+      ...d,
+      timestamp,
+      displayLabel: d.year, // Keep original string for display
+    };
+  });
 
-    return <div>Error: Duplicate years detected in the dataset.</div>;
-  }
+  // Determine min and max timestamps for the domain
+  const minTimestamp = Math.min(...processedData.map((d) => d.timestamp));
+  const maxTimestamp = Math.max(...processedData.map((d) => d.timestamp));
 
-  // Determine min and max years for the domain
-  const minYear = Math.min(...numericData.map((d) => d.year));
-  const maxYear = Math.max(...numericData.map((d) => d.year));
+  // Determine if data is yearly or more granular based on data range
+  const rangeMs = maxTimestamp - minTimestamp;
+  const dayMs = 24 * 60 * 60 * 1000;
+  const yearMs = 365 * dayMs;
+  const isYearlyData = processedData.length <= 2 || (rangeMs / processedData.length) > (yearMs * 0.5);
 
   
    // Custom tooltip component
-   const CustomTooltip = ({ active, payload, label }: any) => {
+   const CustomTooltip = ({ active, payload }: any) => {
      if (!active || !payload || !payload.length) return null;
 
      const dataPoint = payload[0].payload;
 
      return (
        <div className="bg-white p-3 border border-gray-200 shadow-lg rounded-lg">
-         <p className="font-medium">{`Year: ${label}`}</p>
+         <p className="font-medium">{dataPoint.displayLabel}</p>
          <p className="text-blue-600">
            {`${valueMetadata?.name}: ${dataPoint.value.toFixed(1)}${valueMetadata?.value_suffix || ''}`}
          </p>
@@ -123,7 +127,7 @@ export default function TimeSeriesChart({
        <div className="w-full h-[400px]">
          <ResponsiveContainer width="100%" height="100%">
          <LineChart
-             data={numericData}
+             data={processedData}
              margin={{
                top: 20,
                right: 30,
@@ -134,11 +138,16 @@ export default function TimeSeriesChart({
              <CartesianGrid strokeDasharray="3 3" vertical={false} />
 
              <XAxis
-               dataKey="year"
-               type="number" 
-               domain={[minYear , maxYear ]}
-               tickCount={(maxYear - minYear) / 2}
-               tickFormatter={(value) => value.toString()}
+               dataKey="timestamp"
+               type="number"
+               domain={[minTimestamp, maxTimestamp]}
+               tickFormatter={(value) => {
+                 const date = new Date(value);
+                 if (isYearlyData) {
+                   return date.getFullYear().toString();
+                 }
+                 return date.toLocaleDateString('en-US', { month: 'short', year: '2-digit' });
+               }}
                padding={{ left: 20, right: 20 }}
                tick={{ fontSize: 12 }}
              />

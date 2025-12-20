@@ -1,163 +1,153 @@
 'use client';
 
-import React, { useRef, useEffect } from 'react';
+import React, { useRef, useEffect, useState } from 'react';
 import * as Plot from "@observablehq/plot";
+import * as topojson from "topojson-client";
+import { geoCentroid } from "d3-geo";
 
-/**
- * BubbleMap Component
- *
- * A geographic bubble map visualization using Observable Plot.
- * Displays data points as circles on a map, with size encoding values.
- *
- * NOTE: This version requires data with longitude and latitude coordinates.
- * For TopoJSON-based maps, see the geography integration guide.
- *
- * @example
- * ```tsx
- * <BubbleMap
- *   data={[
- *     { lon: -122.4194, lat: 37.7749, value: 850000, name: 'San Francisco' },
- *     { lon: -74.0060, lat: 40.7128, value: 8400000, name: 'New York' }
- *   ]}
- *   longitudeKey="lon"
- *   latitudeKey="lat"
- *   sizeKey="value"
- *   nameKey="name"
- * />
- * ```
- */
-
-export interface BubbleMapProps {
-  /** Data array with geographic coordinates */
-  data: any[];
-
-  /** Field name for longitude */
-  longitudeKey: string;
-
-  /** Field name for latitude */
-  latitudeKey: string;
-
-  /** Field name for bubble size */
-  sizeKey: string;
-
-  /** Optional field name for bubble color encoding */
-  colorKey?: string;
-
-  /** Optional field name for labels/tooltips */
-  nameKey?: string;
-
-  /** Chart title */
-  title?: string;
-
-  /** Chart subtitle */
-  subtitle?: string;
-
-  /** Bubble fill color (if not using colorKey) */
-  fill?: string;
-
-  /** Bubble fill opacity */
-  fillOpacity?: number;
-
-  /** Bubble stroke color */
-  stroke?: string;
-
-  /** Bubble stroke width */
-  strokeWidth?: number;
-
-  /** Chart width in pixels */
-  width?: number;
-
-  /** Chart height in pixels */
-  height?: number;
-
-  /** Projection type for geographic data */
-  projection?: 'albers-usa' | 'mercator' | 'equal-earth' | 'orthographic';
-
-  /** Additional CSS classes */
-  className?: string;
+interface CountyDataPoint {
+  FIPS: string;
+  [key: string]: unknown;
 }
 
-export function BubbleMap({
+interface BubbleMapProps {
+  data: CountyDataPoint[];
+  topoJsonUrl?: string;
+  valueField?: string;
+  sizeField?: string;
+  title?: string;
+  subtitle?: string;
+  source?: string;
+  width?: number;
+  height?: number;
+}
+
+const BubbleMap: React.FC<BubbleMapProps> = ({
   data,
-  longitudeKey,
-  latitudeKey,
-  sizeKey,
-  colorKey,
-  nameKey,
-  title,
-  subtitle,
-  fill = '#4682b4',
-  fillOpacity = 0.6,
-  stroke = '#fff',
-  strokeWidth = 1,
-  width = 975,
-  height = 610,
-  projection = 'albers-usa',
-  className = ''
-}: BubbleMapProps) {
+  topoJsonUrl = 'https://ontopic-public-data.t3.storage.dev/sample-data/geo/us-albers-counties-10m.json',
+  valueField = 'MHLTH_AdjPrev',
+  sizeField = 'population',
+  title = "US County Bubble Map",
+  subtitle = "Bubble size represents population",
+  source = "CDC",
+  width = 960,
+  height = 600
+}) => {
   const containerRef = useRef<HTMLDivElement>(null);
+  const [us, setUs] = useState<any>(null);
+  const [loading, setLoading] = useState(true);
 
   useEffect(() => {
-    if (!containerRef.current || !data || data.length === 0) return;
+    fetch(topoJsonUrl)
+      .then(response => response.json())
+      .then(topology => {
+        setUs(topology);
+        setLoading(false);
+      })
+      .catch(error => {
+        console.error('Error loading topology:', error);
+        setLoading(false);
+      });
+  }, [topoJsonUrl]);
 
-    // Clear previous plot
+  useEffect(() => {
+    if (loading || !data || data.length === 0 || !us || !containerRef.current) return;
+
     containerRef.current.innerHTML = '';
 
-    // Transform data for Plot
-    const plotData = data.map(d => ({
-      ...d,
-      longitude: d[longitudeKey],
-      latitude: d[latitudeKey],
-      size: d[sizeKey],
-      ...(colorKey && { color: d[colorKey] }),
-      ...(nameKey && { name: d[nameKey] })
-    }));
+    try {
+      const statemesh = topojson.mesh(us, us.objects.states, (a: any, b: any) => a !== b);
+      const nation = topojson.feature(us, us.objects.nation);
+      const counties = topojson.feature(us, us.objects.counties) as any;
 
-    // Build marks
-    const marks: any[] = [
-      // Bubble dots
-      Plot.dot(plotData, {
-        x: 'longitude',
-        y: 'latitude',
-        r: 'size',
-        fill: colorKey ? 'color' : fill,
-        fillOpacity,
-        stroke,
-        strokeWidth,
-        title: nameKey
-          ? d => `${d.name}: ${d.size.toLocaleString()}`
-          : d => d.size.toLocaleString(),
-        tip: true
-      })
-    ];
+      const dataMap = new Map(data.map(d => [d.FIPS, d]));
 
-    // Create the plot
-    const plot = Plot.plot({
-      width,
-      height,
-      title,
-      subtitle,
-      style: {
-        backgroundColor: "white",
-        fontFamily: "sans-serif",
-      },
-      projection: {
-        type: projection,
-        ...(projection === 'albers-usa' && { domain: { type: 'MultiPoint', coordinates: plotData.map(d => [d.longitude, d.latitude]) } })
-      },
-      marks
-    }) as SVGSVGElement;
+      const countiesWithData = counties.features
+        .filter((county: any) => dataMap.has(county.id))
+        .map((county: any) => {
+          const d = dataMap.get(county.id)!;
+          const centroid = geoCentroid(county);
+          return {
+            ...d,
+            longitude: centroid[0],
+            latitude: centroid[1],
+            countyName: county.properties?.name || `County ${county.id}`,
+            value: Number(d[valueField]) || 0,
+            size: Number(d[sizeField]) || 1000
+          };
+        })
+        .filter((d: any) => d.longitude && d.latitude && !isNaN(d.longitude) && !isNaN(d.latitude));
 
-    containerRef.current.appendChild(plot);
+      const plot = Plot.plot({
+        title,
+        subtitle,
+        caption: `Source: ${source}`,
+        width,
+        height,
+        projection: "albers",
+        style: {
+          backgroundColor: "white",
+          fontFamily: "sans-serif",
+        },
+        color: {
+          legend: true,
+          scheme: "RdYlBu",
+          reverse: true,
+          label: valueField,
+          tickFormat: ".1f"
+        },
+        r: {
+          range: [2, 15],
+          label: sizeField
+        },
+        marks: [
+          Plot.geo(nation, {
+            fill: "#f8f9fa",
+            stroke: "white",
+            strokeWidth: 1
+          }),
+          Plot.geo(statemesh, {
+            stroke: "#dee2e6",
+            strokeOpacity: 0.5
+          }),
+          Plot.dot(countiesWithData, {
+            x: "longitude",
+            y: "latitude",
+            r: (d: any) => Math.sqrt(d.size / 50000),
+            fill: "value",
+            fillOpacity: 0.7,
+            stroke: "white",
+            strokeWidth: 1,
+            tip: true,
+            title: (d: any) => `${d.countyName}\n${valueField}: ${d.value.toFixed(1)}%\n${sizeField}: ${d.size.toLocaleString()}`
+          })
+        ],
+        marginLeft: 0,
+        marginRight: 120
+      });
 
-    return () => {
-      plot?.remove();
-    };
-  }, [data, longitudeKey, latitudeKey, sizeKey, colorKey, nameKey, title, subtitle, fill, fillOpacity, stroke, strokeWidth, width, height, projection]);
+      containerRef.current.appendChild(plot);
 
-  return (
-    <div ref={containerRef} className={className} />
-  );
-}
+      return () => {
+        plot?.remove();
+      };
+    } catch (error) {
+      console.error('Error rendering bubble map:', error);
+      if (containerRef.current) {
+        containerRef.current.innerHTML = `<div class="text-red-500 p-4">Error loading map: ${error}</div>`;
+      }
+    }
+  }, [data, us, loading, valueField, sizeField, title, subtitle, source, width, height]);
+
+  if (loading) {
+    return (
+      <div className="flex justify-center items-center" style={{ minHeight: height }}>
+        <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-gray-900"></div>
+      </div>
+    );
+  }
+
+  return <div ref={containerRef} className="flex justify-center" />;
+};
 
 export default BubbleMap;

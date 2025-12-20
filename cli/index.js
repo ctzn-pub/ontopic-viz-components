@@ -141,6 +141,13 @@ function downloadFile(url, dest) {
   });
 }
 
+// Version constraints for dependencies (to avoid breaking changes)
+const VERSION_CONSTRAINTS = {
+  'recharts': '^2.15.0',
+  '@observablehq/plot': '^0.6.0',
+  'lucide-react': '^0.454.0',
+};
+
 function extractNpmDependencies(content) {
   const deps = new Set();
 
@@ -149,13 +156,17 @@ function extractNpmDependencies(content) {
 
   for (const match of importMatches) {
     const pkg = match[1];
+    let pkgName;
     // Handle scoped packages
     if (pkg.startsWith('@')) {
       const parts = pkg.split('/');
-      deps.add(`${parts[0]}/${parts[1]}`);
+      pkgName = `${parts[0]}/${parts[1]}`;
     } else {
-      deps.add(pkg.split('/')[0]);
+      pkgName = pkg.split('/')[0];
     }
+    // Add version constraint if available
+    const version = VERSION_CONSTRAINTS[pkgName];
+    deps.add(version ? `${pkgName}@${version}` : pkgName);
   }
 
   return Array.from(deps);
