@@ -6,7 +6,17 @@ const path = require('path');
 const https = require('https');
 const { execSync } = require('child_process');
 
+// Source resolution.
+//
+// Default mode is local-source: copy files from a sibling/parent checkout of
+// the registry repo. Honors $ONTOPIC_VIZ_SOURCE; falls back to the canonical
+// path if unset. Pass --remote to fetch from public GitHub raw instead.
 const GITHUB_RAW_BASE = 'https://raw.githubusercontent.com/ctzn-pub/ontopic-viz-components/main/registry';
+const DEFAULT_LOCAL_SOURCE = '/Users/umahuggins/github/ontopic-viz-components/registry';
+
+function resolveLocalSource() {
+  return process.env.ONTOPIC_VIZ_SOURCE || DEFAULT_LOCAL_SOURCE;
+}
 
 program
   .name('@ontopic/viz')
@@ -15,23 +25,59 @@ program
 
 program
   .command('add <component>')
-  .description('Add a visualization component (e.g., recharts/generic/timeseries-line-v1)')
-  .action(async (component) => {
+  .description('Add a component. 3-seg: framework/category/file (e.g. recharts/gss/timeseries-line-v1). 2-seg: category/file (e.g. article/Callout) — for non-framework-bound assets like MDX layout components.')
+  .option('--remote', 'Fetch from public GitHub instead of local source (default: local)')
+  .option('--source <dir>', 'Override local source path (default: $ONTOPIC_VIZ_SOURCE or canonical path)')
+  .action(async (component, opts) => {
     console.log(`\n📦 Installing ${component}...\n`);
 
-    // Parse component path
-    const [framework, folder, filename] = component.split('/');
-
-    if (!framework || !folder || !filename) {
-      console.error('❌ Invalid component path. Use: framework/category/component-name');
-      console.error('   Example: recharts/generic/timeseries-line-v1');
+    // Parse component path. Accept both forms:
+    //   3-seg: framework/category/file  e.g. "recharts/gss/timeseries-line-v1"
+    //          → installs to viz/components/<framework>/<category>/<file>.tsx
+    //   2-seg: category/file            e.g. "article/Callout"
+    //          → installs to viz/components/<category>/<file>.tsx
+    // 2-seg is for non-framework-bound assets (article-layout components,
+    // MDX building blocks) — they don't slot under a chart framework like
+    // Recharts or Plot.
+    const segments = component.split('/');
+    let framework, folder, filename;
+    if (segments.length === 3) {
+      [framework, folder, filename] = segments;
+    } else if (segments.length === 2) {
+      framework = null;
+      [folder, filename] = segments;
+    } else {
+      console.error('❌ Invalid component path.');
+      console.error('   Use 3-seg framework/category/file: recharts/gss/timeseries-line-v1');
+      console.error('   Or 2-seg category/file:           article/Callout');
       process.exit(1);
+    }
+    if (!folder || !filename) {
+      console.error('❌ Invalid component path: empty segment.');
+      process.exit(1);
+    }
+
+    // Decide source mode
+    const useRemote = !!opts.remote;
+    const localSource = opts.source || resolveLocalSource();
+
+    if (useRemote) {
+      console.log(`  source: remote (${GITHUB_RAW_BASE})`);
+    } else {
+      if (!fs.existsSync(localSource)) {
+        console.error(`❌ Local source not found: ${localSource}`);
+        console.error(`   Set $ONTOPIC_VIZ_SOURCE or pass --source <dir>, or use --remote.`);
+        process.exit(1);
+      }
+      console.log(`  source: local (${localSource})`);
     }
 
     // Create local directory structure
     const vizDir = path.join(process.cwd(), 'viz');
     const componentsDir = path.join(vizDir, 'components');
-    const componentSubDir = path.join(componentsDir, framework, folder);
+    const componentSubDir = framework
+      ? path.join(componentsDir, framework, folder)
+      : path.join(componentsDir, folder);
     const uiDir = path.join(vizDir, 'ui');
     const utilsDir = path.join(vizDir, 'utils');
 
@@ -42,19 +88,22 @@ program
       }
     });
 
-    // Download component
-    const componentUrl = `${GITHUB_RAW_BASE}/components/${framework}/${folder}/${filename}.tsx`;
+    // Fetch the main component file. Registry-relative path matches the
+    // install path (with or without the framework segment).
+    const componentRel = framework
+      ? `components/${framework}/${folder}/${filename}.tsx`
+      : `components/${folder}/${filename}.tsx`;
     const componentPath = path.join(componentSubDir, `${filename}.tsx`);
 
     try {
-      await downloadFile(componentUrl, componentPath);
-      console.log(`✓ Downloaded ${filename}.tsx`);
+      await fetchFile(componentRel, componentPath, { useRemote, localSource });
+      console.log(`✓ Installed ${filename}.tsx`);
     } catch (error) {
-      console.error(`❌ Failed to download component: ${error.message}`);
+      console.error(`❌ Failed to fetch component: ${error.message}`);
       process.exit(1);
     }
 
-    // Check component for dependencies and download them
+    // Check component for dependencies and fetch them
     const componentContent = fs.readFileSync(componentPath, 'utf-8');
 
     // Extract UI imports
@@ -65,38 +114,91 @@ program
     const utilImports = [...componentContent.matchAll(/from ['"]@\/viz\/utils\/([^'"]+)['"]/g)]
       .map(match => match[1]);
 
-    // Download UI dependencies
+    // Track every file we copy so we can scan all of them for npm deps and
+    // for the `cn` helper, not just the top-level component.
+    const copiedFiles = [componentPath];
+
+    // Fetch UI dependencies
     for (const uiFile of uiImports) {
-      const uiUrl = `${GITHUB_RAW_BASE}/ui/${uiFile}.tsx`;
+      const uiRel = `ui/${uiFile}.tsx`;
       const uiPath = path.join(uiDir, `${uiFile}.tsx`);
 
       if (!fs.existsSync(uiPath)) {
         try {
-          await downloadFile(uiUrl, uiPath);
-          console.log(`✓ Downloaded ui/${uiFile}.tsx`);
+          await fetchFile(uiRel, uiPath, { useRemote, localSource });
+          console.log(`✓ Installed ui/${uiFile}.tsx`);
+          copiedFiles.push(uiPath);
         } catch (error) {
-          console.warn(`⚠ Could not download ui/${uiFile}.tsx`);
+          console.warn(`⚠ Could not fetch ui/${uiFile}.tsx`);
         }
+      } else {
+        copiedFiles.push(uiPath);
       }
     }
 
-    // Download utils dependencies
+    // Fetch utils dependencies
     for (const utilFile of utilImports) {
-      const utilUrl = `${GITHUB_RAW_BASE}/utils/${utilFile}.ts`;
+      const utilRel = `utils/${utilFile}.ts`;
       const utilPath = path.join(utilsDir, `${utilFile}.ts`);
 
       if (!fs.existsSync(utilPath)) {
         try {
-          await downloadFile(utilUrl, utilPath);
-          console.log(`✓ Downloaded utils/${utilFile}.ts`);
+          await fetchFile(utilRel, utilPath, { useRemote, localSource });
+          console.log(`✓ Installed utils/${utilFile}.ts`);
+          copiedFiles.push(utilPath);
         } catch (error) {
-          console.warn(`⚠ Could not download utils/${utilFile}.ts`);
+          console.warn(`⚠ Could not fetch utils/${utilFile}.ts`);
         }
+      } else {
+        copiedFiles.push(utilPath);
       }
     }
 
-    // Extract npm dependencies
-    const npmDeps = extractNpmDependencies(componentContent);
+    // The shadcn-style UI files import { cn } from "../lib/utils".
+    // The registry has a cn helper at registry/utils/cn.ts but the imports
+    // expect a sibling lib/utils.* file. Rather than patch every UI file or
+    // every consumer, materialize a viz/lib/utils.ts shim that re-exports cn.
+    const needsCnShim = copiedFiles.some(f => {
+      try {
+        return /from ['"](?:\.\.\/)+lib\/utils['"]/.test(fs.readFileSync(f, 'utf-8'));
+      } catch { return false; }
+    });
+
+    if (needsCnShim) {
+      const libDir = path.join(vizDir, 'lib');
+      if (!fs.existsSync(libDir)) {
+        fs.mkdirSync(libDir, { recursive: true });
+        console.log(`✓ Created ${path.relative(process.cwd(), libDir)}/`);
+      }
+      const shimPath = path.join(libDir, 'utils.ts');
+      if (!fs.existsSync(shimPath)) {
+        fs.writeFileSync(
+          shimPath,
+          `import { clsx, type ClassValue } from "clsx"\nimport { twMerge } from "tailwind-merge"\n\nexport function cn(...inputs: ClassValue[]) {\n  return twMerge(clsx(inputs))\n}\n`
+        );
+        console.log(`✓ Installed lib/utils.ts (cn shim)`);
+        copiedFiles.push(shimPath);
+      }
+    }
+
+    // Extract npm dependencies from the component AND from every UI/utils
+    // file we copied. The original CLI only scanned the top-level component,
+    // which missed transitive imports like @radix-ui/* inside ui/label.tsx.
+    const npmDepsSet = new Set();
+    for (const file of copiedFiles) {
+      try {
+        const content = fs.readFileSync(file, 'utf-8');
+        for (const dep of extractNpmDependencies(content)) {
+          npmDepsSet.add(dep);
+        }
+      } catch {}
+    }
+    if (needsCnShim) {
+      // The cn shim depends on these directly.
+      npmDepsSet.add('clsx');
+      npmDepsSet.add('tailwind-merge');
+    }
+    const npmDeps = Array.from(npmDepsSet);
 
     if (npmDeps.length > 0) {
       console.log(`\n📥 Installing npm dependencies...`);
@@ -113,7 +215,10 @@ program
 
     console.log(`\n✅ Component installed successfully!\n`);
     console.log(`Usage:`);
-    console.log(`   import ${toPascalCase(filename)} from '@/viz/components/${framework}/${folder}/${filename}';\n`);
+    const importPath = framework
+      ? `@/viz/components/${framework}/${folder}/${filename}`
+      : `@/viz/components/${folder}/${filename}`;
+    console.log(`   import ${toPascalCase(filename)} from '${importPath}';\n`);
     console.log(`Make sure your tsconfig.json includes:`);
     console.log(`   "paths": { "@/viz/*": ["./viz/*"] }\n`);
   });
@@ -121,6 +226,31 @@ program
 program.parse();
 
 // Helper functions
+
+// Unified fetch: from local registry checkout (default) or GitHub raw (--remote).
+// `relPath` is registry-relative, e.g. "components/recharts/gss/timeseries-line-v1.tsx".
+function fetchFile(relPath, dest, { useRemote, localSource }) {
+  if (useRemote) {
+    return downloadFile(`${GITHUB_RAW_BASE}/${relPath}`, dest);
+  }
+  return copyFromLocal(path.join(localSource, relPath), dest);
+}
+
+function copyFromLocal(src, dest) {
+  return new Promise((resolve, reject) => {
+    if (!fs.existsSync(src)) {
+      reject(new Error(`Not found in local source: ${src}`));
+      return;
+    }
+    try {
+      fs.copyFileSync(src, dest);
+      resolve();
+    } catch (err) {
+      reject(err);
+    }
+  });
+}
+
 function downloadFile(url, dest) {
   return new Promise((resolve, reject) => {
     const file = fs.createWriteStream(dest);
@@ -151,20 +281,27 @@ const VERSION_CONSTRAINTS = {
 function extractNpmDependencies(content) {
   const deps = new Set();
 
-  // Match imports from npm packages (not @/viz/* or relative)
-  const importMatches = content.matchAll(/from ['"]([^@.\/][^'"]+)['"]/g);
+  // Match every `from "..."` import. We'll filter out non-npm specifiers
+  // (relative paths and @/viz/* aliases) below — doing that filtering inside
+  // the regex was the source of a long-standing bug where scoped packages
+  // like @radix-ui/* were silently dropped.
+  const importMatches = content.matchAll(/from ['"]([^'"]+)['"]/g);
 
   for (const match of importMatches) {
     const pkg = match[1];
+    // Skip relative imports (./foo, ../foo) and the project's own viz alias.
+    if (pkg.startsWith('.') || pkg.startsWith('/') || pkg.startsWith('@/')) {
+      continue;
+    }
     let pkgName;
-    // Handle scoped packages
     if (pkg.startsWith('@')) {
+      // Scoped: @scope/name[/subpath] → @scope/name
       const parts = pkg.split('/');
       pkgName = `${parts[0]}/${parts[1]}`;
     } else {
+      // Bare: name[/subpath] → name
       pkgName = pkg.split('/')[0];
     }
-    // Add version constraint if available
     const version = VERSION_CONSTRAINTS[pkgName];
     deps.add(version ? `${pkgName}@${version}` : pkgName);
   }

@@ -64,6 +64,30 @@ interface TimeTrendDemoChartProps {
     demographicGroups: string[];
     demographic: string;
     defaultVisibleGroups?: string[];
+    /**
+     * When true, renders a stripped-down version of the chart suitable for
+     * small-multiples grids:
+     *   - no card chrome (bg-white, shadow, rounded corners) — the wrapper
+     *     provides the frame
+     *   - no internal title / subtitle / question block
+     *   - no source line and no CI toggle footer
+     *   - no Recharts legend (the wrapper renders one shared legend)
+     *   - no presidential reference areas or president-name labels
+     *     (illegible at panel size, mistaken for gridlines)
+     *   - sparser x-axis ticks (every 20 years, not every 5)
+     *   - smaller axis-tick font, smaller chart height
+     *
+     * The caller is expected to provide a single shared title/source/legend
+     * outside the grid. Default: false.
+     */
+    compact?: boolean;
+    /**
+     * When set, overrides the chart's auto-computed y-axis domain. Used by
+     * <SmallMultiples> to enforce a shared range across panels so visual
+     * comparison works. Format: [min, max] in the same units as the data
+     * (typically 0–100 for percentages). Default: undefined → auto-scale.
+     */
+    sharedYDomain?: [number, number];
 }
 
 // --- Constants ---
@@ -101,7 +125,7 @@ const processDataPoint = (d: DataPoint): DataPoint & { year: number | null } => 
 
 // --- Component ---
 export default function TimeTrendDemoChart({
-    data, demographicGroups, demographic, defaultVisibleGroups
+    data, demographicGroups, demographic, defaultVisibleGroups, compact = false, sharedYDomain
 }: TimeTrendDemoChartProps) {
     const [visibleGroups, setVisibleGroups] = useState<Set<string>>(
         new Set(defaultVisibleGroups || demographicGroups)
@@ -133,7 +157,10 @@ export default function TimeTrendDemoChart({
         ? Math.min(...relevantPresidentialTerms.map(t => t.start)) : minYearInData;
     const xAxisMin = Math.min(firstRelevantBandStart, minYearInData);
     const xAxisMax = maxYearInData;
-    const xTickInterval = 5;
+    // Sparser ticks in compact mode — every 5 years collides into a smudge
+    // in narrow small-multiples columns. Every 20 years gives ~3 labels per
+    // panel for a 50-year range, which is readable.
+    const xTickInterval = compact ? 20 : 5;
     const xAxisTicks = generateTicks(xAxisMin, xAxisMax, xTickInterval);
 
     const groupedData = demographicGroups.map(group => {
@@ -180,7 +207,11 @@ export default function TimeTrendDemoChart({
     const { min: effectiveMin, max: effectiveMax } = getVisibleBounds();
     let yDomain: [number, number] = [0, 100];
 
-    if (isFinite(effectiveMin) && isFinite(effectiveMax)) {
+    // sharedYDomain wins over auto-scaling — used by <SmallMultiples> to
+    // enforce a shared range across panels.
+    if (sharedYDomain) {
+        yDomain = sharedYDomain;
+    } else if (isFinite(effectiveMin) && isFinite(effectiveMax)) {
         const dataRange = effectiveMax - effectiveMin;
         const buffer = Math.max(5, dataRange * 0.15);
         const lowerBound = effectiveMin - buffer;
@@ -268,20 +299,26 @@ export default function TimeTrendDemoChart({
     };
 
     return (
-        <div className="w-full bg-white p-4 md:p-6 rounded-lg shadow">
-            <div className="mb-4">
-                <h2 className="text-xl font-semibold text-gray-800">{data.metadata.title}</h2>
-                {data.metadata.subtitle && <p className="text-sm text-gray-600 mt-1">{data.metadata.subtitle}</p>}
-                {data.metadata.question && <p className="text-sm text-gray-500 italic mt-1">{data.metadata.question}</p>}
-            </div>
+        <div className={
+            compact
+                ? "w-full p-2"
+                : `w-full bg-white rounded-lg shadow px-4 md:px-6 pt-3 md:pt-4 pb-4 md:pb-5`
+        }>
+            {!compact && (
+                <div className="mb-2">
+                    <h2 className="text-base font-semibold text-gray-800 leading-snug">{data.metadata.title}</h2>
+                    {data.metadata.subtitle && <p className="text-xs text-gray-600 mt-0.5 leading-snug">{data.metadata.subtitle}</p>}
+                    {data.metadata.question && <p className="text-xs text-gray-500 italic mt-0.5 leading-snug">{data.metadata.question}</p>}
+                </div>
+            )}
 
-            <div className="h-[450px] md:h-[500px] w-full">
+            <div className={compact ? "h-[200px] md:h-[220px] w-full" : "h-[450px] md:h-[500px] w-full"}>
                 <ResponsiveContainer width="100%" height="100%">
                     <LineChart
                         key={`${demographic}-${showCI}`}
                         margin={{ top: 20, right: 20, left: 10, bottom: 5 }}
                     >
-                        {relevantPresidentialTerms.map((term, index) => (
+                        {!compact && relevantPresidentialTerms.map((term, index) => (
                             <ReferenceArea key={`term-bg-${index}`} x1={term.start} x2={term.end} yAxisId="left"
                                 fill={term.party === "Democrat" ? "rgba(230, 240, 255, 0.5)" : "rgba(255, 235, 238, 0.5)"}
                                 ifOverflow="visible" shapeRendering="crispEdges" />
@@ -294,7 +331,7 @@ export default function TimeTrendDemoChart({
                             domain={[xAxisMin, xAxisMax]}
                             allowDataOverflow={true}
                             ticks={xAxisTicks}
-                            tick={{ fontSize: 11, fill: '#666' }}
+                            tick={{ fontSize: compact ? 10 : 11, fill: '#666' }}
                             padding={{ left: 10, right: 10 }}
                             tickFormatter={(year) => String(year)}
                             interval={0}
@@ -308,18 +345,20 @@ export default function TimeTrendDemoChart({
                             domain={yDomain}
                             allowDataOverflow={false}
                             axisLine={false} tickLine={false}
-                            tick={{ fontSize: 11, fill: '#666' }}
-                            width={50}
+                            tick={{ fontSize: compact ? 10 : 11, fill: '#666' }}
+                            width={compact ? 36 : 50}
                         />
 
                         <Tooltip content={<CustomTooltip />} cursor={{ stroke: '#a0a0a0', strokeWidth: 1, strokeDasharray: '3 3' }} />
 
-                        <Legend verticalAlign="bottom" align="center" height={40} onClick={handleLegendClick}
-                            iconSize={10} wrapperStyle={{ paddingTop: '10px' }}
-                            formatter={(value) => {
-                                const isVisible = visibleGroups.has(value);
-                                return (<span style={{ color: isVisible ? '#333' : '#aaa', cursor: 'pointer', marginLeft: '4px', fontSize: '12px' }}>{value}</span>);
-                            }} />
+                        {!compact && (
+                            <Legend verticalAlign="bottom" align="center" height={40} onClick={handleLegendClick}
+                                iconSize={10} wrapperStyle={{ paddingTop: '10px' }}
+                                formatter={(value) => {
+                                    const isVisible = visibleGroups.has(value);
+                                    return (<span style={{ color: isVisible ? '#333' : '#aaa', cursor: 'pointer', marginLeft: '4px', fontSize: '12px' }}>{value}</span>);
+                                }} />
+                        )}
 
                         {groupedData.map((group) => {
                             const colorIndex = demographicGroups.indexOf(group.name);
@@ -346,7 +385,7 @@ export default function TimeTrendDemoChart({
                             );
                         })}
 
-                        {relevantPresidentialTerms.map((term, index) => (
+                        {!compact && relevantPresidentialTerms.map((term, index) => (
                             <Text
                                 key={`term-label-${index}`}
                                 x={(term.start + term.end) / 2}
@@ -364,22 +403,24 @@ export default function TimeTrendDemoChart({
                 </ResponsiveContainer>
             </div>
 
-            <div className="flex flex-col sm:flex-row justify-between items-center mt-3 sm:mt-1 pt-2 border-t border-gray-200">
-                <div className="text-xs text-gray-500 text-left order-1 sm:order-none">
-                    Source: {data.metadata.source?.name || 'Not specified'}
-                    {data.metadata.observations && ` (${data.metadata.observations.toLocaleString()} Observations)`}
-                </div>
+            {!compact && (
+                <div className="flex flex-col sm:flex-row justify-between items-center mt-3 sm:mt-1 pt-2 border-t border-gray-200">
+                    <div className="text-xs text-gray-500 text-left order-1 sm:order-none">
+                        Source: {data.metadata.source?.name || 'Not specified'}
+                        {data.metadata.observations && ` (${data.metadata.observations.toLocaleString()} Observations)`}
+                    </div>
 
-                <div className="flex items-center space-x-2 order-2 sm:order-none">
-                    <Switch
-                        id="show-ci" checked={showCI} onCheckedChange={setShowCI}
-                        disabled={!hasCIData}
-                    />
-                    <Label htmlFor="show-ci" className={`text-xs ${!hasCIData ? 'text-gray-400' : 'text-gray-600'}`}>
-                        Show 95% CI
-                    </Label>
+                    <div className="flex items-center space-x-2 order-2 sm:order-none">
+                        <Switch
+                            id="show-ci" checked={showCI} onCheckedChange={setShowCI}
+                            disabled={!hasCIData}
+                        />
+                        <Label htmlFor="show-ci" className={`text-xs ${!hasCIData ? 'text-gray-400' : 'text-gray-600'}`}>
+                            Show 95% CI
+                        </Label>
+                    </div>
                 </div>
-            </div>
+            )}
         </div>
     );
 }

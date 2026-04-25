@@ -1,0 +1,132 @@
+/* GSS article theme — Fumadocs-inspired typography + design tokens.
+ *
+ * Imported by app/globals.css. Defines:
+ *   1. CSS custom-property tokens (colors, radius)
+ *   2. Body defaults (font, color, line-height, antialiasing)
+ *   3. Inline-code, blockquote, and link base styling
+ *
+ * The Tailwind preset (./tailwind-preset.ts) reads the same tokens via
+ * Tailwind's `theme.extend.colors` block — so a class like `bg-surface`
+ * resolves to `var(--color-surface)`. Flipping a token here flips it
+ * across the whole app.
+ *
+ * To lift this look into another Next 15 app: copy the entire `theme/`
+ * folder, follow theme/README.md.
+ */
+
+:root {
+  /* Colors — neutral, high-contrast, restrained. */
+  --color-body: #111827;       /* gray-900: primary body text */
+  --color-muted: #6b7280;      /* gray-500: header dl, footer, figcaptions */
+  --color-subtle: #4b5563;     /* gray-600: subtitle, secondary lines */
+  --color-surface: #fafafa;    /* neutral-50: page background */
+  --color-card: #ffffff;       /* card surface */
+  --color-border: #e5e7eb;     /* gray-200: rules, table borders */
+  --color-border-strong: #d1d5db; /* gray-300: blockquote rule */
+  --color-link: #2563eb;       /* blue-600 */
+  --color-link-hover: #1d4ed8; /* blue-700 */
+  --color-code-bg: #f3f4f6;    /* gray-100: inline code background */
+
+  /* Radius scale */
+  --radius-sm: 0.25rem;
+  --radius-md: 0.375rem;
+  --radius-lg: 0.5rem;
+
+  /* Type scale — Fumadocs is denser than the prose default. */
+  --leading-prose: 1.7;
+}
+
+/* Body defaults. Geist Sans via the --font-sans variable, set in
+ * app/layout.tsx by next/font/google. Fall back gracefully if the
+ * variable isn't loaded. */
+html {
+  font-family: var(--font-sans), ui-sans-serif, system-ui, -apple-system,
+    'Segoe UI', sans-serif;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  text-rendering: optimizeLegibility;
+}
+
+body {
+  background-color: var(--color-surface);
+  color: var(--color-body);
+  font-feature-settings: 'cv11' 1, 'ss01' 1; /* Geist's stylistic alts */
+}
+
+/* Code defaults — inline and block. The prose plugin handles spacing
+ * inside .prose; these rules are the underlying look. */
+code {
+  font-family: var(--font-mono), ui-monospace, SFMono-Regular, 'Menlo',
+    'Monaco', 'Consolas', monospace;
+}
+
+.prose code {
+  background-color: var(--color-code-bg);
+  padding: 0.125rem 0.375rem;
+  border-radius: var(--radius-sm);
+  font-size: 0.875em;
+  font-weight: 400;
+}
+
+/* The prose plugin adds backtick decorations around inline <code>. Suppress them
+ * — they're noise on a screen, only useful in plain markdown. */
+.prose code::before,
+.prose code::after {
+  content: '';
+}
+
+/* Block code: keep prose-default styling, just swap the bg + radius. */
+.prose pre {
+  background-color: #0f172a; /* slate-900 */
+  color: #e2e8f0;            /* slate-200 */
+  border-radius: var(--radius-md);
+}
+.prose pre code {
+  background-color: transparent;
+  padding: 0;
+  font-size: 0.875em;
+}
+
+/* Links — Fumadocs-equivalent blue, underline on hover only. */
+.prose a {
+  color: var(--color-link);
+  text-decoration: none;
+  font-weight: 500;
+}
+.prose a:hover {
+  color: var(--color-link-hover);
+  text-decoration: underline;
+  text-underline-offset: 0.125em;
+}
+
+/* Blockquote — Tufte-ish, rule + slight indent, no italic by default
+ * (the `<Quote>` component opts back into italic where appropriate). */
+.prose blockquote {
+  border-left: 3px solid var(--color-border-strong);
+  padding-left: 1rem;
+  font-style: normal;
+  color: var(--color-subtle);
+  font-weight: 400;
+}
+.prose blockquote p:first-of-type::before,
+.prose blockquote p:last-of-type::after {
+  content: '';
+}
+
+/* Heading rhythm — slightly more top margin on h2 to mark section breaks. */
+.prose h2 {
+  margin-top: 3rem;
+  margin-bottom: 1rem;
+  font-weight: 600;
+  letter-spacing: -0.01em;
+}
+.prose h3 {
+  margin-top: 2rem;
+  margin-bottom: 0.5rem;
+  font-weight: 600;
+}
+
+/* Body line-height. Prose default is 1.75; we go slightly tighter. */
+.prose {
+  line-height: var(--leading-prose);
+}
