@@ -232,4 +232,4 @@ MIT
 
 ## Repository
 
-https://github.com/ctzn-pub/viz-registry
+https://github.com/ctzn-pub/ontopic-viz-components
