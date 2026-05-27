@@ -12,7 +12,7 @@ import {
     ResponsiveContainer,
     ErrorBar,
     ReferenceArea,
-    Text
+    Customized
 } from 'recharts';
 import { Label } from "@/viz/ui/label";
 import { Switch } from "@/viz/ui/switch";
@@ -414,19 +414,64 @@ export default function TimeTrendDemoChart({
                             );
                         })}
 
-                        {!compact && relevantPresidentialTerms.map((term, index) => (
-                            <Text
-                                key={`term-label-${index}`}
-                                x={(term.start + term.end) / 2}
-                                y={typeof yDomain[1] === 'number' ? yDomain[1] - 3 : 97}
-                                textAnchor="middle"
-                                verticalAnchor="start"
-                                fill={rc.muted}
-                                fontSize={10}
-                            >
-                                {term.president}
-                            </Text>
-                        ))}
+                        {/* Presidential-era labels: vertical text near the
+                            bottom of each band, reading upward, in the theme's
+                            muted color so the data lines stay the primary read.
+                            Implemented via <Customized> because Recharts
+                            silently drops bare <Text> children — it only
+                            recognises a fixed set of element types in its
+                            render tree (Line, Area, ReferenceArea, Customized,
+                            …). The Customized callback gets the chart's
+                            xScale/yScale so we can place the labels in pixel
+                            space at the band's start, just above the x-axis. */}
+                        {!compact && relevantPresidentialTerms.length > 0 && (
+                            <Customized
+                                component={(rechartsProps: any) => {
+                                    const { xAxisMap, yAxisMap } = rechartsProps;
+                                    const xAxis = xAxisMap?.[Object.keys(xAxisMap ?? {})[0]];
+                                    const yAxis = yAxisMap?.[Object.keys(yAxisMap ?? {})[0]];
+                                    if (!xAxis || !yAxis) return null;
+                                    const xScale = xAxis.scale;
+                                    const yScale = yAxis.scale;
+                                    // Recharts' y-scale range is [top, bottom]
+                                    // (inverted to match SVG coords), so
+                                    // range()[0] is the bottom pixel.
+                                    const yBottomPx = yScale.range()[0];
+                                    return (
+                                        <g>
+                                            {relevantPresidentialTerms.map((term, index) => {
+                                                const xPx = xScale(term.start);
+                                                if (typeof xPx !== 'number') return null;
+                                                // Anchor 6px above the x-axis,
+                                                // 4px inset from the band start.
+                                                // textAnchor="start" + rotate(-90)
+                                                // makes the text extend UPWARD
+                                                // inside the band, out of the
+                                                // way of the data lines.
+                                                const x = xPx + 4;
+                                                const y = yBottomPx - 6;
+                                                return (
+                                                    <text
+                                                        key={`term-label-${index}`}
+                                                        x={x}
+                                                        y={y}
+                                                        fontSize={10}
+                                                        fontWeight={500}
+                                                        fill={rc.muted}
+                                                        opacity={0.7}
+                                                        transform={`rotate(-90 ${x} ${y})`}
+                                                        textAnchor="start"
+                                                        dominantBaseline="hanging"
+                                                    >
+                                                        {term.president}
+                                                    </text>
+                                                );
+                                            })}
+                                        </g>
+                                    );
+                                }}
+                            />
+                        )}
 
                     </LineChart>
                 </ResponsiveContainer>
