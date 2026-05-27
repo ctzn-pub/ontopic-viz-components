@@ -2,6 +2,7 @@
 
 import React, { useRef, useEffect, useState, useMemo } from 'react';
 import * as Plot from '@observablehq/plot';
+import { useVizTheme } from '@/viz/theme/provider';
 
 // Format functions moved outside component to prevent recreation
 const formatDate = (date: Date): string => {
@@ -52,8 +53,12 @@ export interface MultiLineProps {
   height?: number;
   /** Y-axis label */
   yLabel?: string;
-  /** Color scheme name */
-  colorScheme?: string;
+  /**
+   * Explicit semantic domain for line colors. 'party' maps Democrat->blue /
+   * Republican->red (matching the Recharts engine); null uses the active
+   * theme's categorical cycle. Never inferred from the data. Default: null.
+   */
+  colorDomain?: 'party' | 'sentiment' | null;
   /** Format function for y-axis values */
   yFormat?: 'currency' | 'percent' | 'number' | 'index';
   /** Show index slider for rebasing values */
@@ -78,10 +83,11 @@ const MultiLine: React.FC<MultiLineProps> = ({
   width = 800,
   height = 500,
   yLabel = 'Value',
-  colorScheme = 'tableau10',
+  colorDomain = null,
   yFormat = 'number',
   showIndexSlider = true,
 }) => {
+  const { theme, colorScale } = useVizTheme();
   const containerRef = useRef<HTMLDivElement>(null);
   const [sliderIndex, setSliderIndex] = useState<number | null>(null);
 
@@ -185,25 +191,26 @@ const MultiLine: React.FC<MultiLineProps> = ({
       marginLeft: 70,
       marginRight: 20,
       marginBottom: 50,
+      // domain->range from the SAME resolver Recharts uses, so Democrat is the
+      // same blue in both engines for a given theme.
       color: {
-        scheme: colorScheme,
+        ...colorScale(colorDomain, uniqueGroups),
         legend: uniqueGroups.length <= 10,
-        domain: uniqueGroups,
       },
       x: {
         label: null,
         grid: false,
       },
       y: {
-        grid: true,
+        grid: theme.gridStyle !== 'none',
         label: yFormat === 'index' ? 'Index (base = 100)' : yLabel,
         tickFormat: (x) => formatValue(x as number),
       },
       style: {
         background: 'transparent',
-        color: 'currentColor',
+        color: theme.fg,
         fontSize: '12px',
-        fontFamily: 'sans-serif',
+        fontFamily: theme.fontBody,
       },
       marks: [
         // Reference line at 100 for index charts
@@ -243,7 +250,7 @@ const MultiLine: React.FC<MultiLineProps> = ({
     return () => {
       chart.remove();
     };
-  }, [indexedData, xKey, yKey, groupKey, selectedGroups, title, subtitle, caption, width, height, yLabel, colorScheme, yFormat, showIndexSlider, baseDate]);
+  }, [indexedData, xKey, yKey, groupKey, selectedGroups, title, subtitle, caption, width, height, yLabel, colorDomain, theme, colorScale, yFormat, showIndexSlider, baseDate]);
 
   const handleSliderChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const newValue = Number(e.target.value);

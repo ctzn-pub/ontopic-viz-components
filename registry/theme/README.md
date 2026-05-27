@@ -1,11 +1,60 @@
-# GSS article theme bundle
+# viz theme/
 
-Portable design identity for long-form GSS articles, lifted from
+This folder holds **two related but distinct** design systems:
+
+1. **The chart theme system** (`tokens.ts` → `semantic.ts` → `themes.ts` →
+   `provider.tsx` → `adapters/`) — a single source of truth for chart design
+   decisions (color, type, stroke, grid) shared by Recharts and Observable
+   Plot. Ships 4 built-in themes (`editorial` default, `newsprint`, `carbon`,
+   `blueprint`). See **[THEME-AUTHORING.md](./THEME-AUTHORING.md)**.
+2. **The article typography bundle** (`fonts.ts`, `theme.css`,
+   `tailwind-preset.ts`) — Fumadocs-inspired prose styling for long-form MDX
+   articles. Documented below.
+
+The two meet only at the generated **`viz-theme.css`** (`--viz-*` custom
+properties), which exposes the active chart theme's chrome to CSS-driven
+components. `theme.css` (article, hand-written, `--color-*`) and `viz-theme.css`
+(charts, generated, `--viz-*`) are independent files — import both from your
+globals.
+
+## The chart theme system (quick start)
+
+```tsx
+// app/layout.tsx — wrap once at the root
+import { VizThemeProvider } from '@/viz/theme/provider';
+
+<VizThemeProvider theme="editorial">{children}</VizThemeProvider>
+```
+
+```tsx
+// inside any chart — resolve colors through the active theme, never literals
+import { useVizTheme } from '@/viz/theme/provider';
+const { rc, colorFor } = useVizTheme();        // rc = Recharts chrome bundle
+const lineColor = colorFor('party', 'Democrat'); // blue in every theme
+```
+
+With **no** provider, `useVizTheme()` returns `editorial` — components never
+crash for lack of one. Regenerate the CSS vars after editing tokens/themes:
+
+```bash
+pnpm theme:css     # → viz-theme.css     pnpm theme:check     pnpm test
+```
+
+Files: `tokens.ts` (raw values), `semantic.ts` (`colorFor`/`colorScale`
+resolvers), `themes.ts` (the 4 themes), `provider.tsx` (`VizThemeProvider` +
+`useVizTheme`), `adapters/recharts.ts` + `adapters/plot.ts` (per-engine
+translation), `generate-css.ts` (build step → `viz-theme.css`).
+
+---
+
+# Article typography bundle (Fumadocs-inspired)
+
+Portable design identity for long-form articles, lifted from
 Fumadocs (https://fumadocs.dev). Drop this folder into any Next 15 +
 Tailwind 3.4 app and follow the three steps below to get the same
 typography, color tokens, and prose styling.
 
-## What's in this folder
+## What's in the article bundle
 
 - `fonts.ts` — Geist Sans + Geist Mono via `next/font/google`. Exports
   `geistSans` and `geistMono` with CSS-variable plumbing.
@@ -49,7 +98,8 @@ In `app/globals.css`:
 @tailwind components;
 @tailwind utilities;
 
-@import "../theme/theme.css";
+@import "../theme/theme.css";      /* article typography (--color-*) */
+@import "../theme/viz-theme.css";  /* chart theme chrome (--viz-*, generated) */
 ```
 
 In `tailwind.config.ts`:

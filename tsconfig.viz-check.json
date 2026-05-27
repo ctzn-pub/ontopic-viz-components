@@ -1,0 +1,27 @@
+{
+  "extends": "./tsconfig.json",
+  "compilerOptions": {
+    "rootDir": ".",
+    "baseUrl": ".",
+    "paths": {
+      "@/viz/*": ["registry/*"]
+    },
+    "noEmit": true,
+    "declaration": false,
+    "declarationMap": false,
+    "sourceMap": false,
+    "types": ["node", "react"]
+  },
+  "include": [
+    "registry/theme/tokens.ts",
+    "registry/theme/semantic.ts",
+    "registry/theme/themes.ts",
+    "registry/theme/provider.tsx",
+    "registry/theme/adapters/recharts.ts",
+    "registry/theme/adapters/plot.ts",
+    "registry/components/recharts/generic/timeseries-metadata-v1.tsx",
+    "registry/components/recharts/gss/timeseries-line-v1.tsx",
+    "registry/components/plot/timeseries/multiline-v1.tsx",
+    "registry/theme/__demo__/theme-demo.tsx"
+  ]
+}
