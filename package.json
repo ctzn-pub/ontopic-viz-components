@@ -16,6 +16,9 @@
     "dev": "tsup --watch",
     "clean": "rm -rf dist",
     "typecheck": "tsc --noEmit",
+    "theme:check": "tsc -p tsconfig.viz-check.json",
+    "theme:css": "tsx registry/theme/generate-css.ts",
+    "test": "vitest run",
     "lint": "echo 'No linting configured yet'"
   },
   "keywords": [
@@ -62,15 +65,21 @@
   },
   "devDependencies": {
     "@observablehq/plot": "^0.6.17",
+    "@radix-ui/react-label": "^2.1.8",
+    "@radix-ui/react-switch": "^1.2.6",
     "@types/node": "^20.11.0",
     "@types/react": "^18.2.48",
     "@types/react-dom": "^18.2.18",
+    "clsx": "^2.1.1",
     "lucide-react": "^0.454.0",
     "react": "^18.2.0",
     "react-dom": "^18.2.0",
     "recharts": "2.15.4",
+    "tailwind-merge": "^3.6.0",
     "tsup": "^8.0.1",
-    "typescript": "^5.3.3"
+    "tsx": "^4.22.3",
+    "typescript": "^5.3.3",
+    "vitest": "^3.2.4"
   },
   "sideEffects": false
 }

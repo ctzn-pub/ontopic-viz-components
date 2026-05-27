@@ -181,9 +181,40 @@ program
       }
     }
 
+    // If any copied file imports from `@/viz/theme/*`, bring the theme layer
+    // along. The theme is a small self-contained folder (tokens/semantic/
+    // themes/provider/adapters) that both chart engines read through one React
+    // context. We copy the whole folder rather than walking imports file-by-
+    // file because the pieces always travel together. Existing files are
+    // preserved (we never clobber a consumer's customized theme).
+    const importsTheme = copiedFiles.some(f => {
+      try {
+        return /from ['"]@\/viz\/theme\//.test(fs.readFileSync(f, 'utf-8'));
+      } catch { return false; }
+    });
+
+    if (importsTheme) {
+      const themeDir = path.join(vizDir, 'theme');
+      const alreadyHadTheme = fs.existsSync(themeDir);
+      try {
+        await copyThemeFolder(themeDir, { useRemote, localSource });
+        if (alreadyHadTheme) {
+          console.log(`✓ Theme present at viz/theme (existing files kept)`);
+          console.log(`  ↳ to update an older theme: re-copy registry/theme over viz/theme`);
+        } else {
+          console.log(`✓ Installed theme/ (viz design tokens + provider)`);
+        }
+      } catch (error) {
+        console.warn(`⚠ Could not copy theme/: ${error.message}`);
+        console.warn(`  Copy it manually: cp -r <registry>/theme viz/theme`);
+      }
+    }
+
     // Extract npm dependencies from the component AND from every UI/utils
     // file we copied. The original CLI only scanned the top-level component,
     // which missed transitive imports like @radix-ui/* inside ui/label.tsx.
+    // NOTE: theme files are intentionally excluded from this scan — their only
+    // runtime import is React (a peer the consumer already has).
     const npmDepsSet = new Set();
     for (const file of copiedFiles) {
       try {
@@ -234,6 +265,63 @@ function fetchFile(relPath, dest, { useRemote, localSource }) {
     return downloadFile(`${GITHUB_RAW_BASE}/${relPath}`, dest);
   }
   return copyFromLocal(path.join(localSource, relPath), dest);
+}
+
+// The theme folder's portable files. Used for --remote installs, where there
+// is no directory listing over GitHub raw, so we fetch a known manifest.
+// `viz-theme.css` is the GENERATED output of generate-css.ts (the --viz-* vars);
+// `theme.css` is the hand-written article-typography theme. Both ship.
+const THEME_FILES = [
+  'tokens.ts',
+  'semantic.ts',
+  'themes.ts',
+  'provider.tsx',
+  'adapters/recharts.ts',
+  'adapters/plot.ts',
+  'generate-css.ts',
+  'fonts.ts',
+  'tailwind-preset.ts',
+  'theme.css',
+  'viz-theme.css',
+  'README.md',
+  'THEME-AUTHORING.md',
+];
+
+// Copy the registry theme/ folder into the consumer's viz/theme. Local mode
+// does a filtered recursive copy (skipping tests/demo/tooling); remote mode
+// fetches the THEME_FILES manifest. Never overwrites existing files.
+async function copyThemeFolder(destThemeDir, { useRemote, localSource }) {
+  if (useRemote) {
+    for (const rel of THEME_FILES) {
+      const dest = path.join(destThemeDir, rel);
+      if (fs.existsSync(dest)) continue;
+      fs.mkdirSync(path.dirname(dest), { recursive: true });
+      try {
+        await fetchFile(`theme/${rel}`, dest, { useRemote, localSource });
+      } catch {
+        // Optional files (e.g. viz-theme.css before first generate) may be
+        // absent in the source — skip quietly rather than failing the install.
+      }
+    }
+    return;
+  }
+
+  const srcThemeDir = path.join(localSource, 'theme');
+  if (!fs.existsSync(srcThemeDir)) {
+    throw new Error(`theme/ not found in local source: ${srcThemeDir}`);
+  }
+  // Skip authoring-only files; consumers don't need tests, the demo, or the
+  // typecheck config.
+  const SKIP = new Set(['__tests__', '__demo__', 'tsconfig.json']);
+  fs.cpSync(srcThemeDir, destThemeDir, {
+    recursive: true,
+    force: false,            // keep any files the consumer already has
+    errorOnExist: false,
+    filter: (src) => {
+      const base = path.basename(src);
+      return !SKIP.has(base);
+    },
+  });
 }
 
 function copyFromLocal(src, dest) {
