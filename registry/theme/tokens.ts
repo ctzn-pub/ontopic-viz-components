@@ -60,11 +60,73 @@ export const tokens = {
     // ramps
     blueRamp: ['#eff6ff', '#bfdbfe', '#60a5fa', '#2563eb', '#1e3a8a'],
     rdBu:     ['#b2182b', '#ef8a62', '#f7f7f7', '#67a9cf', '#2166ac'], // diverging
+
+    // ── Times — NYT-inspired ────────────────────────────────────────────────
+    // Hairline ink on white, RNC/DNC primaries, judicious accent.
+    timesInk:    '#121212',
+    timesMuted:  '#666',
+    timesLine:   '#ddd',
+    timesPaper:  '#ffffff',
+    timesDem:    '#0F4D92',  // NYT-style cool navy blue for Democrats
+    timesRep:    '#B30000',  // NYT-style brick red for Republicans
+    timesAccent: '#326891',  // their feature blue
+    // Sequential = single-hue ramp suited to choropleths.
+    nytRamp:     ['#FAFAFA', '#C7DCEA', '#7AA9D0', '#326891', '#0F4D92'],
+    // Diverging = NYT's signature red-vs-blue. Saturated endpoints, neutral mid.
+    nytDiverg:   ['#B30000', '#E07A6E', '#FAFAFA', '#7AA9D0', '#0F4D92'],
+
+    // ── FT — Financial Times pink-paper system ──────────────────────────────
+    ftPaper:     '#FFF1E5',  // the actual FT salmon
+    ftInk:       '#33302E',  // their charcoal
+    ftMuted:     '#66605C',
+    ftLine:      '#E9DDD0',
+    ftAccent:    '#0F5499',  // FT signature blue
+    ftClaret:    '#990F3D',  // FT signature claret/maroon
+    ftTeal:      '#0D7680',  // FT teal
+    // Sequential = claret-deepening on cream paper.
+    ftRamp:      ['#FFEBDD', '#F0B9A5', '#D45E5E', '#990F3D', '#5C0822'],
+    // Diverging = saturated teal -> off-white -> saturated claret. Recognizably FT.
+    ftDiverg:    ['#0D7680', '#5BA3A8', '#FFF8EE', '#D45E5E', '#990F3D'],
+
+    // ── Economist — single-red emphasis system ──────────────────────────────
+    econPaper:    '#E9EDF0',  // their characteristic cool grey-blue surface
+    econInk:      '#121317',
+    econMuted:    '#6E7479',
+    econLine:     '#C8CFD4',
+    econRed:      '#E3120B',  // Economist red
+    econAccent:   '#006BA2',  // Economist blue
+    econDeepRed:  '#9E0306',
+    // Sequential = red-deepening from light to the Economist red.
+    econRamp:     ['#F4F6F8', '#F5BBB4', '#E3120B', '#9E0306', '#5C0205'],
+    // Diverging = Economist blue -> light grey-blue -> Economist red. Saturated.
+    econDiverg:   ['#006BA2', '#7CB7D0', '#FFFFFF', '#F08881', '#E3120B'],
+
+    // ── Bloomberg / Terminal — dark amber-on-black ──────────────────────────
+    bloombergBg:    '#0A0A0B',
+    bloombergInk:   '#F5F5F5',
+    bloombergMuted: '#7A7A7A',
+    bloombergLine:  '#2A2A2A',
+    bloombergAmber: '#FFB000',  // signature amber
+    bloombergCyan:  '#00D0FF',
+    bloombergMag:   '#FF6FAF',
+    // Sequential = deep amber -> bright amber on black.
+    bloombergRamp:  ['#3A2A00', '#7A5800', '#B58400', '#FFB000', '#FFE082'],
+    // Diverging = bright magenta -> mid grey (so it's distinguishable from
+    // the black surface) -> bright cyan. Saturated endpoints.
+    bloombergDiverg:['#FF6FAF', '#C97A99', '#3F3F46', '#7AB4D0', '#00D0FF'],
   },
   font: {
     sans:  'Geist, system-ui, sans-serif',
     serif: 'Georgia, "Times New Roman", serif',
     mono:  '"Geist Mono", ui-monospace, monospace',
+    // Editorial-press type stacks, closest-system fallbacks for each masthead.
+    timesSerif: '"Times New Roman", "Source Serif Pro", Georgia, serif',
+    timesSans:  '"Franklin Gothic Medium", "Helvetica Neue", Arial, sans-serif',
+    ftSerif:    'Georgia, "Times New Roman", serif', // closest to Financier
+    ftSans:     '"Helvetica Neue", Inter, system-ui, sans-serif',
+    econSans:   '"Helvetica Neue", Inter, Arial, sans-serif',  // close to Officina Sans
+    econSerif:  'Georgia, "Source Serif Pro", serif',
+    bloombergSans: '"Helvetica Neue", Inter, system-ui, sans-serif',
   },
   size: {
     axisTick:   12,
