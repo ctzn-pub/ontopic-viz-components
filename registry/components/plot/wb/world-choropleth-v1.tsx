@@ -94,7 +94,9 @@ export function WorldChoropleth({
 
   const { mapData, derivedColorScheme } = useMemo(() => {
     if (!indicatorValues) {
-      return { mapData: [], derivedColorScheme: 'blues' };
+      // No data yet: let WorldMap fall through to the active theme's
+      // sequential ramp rather than hardcoding 'blues'.
+      return { mapData: [], derivedColorScheme: undefined };
     }
 
     const data: WorldMapDataPoint[] = indicatorValues
@@ -108,19 +110,22 @@ export function WorldChoropleth({
         };
       });
 
-    // Auto-select color scheme based on indicator optimal direction if not specified
+    // Auto-select color scheme based on indicator optimal direction if
+    // not specified by the caller. When the indicator has no optimal
+    // direction (neutral), leave the scheme UNDEFINED so WorldMap falls
+    // through to the active theme's sequential ramp instead of using a
+    // hardcoded 'blues'.
     let scheme = colorScheme;
     if (!scheme && indicator) {
       if (indicator.optimal === 'higher') {
         scheme = 'greens';
       } else if (indicator.optimal === 'lower') {
         scheme = 'reds';
-      } else {
-        scheme = 'blues';
       }
+      // optimal === 'neutral' (or absent): leave scheme undefined → theme default.
     }
 
-    return { mapData: data, derivedColorScheme: scheme || 'blues' };
+    return { mapData: data, derivedColorScheme: scheme };
   }, [indicatorValues, indicator, colorScheme]);
 
   if (!indicator) {

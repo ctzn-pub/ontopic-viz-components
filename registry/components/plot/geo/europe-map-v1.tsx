@@ -4,6 +4,7 @@
 import React, { useRef, useEffect, useState, useMemo } from 'react';
 import * as Plot from "@observablehq/plot";
 import * as topojson from "topojson-client";
+import { useVizTheme } from "@/viz/theme/provider";
 
 const TOPOLOGY_BASE_URL = 'https://ontopic-public-data.t3.storage.dev/sample-data/geo';
 
@@ -44,10 +45,11 @@ const EuropeMap: React.FC<EuropeMapProps> = ({
   title = "Income Inequality in Europe",
   subtitle = "Gini coefficient by country",
   valueLabel = "Gini Coefficient",
-  colorScheme = "oranges",
+  colorScheme,
   width = 800,
   height = 600
 }) => {
+  const { theme } = useVizTheme();
   const mapRef = useRef<HTMLDivElement>(null);
   const [europe, setEurope] = useState<any>(null);
   const [loading, setLoading] = useState(true);
@@ -129,16 +131,17 @@ const EuropeMap: React.FC<EuropeMapProps> = ({
       marginRight: 20,
       style: {
         backgroundColor: "transparent",
-        color: "currentColor",
-        fontFamily: "Inter, sans-serif"
+        color: theme.fg,
+        fontFamily: theme.fontBody,
       },
-      color: {
-        type: "quantile",
-        n: 5,
-        scheme: colorScheme,
-        legend: true,
-        label: valueLabel
-      },
+      color: (() => {
+        // Explicit prop wins; otherwise theme's sequential ramp (Gini and
+        // other zero-anchored metrics naturally read sequentially).
+        const c: any = { type: "quantile", n: 5, legend: true, label: valueLabel };
+        if (colorScheme) c.scheme = colorScheme;
+        else c.range = theme.semantic.sequential;
+        return c;
+      })(),
       marks: [
         // Country fills
         Plot.geo(enhancedCountries, {
@@ -161,7 +164,7 @@ const EuropeMap: React.FC<EuropeMapProps> = ({
 
     // Append the plot
     mapRef.current.appendChild(plot);
-  }, [loading, europe, countries.length, countryData.length, colorScheme, valueLabel, width, height]);
+  }, [loading, europe, countries.length, countryData.length, colorScheme, valueLabel, width, height, theme]);
 
   if (loading || !europe) {
     return (

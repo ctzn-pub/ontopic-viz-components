@@ -3,6 +3,7 @@
 import * as Plot from "@observablehq/plot";
 import * as topojson from "topojson-client";
 import * as React from "react";
+import { useVizTheme } from "@/viz/theme/provider";
 
 // World TopoJSON from unpkg (110m resolution - good balance of detail and performance)
 const WORLD_TOPOLOGY_URL = 'https://unpkg.com/world-atlas@2/countries-110m.json';
@@ -86,7 +87,7 @@ export const WorldMap: React.FC<WorldMapProps> = ({
   width = 960,
   height = 500,
   labels = {},
-  colorScheme = 'blues',
+  colorScheme,
   quantiles = 5,
   reverseColors = false,
   projection = 'equal-earth',
@@ -94,6 +95,7 @@ export const WorldMap: React.FC<WorldMapProps> = ({
   className = '',
   onCountryClick,
 }) => {
+  const { theme } = useVizTheme();
   const {
     title = '',
     subtitle = '',
@@ -170,22 +172,33 @@ export const WorldMap: React.FC<WorldMapProps> = ({
         return `${valuePrefix}${value.toFixed(1)}${valueSuffix}`;
       };
 
+      // Color: explicit prop wins; otherwise theme's sequential ramp.
+      // Sequential by default for indicator metrics (HDI, GDP per capita,
+      // life expectancy) where the natural reading is low→high.
+      const colorConfig: any = {
+        type: 'quantile',
+        n: quantiles,
+        reverse: reverseColors,
+        legend: true,
+        label: legendLabel,
+        tickFormat: (d: number) => formatValue(d),
+      };
+      if (colorScheme) {
+        colorConfig.scheme = colorScheme;
+      } else {
+        colorConfig.range = theme.semantic.sequential;
+      }
+
       const plot = Plot.plot({
         projection,
         width,
         height,
         style: {
           backgroundColor: 'transparent',
+          color: theme.fg,
+          fontFamily: theme.fontBody,
         },
-        color: {
-          type: 'quantile',
-          n: quantiles,
-          scheme: colorScheme as any,
-          reverse: reverseColors,
-          legend: true,
-          label: legendLabel,
-          tickFormat: (d: number) => formatValue(d),
-        },
+        color: colorConfig,
         marks: [
           // Base layer - all countries with light fill
           Plot.geo(countries.features, {
@@ -259,7 +272,7 @@ export const WorldMap: React.FC<WorldMapProps> = ({
         containerRef.current.innerHTML = `<div class="text-red-500 p-4">Error rendering map</div>`;
       }
     }
-  }, [worldTopology, data, width, height, colorScheme, quantiles, reverseColors, projection, focalCountry, labels, onCountryClick, valuePrefix, valueSuffix, legendLabel]);
+  }, [worldTopology, data, width, height, colorScheme, quantiles, reverseColors, projection, focalCountry, labels, onCountryClick, valuePrefix, valueSuffix, legendLabel, theme]);
 
   if (loading) {
     return (
