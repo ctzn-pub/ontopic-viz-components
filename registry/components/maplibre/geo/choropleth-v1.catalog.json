@@ -1,0 +1,11 @@
+{
+  "id": "nyc-choropleth-layer",
+  "name": "Choropleth layer (<ChoroplethLayer>)",
+  "category": "maps",
+  "subcategory": "maplibre",
+  "tags": ["choropleth", "maplibre", "feature-state"],
+  "description": "Headless layer that joins a { [joinKey]: value } map to tile features via MapLibre's feature-state mechanism and paints a compiled scale expression. Data updates repaint without rebuilding the layer — swap the dataset and the colors flip in place. Multi-resolution choropleths render two of these with overlapping zoom windows on the same id.",
+  "dependencies": ["maplibre-gl"],
+  "foldInto": "nyc-choropleth",
+  "variantLabel": "Choropleth layer (<ChoroplethLayer>)"
+}

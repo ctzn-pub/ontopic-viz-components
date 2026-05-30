@@ -70,8 +70,18 @@ jobs:
               exit 1
             fi
 
-            # Validate required fields exist.
-            for field in id name category tags description sample_data; do
+            # Variant sidecars (foldInto set) inherit sample data from their
+            # parent — they're sub-components of one gallery card, not
+            # independently rendered. Top-level sidecars (no foldInto) must
+            # carry sample_data.
+            FOLD_INTO=$(jq -r '.foldInto // empty' "$sidecar")
+
+            # Required fields. sample_data is exempted when foldInto is set.
+            REQUIRED_FIELDS="id name category tags description"
+            if [ -z "$FOLD_INTO" ]; then
+              REQUIRED_FIELDS="$REQUIRED_FIELDS sample_data"
+            fi
+            for field in $REQUIRED_FIELDS; do
               if ! jq -e ".${field}" "$sidecar" > /dev/null 2>&1; then
                 echo "::error file=$sidecar::Required field \`$field\` missing from catalog sidecar."
                 exit 1
@@ -79,10 +89,13 @@ jobs:
             done
 
             # Validate sample_data.url is reachable (HEAD request, 5s timeout).
-            URL=$(jq -r '.sample_data.url' "$sidecar")
-            if ! curl -fsSI --max-time 5 "$URL" > /dev/null 2>&1; then
-              echo "::error file=$sidecar::sample_data.url ($URL) is unreachable. Push the data file before committing the component."
-              exit 1
+            # Skipped for variant sidecars — they don't declare data.
+            if [ -z "$FOLD_INTO" ]; then
+              URL=$(jq -r '.sample_data.url' "$sidecar")
+              if ! curl -fsSI --max-time 5 "$URL" > /dev/null 2>&1; then
+                echo "::error file=$sidecar::sample_data.url ($URL) is unreachable. Push the data file before committing the component."
+                exit 1
+              fi
             fi
 
             ID=$(jq -r '.id' "$sidecar")
@@ -90,7 +103,11 @@ jobs:
             IDS_JSON="$IDS_JSON\"$ID\""
             first=0
 
-            echo "✓ $ID — sidecar valid, sample data reachable"
+            if [ -z "$FOLD_INTO" ]; then
+              echo "✓ $ID — sidecar valid, sample data reachable"
+            else
+              echo "✓ $ID — variant sidecar (foldInto: $FOLD_INTO), inherits sample data from parent"
+            fi
           done
 
           IDS_JSON="$IDS_JSON]"

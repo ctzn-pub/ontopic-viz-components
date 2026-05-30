@@ -1,0 +1,11 @@
+{
+  "id": "nyc-choropleth-legend",
+  "name": "Map legend (<MapLegend>)",
+  "category": "maps",
+  "subcategory": "maplibre",
+  "tags": ["legend", "gradient", "maplibre"],
+  "description": "Themed gradient legend for MapLibre choropleths. Reads the same ScaleSpec the choropleth layer paints from, so the legend ticks and the fill colors cannot drift apart — they're compiled from one source. Small fixed-width overlay sized for inset placement.",
+  "dependencies": ["maplibre-gl"],
+  "foldInto": "nyc-choropleth",
+  "variantLabel": "Legend (<MapLegend>)"
+}

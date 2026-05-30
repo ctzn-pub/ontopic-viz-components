@@ -1,0 +1,11 @@
+{
+  "id": "nyc-choropleth-tooltip",
+  "name": "Map tooltip (<MapTooltip>)",
+  "category": "maps",
+  "subcategory": "maplibre",
+  "tags": ["tooltip", "hover", "maplibre"],
+  "description": "Themed hover panel positioned by screen coordinates supplied from a parent layer's onHover callback. Matches the Recharts tooltip styling so a chart and a map on the same page feel like one design system.",
+  "dependencies": [],
+  "foldInto": "nyc-choropleth",
+  "variantLabel": "Tooltip (<MapTooltip>)"
+}
