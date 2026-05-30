@@ -14,7 +14,7 @@
 //   @import "../theme/theme.css";       (article typography — hand-written)
 //   @import "../theme/viz-theme.css";   (viz design tokens — GENERATED)
 //
-// Because both the chart provider (themes.carbon) and the `.dark` block below
+// Because both the chart provider (themes.bloomberg) and the `.dark` block below
 // are sourced from the SAME theme object, the page's "dark" chrome and the
 // chart's "dark" colors cannot drift apart.
 

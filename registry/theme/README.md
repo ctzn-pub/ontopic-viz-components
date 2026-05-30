@@ -5,8 +5,8 @@ This folder holds **two related but distinct** design systems:
 1. **The chart theme system** (`tokens.ts` → `semantic.ts` → `themes.ts` →
    `provider.tsx` → `adapters/`) — a single source of truth for chart design
    decisions (color, type, stroke, grid) shared by Recharts and Observable
-   Plot. Ships 4 built-in themes (`editorial` default, `newsprint`, `carbon`,
-   `blueprint`). See **[THEME-AUTHORING.md](./THEME-AUTHORING.md)**.
+   Plot. Ships 5 editorial-press themes (`editorial` default, `times`, `ft`,
+   `economist`, `bloomberg`). See **[THEME-AUTHORING.md](./THEME-AUTHORING.md)**.
 2. **The article typography bundle** (`fonts.ts`, `theme.css`,
    `tailwind-preset.ts`) — Fumadocs-inspired prose styling for long-form MDX
    articles. Documented below.
@@ -41,7 +41,7 @@ pnpm theme:css     # → viz-theme.css     pnpm theme:check     pnpm test
 ```
 
 Files: `tokens.ts` (raw values), `semantic.ts` (`colorFor`/`colorScale`
-resolvers), `themes.ts` (the 4 themes), `provider.tsx` (`VizThemeProvider` +
+resolvers), `themes.ts` (the 5 themes), `provider.tsx` (`VizThemeProvider` +
 `useVizTheme`), `adapters/recharts.ts` + `adapters/plot.ts` (per-engine
 translation), `generate-css.ts` (build step → `viz-theme.css`).
 

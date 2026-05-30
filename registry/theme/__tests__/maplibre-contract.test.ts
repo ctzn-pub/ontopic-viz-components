@@ -87,7 +87,7 @@ describe('maplibre scale contract', () => {
   });
 
   test('no-data is transparent (contract-test allowance)', () => {
-    const sem = themes.carbon.semantic;
+    const sem = themes.bloomberg.semantic;
     expect(scaleFor(sem, { kind: 'sequential', domain: [0, 1] }).nodata).toBe('transparent');
   });
 });

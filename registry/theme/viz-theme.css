@@ -10,14 +10,14 @@
   --viz-font-title: Geist, system-ui, sans-serif;
 }
 .dark {
-  --viz-fg: #f4f4f5;
-  --viz-muted: #a1a1aa;
-  --viz-grid: #27272a;
-  --viz-surface: #0c0c0d;
-  --viz-border: #27272a;
-  --viz-accent: #3b82f6;
-  --viz-font-body: Geist, system-ui, sans-serif;
-  --viz-font-title: Geist, system-ui, sans-serif;
+  --viz-fg: #F5F5F5;
+  --viz-muted: #7A7A7A;
+  --viz-grid: #2A2A2A;
+  --viz-surface: #0A0A0B;
+  --viz-border: #2A2A2A;
+  --viz-accent: #FFB000;
+  --viz-font-body: "Helvetica Neue", Inter, system-ui, sans-serif;
+  --viz-font-title: "Helvetica Neue", Inter, system-ui, sans-serif;
 }
 [data-viz-theme="editorial"] {
   --viz-fg: #1a1a1a;
@@ -29,33 +29,43 @@
   --viz-font-body: Geist, system-ui, sans-serif;
   --viz-font-title: Geist, system-ui, sans-serif;
 }
-[data-viz-theme="newsprint"] {
-  --viz-fg: #2b2926;
-  --viz-muted: #8a857d;
-  --viz-grid: #e8e3db;
-  --viz-surface: #faf8f5;
-  --viz-border: #e8e3db;
-  --viz-accent: #a23c2c;
-  --viz-font-body: Geist, system-ui, sans-serif;
+[data-viz-theme="times"] {
+  --viz-fg: #121212;
+  --viz-muted: #666;
+  --viz-grid: #ddd;
+  --viz-surface: #ffffff;
+  --viz-border: #ddd;
+  --viz-accent: #326891;
+  --viz-font-body: "Franklin Gothic Medium", "Helvetica Neue", Arial, sans-serif;
+  --viz-font-title: "Times New Roman", "Source Serif Pro", Georgia, serif;
+}
+[data-viz-theme="ft"] {
+  --viz-fg: #33302E;
+  --viz-muted: #66605C;
+  --viz-grid: #E9DDD0;
+  --viz-surface: #FFF1E5;
+  --viz-border: #E9DDD0;
+  --viz-accent: #0F5499;
+  --viz-font-body: "Helvetica Neue", Inter, system-ui, sans-serif;
   --viz-font-title: Georgia, "Times New Roman", serif;
 }
-[data-viz-theme="carbon"] {
-  --viz-fg: #f4f4f5;
-  --viz-muted: #a1a1aa;
-  --viz-grid: #27272a;
-  --viz-surface: #0c0c0d;
-  --viz-border: #27272a;
-  --viz-accent: #3b82f6;
-  --viz-font-body: Geist, system-ui, sans-serif;
-  --viz-font-title: Geist, system-ui, sans-serif;
+[data-viz-theme="economist"] {
+  --viz-fg: #121317;
+  --viz-muted: #6E7479;
+  --viz-grid: #C8CFD4;
+  --viz-surface: #E9EDF0;
+  --viz-border: #C8CFD4;
+  --viz-accent: #E3120B;
+  --viz-font-body: "Helvetica Neue", Inter, Arial, sans-serif;
+  --viz-font-title: "Helvetica Neue", Inter, Arial, sans-serif;
 }
-[data-viz-theme="blueprint"] {
-  --viz-fg: #e6f1ff;
-  --viz-muted: #7da2c4;
-  --viz-grid: #1c3a57;
-  --viz-surface: #0b1f33;
-  --viz-border: #1c3a57;
-  --viz-accent: #22d3ee;
-  --viz-font-body: "Geist Mono", ui-monospace, monospace;
-  --viz-font-title: "Geist Mono", ui-monospace, monospace;
+[data-viz-theme="bloomberg"] {
+  --viz-fg: #F5F5F5;
+  --viz-muted: #7A7A7A;
+  --viz-grid: #2A2A2A;
+  --viz-surface: #0A0A0B;
+  --viz-border: #2A2A2A;
+  --viz-accent: #FFB000;
+  --viz-font-body: "Helvetica Neue", Inter, system-ui, sans-serif;
+  --viz-font-title: "Helvetica Neue", Inter, system-ui, sans-serif;
 }

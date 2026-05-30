@@ -74,12 +74,16 @@ describe('Phase 2 acceptance — themes', () => {
     expect(themes.editorial.semantic.party.Democrat).toBe('#2b6cb0');
   });
 
-  test('newsprint overrides party tonally (slate Democrat)', () => {
-    expect(themes.newsprint.semantic.party.Democrat).toBe('#4a6b82');
+  test('a press theme overrides party tonally (times → NYT navy Democrat)', () => {
+    expect(themes.times.semantic.party.Democrat).toBe('#0F4D92');
+    // and it really re-tones — distinct from the editorial default blue
+    expect(themes.times.semantic.party.Democrat).not.toBe(
+      themes.editorial.semantic.party.Democrat,
+    );
   });
 
-  test('carbon is dark; editorial is the default', () => {
-    expect(themes.carbon.mode).toBe('dark');
+  test('bloomberg is the dark theme; editorial is the default', () => {
+    expect(themes.bloomberg.mode).toBe('dark');
     expect(defaultTheme.name).toBe('editorial');
   });
 });

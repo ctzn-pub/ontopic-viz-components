@@ -74,7 +74,7 @@ export const slate: Theme = build({
 ### 3. Register it
 
 ```ts
-export const themes = { editorial, newsprint, carbon, blueprint, slate } as const;
+export const themes = { editorial, times, ft, economist, bloomberg, slate } as const;
 ```
 
 `ThemeName` and the provider pick it up automatically. `defaultTheme` stays
@@ -130,7 +130,7 @@ is what stops d3's Lab and MapLibre's RGB interpolation from drifting apart (the
 `maplibre-contract.test.ts` guard fails if the fill's anchors stop matching the
 ramp). Leave the ramps unset to inherit the defaults — most themes should.
 
-**Verify map contrast, especially on dark.** `carbon` paints light boundaries on a
+**Verify map contrast, especially on dark.** `bloomberg` paints light boundaries on a
 dark `surface`; confirm the hairline (`border`) and the legend text (`muted`/`fg`)
 clear contrast against `surface` in every theme. The side-by-side demo
 (`__demo__/theme-demo.tsx`) renders a live NYC choropleth panel per theme for
@@ -153,7 +153,7 @@ exactly this eyeball check.
   the `.dark` CSS block and the dark chart colors come from the *same* theme
   object, so they can't drift. Wire app dark mode to the provider:
   ```tsx
-  <VizThemeProvider theme={isDark ? 'carbon' : 'editorial'}>…</VizThemeProvider>
+  <VizThemeProvider theme={isDark ? 'bloomberg' : 'editorial'}>…</VizThemeProvider>
   ```
 - **Backwards-compatible by default.** A component dropped into an app with **no**
   `<VizThemeProvider>` still renders — `useVizTheme()` returns `editorial`. An
@@ -170,6 +170,6 @@ exactly this eyeball check.
 | `categorical`       | replaces the whole cycle (it's an array, not merged) |
 | nothing             | the full `defaultSemantic`                        |
 
-Override `party` when your palette needs tonal harmony (Newsprint → slate/brick;
-Carbon → brightened so it reads on dark). Leave it alone otherwise — Democrat
-blue / Republican red is correct across most light themes.
+Override `party` when your palette needs tonal harmony (Times/FT/Economist
+re-tone Democrat/Republican per masthead; Bloomberg brightens them for dark).
+Leave it alone otherwise — the editorial default blue/red reads on light themes.

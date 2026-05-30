@@ -3,8 +3,8 @@
 // Side-by-side theme demo — the fastest way to SEE cross-engine consistency
 // and a strong regression guard. Renders the SAME data through a Recharts
 // chart and a Plot chart, looped over every built-in theme. Eyeball check:
-//   - the single-series chart is ink in `editorial`, warm charcoal in
-//     `newsprint`, light in `carbon`/`blueprint`;
+//   - the single-series chart is ink in `editorial` and re-toned per masthead
+//     in `times`/`ft`/`economist`, light-on-dark in `bloomberg`;
 //   - "Democrat" lines are the SAME blue in the Recharts and Plot panels of a
 //     given theme (because both pull from the same theme.semantic).
 //
