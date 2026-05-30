@@ -39,6 +39,8 @@
   "peerDependencies": {
     "@observablehq/plot": "^0.6.0",
     "lucide-react": "^0.454.0",
+    "maplibre-gl": "^5.0.0",
+    "pmtiles": "^4.0.0",
     "react": "^18.0.0 || ^19.0.0",
     "react-dom": "^18.0.0 || ^19.0.0",
     "recharts": "^2.15.0"
@@ -58,6 +60,12 @@
     },
     "recharts": {
       "optional": false
+    },
+    "maplibre-gl": {
+      "optional": true
+    },
+    "pmtiles": {
+      "optional": true
     }
   },
   "dependencies": {
@@ -72,6 +80,8 @@
     "@types/react-dom": "^18.2.18",
     "clsx": "^2.1.1",
     "lucide-react": "^0.454.0",
+    "maplibre-gl": "^5.24.0",
+    "pmtiles": "^4.4.1",
     "react": "^18.2.0",
     "react-dom": "^18.2.0",
     "recharts": "2.15.4",

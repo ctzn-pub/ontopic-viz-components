@@ -17,6 +17,19 @@ import TimeSeriesChart from '@/viz/components/recharts/generic/timeseries-metada
 import TimeTrendDemoChart from '@/viz/components/recharts/gss/timeseries-line-v1';
 import MultiLine from '@/viz/components/plot/timeseries/multiline-v1';
 
+// Map engine (engine #3). CLIENT-ONLY: maplibre-gl touches `window` at import,
+// so in a Next.js app / MDX these MUST be imported via `next/dynamic { ssr:false }`
+// with a sized skeleton (see design/05-MAP-ENGINE.md). This template already runs
+// in a client context, so — like the chart panels above — it imports them directly.
+import { useEffect, useState } from 'react';
+import GeoMap, { useGeoMap } from '@/viz/components/maplibre/geo/map-v1';
+import ChoroplethLayer, {
+  type ChoroplethLayerProps,
+} from '@/viz/components/maplibre/geo/choropleth-v1';
+import MapLegend from '@/viz/components/maplibre/geo/legend-v1';
+import MapTooltip from '@/viz/components/maplibre/geo/tooltip-v1';
+import type { ScaleSpec } from '@/viz/theme/scales';
+
 // --- shared demo data ------------------------------------------------------
 
 const singleSeries = [
@@ -57,6 +70,101 @@ const rechartsMulti = {
   dataPoints: partyRows.map((r) => ({ ...r, year: String(r.year) })),
   dataPointMetadata: [{ id: 'value', value_suffix: '%' }],
 };
+
+// --- map demo --------------------------------------------------------------
+// Real NYC metro tileset (~9MB, range-request readable). Confirmed via
+// `pmtiles show`: source-layer is "zipcode_demographics" and the join field is
+// "geoid" (ZCTA) — NOT the brief's assumed CBSA/GEOID. Wire to the exact names.
+const NYC_PMTILES = 'https://ontopic-public-data.t3.storage.dev/pmtiles/NYC_MSA.pmtiles';
+const NYC_LAYER = 'zipcode_demographics';
+const NYC_JOIN = 'geoid';
+
+// Domains are FIXED (not auto-derived) so the legend ticks and the GPU fill
+// agree — deriving the domain from data on one side only would desync them.
+const INCOME_SCALE: ScaleSpec = { kind: 'sequential', domain: [30000, 180000] };
+// This demographic tileset has no party field; the diverging legend below shows
+// the rdBu ramp a margin map (e.g. Dem−Rep points) uses, eyeballable per theme.
+const MARGIN_SCALE: ScaleSpec = { kind: 'diverging', domain: [-30, 0, 30] };
+
+const fmtUSD = (n: number) => (n >= 1000 ? `$${Math.round(n / 1000)}k` : `$${n.toFixed(0)}`);
+
+// Demo glue only: lift a numeric tile PROPERTY into the { [geoid]: value } map
+// that <ChoroplethLayer> joins via feature-state, so the demo paints real data
+// with no external file. A real app passes its own survey/health values instead
+// — the choropleth never reads values out of the tiles itself.
+function NycIncomeLayer({ onHover }: { onHover: ChoroplethLayerProps['onHover'] }) {
+  const { map, loaded } = useGeoMap();
+  const [data, setData] = useState<Record<string, number>>({});
+
+  useEffect(() => {
+    if (!map || !loaded) return;
+    const SRC = 'nyc__src'; // <ChoroplethLayer id="nyc"> creates `${id}__src`
+    const collect = () => {
+      const feats = map.querySourceFeatures(SRC, { sourceLayer: NYC_LAYER });
+      if (!feats.length) return;
+      const next: Record<string, number> = {};
+      for (const f of feats) {
+        const key = f.properties?.[NYC_JOIN];
+        const val = Number(f.properties?.median_income);
+        if (key != null && Number.isFinite(val)) next[String(key)] = val;
+      }
+      setData((prev) => ({ ...prev, ...next }));
+    };
+    map.on('idle', collect);
+    collect();
+    return () => {
+      map.off('idle', collect);
+    };
+  }, [map, loaded]);
+
+  return (
+    <ChoroplethLayer
+      id="nyc"
+      url={NYC_PMTILES}
+      sourceLayer={NYC_LAYER}
+      joinKey={NYC_JOIN}
+      data={data}
+      scale={INCOME_SCALE}
+      onHover={onHover}
+    />
+  );
+}
+
+// One self-contained, themed choropleth: GPU fill + always-visible legend +
+// React hover tooltip, all reading the active theme. Dropped inside each theme's
+// provider below so the basemap chrome + ramp can be eyeballed per theme.
+function MapPanel() {
+  const [hover, setHover] = useState<{
+    label?: string;
+    value: number | null;
+    x: number;
+    y: number;
+  } | null>(null);
+
+  return (
+    <GeoMap ariaLabel="NYC metro median household income by ZCTA" height={340}>
+      <NycIncomeLayer
+        onHover={(id, value, point) =>
+          setHover(point ? { label: id ? `ZCTA ${id}` : undefined, value, ...point } : null)
+        }
+      />
+      <div
+        style={{ position: 'absolute', left: 8, bottom: 8, zIndex: 1, display: 'grid', gap: 6 }}
+      >
+        <MapLegend scale={INCOME_SCALE} title="Median household income" format={fmtUSD} />
+        <MapLegend scale={MARGIN_SCALE} title="Diverging ramp (e.g. D−R margin)" />
+      </div>
+      <MapTooltip
+        visible={!!hover}
+        x={hover?.x ?? 0}
+        y={hover?.y ?? 0}
+        label={hover?.label}
+        value={hover?.value ?? null}
+        format={fmtUSD}
+      />
+    </GeoMap>
+  );
+}
 
 // --- page ------------------------------------------------------------------
 
@@ -104,6 +212,13 @@ export default function ThemeDemo() {
                 demographic="PolParty"
                 colorDomain="party"
               />
+            </div>
+
+            <div>
+              <p className="mb-2 text-sm opacity-70">
+                Choropleth (MapLibre) — NYC metro, themed basemap + ramp
+              </p>
+              <MapPanel />
             </div>
           </section>
         </VizThemeProvider>

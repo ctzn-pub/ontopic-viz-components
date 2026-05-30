@@ -275,9 +275,11 @@ const THEME_FILES = [
   'tokens.ts',
   'semantic.ts',
   'themes.ts',
+  'scales.ts',
   'provider.tsx',
   'adapters/recharts.ts',
   'adapters/plot.ts',
+  'adapters/maplibre.ts',
   'generate-css.ts',
   'fonts.ts',
   'tailwind-preset.ts',
@@ -364,6 +366,8 @@ const VERSION_CONSTRAINTS = {
   'recharts': '^2.15.0',
   '@observablehq/plot': '^0.6.0',
   'lucide-react': '^0.454.0',
+  'maplibre-gl': '^5.0.0',
+  'pmtiles': '^4.0.0',
 };
 
 function extractNpmDependencies(content) {
