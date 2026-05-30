@@ -1,0 +1,130 @@
+name: Sync to gallery
+
+# When a component lands on main, validate its catalog sidecar and tell
+# the ctzn-pub gallery to pick it up. The sidecar is the editorial contract:
+# no sidecar, no publish. The validation runs first; the dispatch only fires
+# if validation passes, so a broken sidecar doesn't trigger a downstream
+# build that would also fail.
+
+on:
+  push:
+    branches: [main]
+    paths:
+      - 'registry/components/**/*.tsx'
+      - 'registry/components/**/*.catalog.json'
+
+permissions:
+  contents: read
+
+jobs:
+  validate-sidecars:
+    name: Validate catalog sidecars
+    runs-on: ubuntu-latest
+    outputs:
+      changed_ids: ${{ steps.collect.outputs.ids }}
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 2
+
+      - name: Collect changed components + validate sidecars
+        id: collect
+        run: |
+          set -euo pipefail
+
+          # Files changed in this push, restricted to registry components.
+          mapfile -t CHANGED < <(
+            git diff --name-only HEAD^ HEAD \
+              | grep -E '^registry/components/.*\.(tsx|catalog\.json)$' \
+              || true
+          )
+
+          if [ ${#CHANGED[@]} -eq 0 ]; then
+            echo "No component or sidecar changes; nothing to sync."
+            echo "ids=[]" >> "$GITHUB_OUTPUT"
+            exit 0
+          fi
+
+          # Map each .tsx to its sidecar, and each .catalog.json back to its .tsx.
+          # We end up with a unique set of component basenames (no extension).
+          declare -A BASES
+          for f in "${CHANGED[@]}"; do
+            base="${f%.tsx}"
+            base="${base%.catalog.json}"
+            BASES["$base"]=1
+          done
+
+          IDS_JSON="["
+          first=1
+          for base in "${!BASES[@]}"; do
+            tsx="$base.tsx"
+            sidecar="$base.catalog.json"
+
+            if [ ! -f "$tsx" ]; then
+              # Component was deleted; skip — gallery handles deletions separately.
+              continue
+            fi
+
+            if [ ! -f "$sidecar" ]; then
+              echo "::error file=$tsx::Missing catalog sidecar at $sidecar — every component requires one. See .claude/skills/ontopic-viz-conventions/SKILL.md."
+              exit 1
+            fi
+
+            # Validate required fields exist.
+            for field in id name category tags description sample_data; do
+              if ! jq -e ".${field}" "$sidecar" > /dev/null 2>&1; then
+                echo "::error file=$sidecar::Required field \`$field\` missing from catalog sidecar."
+                exit 1
+              fi
+            done
+
+            # Validate sample_data.url is reachable (HEAD request, 5s timeout).
+            URL=$(jq -r '.sample_data.url' "$sidecar")
+            if ! curl -fsSI --max-time 5 "$URL" > /dev/null 2>&1; then
+              echo "::error file=$sidecar::sample_data.url ($URL) is unreachable. Push the data file before committing the component."
+              exit 1
+            fi
+
+            ID=$(jq -r '.id' "$sidecar")
+            if [ "$first" -eq 0 ]; then IDS_JSON="$IDS_JSON,"; fi
+            IDS_JSON="$IDS_JSON\"$ID\""
+            first=0
+
+            echo "✓ $ID — sidecar valid, sample data reachable"
+          done
+
+          IDS_JSON="$IDS_JSON]"
+          echo "ids=$IDS_JSON" >> "$GITHUB_OUTPUT"
+          echo ""
+          echo "Validated component ids: $IDS_JSON"
+
+  dispatch-gallery:
+    name: Trigger ctzn-pub sync
+    needs: validate-sidecars
+    if: needs.validate-sidecars.outputs.changed_ids != '[]'
+    runs-on: ubuntu-latest
+    steps:
+      - name: Dispatch sync-from-registry workflow on ctzn-pub
+        env:
+          GH_TOKEN: ${{ secrets.CTZN_PUB_DISPATCH_TOKEN }}
+        run: |
+          set -euo pipefail
+          IDS='${{ needs.validate-sidecars.outputs.changed_ids }}'
+          SHA="${{ github.sha }}"
+
+          gh api repos/ctzn-pub/ctzn-pub/actions/workflows/sync-from-registry.yml/dispatches \
+            --method POST \
+            --field ref=main \
+            --field "inputs[component_ids]=$IDS" \
+            --field "inputs[registry_sha]=$SHA"
+
+          echo ""
+          echo "🟢 Dispatched ctzn-pub sync for components: $IDS"
+          echo ""
+          echo "Your components will appear at:"
+          for id in $(echo "$IDS" | jq -r '.[]'); do
+            echo "  https://ctzn-pub.vercel.app/viz/$id"
+          done
+          echo ""
+          echo "Watch the sync-from-registry workflow at:"
+          echo "  https://github.com/ctzn-pub/ctzn-pub/actions/workflows/sync-from-registry.yml"
