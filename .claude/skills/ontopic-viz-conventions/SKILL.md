@@ -157,6 +157,133 @@ Examples: `recharts/generic/timeseries-economic-v1.tsx`,
 
 ---
 
+## Catalog sidecar (required for every component)
+
+Every component file ships with a `.catalog.json` sidecar at the same path. The
+sidecar is what the downstream gallery site (`ctzn-pub`) reads to publish your
+work — without it, your component lands on disk but never appears in the
+public gallery. **No exceptions: missing sidecar = the auto-publish workflow
+skips your component, and the contract test in `registry/__tests__/` fails
+the build.**
+
+```
+registry/components/recharts/gss/timeseries-line-v1.tsx
+registry/components/recharts/gss/timeseries-line-v1.catalog.json
+```
+
+The sidecar tells the gallery:
+- **What to call it** (name, description, tags) — editorial framing the
+  gallery can't infer from a `.tsx` file
+- **What data to render the preview with** (a fetchable URL + a transform
+  function name) — without this, the detail page says "Live preview not
+  yet wired"
+- **How to group it** (`foldInto` an existing card, or stand alone) — without
+  this, every new component spawns a new card and near-duplicates pile up
+
+### Schema
+
+```json
+{
+  "id": "gss-time-trend",
+  "name": "GSS Time Trend",
+  "category": "time-series",
+  "subcategory": "gss",
+  "tags": ["gss", "survey", "time-series", "trend"],
+  "description": "The canonical survey-data time-series line chart. Used throughout The Great Sorting. Supports demographic splits, a 95% CI toggle, presidential-term reference areas, identity-coded colors.",
+  "sample_data": {
+    "url": "https://ontopic-public-data.t3.storage.dev/sample-data/abortion-by-party.json",
+    "transform": "passthrough"
+  },
+  "dependencies": ["recharts", "lucide-react"],
+
+  "foldInto": null,
+  "variantLabel": null
+}
+```
+
+Required fields: `id`, `name`, `category`, `tags`, `description`, `sample_data`.
+Optional fields: `subcategory`, `dependencies`, `foldInto`, `variantLabel`.
+
+### Field rules
+
+**`id`** — URL slug. Lowercase, hyphen-separated. The gallery URL will be
+exactly `https://ctzn-pub.vercel.app/viz/<id>`. So `id: "gss-time-trend"`
+publishes at `https://ctzn-pub.vercel.app/viz/gss-time-trend`. Pick a stable
+id; renaming breaks bookmarks.
+
+**`category`** — one of: `time-series`, `maps`, `distributions`,
+`demographic-breakdowns`, `regression-and-effects`. The gallery's left rail
+groups cards by this. Do NOT invent new categories without coordinating with
+ctzn-pub — the rail's labels are hand-curated.
+
+**`tags`** — 3–6 short strings, lowercase. Used for search and on-card chips.
+Don't duplicate `category` or framework names — those are already inferred.
+
+**`description`** — one to three sentences of editorial prose. What question
+does this chart answer? When would a reader pick this over a related chart?
+Don't list props or describe the implementation; the gallery shows code
+separately. **No Markdown.**
+
+**`sample_data.url`** — a publicly-readable URL the gallery can fetch at
+build time to populate the preview. Two options:
+- Tigris: `https://ontopic-public-data.t3.storage.dev/sample-data/<filename>`
+  (preferred — uploads via the gss-charts / formalize-dataset skills)
+- Any other public HTTPS URL the gallery's build server can reach
+
+The URL must exist BEFORE you commit. The CI lint pings it; a 404 fails the
+build. If you're adding a chart that needs data that doesn't exist yet,
+push the data first.
+
+**`sample_data.transform`** — name of a transform function the gallery
+runs over the fetched payload before passing it to the component. Most
+charts take the data as-is and should use `"passthrough"`. For charts that
+need shape massaging (e.g. flattening a `dataPoints` array out of a GSS
+envelope), pick from the existing transforms in
+`ctzn-pub/lib/viz-preview-manifest.ts` (e.g. `"gss-envelope-flatten"`) OR
+add a new one in a follow-up PR to that file and reference it here. Custom
+transforms always live in the gallery, not the registry — keep transforms
+out of component files.
+
+**`foldInto`** — if your component is a new variant of an existing gallery
+card, set this to that card's `id`. Otherwise leave it `null`. To see the
+existing card ids, run `npx ontopic-viz catalog list` (or read
+`https://ctzn-pub.vercel.app/api/catalog/ids.json` — a manifest the gallery
+publishes for exactly this reason). If `foldInto` is set, also set
+`variantLabel` to the short label the gallery will show in the variants list
+(e.g. `"Indexed flavor"`, `"With confidence intervals"`).
+
+**`dependencies`** — npm packages the component imports. Display-only on the
+gallery's metadata sidebar; doesn't affect installation (that's CLI-driven).
+
+### Why this lives in the registry, not in ctzn-pub
+
+The sidecar is **the editorial signal** for a component, and the only person
+who knows it at write-time is the component author. Asking the gallery
+maintainer to write it after the fact is the failure mode this exists to
+prevent: components land, sit unpublished for weeks, and when someone
+finally writes the metadata they guess at it.
+
+The skill enforces this. The contract test enforces it. The auto-publish
+workflow refuses to publish without it. If you're tempted to skip the
+sidecar "for now," stop — there is no "for now," there's "publish or don't
+publish."
+
+### Where your component will appear
+
+When you push a component + sidecar to `ontopic-viz-components/main`:
+
+1. The registry's GitHub Action validates the sidecar (schema + URL reachable)
+2. ctzn-pub's auto-publish workflow opens a PR copying the component + writing
+   the catalog/manifest entries
+3. The PR auto-merges if all checks pass (no human gate for valid sidecars)
+4. Vercel deploys
+5. **Your component goes live at `https://ctzn-pub.vercel.app/viz/<id>`**
+
+The registry Action's final log line echoes the URL so you don't have to
+remember it — check your commit's GitHub Actions tab.
+
+---
+
 ## New / edited component checklist
 
 - [ ] No themeable literal anywhere (grep `#0 #f fontSize: text-gray- stroke="#`).
@@ -164,11 +291,13 @@ Examples: `recharts/generic/timeseries-economic-v1.tsx`,
 - [ ] `colorDomain` (or scale `kind`) is an explicit prop, defaulting to `null`/sequential —
       never inferred from data.
 - [ ] Renders correctly with **no provider** (defaults to `editorial`).
-- [ ] Looks right in all three themes — single-series is ink in `editorial`, warm charcoal in
-      `newsprint`, light in `carbon`.
+- [ ] Looks right in all five themes — `editorial` / `times` / `ft` / `economist` / `bloomberg`.
 - [ ] Data handling (parsing, CI math, formatters) left untouched when only re-theming.
 - [ ] MapLibre work: feature-state join, no layer rebuild on data change, `dynamic ssr:false`,
       never color-encoding alone, legend always visible, aria summary on the container.
+- [ ] **`.catalog.json` sidecar exists** at the component's path (see "Catalog sidecar" above).
+- [ ] **Sample data URL is reachable** — `curl -fI <url>` returns 200, BEFORE you commit.
+- [ ] If folding into an existing card, `foldInto` is set; otherwise it stays `null`.
 - [ ] Contract test still passes; if you added a semantic domain or engine path, extend it.
 
 ---
