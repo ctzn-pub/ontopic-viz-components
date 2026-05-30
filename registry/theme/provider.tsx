@@ -19,6 +19,8 @@ import {
 } from './semantic';
 import { rcTheme } from './adapters/recharts';
 import { plotBase } from './adapters/plot';
+import { mlTheme } from './adapters/maplibre';
+import { scaleFor as rawScaleFor, ScaleSpec } from './scales';
 
 export { THEME_SCHEMA_VERSION } from './tokens';
 
@@ -61,8 +63,11 @@ export function useVizTheme() {
         rawColorFor(theme.semantic, domain, category, index),
       colorScale: (domain: SemanticDomain | null, categories: string[]) =>
         rawColorScale(theme.semantic, domain, categories),
+      // continuous (number -> color) resolver, bound to the active theme's ramps
+      scaleFor: (spec: ScaleSpec) => rawScaleFor(theme.semantic, spec),
       rc: rcTheme(theme), // Recharts style bundle
       plotBase: () => plotBase(theme), // Plot options base
+      ml: mlTheme(theme), // MapLibre basemap chrome bundle
     }),
     [theme],
   );

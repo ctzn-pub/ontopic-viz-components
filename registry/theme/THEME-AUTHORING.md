@@ -93,6 +93,49 @@ pnpm theme:check    # typechecks the theme layer + retrofitted components
 pnpm test           # contract test: every theme resolves every domain in both engine paths
 ```
 
+## The map engine reads the same theme (no extra wiring)
+
+The MapLibre choropleth engine (`adapters/maplibre.ts` + `scales.ts`, see
+[05-MAP-ENGINE](../../../design/05-MAP-ENGINE.md)) is a **third consumer of the
+same `Theme` object** — adding a theme themes the maps too, for free. There is no
+separate map palette to maintain.
+
+**Basemap chrome is derived, not authored.** `mlTheme(theme)` turns the fields you
+already set in step 2 into the map's non-semantic chrome:
+
+| Map chrome      | Comes from        | Notes                                            |
+|-----------------|-------------------|--------------------------------------------------|
+| background      | `theme.surface`   | the map root fill                                |
+| boundary line   | `theme.border`    | hairline; auto-thickened on dark (`theme.mode`)  |
+| boundary hover  | `theme.fg`        | the emphasized outline under the cursor          |
+| labels (opt-in) | `theme.muted` + `theme.surface` halo + `theme.fontBody` | off by default |
+
+So a new theme needs **nothing** map-specific as long as `surface`, `border`,
+`fg`, `muted`, and `mode` are set — which they already are for charts.
+
+**The choropleth fill + legend use the continuous ramps.** A choropleth is not
+categorical; it reads `theme.semantic.sequential` (the blue ramp) and
+`theme.semantic.diverging` (rdBu) through `scaleFor(spec)`. To re-tone maps for a
+theme, override those ramps in the **same** semantic-overrides arg from step 2:
+
+```ts
+export const slate: Theme = build({ /* …foundation… */ }, {
+  sequential: ['#f8fafc', '#cbd5e1', '#94a3b8', '#475569', '#1e293b'], // 5 anchors
+  diverging:  ['#b45309', '#fcd9a8', '#f1f5f9', '#a8c7e8', '#1d4ed8'], // 5 anchors, center neutral
+});
+```
+
+Keep ramps at **5 anchors**: every engine interpolates over identical stops, which
+is what stops d3's Lab and MapLibre's RGB interpolation from drifting apart (the
+`maplibre-contract.test.ts` guard fails if the fill's anchors stop matching the
+ramp). Leave the ramps unset to inherit the defaults — most themes should.
+
+**Verify map contrast, especially on dark.** `carbon` paints light boundaries on a
+dark `surface`; confirm the hairline (`border`) and the legend text (`muted`/`fg`)
+clear contrast against `surface` in every theme. The side-by-side demo
+(`__demo__/theme-demo.tsx`) renders a live NYC choropleth panel per theme for
+exactly this eyeball check.
+
 ## Rules that keep the system honest
 
 - **Keep the default quiet.** `editorial` must stay near-black-on-white with one
