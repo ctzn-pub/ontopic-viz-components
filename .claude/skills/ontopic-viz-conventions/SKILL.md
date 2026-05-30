@@ -9,10 +9,15 @@ description: >-
   scales, adapters, provider); whenever you are about to write a color, font,
   size, or stroke value; whenever you add a component to the registry; or
   whenever the work involves choropleths, PMTiles, semantic/party colors, dark
-  mode, or cross-engine consistency. Use it even when the request doesn't name
-  the theme system explicitly — almost every component change in this repo is
-  governed by these rules, and skipping them causes color drift and Tufte
-  violations that the contract tests will reject.
+  mode, or cross-engine consistency. ALSO use this skill whenever you add a new
+  component (or edit an existing one's catalog/sample data) because every
+  component must ship a `.catalog.json` sidecar — without it the auto-publish
+  workflow refuses to publish your work to the public gallery
+  (https://ctzn-pub.vercel.app/viz/<id>) and the registry's contract test
+  fails the build. Use it even when the request doesn't name the theme system
+  explicitly — almost every component change in this repo is governed by
+  these rules, and skipping them causes color drift and Tufte violations that
+  the contract tests will reject.
 ---
 
 # Ontopic Viz Conventions
