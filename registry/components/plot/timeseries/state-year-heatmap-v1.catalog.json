@@ -1,0 +1,15 @@
+{
+  "id": "state-year-heatmap",
+  "name": "State-Year Heatmap",
+  "category": "time-series",
+  "subcategory": "brfss",
+  "tags": ["heatmap", "value-matrix", "states", "years"],
+  "description": "A state-by-year value matrix where color encodes a magnitude, revealing levels and trends across many series at once. Supports a caution seam to mark a methodology break (e.g. a survey-mode change). Use it when you want the whole panel's pattern, not a single line.",
+  "sample_data": {
+    "url": "https://ontopic-public-data.t3.storage.dev/sample-data/picturing-health-state-year-heatmap.json",
+    "transform": "passthrough"
+  },
+  "dependencies": ["@observablehq/plot"],
+  "foldInto": null,
+  "variantLabel": null
+}

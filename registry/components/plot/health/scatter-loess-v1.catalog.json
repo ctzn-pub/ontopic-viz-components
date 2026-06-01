@@ -1,0 +1,15 @@
+{
+  "id": "scatter-loess",
+  "name": "Scatter with LOESS",
+  "category": "regression-and-effects",
+  "subcategory": "brfss",
+  "tags": ["scatter", "loess", "bubble", "sequential-color"],
+  "description": "A scatterplot with population-sized points colored by a continuous value, overlaid with a precomputed LOESS summary line. Use it to show a relationship between two county-level measures while encoding size and a third gradient (e.g. deprivation) by color.",
+  "sample_data": {
+    "url": "https://ontopic-public-data.t3.storage.dev/sample-data/picturing-health-scatter-loess.json",
+    "transform": "passthrough"
+  },
+  "dependencies": ["@observablehq/plot"],
+  "foldInto": null,
+  "variantLabel": null
+}

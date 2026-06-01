@@ -1,0 +1,15 @@
+{
+  "id": "pca-biplot",
+  "name": "PCA Biplot",
+  "category": "distributions",
+  "subcategory": "brfss",
+  "tags": ["pca", "biplot", "loadings", "scores", "dimensionality"],
+  "description": "A principal-component biplot: observation scores as a faint cloud plus variable loadings as labeled arrows, co-scaled so both fill the frame and every relative position is preserved. Use it to read which variables drive each component and how observations spread along them.",
+  "sample_data": {
+    "url": "https://ontopic-public-data.t3.storage.dev/sample-data/picturing-health-pca-biplot.json",
+    "transform": "passthrough"
+  },
+  "dependencies": ["@observablehq/plot"],
+  "foldInto": null,
+  "variantLabel": null
+}

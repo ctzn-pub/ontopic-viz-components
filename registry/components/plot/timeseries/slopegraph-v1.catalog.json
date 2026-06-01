@@ -1,0 +1,15 @@
+{
+  "id": "slopegraph",
+  "name": "Slopegraph",
+  "category": "time-series",
+  "subcategory": "brfss",
+  "tags": ["slopegraph", "two-period", "change", "states"],
+  "description": "Each series' value at two time points joined by a single line, so the reader sees direction and magnitude of change at a glance. A muted field with one accent for the series the prose spotlights, and faint endpoint confidence intervals. Use it to show movement, not a ranking.",
+  "sample_data": {
+    "url": "https://ontopic-public-data.t3.storage.dev/sample-data/picturing-health-slopegraph.json",
+    "transform": "passthrough"
+  },
+  "dependencies": ["@observablehq/plot"],
+  "foldInto": null,
+  "variantLabel": null
+}

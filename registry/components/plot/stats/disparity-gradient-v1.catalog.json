@@ -1,0 +1,15 @@
+{
+  "id": "disparity-gradient",
+  "name": "Disparity Gradient",
+  "category": "regression-and-effects",
+  "subcategory": "brfss",
+  "tags": ["gradient", "deciles", "confidence-interval", "disparity"],
+  "description": "An outcome traced across an ordered gradient (e.g. deprivation deciles), one line per series with an optional confidence-interval ribbon and a direct end label. Use it to show how a health measure rises or falls monotonically across a social gradient.",
+  "sample_data": {
+    "url": "https://ontopic-public-data.t3.storage.dev/sample-data/picturing-health-disparity-gradient.json",
+    "transform": "passthrough"
+  },
+  "dependencies": ["@observablehq/plot"],
+  "foldInto": null,
+  "variantLabel": null
+}

@@ -1,0 +1,15 @@
+{
+  "id": "parallel-coordinates",
+  "name": "Parallel Coordinates",
+  "category": "distributions",
+  "subcategory": "brfss",
+  "tags": ["parallel-coordinates", "multivariate", "standardized", "profiles"],
+  "description": "Many standardized axes side by side, with one thin line per observation colored by group, to compare multivariate profiles across two or more contrasting sets. Use it when you want to see how two groups differ across a whole panel of variables at once.",
+  "sample_data": {
+    "url": "https://ontopic-public-data.t3.storage.dev/sample-data/picturing-health-parallel-coords.json",
+    "transform": "passthrough"
+  },
+  "dependencies": ["@observablehq/plot"],
+  "foldInto": null,
+  "variantLabel": null
+}
