@@ -1,0 +1,15 @@
+{
+  "id": "forest-plot",
+  "name": "Forest Plot (faceted)",
+  "category": "regression-and-effects",
+  "subcategory": "brfss",
+  "tags": ["forest-plot", "odds-ratio", "strata", "log-scale"],
+  "description": "Odds ratios for several predictors compared across strata, faceted by term and colored by stratum, on a log axis with an OR = 1 reference. Use it to read how an effect changes across subgroups (e.g. a model refit within each age band).",
+  "sample_data": {
+    "url": "https://ontopic-public-data.t3.storage.dev/sample-data/picturing-health-forest.json",
+    "transform": "passthrough"
+  },
+  "dependencies": ["@observablehq/plot"],
+  "foldInto": null,
+  "variantLabel": null
+}

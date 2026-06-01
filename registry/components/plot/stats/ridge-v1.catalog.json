@@ -1,0 +1,15 @@
+{
+  "id": "ridge",
+  "name": "Ridge / Joyplot",
+  "category": "distributions",
+  "subcategory": "brfss",
+  "tags": ["ridgeline", "joyplot", "density", "kde", "small-multiples"],
+  "description": "A stack of per-group kernel-density curves drawn as overlapping vertically-offset areas, each direct-labeled with a median rule. Use it to compare the shape of a distribution across a handful of groups (e.g. a measure by region) without a legend.",
+  "sample_data": {
+    "url": "https://ontopic-public-data.t3.storage.dev/sample-data/picturing-health-ridge.json",
+    "transform": "passthrough"
+  },
+  "dependencies": ["@observablehq/plot"],
+  "foldInto": null,
+  "variantLabel": null
+}

@@ -1,0 +1,15 @@
+{
+  "id": "bivariate-choropleth",
+  "name": "Bivariate Choropleth",
+  "category": "maps",
+  "subcategory": "places",
+  "tags": ["bivariate", "choropleth", "county", "terciles"],
+  "description": "A county map shaded by the crossing of two tercile variables on a 3×3 bivariate palette, so two patterns (e.g. deprivation and an outcome) are read at once. Ships an exported BivariateLegend that decodes the corners from the same palette. Use it to show where two measures coincide geographically.",
+  "sample_data": {
+    "url": "https://ontopic-public-data.t3.storage.dev/sample-data/picturing-health-bivariate-choropleth.json",
+    "transform": "passthrough"
+  },
+  "dependencies": ["@observablehq/plot", "topojson-client"],
+  "foldInto": null,
+  "variantLabel": null
+}

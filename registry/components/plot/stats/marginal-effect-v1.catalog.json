@@ -1,0 +1,15 @@
+{
+  "id": "marginal-effect",
+  "name": "Marginal Effect Plot",
+  "category": "regression-and-effects",
+  "subcategory": "brfss",
+  "tags": ["marginal-effect", "predicted-probability", "confidence-interval", "income"],
+  "description": "Predicted probability of an outcome across an ordered set of brackets, with a confidence-interval ribbon. A single-quantity plot drawn in monochrome ink; a non-response group renders as a hollow point. Use it to show a model's marginal effect when the predictor is ordinal.",
+  "sample_data": {
+    "url": "https://ontopic-public-data.t3.storage.dev/sample-data/picturing-health-marginal-effect.json",
+    "transform": "passthrough"
+  },
+  "dependencies": ["@observablehq/plot"],
+  "foldInto": null,
+  "variantLabel": null
+}

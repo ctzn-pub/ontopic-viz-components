@@ -1,0 +1,14 @@
+{
+  "picturing-health-disparity-gradient.json": "https://ontopic-public-data.t3.storage.dev/sample-data/picturing-health-disparity-gradient.json",
+  "picturing-health-parallel-coords.json": "https://ontopic-public-data.t3.storage.dev/sample-data/picturing-health-parallel-coords.json",
+  "picturing-health-marginal-effect.json": "https://ontopic-public-data.t3.storage.dev/sample-data/picturing-health-marginal-effect.json",
+  "picturing-health-ridge.json": "https://ontopic-public-data.t3.storage.dev/sample-data/picturing-health-ridge.json",
+  "picturing-health-paired-bars.json": "https://ontopic-public-data.t3.storage.dev/sample-data/picturing-health-paired-bars.json",
+  "picturing-health-pca-biplot.json": "https://ontopic-public-data.t3.storage.dev/sample-data/picturing-health-pca-biplot.json",
+  "picturing-health-forest.json": "https://ontopic-public-data.t3.storage.dev/sample-data/picturing-health-forest.json",
+  "picturing-health-scatter-loess.json": "https://ontopic-public-data.t3.storage.dev/sample-data/picturing-health-scatter-loess.json",
+  "picturing-health-slopegraph.json": "https://ontopic-public-data.t3.storage.dev/sample-data/picturing-health-slopegraph.json",
+  "picturing-health-state-year-heatmap.json": "https://ontopic-public-data.t3.storage.dev/sample-data/picturing-health-state-year-heatmap.json",
+  "picturing-health-bivariate-choropleth.json": "https://ontopic-public-data.t3.storage.dev/sample-data/picturing-health-bivariate-choropleth.json",
+  "picturing-health-county-hexbin.json": "https://ontopic-public-data.t3.storage.dev/sample-data/picturing-health-county-hexbin.json"
+}

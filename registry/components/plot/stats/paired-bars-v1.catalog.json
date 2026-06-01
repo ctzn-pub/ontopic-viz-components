@@ -1,0 +1,15 @@
+{
+  "id": "paired-bars",
+  "name": "Paired Bars",
+  "category": "demographic-breakdowns",
+  "subcategory": "brfss",
+  "tags": ["paired-bars", "diverging", "comparison", "back-to-back"],
+  "description": "Two measures per group drawn back to back around a center axis, so a reader can compare both quantities row by row. Groups keep the data's order, letting an ordinal gradient read top-to-bottom. Use it when two distinct measures move together across the same categories.",
+  "sample_data": {
+    "url": "https://ontopic-public-data.t3.storage.dev/sample-data/picturing-health-paired-bars.json",
+    "transform": "passthrough"
+  },
+  "dependencies": ["@observablehq/plot"],
+  "foldInto": null,
+  "variantLabel": null
+}

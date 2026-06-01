@@ -1,0 +1,15 @@
+{
+  "id": "county-hexbin",
+  "name": "County Hexbin Map",
+  "category": "maps",
+  "subcategory": "places",
+  "tags": ["hexbin", "county", "albers-usa", "sequential-color"],
+  "description": "A county map that snaps every county to a hexagon lattice and colors each hex by the mean of the counties it absorbs, removing the area bias of a standard choropleth while keeping the spatial pattern. Use it when large rural counties would otherwise dominate a county-level map.",
+  "sample_data": {
+    "url": "https://ontopic-public-data.t3.storage.dev/sample-data/picturing-health-county-hexbin.json",
+    "transform": "passthrough"
+  },
+  "dependencies": ["@observablehq/plot", "topojson-client", "d3-geo"],
+  "foldInto": null,
+  "variantLabel": null
+}
