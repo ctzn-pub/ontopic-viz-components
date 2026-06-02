@@ -5,6 +5,7 @@ import React, { useRef, useEffect, useState } from 'react';
 import * as Plot from "@observablehq/plot";
 import * as topojson from "topojson-client";
 import { loadParquetData } from '@/lib/duckdb';
+import { useVizTheme } from "@/viz/theme/provider";
 
 const TOPOLOGY_URL = 'https://ontopic-public-data.t3.storage.dev/geo/us-albers-counties-10m.json';
 const PARQUET_URL = 'https://ontopic-public-data.t3.storage.dev/sample-data/health_zip.parquet';
@@ -17,9 +18,17 @@ interface ZipDataPoint {
 
 interface ZipMapProps {
   data?: ZipDataPoint[];
+  /**
+   * Explicit D3 color-scheme name to override the default. When omitted,
+   * the map uses the active theme's diverging ramp (semantic.diverging).
+   * Diverging is right for obesity-rate quantiles where readers naturally
+   * compare against a national median.
+   */
+  colorScheme?: string;
 }
 
-const ZipMap: React.FC<ZipMapProps> = () => {
+const ZipMap: React.FC<ZipMapProps> = ({ colorScheme } = {}) => {
+  const { theme } = useVizTheme();
   const mapRef = useRef<HTMLDivElement>(null);
   const [us, setUs] = useState<any>(null);
   const [data, setData] = useState<ZipDataPoint[]>([]);
@@ -60,19 +69,31 @@ const ZipMap: React.FC<ZipMapProps> = () => {
     const nation = topojson.feature(us as any, (us as any).objects.nation);
     const countiesmesh = topojson.mesh(us as any, (us as any).objects.counties);
 
+    // Color: explicit prop wins; otherwise theme's diverging ramp.
+    const colorConfig: any = {
+      type: "quantile",
+      n: 4,
+      reverse: true,
+      label: "Obesity (%)",
+      legend: true,
+      tickFormat: (d: number) => `${d.toFixed(1)}%`,
+    };
+    if (colorScheme) {
+      colorConfig.scheme = colorScheme;
+    } else {
+      colorConfig.range = theme.semantic.diverging;
+    }
+
     const mapPlot = Plot.plot({
       width: 960,
       height: 600,
       projection: "albers",
-      color: {
-        scheme: "puor",
-        type: "quantile",
-        n: 4,
-        reverse: true,
-        label: "Obesity (%)",
-        legend: true,
-        tickFormat: d => `${d.toFixed(1)}%`
+      style: {
+        backgroundColor: theme.surface,
+        color: theme.fg,
+        fontFamily: theme.fontBody,
       },
+      color: colorConfig,
       marks: [
         Plot.geo(countiesmesh, { strokeOpacity: 0.5 }),
         Plot.geo(nation),
@@ -91,7 +112,7 @@ const ZipMap: React.FC<ZipMapProps> = () => {
     mapRef.current.appendChild(mapPlot);
 
     return () => mapPlot?.remove();
-  }, [data, us, loading]);
+  }, [data, us, loading, colorScheme, theme]);
 
   if (loading || !us) {
     return (
