@@ -66,8 +66,16 @@ jobs:
             fi
 
             if [ ! -f "$sidecar" ]; then
-              echo "::error file=$tsx::Missing catalog sidecar at $sidecar — every component requires one. See .claude/skills/ontopic-viz-conventions/SKILL.md."
-              exit 1
+              # Legacy components without a sidecar are NOT a hard failure:
+              # 80 components predate the sidecar convention, and retroactively
+              # requiring a sidecar would block any maintenance edit on them.
+              # The vitest contract test (registry/__tests__/catalog-sidecar.test.ts)
+              # enforces sidecars only for components on REQUIRES_SIDECAR — that
+              # allowlist is the source of truth for "must ship a sidecar".
+              # Here we just log the skip and let the workflow continue with
+              # whatever changed components DO have sidecars.
+              echo "::warning file=$tsx::Legacy component without sidecar — skipped for auto-publish. Add a .catalog.json to surface this component on the public gallery. See .claude/skills/ontopic-viz-conventions/SKILL.md."
+              continue
             fi
 
             # Variant sidecars (foldInto set) inherit sample data from their
