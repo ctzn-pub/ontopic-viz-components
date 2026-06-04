@@ -17,6 +17,13 @@ components. `theme.css` (article, hand-written, `--color-*`) and `viz-theme.css`
 (charts, generated, `--viz-*`) are independent files — import both from your
 globals.
 
+> **Building a book or long-form article app?** To make page chrome + prose +
+> charts all re-tone from a single theme switch, derive the article's
+> `--color-*` tokens from `--viz-*` and add a provider that sets
+> `data-viz-theme`. Full recipe:
+> **[INTEGRATING-WITH-A-BOOK.md](./INTEGRATING-WITH-A-BOOK.md)**. Reference
+> consumer: [`ctzn-pub/book-template`](https://github.com/ctzn-pub/book-template).
+
 ## The chart theme system (quick start)
 
 ```tsx

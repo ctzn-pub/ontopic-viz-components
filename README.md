@@ -60,6 +60,8 @@ cp -r ~/github/ontopic-viz-components/registry/theme ./theme
 
 Then wire it into your Next 15 app per `registry/theme/README.md` (a 3-step guide: import the preset in `tailwind.config.ts`, import fonts in `app/layout.tsx`, import `theme.css` in `app/globals.css`).
 
+**Theming a whole book or article app (one switch for prose + charts).** If you're building a long-form reader where the page chrome and typography should re-tone *together with* the charts when the user picks a theme, see [`registry/theme/INTEGRATING-WITH-A-BOOK.md`](registry/theme/INTEGRATING-WITH-A-BOOK.md). It derives the article's `--color-*` tokens from the generated `--viz-*` variables so a single `data-viz-theme` attribute drives everything, and adds a `ThemeProvider` + reader-facing switcher. The [`ctzn-pub/book-template`](https://github.com/ctzn-pub/book-template) repo is a complete, working consumer of this exact wiring — copy from it.
+
 ## GSS-specific articles
 
 If you're scaffolding a long-form GSS article (Geist-styled MDX + a Recharts chart + the article-layout components), the full recipe lives in the `gss-article` Claude Code skill at `ctzn-pub/claude-skills/gss-article/SKILL.md`. The recipe walks through cloning this registry, running the right `viz add` commands, and wiring up `ArticleShell`. Env vars (Tigris, optional OpenAI) are documented at `ctzn-pub/claude-skills/gss-charts/.env.example`.
