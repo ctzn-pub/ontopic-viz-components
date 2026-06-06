@@ -3,7 +3,7 @@
   "name": "NYC ZIP-code choropleth (MapLibre)",
   "category": "maps",
   "subcategory": "maplibre",
-  "tags": ["geographic", "choropleth", "pmtiles", "maplibre", "zcta"],
+  "tags": ["geographic", "choropleth", "pmtiles", "maplibre", "zcta", "gpu"],
   "description": "MapLibre + PMTiles choropleth at ZCTA (ZIP-code) resolution across the NYC metro. The previous Plot-based maps render TopoJSON to SVG — fast and projection-faithful for states and counties, but choking at the 33k-feature ZCTA level. This engine pre-bakes geometry into a PMTiles archive read over HTTP range requests and paints the fill on the GPU. Theme-driven: switching themes recolors the map without touching the tile.",
   "sample_data": {
     "url": "https://ontopic-public-data.t3.storage.dev/pmtiles/NYC_MSA.pmtiles",

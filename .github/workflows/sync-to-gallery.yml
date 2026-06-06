@@ -12,6 +12,13 @@ on:
     paths:
       - 'registry/components/**/*.tsx'
       - 'registry/components/**/*.catalog.json'
+  # Manual-trigger escape hatch for testing workflow changes against
+  # the current HEAD without needing a real component edit.
+  # When triggered this way, the diff logic compares HEAD against
+  # HEAD^ — pick a SHA whose parent has the changes you want to
+  # validate, or use the workflow_dispatch input if you want to
+  # specify an explicit diff range.
+  workflow_dispatch:
 
 permissions:
   contents: read
