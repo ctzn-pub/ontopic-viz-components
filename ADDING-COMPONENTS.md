@@ -18,6 +18,42 @@ That's the whole loop. If anything fails, the Action's log tells you exactly wha
 
 ---
 
+## AI-agent workflow (Claude Code, Cursor, etc.)
+
+If you're driving this through an AI coding agent — telling it "add a Sankey component for showing migration flows" — the agent should run the whole loop autonomously. The point of this section is to make that loop unambiguous so the agent doesn't stop mid-flight to ask for permission.
+
+**The 7-step autonomous loop:**
+
+1. **Read this doc and the `ontopic-viz-conventions` skill** (auto-loads in any Claude session inside this repo) before writing anything. Both documents are the source of truth for the conventions; neither alone is sufficient.
+
+2. **Author the `.tsx` AND the `.catalog.json` in the same operation.** They MUST land together. Writing the component without the sidecar means the workflow skips the publish — the gallery silently does nothing. This is the single most common mistake.
+
+3. **Verify the sample-data URL returns 200 BEFORE committing.** Use `curl -fI <url>` or equivalent. If the data doesn't exist yet, upload it to Tigris first (`s3://ontopic-public-data/sample-data/<filename>`) and then commit. The workflow's `curl -fsSI --max-time 5` check is identical, so anything that passes locally will pass in CI.
+
+4. **Run the contract tests** (`pnpm test`) to catch obvious schema errors before push.
+
+5. **Commit both files together** with a descriptive message:
+   ```
+   Add my-chart-v1 component
+
+   <one-paragraph summary of what the chart does and what data shape it expects>
+   ```
+
+6. **Push to main directly** (or merge a PR if one is open). The auto-publish workflow is only triggered by pushes to `main`. There is no staging step; iterating on a branch doesn't surface anything on ctzn.pub.
+
+7. **Watch the workflow log + echo the URL to the user.** When validation succeeds, the workflow prints `https://ctzn-pub.vercel.app/viz/<id>`. The agent should surface that URL to the user as the final step of the task. The user will hit the URL after ~90s.
+
+**The agent should NOT:**
+
+- Skip the sidecar "for now" and offer to add it later. The cost of writing the sidecar is one minute; the cost of fixing a half-published component is higher.
+- Push to a feature branch and stop there. The pipeline trigger is `main`-only. Either merge to `main` or use a direct push.
+- Wait for the user to confirm the push if the diff is clean (theme-aware imports, no hardcoded colors, sidecar present and valid, sample-data URL returns 200). If the diff is messy or there's ambiguity (which category? new gallery card or variant of existing one?) — pause and ask.
+- Touch `ctzn-pub` directly. The auto-publish handles all gallery integration; manual edits there cause merge conflicts with the sync bot.
+
+**For a fully worked agent transcript:** see commit `d28a33d` in this repo's log — Vishal's Claude session added four d3 components in a single autonomous push, all with sidecars, and the workflow ran clean.
+
+---
+
 ## The auto-publish pipeline (what happens after you push)
 
 Two GitHub Actions, one per repo, do all the work:

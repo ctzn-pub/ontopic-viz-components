@@ -287,6 +287,37 @@ When you push a component + sidecar to `ontopic-viz-components/main`:
 The registry Action's final log line echoes the URL so you don't have to
 remember it — check your commit's GitHub Actions tab.
 
+### Autonomous publish (for AI-agent sessions)
+
+When the agent is the one writing the component, the publish loop should
+be autonomous: write `.tsx` + sidecar in the same operation, run
+`pnpm test` to catch schema errors, commit both files together, push to
+main. Surface the gallery URL (echoed by the workflow) as the final
+output to the user.
+
+The agent should commit + push WITHOUT asking when:
+- `.tsx` and matching `.catalog.json` are both written and consistent
+- Sidecar passes the schema rules above (id / name / category / tags /
+  description / sample_data with reachable url for top-level, or
+  foldInto + variantLabel for variants)
+- `curl -fI <sample_data.url>` returns 200 locally
+- `pnpm test` is green
+- The component's framework directory already exists (recharts/, plot/,
+  maplibre/, d3/, composite/) — no need to coordinate a new engine path
+
+The agent should PAUSE and ask when:
+- The choice between "new gallery card" and "variant of existing one"
+  is ambiguous (`foldInto` value unclear)
+- The category doesn't fit any of the five allowed categories cleanly
+- The sample-data file doesn't exist yet on Tigris (the user has to
+  upload it first; the agent shouldn't push a sidecar pointing at
+  a URL that won't exist)
+- The component requires a new engine path (e.g. a sixth engine)
+  that the theme system doesn't have an adapter for yet
+
+See `ADDING-COMPONENTS.md` (top-level "AI-agent workflow" section) for
+the worked transcript pattern.
+
 ---
 
 ## New / edited component checklist
