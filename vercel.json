@@ -1,0 +1,5 @@
+{
+  "buildCommand": "pnpm preview:build",
+  "outputDirectory": "preview-dist",
+  "installCommand": "pnpm install --frozen-lockfile"
+}

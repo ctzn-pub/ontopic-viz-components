@@ -4,6 +4,7 @@ node_modules/
 
 # Build output
 # dist/  # Commented out - need to commit dist for GitHub installs
+preview-dist/
 *.tsbuildinfo
 
 # Environment
