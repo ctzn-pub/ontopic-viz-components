@@ -1,0 +1,15 @@
+{
+  "id": "d3-parallel-coordinates",
+  "name": "Parallel Coordinates (D3)",
+  "category": "distributions",
+  "subcategory": "multivariate",
+  "tags": ["multivariate", "standardized", "focus", "pca"],
+  "description": "A D3/SVG parallel coordinates chart for comparing many standardized measures across grouped observations. Use it when line focus, group filtering, and dense multivariate pattern reading matter more than a static grammar-based rendering.",
+  "sample_data": {
+    "url": "https://ontopic-public-data.t3.tigrisfiles.io/sample-data/picturing-health-parallel-coords.json",
+    "transform": "passthrough"
+  },
+  "dependencies": ["d3-scale", "d3-shape"],
+  "foldInto": "parallel-coordinates",
+  "variantLabel": "D3 interactive"
+}

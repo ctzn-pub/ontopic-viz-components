@@ -280,6 +280,7 @@ const THEME_FILES = [
   'adapters/recharts.ts',
   'adapters/plot.ts',
   'adapters/maplibre.ts',
+  'adapters/d3.ts',
   'generate-css.ts',
   'fonts.ts',
   'tailwind-preset.ts',
@@ -365,6 +366,10 @@ function downloadFile(url, dest) {
 const VERSION_CONSTRAINTS = {
   'recharts': '^2.15.0',
   '@observablehq/plot': '^0.6.0',
+  'd3-array': '^3.0.0',
+  'd3-geo': '^3.0.0',
+  'd3-scale': '^4.0.0',
+  'd3-shape': '^3.0.0',
   'lucide-react': '^0.454.0',
   'maplibre-gl': '^5.0.0',
   'pmtiles': '^4.0.0',

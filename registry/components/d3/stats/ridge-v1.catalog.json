@@ -1,0 +1,15 @@
+{
+  "id": "d3-ridge",
+  "name": "Ridgeline / Violin (D3)",
+  "category": "distributions",
+  "subcategory": "distribution-comparison",
+  "tags": ["ridgeline", "violin", "distribution", "focus"],
+  "description": "A D3/SVG ridgeline chart with an optional mirrored violin mode, median rules, and region focus. Use it when raw grouped observations need a compact distribution comparison with direct labels and readable focus states.",
+  "sample_data": {
+    "url": "https://ontopic-public-data.t3.tigrisfiles.io/sample-data/picturing-health-ridge.json",
+    "transform": "passthrough"
+  },
+  "dependencies": ["d3-scale", "d3-shape"],
+  "foldInto": "ridge",
+  "variantLabel": "D3 focus"
+}

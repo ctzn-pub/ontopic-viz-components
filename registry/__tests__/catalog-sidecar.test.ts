@@ -47,6 +47,11 @@ const REQUIRES_SIDECAR = [
   'plot/stats/ridge-v1',
   'plot/timeseries/slopegraph-v1',
   'plot/timeseries/state-year-heatmap-v1',
+  // D3/SVG track
+  'd3/stats/parallel-coordinates-v1',
+  'd3/stats/pca-biplot-v1',
+  'd3/stats/ridge-v1',
+  'd3/timeseries/slopegraph-v1',
   // existing MapLibre set
   'maplibre/geo/map-v1',
   'maplibre/geo/choropleth-v1',

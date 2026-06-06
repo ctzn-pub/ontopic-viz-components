@@ -6,7 +6,7 @@ A local component registry for data visualization. Clone the repo, run a small C
 
 The CLI's binary name is `viz`, declared as `@ontopic/viz` in `package.json` so it's runnable via `pnpm link --global` (and would be `npx`-able if it were ever published — it isn't). **The package is not on npm.** All commands assume you've cloned this repo locally and either linked the CLI or invoke it directly with `node`.
 
-The `viz add` command works by **copying files from this repo's `registry/` folder** into a consuming app's `viz/` tree. It walks `@/viz/ui/*` and `@/viz/utils/*` imports automatically and `pnpm add`s any npm packages the components need (Recharts, Observable Plot, Radix, etc.).
+The `viz add` command works by **copying files from this repo's `registry/` folder** into a consuming app's `viz/` tree. It walks `@/viz/ui/*`, `@/viz/utils/*`, and `@/viz/theme/*` imports automatically and `pnpm add`s any npm packages the components need (Recharts, Observable Plot, D3, Radix, etc.).
 
 ## Quick Start
 
@@ -48,7 +48,7 @@ viz add article/Callout
 # → installs to viz/components/article/Callout.tsx
 ```
 
-Use 3-segment for chart components (they sit under a chart framework like Recharts or Plot). Use 2-segment for cross-framework assets like the `article/*` MDX layout components.
+Use 3-segment for chart components (they sit under a chart framework like Recharts, Plot, D3, or MapLibre). Use 2-segment for cross-framework assets like the `article/*` MDX layout components.
 
 ## Theme (separate flow)
 
@@ -92,6 +92,9 @@ pnpm add recharts
 
 # For Observable Plot components
 pnpm add @observablehq/plot d3
+
+# For D3/SVG components
+pnpm add d3-scale d3-shape
 ```
 
 ## Usage Example
@@ -167,6 +170,16 @@ See [COMPONENT-INVENTORY.md](./COMPONENT-INVENTORY.md) for the complete list.
 - `plot/generic/dot-v1` — Categorical dot plots
 - `plot/generic/correlation-heatmap-v1` — Correlation matrices
 
+### D3/SVG (4 components)
+
+**Multivariate:**
+- `d3/stats/parallel-coordinates-v1` — Interactive parallel coordinates with group filtering and line focus
+- `d3/stats/pca-biplot-v1` — PCA biplot with focusable loading vectors and leader labels
+
+**Distribution and time change:**
+- `d3/stats/ridge-v1` — Ridgeline / violin distributions with region focus
+- `d3/timeseries/slopegraph-v1` — Two-period slopegraph with collision-managed endpoint labels
+
 ### Composite (11 components)
 
 **Dashboards:**
@@ -203,6 +216,11 @@ registry/
 │   ├── plot/              # Observable Plot components
 │   │   ├── generic/       # Reusable
 │   │   └── geo/           # Geographic visualizations
+│   │
+│   ├── d3/                # D3/SVG bespoke interaction components
+│   │   └── stats/         # Statistical and multivariate visualizations
+│   │
+│   ├── maplibre/          # MapLibre + PMTiles components
 │   │
 │   ├── composite/         # Multi-component dashboards
 │   │

@@ -20,6 +20,7 @@ import {
 import { rcTheme } from './adapters/recharts';
 import { plotBase } from './adapters/plot';
 import { mlTheme } from './adapters/maplibre';
+import { d3Theme } from './adapters/d3';
 import { scaleFor as rawScaleFor, ScaleSpec } from './scales';
 
 export { THEME_SCHEMA_VERSION } from './tokens';
@@ -68,6 +69,7 @@ export function useVizTheme() {
       rc: rcTheme(theme), // Recharts style bundle
       plotBase: () => plotBase(theme), // Plot options base
       ml: mlTheme(theme), // MapLibre basemap chrome bundle
+      d3: d3Theme(theme), // D3/SVG chrome bundle
     }),
     [theme],
   );

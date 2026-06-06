@@ -21,6 +21,10 @@ registry/components/
 │   ├── brfss/          # BRFSS-specific
 │   ├── gss/            # GSS-specific
 │   └── timeseries/     # Time series charts
+├── d3/                 # D3/SVG components for bespoke geometry/interaction
+│   └── stats/          # Statistical and multivariate visualizations
+├── maplibre/           # MapLibre + PMTiles components
+│   └── geo/            # Zoomable geographic visualizations
 └── composite/          # Multi-component dashboards
     ├── generic/        # Reusable dashboards
     ├── brfss/          # BRFSS dashboards
