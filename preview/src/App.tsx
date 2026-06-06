@@ -311,7 +311,7 @@ export default function App() {
           <section className="content-panel">
             <div className="stat-grid">
               <Stat label="components" value={catalog.length} icon={Library} />
-              <Stat label="live examples" value={liveExamples.length} icon={CheckCircle2} />
+              <Stat label="curated live samples" value={liveExamples.length} icon={CheckCircle2} />
               <Stat label="catalog sidecars" value={sidecarCount} icon={FileCode2} />
               <Stat label="theme review queue" value={needsThemeReview} icon={SlidersHorizontal} />
             </div>
@@ -320,7 +320,7 @@ export default function App() {
               <div className="section-heading">
                 <div>
                   <span className="eyebrow">Live Gallery</span>
-                  <h2 id="live-preview-title">Rendered examples</h2>
+                  <h2 id="live-preview-title">Curated render samples</h2>
                 </div>
                 <p>{filteredLiveExamples.length} shown</p>
               </div>
@@ -357,13 +357,13 @@ export default function App() {
               <div className="section-heading">
                 <div>
                   <span className="eyebrow">Catalog</span>
-                  <h2 id="catalog-title">Registry files</h2>
+                  <h2 id="catalog-title">All registry files</h2>
                 </div>
                 <p>{filteredCatalog.length} matches</p>
               </div>
 
               <div className="component-list">
-                {filteredCatalog.slice(0, 80).map((component) => (
+                {filteredCatalog.map((component) => (
                   <ComponentRow
                     key={component.path}
                     component={component}
