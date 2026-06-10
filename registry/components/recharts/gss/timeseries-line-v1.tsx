@@ -110,6 +110,14 @@ const presidentialTerms = [
     { start: 2020, end: 2024, party: "Democrat", president: "Biden" },
 ];
 
+// Categorical series palette for NON-semantic breakdowns (and the single-line
+// "Overall" case). Mirrors the generic sibling
+// (recharts/timeseries-line-v1.tsx) so a GSS chart with no party/sentiment
+// domain renders in the same pink-first cycle as the MTF/generic charts.
+// Party / ideology series are NOT colored from here — they go through the
+// theme's semantic `colorFor(domain, …)` (Democrat blue / Republican red).
+const CATEGORICAL_COLORS = ['#DD44AA', '#33BB44', '#44DDFF', '#DDCC22', '#BBBBBB', '#5599CC', '#EE6677'];
+
 // --- Helper Functions ---
 const generateTicks = (start: number, end: number, interval: number): number[] => {
     const ticks: number[] = [];
@@ -138,19 +146,39 @@ export default function TimeTrendDemoChart({
     const { rc, colorFor } = useVizTheme();
     // Explicit author mapping, not data sniffing: a `PolParty` breakdown gets
     // the party domain (Democrat blue / Republican red); anything else falls
-    // through to the theme's categorical cycle. An explicit prop wins.
+    // through to the categorical cycle. An explicit prop wins.
     const domain = colorDomain === undefined
         ? (demographic === 'PolParty' ? 'party' : null)
         : colorDomain;
 
+    // Series color resolver. Semantic domains (party / sentiment) go through
+    // the theme so Democrat/Republican/etc. stay red/blue across themes.
+    // Non-semantic series (the single-line "Overall" case, or any breakdown
+    // without a semantic mapping) use the MTF/generic pink-first palette
+    // rather than the theme's restrained ink-first cycle — matching the
+    // generic chart the rest of the app already renders for non-GSS sources.
+    const resolveColor = (name: string, index: number): string =>
+        domain
+            ? colorFor(domain, name, index)
+            : CATEGORICAL_COLORS[index % CATEGORICAL_COLORS.length];
+
+    // For a single-series timetrend (no demographic split, e.g. /chat),
+    // demographicGroups is empty — fall back to the synthetic 'Overall' series
+    // so it starts visible. Without this, visibleGroups inits empty and every
+    // <Line> gets hide={true}, leaving the chart blank.
+    const effectiveVisible = (defaultVisibleGroups && defaultVisibleGroups.length > 0)
+        ? defaultVisibleGroups
+        : (demographicGroups.length > 0 ? demographicGroups : ['Overall']);
+
     const [visibleGroups, setVisibleGroups] = useState<Set<string>>(
-        new Set(defaultVisibleGroups || demographicGroups)
+        new Set(effectiveVisible)
     );
     const [showCI, setShowCI] = useState(false);
 
     useEffect(() => {
-        setVisibleGroups(new Set(defaultVisibleGroups || demographicGroups));
-    }, [demographicGroups, defaultVisibleGroups]);
+        setVisibleGroups(new Set(effectiveVisible));
+        // eslint-disable-next-line react-hooks/exhaustive-deps
+    }, [demographicGroups.join('|'), (defaultVisibleGroups || []).join('|')]);
 
     if (!data || !data.dataPoints || !Array.isArray(data.dataPoints) || data.dataPoints.length === 0) {
         return <div className="p-4 text-center" style={{ color: rc.muted }}>No data available to display chart.</div>;
@@ -179,13 +207,27 @@ export default function TimeTrendDemoChart({
     const xTickInterval = compact ? 20 : 5;
     const xAxisTicks = generateTicks(xAxisMin, xAxisMax, xTickInterval);
 
-    const groupedData = demographicGroups.map(group => {
-        const groupData = processedDataPoints
-            .filter(d => d[demographic] === group && d.year !== null)
-            .map(d => d as DataPoint & { year: number })
-            .sort((a, b) => a.year - b.year);
-        return { name: group, data: groupData };
-    });
+    // When demographicGroups is empty (single-series timetrend, e.g. from
+    // /chat where VizResolver couldn't find a demographic dataPointMetadata
+    // entry), fall back to one "Overall" series over the raw data. Without
+    // this fallback the chart renders axes + president bands but zero
+    // <Line> elements — a hollow shell. Mirror of the generic sibling at
+    // viz/components/recharts/timeseries-line-v1.tsx.
+    const groupedData = demographicGroups.length > 0
+        ? demographicGroups.map(group => {
+            const groupData = processedDataPoints
+                .filter(d => d[demographic] === group && d.year !== null)
+                .map(d => d as DataPoint & { year: number })
+                .sort((a, b) => a.year - b.year);
+            return { name: group, data: groupData };
+        })
+        : [{
+            name: 'Overall',
+            data: processedDataPoints
+                .filter(d => d.year !== null)
+                .map(d => d as DataPoint & { year: number })
+                .sort((a, b) => a.year - b.year),
+        }];
     const hasCIData = groupedData.some(g =>
         g.data.some(d => d.standard_error !== undefined || (d.ci_lower !== undefined && d.ci_upper !== undefined))
     );
@@ -292,7 +334,7 @@ export default function TimeTrendDemoChart({
                 <p className="font-semibold mb-2" style={{ color: rc.fg }}>{`Year: ${label}`}</p>
                 {visiblePayload.map((series) => {
                     const colorIndex = demographicGroups.indexOf(series.name);
-                    const color = colorFor(domain, series.name, colorIndex !== -1 ? colorIndex : 0);
+                    const color = resolveColor(series.name, colorIndex !== -1 ? colorIndex : 0);
                     const pointData = series.payload;
                     return (
                         <div key={series.name} className="mb-1.5 last:mb-0">
@@ -327,10 +369,15 @@ export default function TimeTrendDemoChart({
             style={{ background: rc.surface }}
         >
             {!compact && (
-                <div className="mb-2">
-                    <h2 className="text-base font-semibold leading-snug" style={rc.titleStyle}>{data.metadata.title}</h2>
-                    {data.metadata.subtitle && <p className="text-xs mt-0.5 leading-snug" style={rc.subtitleStyle}>{data.metadata.subtitle}</p>}
-                    {data.metadata.question && <p className="text-xs italic mt-0.5 leading-snug" style={{ color: rc.muted, fontFamily: rc.fontBody }}>{data.metadata.question}</p>}
+                <div className="mb-3">
+                    {/* Editorial type ramp — matches the generic sibling and
+                        the Plot wrapper rules:
+                          title    ~28px bold (headline)
+                          subtitle ~18px regular (sentence-claim)
+                          question 12px italic (caption) */}
+                    <h2 className="text-2xl sm:text-[28px] font-bold leading-tight tracking-tight" style={rc.titleStyle}>{data.metadata.title}</h2>
+                    {data.metadata.subtitle && <p className="text-base sm:text-[18px] font-normal leading-snug mt-1.5 max-w-3xl" style={rc.subtitleStyle}>{data.metadata.subtitle}</p>}
+                    {data.metadata.question && <p className="text-xs italic mt-2 leading-snug max-w-2xl" style={{ color: rc.muted, fontFamily: rc.fontBody }}>{data.metadata.question}</p>}
                 </div>
             )}
 
@@ -338,7 +385,7 @@ export default function TimeTrendDemoChart({
                 <ResponsiveContainer width="100%" height="100%">
                     <LineChart
                         key={`${demographic}-${showCI}`}
-                        margin={{ top: 20, right: 20, left: 10, bottom: 5 }}
+                        margin={{ top: 8, right: 8, left: 0, bottom: 0 }}
                     >
                         {!compact && relevantPresidentialTerms.map((term, index) => (
                             // Faint party-tinted band, sourced from the active theme's party
@@ -380,25 +427,43 @@ export default function TimeTrendDemoChart({
 
                         <Tooltip content={<CustomTooltip />} cursor={{ stroke: rc.muted, strokeWidth: 1, strokeDasharray: '3 3' }} />
 
-                        {!compact && (
-                            <Legend verticalAlign="bottom" align="center" height={40} onClick={handleLegendClick}
-                                iconSize={10} wrapperStyle={{ paddingTop: '10px' }}
-                                formatter={(value) => {
-                                    const isVisible = visibleGroups.has(value);
-                                    return (<span style={{ color: isVisible ? rc.fg : rc.muted, cursor: 'pointer', marginLeft: '4px', fontSize: '12px' }}>{value}</span>);
-                                }} />
-                        )}
+                        {/* Per-panel legend. In `compact` mode (small-multiples)
+                            it renders smaller so each panel gets its own group
+                            attribution — different demographics per panel means
+                            a single shared legend doesn't fit. */}
+                        <Legend
+                            verticalAlign="bottom"
+                            align="center"
+                            height={compact ? 22 : 40}
+                            onClick={handleLegendClick}
+                            iconSize={compact ? 7 : 10}
+                            wrapperStyle={{ paddingTop: compact ? '2px' : '10px' }}
+                            formatter={(value) => {
+                                const isVisible = visibleGroups.has(value);
+                                return (
+                                    <span style={{
+                                        color: isVisible ? rc.fg : rc.muted,
+                                        cursor: 'pointer',
+                                        marginLeft: '4px',
+                                        fontSize: compact ? '10px' : '12px',
+                                    }}>{value}</span>
+                                );
+                            }}
+                        />
+
 
                         {groupedData.map((group) => {
                             const colorIndex = demographicGroups.indexOf(group.name);
-                            const color = colorFor(domain, group.name, colorIndex !== -1 ? colorIndex : 0);
+                            const color = resolveColor(group.name, colorIndex !== -1 ? colorIndex : 0);
                             return (
                                 <Line
                                     key={group.name} yAxisId="left" type="linear"
                                     data={group.data}
                                     dataKey="value" name={group.name} stroke={color} strokeWidth={rc.stroke}
-                                    dot={{ r: 3, fill: color, strokeWidth: 1, stroke: rc.surface }}
-                                    activeDot={{ r: 5, strokeWidth: 1, stroke: rc.surface }}
+                                    // Hollow dots — white fill with a colored stroke. Reads
+                                    // cleaner at year-by-year density than filled solid dots.
+                                    dot={{ r: 3, fill: rc.surface, strokeWidth: 1.5, stroke: color }}
+                                    activeDot={{ r: 5, fill: rc.surface, strokeWidth: 2, stroke: color }}
                                     hide={!visibleGroups.has(group.name)}
                                     connectNulls={true}
                                     isAnimationActive={false}
