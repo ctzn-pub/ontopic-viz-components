@@ -24,7 +24,10 @@ export const defaultSemantic = {
     Democrat:    t.palette.demBlue,
     Republican:  t.palette.repRed,
     Independent: t.palette.indGray,
-    Other:       t.palette.purple,
+    // Other: a neutral gray, not purple — Independents and "Other"
+    // are conceptually both "neither blue nor red", and a third loud
+    // hue overcrowds the chart's color story.
+    Other:       t.palette.indGray,
   },
   sentiment: {
     positive: t.palette.green,

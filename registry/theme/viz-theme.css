@@ -6,8 +6,8 @@
   --viz-surface: #ffffff;
   --viz-border: #e5e7eb;
   --viz-accent: #1d4ed8;
-  --viz-font-body: Geist, system-ui, sans-serif;
-  --viz-font-title: Geist, system-ui, sans-serif;
+  --viz-font-body: var(--font-inter, Inter), system-ui, sans-serif;
+  --viz-font-title: var(--font-inter, Inter), system-ui, sans-serif;
 }
 .dark {
   --viz-fg: #F5F5F5;
@@ -16,8 +16,8 @@
   --viz-surface: #0A0A0B;
   --viz-border: #2A2A2A;
   --viz-accent: #FFB000;
-  --viz-font-body: "Helvetica Neue", Inter, system-ui, sans-serif;
-  --viz-font-title: "Helvetica Neue", Inter, system-ui, sans-serif;
+  --viz-font-body: var(--font-inter, Inter), system-ui, sans-serif;
+  --viz-font-title: var(--font-inter, Inter), system-ui, sans-serif;
 }
 [data-viz-theme="editorial"] {
   --viz-fg: #1a1a1a;
@@ -26,8 +26,8 @@
   --viz-surface: #ffffff;
   --viz-border: #e5e7eb;
   --viz-accent: #1d4ed8;
-  --viz-font-body: Geist, system-ui, sans-serif;
-  --viz-font-title: Geist, system-ui, sans-serif;
+  --viz-font-body: var(--font-inter, Inter), system-ui, sans-serif;
+  --viz-font-title: var(--font-inter, Inter), system-ui, sans-serif;
 }
 [data-viz-theme="times"] {
   --viz-fg: #121212;
@@ -36,8 +36,8 @@
   --viz-surface: #ffffff;
   --viz-border: #ddd;
   --viz-accent: #326891;
-  --viz-font-body: "Franklin Gothic Medium", "Helvetica Neue", Arial, sans-serif;
-  --viz-font-title: "Times New Roman", "Source Serif Pro", Georgia, serif;
+  --viz-font-body: var(--font-libre-franklin, "Libre Franklin"), "Franklin Gothic Medium", Arial, sans-serif;
+  --viz-font-title: var(--font-dm-serif, "DM Serif Display"), Georgia, "Times New Roman", serif;
 }
 [data-viz-theme="ft"] {
   --viz-fg: #33302E;
@@ -46,8 +46,8 @@
   --viz-surface: #FFF1E5;
   --viz-border: #E9DDD0;
   --viz-accent: #0F5499;
-  --viz-font-body: "Helvetica Neue", Inter, system-ui, sans-serif;
-  --viz-font-title: Georgia, "Times New Roman", serif;
+  --viz-font-body: var(--font-inter, Inter), system-ui, sans-serif;
+  --viz-font-title: var(--font-source-serif, "Source Serif 4"), Georgia, serif;
 }
 [data-viz-theme="economist"] {
   --viz-fg: #121317;
@@ -56,8 +56,8 @@
   --viz-surface: #E9EDF0;
   --viz-border: #C8CFD4;
   --viz-accent: #E3120B;
-  --viz-font-body: "Helvetica Neue", Inter, Arial, sans-serif;
-  --viz-font-title: "Helvetica Neue", Inter, Arial, sans-serif;
+  --viz-font-body: var(--font-inter, Inter), system-ui, sans-serif;
+  --viz-font-title: var(--font-inter, Inter), system-ui, sans-serif;
 }
 [data-viz-theme="bloomberg"] {
   --viz-fg: #F5F5F5;
@@ -66,6 +66,16 @@
   --viz-surface: #0A0A0B;
   --viz-border: #2A2A2A;
   --viz-accent: #FFB000;
-  --viz-font-body: "Helvetica Neue", Inter, system-ui, sans-serif;
-  --viz-font-title: "Helvetica Neue", Inter, system-ui, sans-serif;
+  --viz-font-body: var(--font-inter, Inter), system-ui, sans-serif;
+  --viz-font-title: var(--font-inter, Inter), system-ui, sans-serif;
+}
+[data-viz-theme="observatory"] {
+  --viz-fg: #edf1f7;
+  --viz-muted: #78879c;
+  --viz-grid: #222d3d;
+  --viz-surface: #0d1420;
+  --viz-border: #222d3d;
+  --viz-accent: #e8c468;
+  --viz-font-body: var(--font-archivo, Archivo), ui-sans-serif, system-ui, sans-serif;
+  --viz-font-title: var(--font-fraunces, Fraunces), Georgia, "Times New Roman", serif;
 }

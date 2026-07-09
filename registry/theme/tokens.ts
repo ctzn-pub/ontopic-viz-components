@@ -114,19 +114,64 @@ export const tokens = {
     // Diverging = bright magenta -> mid grey (so it's distinguishable from
     // the black surface) -> bright cyan. Saturated endpoints.
     bloombergDiverg:['#FF6FAF', '#C97A99', '#3F3F46', '#7AB4D0', '#00D0FF'],
+
+    // ── Observatory — dark data-atlas ledger ────────────────────────────────
+    // Tokenized from the health-of-americas-zip-codes "Observatory Ledger"
+    // (web/app/globals.css + web/lib/colors.ts). Near-black blue-cast surface,
+    // serif display over sans body, warm/cool accent pair, gold instrument
+    // needle. Ramps are ColorBrewer YlOrRd (sequential burden) and RdBu
+    // (diverging gap) — luminance-ordered, grayscale-legible, CVD-resilient.
+    obsBg:     '#070a11',
+    obsPanel:  '#0d1420',  // card / chart surface
+    obsPanel2: '#121a29',  // nested surface
+    obsInk:    '#edf1f7',
+    obsInk2:   '#a9b6c8',
+    obsMuted:  '#78879c',
+    obsGrid:   '#222d3d',
+    obsAccent: '#f4685e',  // warm — worse / high-burden
+    obsCool:   '#6cb6ff',  // cool — better / links
+    obsGold:   '#e8c468',  // editorial highlight / instrument needle
+    obsGood:   '#4fc99a',
+    obsNodata: '#5d6675',
+    obsBench:  '#9aa6b8',  // benchmark reference line (light slate)
+    obsHalo:   '#0c1420',  // halo behind selected marks
+    // Sequential = low -> high burden (YlOrRd).
+    obsRamp:   ['#ffffcc', '#fed976', '#fd8d3c', '#f03b20', '#bd0026'],
+    // Diverging = better-than-benchmark (cool) -> neutral -> worse (warm). RdBu
+    // reversed relative to the default rdBu so "worse" reads warm.
+    obsDiverg: ['#2166ac', '#67a9cf', '#f7f7f7', '#ef8a62', '#b2182b'],
   },
   font: {
-    sans:  'Geist, system-ui, sans-serif',
-    serif: 'Georgia, "Times New Roman", serif',
-    mono:  '"Geist Mono", ui-monospace, monospace',
-    // Editorial-press type stacks, closest-system fallbacks for each masthead.
-    timesSerif: '"Times New Roman", "Source Serif Pro", Georgia, serif',
-    timesSans:  '"Franklin Gothic Medium", "Helvetica Neue", Arial, sans-serif',
-    ftSerif:    'Georgia, "Times New Roman", serif', // closest to Financier
-    ftSans:     '"Helvetica Neue", Inter, system-ui, sans-serif',
-    econSans:   '"Helvetica Neue", Inter, Arial, sans-serif',  // close to Officina Sans
-    econSerif:  'Georgia, "Source Serif Pro", serif',
-    bloombergSans: '"Helvetica Neue", Inter, system-ui, sans-serif',
+    // Font stacks resolve through CSS vars set by the consumer app (next/font
+    // in ctzn-pub) with the real font name as the var() fallback, so the same
+    // tokens work in plain Vite (the preview app) or any non-Next consumer.
+    // IMPORTANT: a var() with NO fallback invalidates the whole font-family
+    // declaration when the variable is undefined — always keep the fallback
+    // inside var().
+    sans:  'var(--font-inter, Inter), system-ui, sans-serif',
+    serif: 'var(--font-source-serif, "Source Serif 4"), Georgia, serif',
+    mono:  'var(--font-jetbrains-mono, "JetBrains Mono"), ui-monospace, monospace',
+    // Editorial-press type stacks. Each maps to a real loaded web font with
+    // sensible system fallbacks. Loaded by the consumer (ctzn-pub app/layout.tsx;
+    // the preview app loads them from Google Fonts in index.html).
+    //   Times titles → DM Serif Display (high-contrast NYT-style display serif)
+    //   Times body   → Libre Franklin (Franklin-Gothic-equivalent)
+    //   FT titles    → Source Serif 4 (closest open serif to Financier)
+    //   FT body      → Inter (closest open sans to MetricWeb)
+    //   Econ titles  → Inter heavyweight (Officina-Sans-equivalent)
+    //   Econ body    → Inter
+    //   Bloomberg    → Inter (closest open sans to AvenirNext at terminal scale)
+    timesSerif: 'var(--font-dm-serif, "DM Serif Display"), Georgia, "Times New Roman", serif',
+    timesSans:  'var(--font-libre-franklin, "Libre Franklin"), "Franklin Gothic Medium", Arial, sans-serif',
+    ftSerif:    'var(--font-source-serif, "Source Serif 4"), Georgia, serif',
+    ftSans:     'var(--font-inter, Inter), system-ui, sans-serif',
+    econSans:   'var(--font-inter, Inter), system-ui, sans-serif',
+    econSerif:  'var(--font-source-serif, "Source Serif 4"), Georgia, serif',
+    bloombergSans: 'var(--font-inter, Inter), system-ui, sans-serif',
+    // Observatory Ledger stacks (dark data-atlas look from health-of-americas)
+    obsSerif: 'var(--font-fraunces, Fraunces), Georgia, "Times New Roman", serif',
+    obsSans:  'var(--font-archivo, Archivo), ui-sans-serif, system-ui, sans-serif',
+    obsMono:  'var(--font-plex-mono, "IBM Plex Mono"), ui-monospace, "SF Mono", Menlo, monospace',
   },
   size: {
     axisTick:   12,

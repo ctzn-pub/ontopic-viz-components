@@ -82,9 +82,27 @@ describe('Phase 2 acceptance — themes', () => {
     );
   });
 
-  test('bloomberg is the dark theme; editorial is the default', () => {
+  test('bloomberg and observatory are the dark themes; editorial is the default', () => {
     expect(themes.bloomberg.mode).toBe('dark');
+    expect(themes.observatory.mode).toBe('dark');
+    const darkThemes = Object.values(themes).filter((th) => th.mode === 'dark');
+    expect(darkThemes.map((th) => th.name).sort()).toEqual(['bloomberg', 'observatory']);
     expect(defaultTheme.name).toBe('editorial');
+  });
+
+  test('observatory carries the health-atlas ledger', () => {
+    const obs = themes.observatory;
+    // ramps come from the atlas's colors.ts: YlOrRd sequential, RdBu diverging
+    expect(obs.semantic.sequential[0]).toBe('#ffffcc');
+    expect(obs.semantic.sequential[4]).toBe('#bd0026');
+    expect(obs.semantic.diverging[0]).toBe('#2166ac');
+    expect(obs.semantic.diverging[4]).toBe('#b2182b');
+    // readable-on-dark party pair, distinct from the editorial default
+    expect(obs.semantic.party.Democrat).toBe('#6cb6ff');
+    expect(obs.semantic.party.Republican).toBe('#f4685e');
+    expect(obs.semantic.party.Democrat).not.toBe(themes.editorial.semantic.party.Democrat);
+    // gold instrument-needle accent
+    expect(obs.accent).toBe('#e8c468');
   });
 });
 

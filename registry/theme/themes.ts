@@ -219,7 +219,54 @@ export const bloomberg: Theme = build(
   },
 );
 
+// ─── Observatory — dark data-atlas ledger ───────────────────────────────────
+// Tokenized from the health-of-americas-zip-codes atlas. Near-black blue-cast
+// panels, Fraunces display serif over Archivo body, a warm/cool accent pair
+// (worse/better), gold as the single instrument-needle emphasis. Party colors
+// use the readable-on-dark pair (light cool blue / warm coral) that the
+// atlas's political charts established.
+export const observatory: Theme = build(
+  {
+    name: 'observatory',
+    mode: 'dark',
+    fg:      t.palette.obsInk,
+    muted:   t.palette.obsMuted,
+    grid:    t.palette.obsGrid,
+    surface: t.palette.obsPanel,
+    border:  t.palette.obsGrid,
+    fontBody:  t.font.obsSans,
+    fontTitle: t.font.obsSerif,
+    stroke:  t.stroke.regular,
+    gridStyle: 'solid',
+    gridVertical: false,
+    accent:  t.palette.obsGold,
+  },
+  {
+    party: {
+      Democrat:    t.palette.obsCool,
+      Republican:  t.palette.obsAccent,
+      Independent: t.palette.obsMuted,
+      Other:       t.palette.obsBench,
+    },
+    sentiment: {
+      positive: t.palette.obsGood,
+      neutral:  t.palette.obsMuted,
+      negative: t.palette.obsAccent,
+    },
+    categorical: [
+      t.palette.obsInk,
+      t.palette.obsMuted,
+      t.palette.obsCool,
+      t.palette.obsAccent,
+      t.palette.obsGold,
+      t.palette.obsGood,
+    ],
+    sequential: [...t.palette.obsRamp],
+    diverging:  [...t.palette.obsDiverg],
+  },
+);
+
 // ─── The registry ───────────────────────────────────────────────────────────
-export const themes = { editorial, times, ft, economist, bloomberg } as const;
+export const themes = { editorial, times, ft, economist, bloomberg, observatory } as const;
 export type ThemeName = keyof typeof themes;
 export const defaultTheme = editorial;
