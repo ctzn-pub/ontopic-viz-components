@@ -1,4 +1,8 @@
+import curationLedger from '../../registry/curation.json';
+
 export type ComponentStatus = 'live' | 'catalog' | 'listed';
+
+export type CurationStatus = 'core' | 'foundation' | 'merged' | 'parked' | 'retired' | 'unlisted';
 
 export interface RegistryComponent {
   id: string;
@@ -16,7 +20,16 @@ export interface RegistryComponent {
   literalHits: number;
   hasSidecar: boolean;
   sidecar?: unknown;
+  curation: CurationStatus;
+  curationReason?: string;
+  curationWinner?: string;
 }
+
+const curationEntries = (
+  curationLedger as {
+    components: Record<string, { status: string; reason: string; winner?: string }>;
+  }
+).components;
 
 const sourceModules = import.meta.glob('../../registry/components/**/*.{tsx,ts}', {
   eager: true,
@@ -113,6 +126,7 @@ export const catalog = Object.entries(sourceModules)
     const fileName = parts[parts.length - 1] ?? relative;
     const stem = path.replace(/\.(tsx|ts)$/u, '');
     const sidecar = sidecarsByStem.get(stem);
+    const curationEntry = curationEntries[stem.replace('registry/components/', '')];
     const imports = Array.from(
       source.matchAll(/^import\s+(?:type\s+)?(?:[^'"]+from\s+)?['"]([^'"]+)['"]/gmu),
       (match) => match[1],
@@ -140,6 +154,9 @@ export const catalog = Object.entries(sourceModules)
       literalHits,
       hasSidecar: sidecar !== undefined,
       sidecar,
+      curation: (curationEntry?.status ?? 'unlisted') as CurationStatus,
+      curationReason: curationEntry?.reason,
+      curationWinner: curationEntry?.winner,
     } satisfies RegistryComponent;
   })
   .sort((a, b) => {
@@ -149,6 +166,12 @@ export const catalog = Object.entries(sourceModules)
   });
 
 export const kindOptions = Array.from(new Set(catalog.map((item) => item.kind))).sort();
+
+const curationOrder: CurationStatus[] = ['core', 'foundation', 'merged', 'parked', 'retired', 'unlisted'];
+
+export const curationOptions = Array.from(new Set(catalog.map((item) => item.curation))).sort(
+  (a, b) => curationOrder.indexOf(a) - curationOrder.indexOf(b),
+);
 
 export const engineOptions = Array.from(new Set(catalog.map((item) => item.engine))).sort(
   (a, b) => engineOrder.indexOf(a) - engineOrder.indexOf(b),

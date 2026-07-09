@@ -11,7 +11,14 @@ import {
 } from 'lucide-react';
 import { VizThemeProvider } from '../../registry/theme/provider';
 import { themes, type ThemeName } from '../../registry/theme/themes';
-import { catalog, engineOptions, kindOptions, statusFor, type RegistryComponent } from './catalog';
+import {
+  catalog,
+  curationOptions,
+  engineOptions,
+  kindOptions,
+  statusFor,
+  type RegistryComponent,
+} from './catalog';
 import { liveExamples, livePaths } from './live-examples';
 
 const themeNames = Object.keys(themes) as ThemeName[];
@@ -21,6 +28,7 @@ function matchesFilters(
   query: string,
   engine: string,
   kind: string,
+  curation: string,
 ) {
   const normalizedQuery = query.trim().toLowerCase();
   const queryMatch =
@@ -31,6 +39,7 @@ function matchesFilters(
       component.engineLabel,
       component.bucket,
       component.kind,
+      component.curation,
       ...component.imports,
     ]
       .join(' ')
@@ -40,7 +49,14 @@ function matchesFilters(
   return (
     queryMatch &&
     (engine === 'all' || component.engine === engine) &&
-    (kind === 'all' || component.kind === kind)
+    (kind === 'all' || component.kind === kind) &&
+    (curation === 'all' || component.curation === curation)
+  );
+}
+
+function CurationBadge({ component }: { component: RegistryComponent }) {
+  return (
+    <span className={`curation-badge curation-${component.curation}`}>{component.curation}</span>
   );
 }
 
@@ -95,6 +111,15 @@ function DetailPanel({ component }: { component: RegistryComponent }) {
           <dd>{formatStatus(component)}</dd>
         </div>
         <div>
+          <dt>Curation</dt>
+          <dd>
+            <CurationBadge component={component} />
+            {component.curationWinner ? (
+              <span className="curation-winner"> → {component.curationWinner}</span>
+            ) : null}
+          </dd>
+        </div>
+        <div>
           <dt>Theme hook</dt>
           <dd>{component.usesTheme ? 'Uses useVizTheme()' : 'Not detected'}</dd>
         </div>
@@ -138,6 +163,13 @@ function DetailPanel({ component }: { component: RegistryComponent }) {
         )}
       </div>
 
+      {component.curationReason ? (
+        <div className="detail-section">
+          <h3>Curation call</h3>
+          <p>{component.curationReason}</p>
+        </div>
+      ) : null}
+
       <div className={`detail-note detail-note-${status}`}>
         {status === 'live'
           ? 'This component has a rendered sample in the preview gallery.'
@@ -169,6 +201,7 @@ function ComponentRow({
         <strong>{component.name}</strong>
         <span>{component.bucket} / {component.kind}</span>
       </span>
+      <CurationBadge component={component} />
       <span>{component.engineLabel}</span>
     </button>
   );
@@ -179,20 +212,26 @@ export default function App() {
   const [query, setQuery] = useState('');
   const [engineFilter, setEngineFilter] = useState('all');
   const [kindFilter, setKindFilter] = useState('all');
+  const [curationFilter, setCurationFilter] = useState('all');
   const [selectedPath, setSelectedPath] = useState(liveExamples[0].path);
 
   const filteredCatalog = useMemo(
-    () => catalog.filter((component) => matchesFilters(component, query, engineFilter, kindFilter)),
-    [query, engineFilter, kindFilter],
+    () =>
+      catalog.filter((component) =>
+        matchesFilters(component, query, engineFilter, kindFilter, curationFilter),
+      ),
+    [query, engineFilter, kindFilter, curationFilter],
   );
 
   const filteredLiveExamples = useMemo(
     () =>
       liveExamples.filter((example) => {
         const component = catalog.find((item) => item.path === example.path);
-        return component ? matchesFilters(component, query, engineFilter, kindFilter) : true;
+        return component
+          ? matchesFilters(component, query, engineFilter, kindFilter, curationFilter)
+          : true;
       }),
-    [query, engineFilter, kindFilter],
+    [query, engineFilter, kindFilter, curationFilter],
   );
 
   useEffect(() => {
@@ -213,6 +252,7 @@ export default function App() {
 
   const sidecarCount = catalog.filter((item) => item.hasSidecar).length;
   const needsThemeReview = catalog.filter((item) => item.literalHits > 0 && !item.usesTheme).length;
+  const coreCount = catalog.filter((item) => item.curation === 'core').length;
 
   return (
     <VizThemeProvider theme={themeName}>
@@ -300,6 +340,24 @@ export default function App() {
               </select>
             </label>
 
+            <label className="select-field">
+              <span>
+                <ListFilter size={14} aria-hidden="true" />
+                Curation
+              </span>
+              <select
+                value={curationFilter}
+                onChange={(event) => setCurationFilter(event.target.value)}
+              >
+                <option value="all">All statuses</option>
+                {curationOptions.map((status) => (
+                  <option key={status} value={status}>
+                    {status}
+                  </option>
+                ))}
+              </select>
+            </label>
+
             <div className="legend-block">
               <h3>Status</h3>
               <p><span className="status-dot status-dot-live" />Live preview</p>
@@ -311,7 +369,7 @@ export default function App() {
           <section className="content-panel">
             <div className="stat-grid">
               <Stat label="components" value={catalog.length} icon={Library} />
-              <Stat label="curated live samples" value={liveExamples.length} icon={CheckCircle2} />
+              <Stat label="core (curated)" value={coreCount} icon={CheckCircle2} />
               <Stat label="catalog sidecars" value={sidecarCount} icon={FileCode2} />
               <Stat label="theme review queue" value={needsThemeReview} icon={SlidersHorizontal} />
             </div>

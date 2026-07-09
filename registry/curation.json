@@ -1,0 +1,431 @@
+{
+  "$schema": "./curation.schema.md",
+  "description": "Curation ledger: the status of every component in registry/components. See registry/CURATION.md for the human-readable rationale.",
+  "statuses": {
+    "core": "kept and brought to full standard (theme-aware, typed, catalog sidecar)",
+    "foundation": "kept and maintained; not a gallery chart card, so exempt from the sidecar requirement",
+    "merged": "dedupe loser; `winner` absorbs it. Physically moved to registry/legacy/ in Phase 3.",
+    "parked": "potentially useful, not in the curated cut; moved to registry/legacy/ untouched",
+    "retired": "no future; deleted after the ctzn-pub re-sync confirms no consumers"
+  },
+  "components": {
+    "article/Annotation": {
+      "status": "foundation",
+      "reason": "Framework-agnostic MDX article building block; CSS-var driven by design, not a gallery chart card."
+    },
+    "article/Callout": {
+      "status": "foundation",
+      "reason": "Framework-agnostic MDX article building block; CSS-var driven by design, not a gallery chart card."
+    },
+    "article/DataTable": {
+      "status": "foundation",
+      "reason": "Framework-agnostic MDX article building block; CSS-var driven by design, not a gallery chart card."
+    },
+    "article/DropCap": {
+      "status": "foundation",
+      "reason": "Framework-agnostic MDX article building block; CSS-var driven by design, not a gallery chart card."
+    },
+    "article/Figure": {
+      "status": "foundation",
+      "reason": "Framework-agnostic MDX article building block; CSS-var driven by design, not a gallery chart card."
+    },
+    "article/KeyNumber": {
+      "status": "foundation",
+      "reason": "Framework-agnostic MDX article building block; CSS-var driven by design, not a gallery chart card."
+    },
+    "article/PullQuote": {
+      "status": "foundation",
+      "reason": "Framework-agnostic MDX article building block; CSS-var driven by design, not a gallery chart card."
+    },
+    "article/Quote": {
+      "status": "foundation",
+      "reason": "Framework-agnostic MDX article building block; CSS-var driven by design, not a gallery chart card."
+    },
+    "article/SectionDivider": {
+      "status": "foundation",
+      "reason": "Framework-agnostic MDX article building block; CSS-var driven by design, not a gallery chart card."
+    },
+    "article/SideNote": {
+      "status": "foundation",
+      "reason": "Framework-agnostic MDX article building block; CSS-var driven by design, not a gallery chart card."
+    },
+    "article/SmallMultiples": {
+      "status": "foundation",
+      "reason": "Framework-agnostic MDX article building block; CSS-var driven by design, not a gallery chart card."
+    },
+    "article/StaticChartV1": {
+      "status": "foundation",
+      "reason": "Framework-agnostic MDX article building block; CSS-var driven by design, not a gallery chart card."
+    },
+    "article/Step": {
+      "status": "foundation",
+      "reason": "Framework-agnostic MDX article building block; CSS-var driven by design, not a gallery chart card."
+    },
+    "article/TabSet": {
+      "status": "foundation",
+      "reason": "Framework-agnostic MDX article building block; CSS-var driven by design, not a gallery chart card."
+    },
+    "article/index": {
+      "status": "foundation",
+      "reason": "Framework-agnostic MDX article building block; CSS-var driven by design, not a gallery chart card."
+    },
+    "book/BookHome": {
+      "status": "foundation",
+      "reason": "Book scaffold used by book-template consumers; not a gallery chart card."
+    },
+    "book/BookShell": {
+      "status": "foundation",
+      "reason": "Book scaffold used by book-template consumers; not a gallery chart card."
+    },
+    "book/book-toc": {
+      "status": "foundation",
+      "reason": "Book scaffold used by book-template consumers; not a gallery chart card."
+    },
+    "composite/brfss/brfss-dashboard-v1": {
+      "status": "core",
+      "reason": "Flagship composite dashboard. Needs theme + sidecar (Phase 6)."
+    },
+    "composite/gss/timeseries-small-multiples-v1": {
+      "status": "core",
+      "reason": "Small-multiples composite of the flagship timeseries. Needs theme + sidecar (Phase 6)."
+    },
+    "composite/gss/wording-experiment-v1": {
+      "status": "parked",
+      "reason": "Highly article-specific GSS wording-experiment composites."
+    },
+    "composite/gss/wording-experiments-ranked-v1": {
+      "status": "parked",
+      "reason": "Highly article-specific GSS wording-experiment composites."
+    },
+    "composite/wb/country-profile-v1": {
+      "status": "parked",
+      "reason": "WB composite on the incompatible dark: mechanism."
+    },
+    "d3/stats/parallel-coordinates-v1": {
+      "status": "core",
+      "reason": "Mature D3 exemplar: theme-aware, typed, sidecar’d. One of the D3/Plot dual pairs — Phase 3 picks a winner."
+    },
+    "d3/stats/pca-biplot-v1": {
+      "status": "core",
+      "reason": "Mature D3 exemplar: theme-aware, typed, sidecar’d. One of the D3/Plot dual pairs — Phase 3 picks a winner."
+    },
+    "d3/stats/ridge-v1": {
+      "status": "core",
+      "reason": "Mature D3 exemplar: theme-aware, typed, sidecar’d. One of the D3/Plot dual pairs — Phase 3 picks a winner."
+    },
+    "d3/timeseries/slopegraph-v1": {
+      "status": "core",
+      "reason": "Mature D3 exemplar: theme-aware, typed, sidecar’d. One of the D3/Plot dual pairs — Phase 3 picks a winner."
+    },
+    "maplibre/geo/choropleth-v1": {
+      "status": "core",
+      "reason": "MapLibre+PMTiles engine core: high-cardinality zoomable choropleths."
+    },
+    "maplibre/geo/legend-v1": {
+      "status": "core",
+      "reason": "MapLibre+PMTiles engine core: high-cardinality zoomable choropleths."
+    },
+    "maplibre/geo/map-v1": {
+      "status": "core",
+      "reason": "MapLibre+PMTiles engine core: high-cardinality zoomable choropleths."
+    },
+    "maplibre/geo/tooltip-v1": {
+      "status": "core",
+      "reason": "MapLibre+PMTiles engine core: high-cardinality zoomable choropleths."
+    },
+    "plot/brfss/state-bar-v1": {
+      "status": "merged",
+      "reason": "State-bar without the sortable’s search/sort/expand capability.",
+      "winner": "recharts/brfss/state-bar-sortable-v1"
+    },
+    "plot/geo/bivariate-choropleth-v1": {
+      "status": "core",
+      "reason": "Picturing American Health promotion: theme-aware, typed, sidecar’d."
+    },
+    "plot/geo/bubble-map-v1": {
+      "status": "parked",
+      "reason": "Rough (10 any); bubble maps rarely beat a choropleth + dot map."
+    },
+    "plot/geo/choropleth-v1": {
+      "status": "parked",
+      "reason": "Generic Plot choropleth superseded by state-map (states), county-hexbin (counties), maplibre (high-cardinality)."
+    },
+    "plot/geo/county-hexbin-v1": {
+      "status": "core",
+      "reason": "Picturing American Health promotion: theme-aware, typed, sidecar’d."
+    },
+    "plot/geo/europe-map-v1": {
+      "status": "parked",
+      "reason": "Useful for future WVS/ESS content; revive with a sidecar when an article needs it."
+    },
+    "plot/geo/state-map-v1": {
+      "status": "core",
+      "reason": "The fundamental US state choropleth archetype. Needs any-cleanup + sidecar (Phase 6)."
+    },
+    "plot/geo/zip-map-v1": {
+      "status": "parked",
+      "reason": "ZCTA cardinality is what the MapLibre engine is for."
+    },
+    "plot/gss/timetrend-demo-v1": {
+      "status": "merged",
+      "reason": "Plot rendition of the same GSS time-trend archetype; flagship wins.",
+      "winner": "recharts/gss/timeseries-line-v1"
+    },
+    "plot/health/health-scatter-basic-v1": {
+      "status": "parked",
+      "reason": "Early drafts of the health scatter; scatter-loess-v1 is the promoted successor."
+    },
+    "plot/health/health-scatter-faceted-v1": {
+      "status": "parked",
+      "reason": "Early drafts of the health scatter; scatter-loess-v1 is the promoted successor."
+    },
+    "plot/health/health-scatter-regression-v1": {
+      "status": "parked",
+      "reason": "Early drafts of the health scatter; scatter-loess-v1 is the promoted successor."
+    },
+    "plot/health/scatter-loess-v1": {
+      "status": "core",
+      "reason": "Picturing American Health promotion: theme-aware, typed, sidecar’d."
+    },
+    "plot/stats/correlation-heatmap-v1": {
+      "status": "core",
+      "reason": "Only correlation-matrix form in the library today; revisit vs the health-of-americas hierarchical Spearman matrix in Phase 5."
+    },
+    "plot/stats/demographic-panel-v1": {
+      "status": "parked",
+      "reason": "Overlaps the recharts demographic family."
+    },
+    "plot/stats/density-basic-v1": {
+      "status": "parked",
+      "reason": "Density family gated on Phase 4: compare with ctzn d3/stats/density-curves-v1, one winner."
+    },
+    "plot/stats/density-overlay-v1": {
+      "status": "parked",
+      "reason": "Density family gated on Phase 4: compare with ctzn d3/stats/density-curves-v1, one winner."
+    },
+    "plot/stats/disparity-gradient-v1": {
+      "status": "core",
+      "reason": "Picturing American Health promotion: theme-aware, typed, sidecar’d."
+    },
+    "plot/stats/distribution-v1": {
+      "status": "core",
+      "reason": "Histogram + benchmark distribution archetype (health panel ancestor); clean. Needs theme + sidecar (Phase 6)."
+    },
+    "plot/stats/diverging-bars-with-rest-v1": {
+      "status": "parked",
+      "reason": "Gated on Phase 4: compare with ctzn d3/stats/diverging-bars-v1 and paired-bars-v1, one winner."
+    },
+    "plot/stats/forest-plot-v1": {
+      "status": "core",
+      "reason": "Picturing American Health promotion: theme-aware, typed, sidecar’d."
+    },
+    "plot/stats/marginal-effect-v1": {
+      "status": "core",
+      "reason": "Picturing American Health promotion: theme-aware, typed, sidecar’d."
+    },
+    "plot/stats/odds-ratio-basic-v1": {
+      "status": "merged",
+      "reason": "Earlier odds-ratio family; forest-plot-v1 is the theme-aware, sidecar’d successor.",
+      "winner": "plot/stats/forest-plot-v1"
+    },
+    "plot/stats/odds-ratio-dotplot-v1": {
+      "status": "parked",
+      "reason": "Ranked-dot presentation of ORs; revisit in Phase 5 when diffing health RankedDotPlot improvements."
+    },
+    "plot/stats/odds-ratio-forest-v1": {
+      "status": "merged",
+      "reason": "Earlier odds-ratio family; forest-plot-v1 is the theme-aware, sidecar’d successor.",
+      "winner": "plot/stats/forest-plot-v1"
+    },
+    "plot/stats/paired-bars-v1": {
+      "status": "core",
+      "reason": "Picturing American Health promotion: theme-aware, typed, sidecar’d."
+    },
+    "plot/stats/parallel-coordinates-v1": {
+      "status": "core",
+      "reason": "Picturing American Health promotion. One of the D3/Plot dual pairs — Phase 3 picks a winner."
+    },
+    "plot/stats/pca-arrow-plot-v1": {
+      "status": "parked",
+      "reason": "PCA loading arrows; pca-biplot is the winner form. Could return as a foldInto variant."
+    },
+    "plot/stats/pca-biplot-v1": {
+      "status": "core",
+      "reason": "Picturing American Health promotion. One of the D3/Plot dual pairs — Phase 3 picks a winner."
+    },
+    "plot/stats/ridge-v1": {
+      "status": "core",
+      "reason": "Picturing American Health promotion. One of the D3/Plot dual pairs — Phase 3 picks a winner."
+    },
+    "plot/stats/split-bar-v1": {
+      "status": "parked",
+      "reason": "11 hardcoded hexes; paired-bars-v1 covers the comparison need."
+    },
+    "plot/timeseries/multiline-v1": {
+      "status": "core",
+      "reason": "Clean theme-aware generic multiline; used by preview live examples. Needs sidecar (Phase 6)."
+    },
+    "plot/timeseries/slopegraph-v1": {
+      "status": "core",
+      "reason": "Picturing American Health promotion. One of the D3/Plot dual pairs — Phase 3 picks a winner."
+    },
+    "plot/timeseries/state-year-heatmap-v1": {
+      "status": "core",
+      "reason": "Picturing American Health promotion: theme-aware, typed, sidecar’d."
+    },
+    "plot/wb/dot-distribution-v1": {
+      "status": "parked",
+      "reason": "WB Plot family; world-choropleth-v1 is the kept world-map form."
+    },
+    "plot/wb/server-plot-v1": {
+      "status": "parked",
+      "reason": "WB Plot family; world-choropleth-v1 is the kept world-map form."
+    },
+    "plot/wb/world-choropleth-v1": {
+      "status": "core",
+      "reason": "World choropleth archetype; the clean one of the two world maps. Needs theme + sidecar (Phase 6)."
+    },
+    "plot/wb/world-map-v1": {
+      "status": "parked",
+      "reason": "WB Plot family; world-choropleth-v1 is the kept world-map form."
+    },
+    "recharts/brfss/state-bar-sortable-v1": {
+      "status": "core",
+      "reason": "State-bar winner (search/sort/expand capability). Needs theme + sidecar (Phase 6)."
+    },
+    "recharts/brfss/state-bar-v1": {
+      "status": "merged",
+      "reason": "State-bar without the sortable’s search/sort/expand capability.",
+      "winner": "recharts/brfss/state-bar-sortable-v1"
+    },
+    "recharts/ess/scatter-regression-v1": {
+      "status": "parked",
+      "reason": "OLS + confidence band scatter; heavy (400 loc, 10 hexes). scatter-loess-v1 covers scatter+fit; revive if an OLS-band need appears."
+    },
+    "recharts/generic/demographic-bar-v1": {
+      "status": "core",
+      "reason": "The demographic-breakdowns gallery category needs this family; hex-clean, needs any-cleanup + theme + sidecars (Phase 6). Phase 6 may fold the three single-form variants into demographic-breakdown-v1."
+    },
+    "recharts/generic/demographic-breakdown-v1": {
+      "status": "core",
+      "reason": "The demographic-breakdowns gallery category needs this family; hex-clean, needs any-cleanup + theme + sidecars (Phase 6). Phase 6 may fold the three single-form variants into demographic-breakdown-v1."
+    },
+    "recharts/generic/demographic-dot-v1": {
+      "status": "core",
+      "reason": "The demographic-breakdowns gallery category needs this family; hex-clean, needs any-cleanup + theme + sidecars (Phase 6). Phase 6 may fold the three single-form variants into demographic-breakdown-v1."
+    },
+    "recharts/generic/demographic-line-v1": {
+      "status": "core",
+      "reason": "The demographic-breakdowns gallery category needs this family; hex-clean, needs any-cleanup + theme + sidecars (Phase 6). Phase 6 may fold the three single-form variants into demographic-breakdown-v1."
+    },
+    "recharts/generic/dual-axis-v1": {
+      "status": "merged",
+      "reason": "Duplicate of timeseries-dual-axis-v1.",
+      "winner": "recharts/generic/timeseries-dual-axis-v1"
+    },
+    "recharts/generic/histogram-v1": {
+      "status": "core",
+      "reason": "Clean generic histogram archetype. Needs theme + sidecar (Phase 6)."
+    },
+    "recharts/generic/timeseries-basic-v1": {
+      "status": "merged",
+      "reason": "Pre-theme version of the generic line chart; timeseries-metadata-v1 is the theme-aware successor.",
+      "winner": "recharts/generic/timeseries-metadata-v1"
+    },
+    "recharts/generic/timeseries-dual-axis-v1": {
+      "status": "parked",
+      "reason": "Dual-axis is a discouraged form (Tufte); kept parked for the rare case that needs it."
+    },
+    "recharts/generic/timeseries-economic-v1": {
+      "status": "core",
+      "reason": "Recession-band economic timeseries — distinctive archetype. Needs theme retrofit (Phase 6)."
+    },
+    "recharts/generic/timeseries-index-v1": {
+      "status": "core",
+      "reason": "Indexed/normalized comparison archetype. Needs theme retrofit (Phase 6)."
+    },
+    "recharts/generic/timeseries-metadata-v1": {
+      "status": "core",
+      "reason": "The theme-aware generic Recharts line chart; winner over timeseries-basic-v1."
+    },
+    "recharts/generic/timetrend-demo-v1": {
+      "status": "merged",
+      "reason": "Pre-theme demo twin of the flagship GSS time trend (18 hardcoded hexes).",
+      "winner": "recharts/gss/timeseries-line-v1"
+    },
+    "recharts/generic/violin-v1": {
+      "status": "parked",
+      "reason": "Distribution space is covered by ridge + distribution-v1."
+    },
+    "recharts/gss/abortion-opinion-v1": {
+      "status": "merged",
+      "reason": "Single-topic opinion trend fully covered by the flagship with colorDomain=party.",
+      "winner": "recharts/gss/timeseries-line-v1"
+    },
+    "recharts/gss/timeseries-line-v1": {
+      "status": "core",
+      "reason": "Flagship GSS time trend: presidential bands, CI toggle, small-multiples mode. Phase 6 kills its CATEGORICAL_COLORS array + any casts and adds the sidecar."
+    },
+    "recharts/gss/timetrend-demo-v1": {
+      "status": "merged",
+      "reason": "Pre-theme demo twin of the flagship GSS time trend (18 hardcoded hexes).",
+      "winner": "recharts/gss/timeseries-line-v1"
+    },
+    "recharts/wb/counterfactual-timeline-v1": {
+      "status": "parked",
+      "reason": "WB family uses the incompatible Tailwind dark: mechanism; parking dissolves the theme fork without a rewrite."
+    },
+    "recharts/wb/horizontal-bar-v1": {
+      "status": "parked",
+      "reason": "WB family uses the incompatible Tailwind dark: mechanism; parking dissolves the theme fork without a rewrite."
+    },
+    "recharts/wb/scatterplot-v1": {
+      "status": "parked",
+      "reason": "WB family uses the incompatible Tailwind dark: mechanism; parking dissolves the theme fork without a rewrite."
+    },
+    "recharts/wb/small-multiples-v1": {
+      "status": "parked",
+      "reason": "WB family uses the incompatible Tailwind dark: mechanism; parking dissolves the theme fork without a rewrite."
+    },
+    "recharts/wb/sparkline-table-v1": {
+      "status": "parked",
+      "reason": "WB family uses the incompatible Tailwind dark: mechanism; parking dissolves the theme fork without a rewrite."
+    },
+    "recharts/wb/subcontinent-comparison-v1": {
+      "status": "parked",
+      "reason": "WB family uses the incompatible Tailwind dark: mechanism; parking dissolves the theme fork without a rewrite."
+    },
+    "recharts/wb/subcontinent-radar-v1": {
+      "status": "parked",
+      "reason": "WB family uses the incompatible Tailwind dark: mechanism; parking dissolves the theme fork without a rewrite."
+    },
+    "table/wb/country-table-v1": {
+      "status": "parked",
+      "reason": "WB table family; article/DataTable covers the in-article table need."
+    },
+    "table/wb/data-table-v1": {
+      "status": "parked",
+      "reason": "WB table family; article/DataTable covers the in-article table need."
+    },
+    "ui/wb/bullet-chart-v1": {
+      "status": "parked",
+      "reason": "WB UI-chart family on the incompatible Tailwind dark: mechanism."
+    },
+    "ui/wb/dot-plot-v1": {
+      "status": "parked",
+      "reason": "WB UI-chart family on the incompatible Tailwind dark: mechanism."
+    },
+    "ui/wb/dot-strip-v1": {
+      "status": "parked",
+      "reason": "WB UI-chart family on the incompatible Tailwind dark: mechanism."
+    },
+    "ui/wb/ranking-chart-v1": {
+      "status": "parked",
+      "reason": "WB UI-chart family on the incompatible Tailwind dark: mechanism."
+    },
+    "ui/wb/slope-chart-v1": {
+      "status": "parked",
+      "reason": "WB UI-chart family on the incompatible Tailwind dark: mechanism."
+    }
+  }
+}

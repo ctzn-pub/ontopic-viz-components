@@ -668,3 +668,50 @@ button {
     grid-column: auto;
   }
 }
+
+/* ---- curation badges (ledger status; see registry/CURATION.md) ---- */
+
+.curation-badge {
+  display: inline-block;
+  padding: 0.1rem 0.5rem;
+  border-radius: 999px;
+  border: 1px solid var(--app-border);
+  background: var(--app-panel-muted);
+  color: var(--app-muted);
+  font-size: 0.68rem;
+  font-weight: 600;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+  white-space: nowrap;
+}
+
+.curation-core {
+  border-color: color-mix(in srgb, var(--app-accent) 45%, var(--app-border));
+  background: color-mix(in srgb, var(--app-accent) 12%, var(--app-panel));
+  color: var(--app-accent);
+}
+
+.curation-foundation {
+  border-color: color-mix(in srgb, var(--app-ink) 25%, var(--app-border));
+  color: var(--app-ink);
+}
+
+.curation-merged {
+  opacity: 0.75;
+  text-decoration: line-through;
+  text-decoration-thickness: 1px;
+}
+
+.curation-parked,
+.curation-retired {
+  opacity: 0.6;
+}
+
+.curation-winner {
+  font-size: 0.75rem;
+  color: var(--app-muted);
+}
+
+.component-row .curation-badge {
+  margin-right: 0.5rem;
+}
