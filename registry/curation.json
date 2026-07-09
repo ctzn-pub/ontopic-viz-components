@@ -103,19 +103,19 @@
     },
     "d3/stats/parallel-coordinates-v1": {
       "status": "core",
-      "reason": "Mature D3 exemplar: theme-aware, typed, sidecar’d. One of the D3/Plot dual pairs — Phase 3 picks a winner."
+      "reason": "Archetype-dedupe winner (2026-07-09) carrying the canonical gallery card id \"parallel-coordinates\". Theme-aware via the d3 adapter, typed, interactive (focus/keyboard/aria), collision-managed labels."
     },
     "d3/stats/pca-biplot-v1": {
       "status": "core",
-      "reason": "Mature D3 exemplar: theme-aware, typed, sidecar’d. One of the D3/Plot dual pairs — Phase 3 picks a winner."
+      "reason": "Archetype-dedupe winner (2026-07-09) carrying the canonical gallery card id \"pca-biplot\". Theme-aware via the d3 adapter, typed, interactive (focus/keyboard/aria), collision-managed labels."
     },
     "d3/stats/ridge-v1": {
       "status": "core",
-      "reason": "Mature D3 exemplar: theme-aware, typed, sidecar’d. One of the D3/Plot dual pairs — Phase 3 picks a winner."
+      "reason": "Archetype-dedupe winner (2026-07-09) carrying the canonical gallery card id \"ridge\". Theme-aware via the d3 adapter, typed, interactive (focus/keyboard/aria), collision-managed labels."
     },
     "d3/timeseries/slopegraph-v1": {
       "status": "core",
-      "reason": "Mature D3 exemplar: theme-aware, typed, sidecar’d. One of the D3/Plot dual pairs — Phase 3 picks a winner."
+      "reason": "Archetype-dedupe winner (2026-07-09) carrying the canonical gallery card id \"slopegraph\". Theme-aware via the d3 adapter, typed, interactive (focus/keyboard/aria), collision-managed labels."
     },
     "maplibre/geo/choropleth-v1": {
       "status": "core",
@@ -242,20 +242,23 @@
       "reason": "Picturing American Health promotion: theme-aware, typed, sidecar’d."
     },
     "plot/stats/parallel-coordinates-v1": {
-      "status": "core",
-      "reason": "Picturing American Health promotion. One of the D3/Plot dual pairs — Phase 3 picks a winner."
+      "status": "merged",
+      "reason": "Archetype dedupe (2026-07-09): the D3 twin wins on theme fidelity (full d3-adapter chrome vs hardcoded fonts/strokes/margins), typing (strict prop superset), and capability (focus interactivity, a11y, label collision). No Plot-only features to port. The D3 winner took over the canonical gallery card id \"parallel-coordinates\".",
+      "winner": "d3/stats/parallel-coordinates-v1"
     },
     "plot/stats/pca-arrow-plot-v1": {
       "status": "parked",
       "reason": "PCA loading arrows; pca-biplot is the winner form. Could return as a foldInto variant."
     },
     "plot/stats/pca-biplot-v1": {
-      "status": "core",
-      "reason": "Picturing American Health promotion. One of the D3/Plot dual pairs — Phase 3 picks a winner."
+      "status": "merged",
+      "reason": "Archetype dedupe (2026-07-09): the D3 twin wins on theme fidelity (full d3-adapter chrome vs hardcoded fonts/strokes/margins), typing (strict prop superset), and capability (focus interactivity, a11y, label collision). No Plot-only features to port. The D3 winner took over the canonical gallery card id \"pca-biplot\".",
+      "winner": "d3/stats/pca-biplot-v1"
     },
     "plot/stats/ridge-v1": {
-      "status": "core",
-      "reason": "Picturing American Health promotion. One of the D3/Plot dual pairs — Phase 3 picks a winner."
+      "status": "merged",
+      "reason": "Archetype dedupe (2026-07-09): the D3 twin wins on theme fidelity (full d3-adapter chrome vs hardcoded fonts/strokes/margins), typing (strict prop superset), and capability (focus interactivity, a11y, label collision). No Plot-only features to port. The D3 winner took over the canonical gallery card id \"ridge\".",
+      "winner": "d3/stats/ridge-v1"
     },
     "plot/stats/split-bar-v1": {
       "status": "parked",
@@ -266,8 +269,9 @@
       "reason": "Clean theme-aware generic multiline; used by preview live examples. Needs sidecar (Phase 6)."
     },
     "plot/timeseries/slopegraph-v1": {
-      "status": "core",
-      "reason": "Picturing American Health promotion. One of the D3/Plot dual pairs — Phase 3 picks a winner."
+      "status": "merged",
+      "reason": "Archetype dedupe (2026-07-09): the D3 twin wins on theme fidelity (full d3-adapter chrome vs hardcoded fonts/strokes/margins), typing (strict prop superset), and capability (focus interactivity, a11y, label collision). No Plot-only features to port. The D3 winner took over the canonical gallery card id \"slopegraph\".",
+      "winner": "d3/timeseries/slopegraph-v1"
     },
     "plot/timeseries/state-year-heatmap-v1": {
       "status": "core",

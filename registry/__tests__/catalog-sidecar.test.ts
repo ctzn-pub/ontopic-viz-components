@@ -34,7 +34,7 @@ const ALLOWED_CATEGORIES = new Set([
 
 // Components that MUST ship a sidecar. New components append here.
 const REQUIRES_SIDECAR = [
-  // 12 promoted from "Picturing American Health"
+  // promoted from "Picturing American Health"
   'plot/geo/bivariate-choropleth-v1',
   'plot/geo/county-hexbin-v1',
   'plot/health/scatter-loess-v1',
@@ -42,12 +42,10 @@ const REQUIRES_SIDECAR = [
   'plot/stats/forest-plot-v1',
   'plot/stats/marginal-effect-v1',
   'plot/stats/paired-bars-v1',
-  'plot/stats/parallel-coordinates-v1',
-  'plot/stats/pca-biplot-v1',
-  'plot/stats/ridge-v1',
-  'plot/timeseries/slopegraph-v1',
   'plot/timeseries/state-year-heatmap-v1',
-  // D3/SVG track
+  // D3/SVG track — the archetype-dedupe winners carrying the canonical
+  // gallery ids (ridge, pca-biplot, parallel-coordinates, slopegraph);
+  // the Plot twins moved to registry/legacy/ (see registry/CURATION.md)
   'd3/stats/parallel-coordinates-v1',
   'd3/stats/pca-biplot-v1',
   'd3/stats/ridge-v1',

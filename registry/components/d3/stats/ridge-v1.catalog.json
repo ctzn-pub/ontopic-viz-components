@@ -1,15 +1,15 @@
 {
-  "id": "d3-ridge",
-  "name": "Ridgeline / Violin (D3)",
+  "id": "ridge",
+  "name": "Ridge / Joyplot",
   "category": "distributions",
   "subcategory": "distribution-comparison",
-  "tags": ["ridgeline", "violin", "distribution", "focus"],
-  "description": "A D3/SVG ridgeline chart with an optional mirrored violin mode, median rules, and region focus. Use it when raw grouped observations need a compact distribution comparison with direct labels and readable focus states.",
+  "tags": ["ridgeline", "joyplot", "violin", "density", "focus"],
+  "description": "A ridgeline chart of per-group distributions with an optional mirrored violin mode, median rules, and direct labels. Region focus (hover, click, or keyboard) dims the other groups. Use it to compare the shape of a distribution across a handful of groups without a legend.",
   "sample_data": {
-    "url": "https://ontopic-public-data.t3.tigrisfiles.io/sample-data/picturing-health-ridge.json",
+    "url": "https://ontopic-public-data.t3.storage.dev/sample-data/picturing-health-ridge.json",
     "transform": "passthrough"
   },
   "dependencies": ["d3-scale", "d3-shape"],
-  "foldInto": "ridge",
-  "variantLabel": "D3 focus"
+  "foldInto": null,
+  "variantLabel": null
 }

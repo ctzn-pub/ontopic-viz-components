@@ -1,15 +1,15 @@
 {
-  "id": "d3-pca-biplot",
-  "name": "PCA Biplot (D3)",
+  "id": "pca-biplot",
+  "name": "PCA Biplot",
   "category": "distributions",
   "subcategory": "multivariate",
-  "tags": ["pca", "biplot", "loadings", "focus"],
-  "description": "A D3/SVG PCA biplot with a quiet observation cloud and focusable loading vectors. Use it when variable labels, vector focus, and readable leader lines matter more than a static point-cloud rendering.",
+  "tags": ["pca", "biplot", "loadings", "multivariate", "focus"],
+  "description": "A principal-component biplot: observation scores as a quiet cloud plus variable loadings as labeled, focusable arrows with collision-managed leader labels. Use it to read which variables drive each component and how observations spread along them.",
   "sample_data": {
-    "url": "https://ontopic-public-data.t3.tigrisfiles.io/sample-data/picturing-health-pca-biplot.json",
+    "url": "https://ontopic-public-data.t3.storage.dev/sample-data/picturing-health-pca-biplot.json",
     "transform": "passthrough"
   },
   "dependencies": ["d3-scale"],
-  "foldInto": "pca-biplot",
-  "variantLabel": "D3 vector focus"
+  "foldInto": null,
+  "variantLabel": null
 }

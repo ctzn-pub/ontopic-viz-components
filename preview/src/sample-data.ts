@@ -1,5 +1,5 @@
 import type { ForestPlotData } from '../../registry/components/plot/stats/forest-plot-v1';
-import type { RidgeData } from '../../registry/components/plot/stats/ridge-v1';
+import type { D3RidgeData } from '../../registry/components/d3/stats/ridge-v1';
 import type { D3SlopegraphData } from '../../registry/components/d3/timeseries/slopegraph-v1';
 
 export const timeSeriesData = [
@@ -83,7 +83,7 @@ export const slopeData: D3SlopegraphData = {
   ],
 };
 
-export const ridgeData: RidgeData = {
+export const ridgeData: D3RidgeData = {
   measure: 'county prevalence',
   unit: '%',
   grid_min: 12,

@@ -1,15 +1,15 @@
 {
-  "id": "d3-slopegraph",
-  "name": "Slopegraph (D3)",
+  "id": "slopegraph",
+  "name": "Slopegraph",
   "category": "time-series",
   "subcategory": "change",
-  "tags": ["slopegraph", "states", "change", "focus"],
-  "description": "A D3/SVG two-period slopegraph with confidence intervals, direct focus, and collision-managed endpoint labels. Use it to compare movement across many states without turning the figure into a dense leaderboard.",
+  "tags": ["slopegraph", "change", "two-period", "focus"],
+  "description": "Each series' value at two time points joined by a single line, with endpoint confidence intervals, automatic top-mover labeling with collision-managed endpoint labels, and per-series focus. Use it to show direction and magnitude of change at a glance — movement, not a ranking.",
   "sample_data": {
-    "url": "https://ontopic-public-data.t3.tigrisfiles.io/sample-data/picturing-health-slopegraph.json",
+    "url": "https://ontopic-public-data.t3.storage.dev/sample-data/picturing-health-slopegraph.json",
     "transform": "passthrough"
   },
   "dependencies": ["d3-scale"],
-  "foldInto": "slopegraph",
-  "variantLabel": "D3 labels"
+  "foldInto": null,
+  "variantLabel": null
 }

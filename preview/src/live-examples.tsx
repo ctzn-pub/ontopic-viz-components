@@ -2,7 +2,7 @@ import type { ReactNode } from 'react';
 import { KeyNumber } from '../../registry/components/article/KeyNumber';
 import SlopegraphD3 from '../../registry/components/d3/timeseries/slopegraph-v1';
 import ForestPlot from '../../registry/components/plot/stats/forest-plot-v1';
-import Ridge from '../../registry/components/plot/stats/ridge-v1';
+import Ridge from '../../registry/components/d3/stats/ridge-v1';
 import MultiLine from '../../registry/components/plot/timeseries/multiline-v1';
 import TimeSeriesChart from '../../registry/components/recharts/generic/timeseries-metadata-v1';
 import {
@@ -71,9 +71,9 @@ export const liveExamples: LiveExample[] = [
     render: () => <ForestPlot data={forestData} width={560} />,
   },
   {
-    path: 'registry/components/plot/stats/ridge-v1.tsx',
-    title: 'Plot ridge',
-    description: 'Distribution component using theme foreground, muted marks, and grid style.',
+    path: 'registry/components/d3/stats/ridge-v1.tsx',
+    title: 'D3 ridge',
+    description: 'Ridgeline distributions with region focus, driven by the D3 theme adapter.',
     render: () => <Ridge data={ridgeData} width={560} xLabel="prevalence (%) ->" />,
   },
   {
