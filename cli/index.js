@@ -8,11 +8,12 @@ const { execSync } = require('child_process');
 
 // Source resolution.
 //
-// Default mode is local-source: copy files from a sibling/parent checkout of
-// the registry repo. Honors $ONTOPIC_VIZ_SOURCE; falls back to the canonical
-// path if unset. Pass --remote to fetch from public GitHub raw instead.
+// Default mode is local-source: copy files from the registry that ships
+// alongside this CLI (self-relative, so it works from any checkout or npm
+// install location). Honors $ONTOPIC_VIZ_SOURCE as an override. Pass --remote
+// to fetch from public GitHub raw instead.
 const GITHUB_RAW_BASE = 'https://raw.githubusercontent.com/ctzn-pub/ontopic-viz-components/main/registry';
-const DEFAULT_LOCAL_SOURCE = '/Users/umahuggins/github/ontopic-viz-components/registry';
+const DEFAULT_LOCAL_SOURCE = path.resolve(__dirname, '..', 'registry');
 
 function resolveLocalSource() {
   return process.env.ONTOPIC_VIZ_SOURCE || DEFAULT_LOCAL_SOURCE;

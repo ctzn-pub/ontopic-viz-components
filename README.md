@@ -25,7 +25,7 @@ viz add recharts/gss/timeseries-line-v1
 node ~/github/ontopic-viz-components/cli/index.js add recharts/gss/timeseries-line-v1
 ```
 
-The CLI defaults to **local-source mode** — it reads from `~/github/ontopic-viz-components/registry/` (the canonical path baked into `cli/index.js`). Override with `$ONTOPIC_VIZ_SOURCE` if your clone lives elsewhere:
+The CLI defaults to **local-source mode** — it reads from the `registry/` folder that ships alongside it (self-relative, so it works from any clone location). Override with `$ONTOPIC_VIZ_SOURCE` to point at a different checkout:
 
 ```bash
 export ONTOPIC_VIZ_SOURCE=~/code/ontopic-viz-components/registry
@@ -133,75 +133,15 @@ export default function MyChartPage() {
 
 ## Available Components
 
-### Recharts (18 components)
+Roughly 100 components across five engines:
 
-**Time Series:**
-- `recharts/gss/timeseries-line-v1` — Multi-group trends with presidential backgrounds (GSS-specific)
-- `recharts/generic/timeseries-basic-v1` — Basic line chart with error bars
-- `recharts/generic/timeseries-dual-axis-v1` — Dual y-axis charts
-- `recharts/generic/timeseries-index-v1` — Indexed/normalized comparisons
-- `recharts/generic/timeseries-economic-v1` — Economic data with recession bands
+- **Recharts** (`recharts/*`) — declarative time-series, demographic breakdowns, histograms; flagship: `recharts/gss/timeseries-line-v1` (multi-group trends with presidential-term bands and CI toggle)
+- **Observable Plot** (`plot/*`) — the largest set: statistical graphics (forest plots, ridgelines, PCA biplots, parallel coordinates), geo (choropleths, hexbins), time series
+- **D3/SVG** (`d3/*`) — bespoke-geometry charts where the other engines fall short, rendered as pure-React SVG
+- **MapLibre + PMTiles** (`maplibre/*`) — high-cardinality zoomable choropleths (block groups, ZCTAs) with feature-state joins
+- **Article layout** (`article/*`) — framework-agnostic MDX building blocks (Figure, Callout, DataTable, SmallMultiples, …); see [`registry/components/article/README.md`](./registry/components/article/README.md)
 
-**Statistical:**
-- `recharts/generic/scatter-regression-v1` — Scatterplot with regression line
-- `recharts/generic/demographic-bar-v1` — Tabbed demographic bar charts
-
-**Other:**
-- `recharts/generic/state-bar-v1` — Sortable state bar chart
-
-See [COMPONENT-INVENTORY.md](./COMPONENT-INVENTORY.md) for the complete list.
-
-### Observable Plot (36 components)
-
-**Geographic:**
-- `plot/geo/state-map-v1` — US state choropleth
-- `plot/geo/density-map-v1` — Density maps with boundaries
-- `plot/geo/county-map-v1` — County-level maps
-- `plot/geo/zip-map-v1` — ZIP code maps
-- `plot/geo/europe-map-v1` — European country maps
-
-**Statistical:**
-- `plot/generic/histogram-v1` — Distribution histograms
-- `plot/generic/density-v1` — Kernel density plots
-- `plot/generic/splitbar-v1` — Split bars with subgroup dots
-- `plot/generic/odds-ratio-v1` — Forest plots
-
-**Other:**
-- `plot/generic/dot-v1` — Categorical dot plots
-- `plot/generic/correlation-heatmap-v1` — Correlation matrices
-
-### D3/SVG (4 components)
-
-**Multivariate:**
-- `d3/stats/parallel-coordinates-v1` — Interactive parallel coordinates with group filtering and line focus
-- `d3/stats/pca-biplot-v1` — PCA biplot with focusable loading vectors and leader labels
-
-**Distribution and time change:**
-- `d3/stats/ridge-v1` — Ridgeline / violin distributions with region focus
-- `d3/timeseries/slopegraph-v1` — Two-period slopegraph with collision-managed endpoint labels
-
-### Composite (11 components)
-
-**Dashboards:**
-- `composite/generic/state-overview-v1` — Tabbed panel with map/bar/table
-- `composite/brfss/dashboard-v1` — Health surveillance dashboard
-- `composite/generic/regression-analysis-v1` — Interactive regression interface
-
-### Article-layout components (13 components)
-
-MDX building blocks for long-form articles. Framework-agnostic; install with the 2-segment path form:
-
-- `article/Callout` — Caveat / definition / finding / aside variants
-- `article/DataTable` — 3–8-row tables with bold-row + delta-cell helpers
-- `article/Figure` — Distill-style layout-zone wrapper (`body` / `body-outset` / `page-outset` / `screen-inset`)
-- `article/SmallMultiples` — 4–9 panels of identical shape with shared y-axis
-- `article/TabSet`, `article/Tab` — Tabbed chart frame
-- `article/KeyNumber`, `article/PullQuote`, `article/Quote`, `article/Annotation`
-- `article/SideNote`, `article/SectionDivider`, `article/Step`, `article/DropCap`
-
-See [`registry/components/article/README.md`](./registry/components/article/README.md) for component API + usage guidance.
-
-**Complete list of all 70+ components:** [COMPONENT-INVENTORY.md](./COMPONENT-INVENTORY.md).
+**To browse:** run `pnpm preview:dev` for a live local gallery of every component with quality metrics, or explore `registry/components/` directly. Published components appear at `https://ctzn-pub.vercel.app/viz/<id>`.
 
 ## Architecture
 
@@ -234,17 +174,16 @@ registry/
 
 ## Documentation
 
-- **[QUICKSTART.md](./QUICKSTART.md)** — Get started in 5 minutes
-- **[CLI-USAGE.md](./CLI-USAGE.md)** — CLI command reference
-- **[INSTALLATION.md](./INSTALLATION.md)** — Detailed installation guide
-- **[COMPONENT-INVENTORY.md](./COMPONENT-INVENTORY.md)** — Complete component catalog
+- **[docs/SETUP.md](./docs/SETUP.md)** — consumer guide: installation (CLI + manual), data shapes, updating, troubleshooting
+- **[ADDING-COMPONENTS.md](./ADDING-COMPONENTS.md)** — authoring guide: conventions, catalog sidecars, the publish pipeline
+- **[design/](./design/)** — the theme-system spec (tokens → semantic → themes → adapters, map engine)
 
 ## Contributing
 
-1. Add component to `registry/components/<framework>/<category>/` (3-seg) or `registry/components/<category>/` (2-seg, for framework-agnostic)
-2. Add UI dependencies to `registry/ui/`
-3. Update [COMPONENT-INVENTORY.md](./COMPONENT-INVENTORY.md)
-4. Test installation with the CLI in a tmp dir
+1. Add the component to `registry/components/<framework>/<category>/` (3-seg) or `registry/components/<category>/` (2-seg, for framework-agnostic)
+2. Ship a `.catalog.json` sidecar next to it (required — the contract test and publish workflow enforce this; see [ADDING-COMPONENTS.md](./ADDING-COMPONENTS.md))
+3. Route every color/font/size through the theme system (`useVizTheme()`) — no hardcoded literals
+4. Run `pnpm test` and test installation with the CLI in a tmp dir
 
 ## License
 

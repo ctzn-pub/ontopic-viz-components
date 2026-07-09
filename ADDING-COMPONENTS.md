@@ -249,25 +249,11 @@ touch registry/components/recharts/generic/my-chart-v1.catalog.json
 - Top-level sidecar (`foldInto: null`) → new card at `https://ctzn-pub.vercel.app/viz/<id>`
 - Variant sidecar (`foldInto: "parent-id"`) → new variant on the existing parent card at `https://ctzn-pub.vercel.app/viz/<parent-id>`
 
-### 6. Update Component Inventory (optional but appreciated)
+### 6. Check the preview gallery
 
-Add your component to `COMPONENT-INVENTORY.md` for human-browsable docs:
-
-```markdown
-### recharts/generic/my-chart-v1
-
-**Description**: Brief description of what the chart does
-
-**Props**:
-- `data` (required): Array of data points
-- `title` (optional): Chart title
-
-**Dependencies**:
-- recharts
-- @radix-ui/react-label
-
-**Sample Data**: URL to sample data
-```
+Run `pnpm preview:dev` and confirm your component appears with its sidecar
+metadata. The preview catalog is auto-derived from `registry/components/**` —
+there is no hand-maintained inventory file to update.
 
 ### 7. Test Installation
 
@@ -348,5 +334,5 @@ https://ontopic-public-data.t3.storage.dev/
 ## Questions?
 
 - Check existing components for patterns
-- See [COMPONENT-INVENTORY.md](./COMPONENT-INVENTORY.md) for the full list
-- Review [CLI-USAGE.md](./CLI-USAGE.md) for installation testing
+- Browse the full list in the preview app (`pnpm preview:dev`)
+- Review [docs/SETUP.md](./docs/SETUP.md) for installation testing
