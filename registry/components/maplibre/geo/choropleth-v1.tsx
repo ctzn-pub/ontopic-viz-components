@@ -36,7 +36,19 @@ export interface ChoroplethLayerProps {
   /** Feature property that matches your data keys (e.g. 'GEOID'). */
   joinKey: string;
   /** { [joinKeyValue]: value } — the survey/health values to paint. */
-  data: Record<string, number>;
+  data?: Record<string, number>;
+  /**
+   * Multi-field alternative to `data` (the health-atlas pattern): several
+   * named per-feature fields, e.g. { val: {...}, pct: {...} }, ALL pushed to
+   * feature-state once. Combine with `valueField` — switching the displayed
+   * field then swaps only the paint expression, with zero feature-state
+   * re-push (instant even at ZCTA/block-group cardinality). Supersedes
+   * `data` when provided.
+   */
+  fields?: Record<string, Record<string, number>>;
+  /** Which feature-state field the fill expression reads. Default 'value'
+   *  (the `data` prop's field), or a key of `fields`. */
+  valueField?: string;
   /** Continuous (sequential | diverging) scale spec from scales.ts. */
   scale: ScaleSpec;
   /** step vs continuous fill. Default false (continuous). */
@@ -47,6 +59,11 @@ export interface ChoroplethLayerProps {
   maxzoom?: number;
   /** Stable id so multiple layers on one map don't collide. Default = sourceLayer. */
   id?: string;
+  /**
+   * Persistently emphasized feature (weight + halo via the boundary layers —
+   * never color alone, so selection survives any ramp). Cleared with null.
+   */
+  selectedId?: string | null;
   /** Fired on hover. `point` is the screen position for positioning <MapTooltip>. */
   onHover?: (
     id: string | null,
@@ -60,12 +77,15 @@ export default function ChoroplethLayer({
   sourceLayer,
   joinKey,
   data,
+  fields,
+  valueField,
   scale,
   classed = false,
   beforeId,
   minzoom,
   maxzoom,
   id,
+  selectedId = null,
   onHover,
 }: ChoroplethLayerProps) {
   const { map, loaded } = useGeoMap();
@@ -77,34 +97,65 @@ export default function ChoroplethLayer({
   const lineId = `${baseId}__line`;
   const sourceUrl = url.startsWith('pmtiles://') ? url : `pmtiles://${url}`;
 
+  // Normalize the two data shapes into one field map: { fieldName: { key: value } }.
+  // `fields` supersedes `data`; the plain-`data` path keeps its 'value' field name.
+  const fieldMap: Record<string, Record<string, number>> = fields ?? { value: data ?? {} };
+  const fieldNames = Object.keys(fieldMap);
+  const activeField = valueField ?? fieldNames[0] ?? 'value';
+
   // Resolve the scale against the ACTIVE theme, then compile to a GPU paint
-  // expression. Re-resolves (new colors) when the theme or spec changes.
+  // expression. Re-resolves (new colors) when the theme or spec changes;
+  // changing `valueField` swaps this expression only — no feature-state push.
   const resolved = scaleFor(scale);
   const fillExpr: MaplibreExpression = classed
-    ? toMaplibreStep(resolved)
-    : toMaplibreFill(resolved);
-  // Outline: hairline on every boundary, thickened + darkened on hover.
+    ? toMaplibreStep(resolved, activeField)
+    : toMaplibreFill(resolved, activeField);
+  // Outline: hairline on every boundary, thickened + darkened on hover; the
+  // selected feature keeps the emphasized boundary persistently (weight, not
+  // color, so selection survives any ramp).
+  const emphasized: MaplibreExpression = [
+    'any',
+    ['boolean', ['feature-state', 'hover'], false],
+    ['boolean', ['feature-state', 'selected'], false],
+  ];
   const lineColorExpr: MaplibreExpression = [
     'case',
-    ['boolean', ['feature-state', 'hover'], false],
+    emphasized,
     ml.boundaryHover.color,
     ml.boundary.color,
   ];
   const lineWidthExpr: MaplibreExpression = [
     'case',
+    ['boolean', ['feature-state', 'selected'], false],
+    ml.boundaryHover.width + 1,
     ['boolean', ['feature-state', 'hover'], false],
     ml.boundaryHover.width,
     ml.boundary.width,
   ];
 
+  // Per-feature state objects: { key: { field1: v, field2: v } } — one
+  // setFeatureState per feature carries ALL fields at once.
+  const featureState: Record<string, Record<string, number>> = {};
+  for (const field of fieldNames) {
+    const values = fieldMap[field];
+    for (const key in values) {
+      (featureState[key] ??= {})[field] = values[key];
+    }
+  }
+
   // Latest-value refs so the long-lived MapLibre event handlers and the
   // sourcedata re-apply read current props without re-subscribing.
-  const dataRef = useRef(data);
-  const appliedRef = useRef<Record<string, number>>({});
+  const stateRef = useRef(featureState);
+  const fieldNamesRef = useRef(fieldNames);
+  const activeFieldRef = useRef(activeField);
+  const appliedRef = useRef<Record<string, Record<string, number>>>({});
   const onHoverRef = useRef(onHover);
   const hoveredIdRef = useRef<string | null>(null);
+  const selectedIdRef = useRef<string | null>(null);
   const styleRef = useRef({ fillExpr, lineColorExpr, lineWidthExpr });
-  dataRef.current = data;
+  stateRef.current = featureState;
+  fieldNamesRef.current = fieldNames;
+  activeFieldRef.current = activeField;
   onHoverRef.current = onHover;
   styleRef.current = { fillExpr, lineColorExpr, lineWidthExpr };
 
@@ -113,13 +164,16 @@ export default function ChoroplethLayer({
     if (!map || !loaded) return;
 
     const applyAll = () => {
-      for (const key in dataRef.current) {
+      for (const key in stateRef.current) {
+        map.setFeatureState({ source: sourceId, sourceLayer, id: key }, stateRef.current[key]);
+      }
+      if (selectedIdRef.current != null) {
         map.setFeatureState(
-          { source: sourceId, sourceLayer, id: key },
-          { value: dataRef.current[key] },
+          { source: sourceId, sourceLayer, id: selectedIdRef.current },
+          { selected: true },
         );
       }
-      appliedRef.current = { ...dataRef.current };
+      appliedRef.current = { ...stateRef.current };
     };
 
     if (!map.getSource(sourceId)) {
@@ -186,7 +240,8 @@ export default function ChoroplethLayer({
         }
         map.getCanvas().style.cursor = nextId != null ? 'pointer' : '';
       }
-      const value = nextId != null ? dataRef.current[nextId] ?? null : null;
+      const value =
+        nextId != null ? stateRef.current[nextId]?.[activeFieldRef.current] ?? null : null;
       onHoverRef.current?.(nextId, value, { x: e.point.x, y: e.point.y });
     };
     const onLeave = () => {
@@ -234,16 +289,44 @@ export default function ChoroplethLayer({
     if (!map || !loaded || !map.getSource(sourceId)) return;
     const prev = appliedRef.current;
     for (const key in prev) {
-      if (!(key in data)) map.removeFeatureState({ source: sourceId, sourceLayer, id: key }, 'value');
-    }
-    for (const key in data) {
-      if (data[key] !== prev[key]) {
-        map.setFeatureState({ source: sourceId, sourceLayer, id: key }, { value: data[key] });
+      if (!(key in featureState)) {
+        // remove only OUR fields — clearing whole state would wipe hover/selected
+        for (const field in prev[key]) {
+          map.removeFeatureState({ source: sourceId, sourceLayer, id: key }, field);
+        }
       }
     }
-    appliedRef.current = { ...data };
+    for (const key in featureState) {
+      const next = featureState[key];
+      const before = prev[key];
+      let changed = before === undefined;
+      if (!changed) {
+        for (const field in next) if (next[field] !== before[field]) { changed = true; break; }
+        for (const field in before) if (!(field in next)) { changed = true; break; }
+      }
+      if (changed) {
+        for (const field in before ?? {}) {
+          if (!(field in next)) map.removeFeatureState({ source: sourceId, sourceLayer, id: key }, field);
+        }
+        map.setFeatureState({ source: sourceId, sourceLayer, id: key }, next);
+      }
+    }
+    appliedRef.current = { ...featureState };
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [map, loaded, sourceId, sourceLayer, JSON.stringify(data)]);
+  }, [map, loaded, sourceId, sourceLayer, JSON.stringify(featureState)]);
+
+  // --- selection sync: persistent weight+halo emphasis, never color alone ----
+  useEffect(() => {
+    if (!map || !loaded || !map.getSource(sourceId)) return;
+    const prev = selectedIdRef.current;
+    if (prev != null && prev !== selectedId) {
+      map.setFeatureState({ source: sourceId, sourceLayer, id: prev }, { selected: false });
+    }
+    if (selectedId != null) {
+      map.setFeatureState({ source: sourceId, sourceLayer, id: selectedId }, { selected: true });
+    }
+    selectedIdRef.current = selectedId;
+  }, [map, loaded, sourceId, sourceLayer, selectedId]);
 
   return null;
 }

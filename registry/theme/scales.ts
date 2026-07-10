@@ -61,24 +61,30 @@ export function scaleFor(sem: SemanticMap, spec: ScaleSpec): ResolvedScale {
   return { colors, stops, nodata: 'transparent' };
 }
 
-/** Compile to a MapLibre paint expression reading a numeric feature-state `value`. */
-export function toMaplibreFill(s: ResolvedScale): MaplibreExpression {
+/**
+ * Compile to a MapLibre paint expression reading a numeric feature-state field
+ * (default `value`). Passing a different `field` lets a layer that pushed
+ * SEVERAL named fields per feature (e.g. `val` + `pct`, the health-atlas
+ * pattern) switch what it displays by swapping ONLY this expression — no
+ * feature-state re-push, which matters at ZCTA/block-group cardinality.
+ */
+export function toMaplibreFill(s: ResolvedScale, field = 'value'): MaplibreExpression {
   const interp: MaplibreExpression = [
     'interpolate',
     ['linear'],
-    ['to-number', ['feature-state', 'value']],
+    ['to-number', ['feature-state', field]],
   ];
   s.stops.forEach((stop, i) => interp.push(stop, s.colors[i]));
   // guard: features with no joined value get the nodata color instead of mapping
   // `to-number(null) === 0` onto the low end of the ramp.
-  return ['case', ['==', ['feature-state', 'value'], null], s.nodata, interp];
+  return ['case', ['==', ['feature-state', field], null], s.nodata, interp];
 }
 
 /** Quantized variant -> MapLibre `step` expression (classed choropleth, Tufte-friendly). */
-export function toMaplibreStep(s: ResolvedScale): MaplibreExpression {
-  const expr: MaplibreExpression = ['step', ['to-number', ['feature-state', 'value']], s.colors[0]];
+export function toMaplibreStep(s: ResolvedScale, field = 'value'): MaplibreExpression {
+  const expr: MaplibreExpression = ['step', ['to-number', ['feature-state', field]], s.colors[0]];
   for (let i = 1; i < s.colors.length; i++) expr.push(s.stops[i], s.colors[i]);
-  return ['case', ['==', ['feature-state', 'value'], null], s.nodata, expr];
+  return ['case', ['==', ['feature-state', field], null], s.nodata, expr];
 }
 
 /** For the React legend (and any SVG engine): same stops as a 0–1 gradient. */

@@ -90,4 +90,24 @@ describe('maplibre scale contract', () => {
     const sem = themes.bloomberg.semantic;
     expect(scaleFor(sem, { kind: 'sequential', domain: [0, 1] }).nodata).toBe('transparent');
   });
+
+  test('multi-field mode: the expression reads the named feature-state field', () => {
+    // The health-atlas pattern: push { val, pct } once, switch display by
+    // swapping the expression only. The compiled expression must read exactly
+    // the requested field, and default to 'value' for back-compat.
+    const sem = themes.editorial.semantic;
+    const seq = scaleFor(sem, { kind: 'sequential', domain: [0, 100] });
+
+    const dflt = JSON.stringify(toMaplibreFill(seq));
+    expect(dflt).toContain('["feature-state","value"]');
+
+    for (const field of ['pct', 'val']) {
+      const expr = JSON.stringify(toMaplibreFill(seq, field));
+      expect(expr).toContain(`["feature-state","${field}"]`);
+      expect(expr).not.toContain('["feature-state","value"]');
+
+      const step = JSON.stringify(toMaplibreStep(seq, field));
+      expect(step).toContain(`["feature-state","${field}"]`);
+    }
+  });
 });
