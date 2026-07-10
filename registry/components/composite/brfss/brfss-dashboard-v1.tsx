@@ -21,8 +21,8 @@ import {
   Palette,
   LucideIcon,
 } from 'lucide-react';
-import { Button } from '@/components/ui/button';
-import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
+import { Button } from '@/viz/ui/button';
+import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/viz/ui/tabs';
 import { useVizTheme } from '@/viz/theme/provider';
 
 interface DemographicValue {

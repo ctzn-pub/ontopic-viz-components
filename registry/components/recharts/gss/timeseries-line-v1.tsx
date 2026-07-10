@@ -22,10 +22,12 @@ import { useVizTheme } from "@/viz/theme/provider";
 interface DataPoint {
     year: string | number | null;
     value: number | null;
-    ci_lower?: number;
-    ci_upper?: number;
-    n_actual?: number;
-    standard_error?: number;
+    // CI / n fields may arrive as null (not just missing) from crosstab
+    // pipelines like /analyze — widen to `| null` so consumers don't cast.
+    ci_lower?: number | null;
+    ci_upper?: number | null;
+    n_actual?: number | null;
+    standard_error?: number | null;
     // demographic columns (e.g. PolParty: "Democrat") ride along untyped
     [key: string]: unknown;
 }
@@ -107,6 +109,16 @@ interface TimeTrendDemoChartProps {
      */
     compact?: boolean;
     /**
+     * Full-size chart for embedding inside a host card that already renders
+     * the variable title, subtitle and source metadata once (e.g. a chat
+     * message card or /analyze result with its own editable title). Unlike
+     * `compact`, the chart keeps its full height, president bands, legend and
+     * CI toggle; it only drops the card chrome (shadow/rounding/padding), the
+     * internal title/subtitle/question block, and the source footer line.
+     * Default: false.
+     */
+    embedded?: boolean;
+    /**
      * When set, overrides the chart's auto-computed y-axis domain. Used by
      * <SmallMultiples> to enforce a shared range across panels so visual
      * comparison works. Format: [min, max] in the same units as the data
@@ -120,6 +132,15 @@ interface TimeTrendDemoChartProps {
      * inferred from the data values themselves.
      */
     colorDomain?: 'party' | 'sentiment' | null;
+    /**
+     * Optional categorical x-axis. When set, the chart's x-axis is an ordered
+     * categorical dimension (e.g. Political Era, Income) instead of year:
+     * each dataPoint's `key` value is mapped to its index in `categories`, so
+     * the existing numeric-axis machinery still drives layout, but ticks show
+     * the category labels and presidential reference bands are suppressed.
+     * Default: undefined → numeric year axis (unchanged).
+     */
+    categoricalX?: { key: string; categories: string[] };
 }
 
 // --- Constants ---
@@ -144,12 +165,19 @@ const generateTicks = (start: number, end: number, interval: number): number[] =
     return ticks;
 };
 
-const processDataPoint = (d: DataPoint): DataPoint & { year: number | null } => {
-    const yearNum = parseInt(String(d.year), 10);
+const processDataPoint = (
+    d: DataPoint,
+    catX?: { key: string; index: Map<string, number> } | null
+): DataPoint & { year: number | null } => {
     const valueNum = typeof d.value === 'number' ? d.value : parseFloat(String(d.value));
+    // Categorical x: the synthetic numeric "year" is the category's order index.
+    const catIdx = catX ? catX.index.get(String(d[catX.key])) : undefined;
+    const xNum = catX
+        ? (catIdx !== undefined ? catIdx : NaN)
+        : parseInt(String(d.year), 10);
     return {
         ...d,
-        year: isNaN(yearNum) ? null : yearNum,
+        year: isNaN(xNum) ? null : xNum,
         value: typeof valueNum === 'number' && !isNaN(valueNum) ? valueNum : null
     };
 };
@@ -157,10 +185,16 @@ const processDataPoint = (d: DataPoint): DataPoint & { year: number | null } => 
 // --- Component ---
 export default function TimeTrendDemoChart({
     data, demographicGroups: demographicGroupsProp, demographic: demographicProp,
-    defaultVisibleGroups, compact = false, sharedYDomain,
-    colorDomain
+    defaultVisibleGroups, compact = false, embedded = false, sharedYDomain,
+    colorDomain, categoricalX
 }: TimeTrendDemoChartProps) {
     const { rc, colorFor } = useVizTheme();
+
+    // Categorical x-axis mode: map each point's category value to its ordered
+    // index so the numeric x-axis pipeline (domain/ticks/sort) still applies.
+    // `year` becomes that index; ticks/tooltip translate it back to the label.
+    const catX = categoricalX ?? null;
+    const catIndex = catX ? new Map(catX.categories.map((c, i) => [c, i])) : null;
 
     // Data-only render support (the gallery preview passes just `data`):
     // derive the demographic split from the payload's own dataPointMetadata —
@@ -219,28 +253,34 @@ export default function TimeTrendDemoChart({
         return <div className="p-4 text-center" style={{ color: rc.muted }}>No data available to display chart.</div>;
     }
 
-    const processedDataPoints = data.dataPoints.map(processDataPoint);
+    const catXProc = catX && catIndex ? { key: catX.key, index: catIndex } : null;
+    const processedDataPoints = data.dataPoints.map((d) => processDataPoint(d, catXProc));
     const allValidYearsNumeric = processedDataPoints.map(d => d.year).filter((year): year is number => year !== null);
 
     if (allValidYearsNumeric.length === 0) {
-        return <div className="p-4 text-center" style={{ color: rc.muted }}>Data contains no valid years.</div>;
+        return <div className="p-4 text-center" style={{ color: rc.muted }}>Data contains no valid values.</div>;
     }
 
     const minYearInData = Math.min(...allValidYearsNumeric);
     const maxYearInData = Math.max(...allValidYearsNumeric);
 
-    const relevantPresidentialTerms = presidentialTerms.filter(term =>
+    // Presidential bands are a year-axis affordance only — never in categorical mode.
+    const relevantPresidentialTerms = catX ? [] : presidentialTerms.filter(term =>
         term.end >= minYearInData && term.start <= maxYearInData
     );
     const firstRelevantBandStart = relevantPresidentialTerms.length > 0
         ? Math.min(...relevantPresidentialTerms.map(t => t.start)) : minYearInData;
-    const xAxisMin = Math.min(firstRelevantBandStart, minYearInData);
-    const xAxisMax = maxYearInData;
+    // Categorical: pad the index domain by half a step so end points aren't clipped.
+    const xAxisMin = catX ? -0.5 : Math.min(firstRelevantBandStart, minYearInData);
+    const xAxisMax = catX ? (catX.categories.length - 0.5) : maxYearInData;
     // Sparser ticks in compact mode — every 5 years collides into a smudge
     // in narrow small-multiples columns. Every 20 years gives ~3 labels per
     // panel for a 50-year range, which is readable.
     const xTickInterval = compact ? 20 : 5;
-    const xAxisTicks = generateTicks(xAxisMin, xAxisMax, xTickInterval);
+    // Categorical: one tick per category (at its integer index).
+    const xAxisTicks = catX
+        ? catX.categories.map((_, i) => i)
+        : generateTicks(xAxisMin, xAxisMax, xTickInterval);
 
     // When demographicGroups is empty (single-series timetrend, e.g. from
     // /chat where VizResolver couldn't find a demographic dataPointMetadata
@@ -366,7 +406,11 @@ export default function TimeTrendDemoChart({
                 className="p-3 shadow-lg rounded-md text-sm max-w-xs"
                 style={{ ...rc.tooltip }}
             >
-                <p className="font-semibold mb-2" style={{ color: rc.fg }}>{`Year: ${label}`}</p>
+                <p className="font-semibold mb-2" style={{ color: rc.fg }}>
+                    {catX
+                        ? (catX.categories[Math.round(Number(label))] ?? String(label))
+                        : `Year: ${label}`}
+                </p>
                 {visiblePayload.map((series) => {
                     const colorIndex = demographicGroups.indexOf(series.name);
                     const color = resolveColor(series.name, colorIndex !== -1 ? colorIndex : 0);
@@ -377,7 +421,7 @@ export default function TimeTrendDemoChart({
                             <p style={{ color: color }}>
                                 {`Value: ${series.value != null ? `${prefix}${series.value.toFixed(1)}${suffix}` : 'N/A'}`}
                             </p>
-                            {pointData?.ci_lower !== undefined && pointData?.ci_upper !== undefined && (
+                            {pointData?.ci_lower != null && pointData?.ci_upper != null && (
                                 <p className="text-xs" style={{ color: rc.muted }}>
                                     {`95% CI: [${pointData.ci_lower.toFixed(1)}%, ${pointData.ci_upper.toFixed(1)}%]`}
                                 </p>
@@ -399,11 +443,13 @@ export default function TimeTrendDemoChart({
             className={
                 compact
                     ? "w-full p-2"
-                    : `w-full rounded-lg shadow px-4 md:px-6 pt-3 md:pt-4 pb-4 md:pb-5`
+                    : embedded
+                        ? "w-full"
+                        : `w-full rounded-lg shadow px-4 md:px-6 pt-3 md:pt-4 pb-4 md:pb-5`
             }
             style={{ background: rc.surface }}
         >
-            {!compact && (
+            {!compact && !embedded && (
                 <div className="mb-3">
                     {/* Editorial type ramp — matches the generic sibling and
                         the Plot wrapper rules:
@@ -444,7 +490,9 @@ export default function TimeTrendDemoChart({
                             ticks={xAxisTicks}
                             tick={{ ...rc.axisTick, fontSize: tickFontSize }}
                             padding={{ left: 10, right: 10 }}
-                            tickFormatter={(year) => String(year)}
+                            tickFormatter={catX
+                                ? (i: number | string) => catX.categories[Math.round(Number(i))] ?? ''
+                                : (year: number | string) => String(year)}
                             interval={0}
                             axisLine={{ stroke: rc.grid.stroke }}
                             tickLine={{ stroke: rc.grid.stroke }}
@@ -581,18 +629,25 @@ export default function TimeTrendDemoChart({
             </div>
 
             {!compact && (
-                <div className="flex flex-col sm:flex-row justify-between items-center mt-3 sm:mt-1 pt-2 border-t" style={{ borderColor: rc.grid.stroke }}>
-                    <div className="text-xs text-left order-1 sm:order-none" style={rc.sourceStyle}>
-                        Source: {data.metadata.source?.name || 'Not specified'}
-                        {data.metadata.observations && ` (${data.metadata.observations.toLocaleString()} Observations)`}
-                    </div>
+                <div
+                    className={`flex flex-col sm:flex-row justify-between items-center mt-3 sm:mt-1 ${embedded ? '' : 'pt-2 border-t'}`}
+                    style={embedded ? undefined : { borderColor: rc.grid.stroke }}
+                >
+                    {/* In embedded mode the host card already shows source +
+                        observations — keep only the CI toggle. */}
+                    {!embedded && (
+                        <div className="text-xs text-left order-1 sm:order-none" style={rc.sourceStyle}>
+                            Source: {data.metadata.source?.name || 'Not specified'}
+                            {data.metadata.observations && ` (${data.metadata.observations.toLocaleString()} Observations)`}
+                        </div>
+                    )}
 
-                    <div className="flex items-center space-x-2 order-2 sm:order-none">
+                    <div className={`flex items-center space-x-2 order-2 sm:order-none ${embedded ? 'ml-auto' : ''}`}>
                         <Switch
                             id="show-ci" checked={showCI} onCheckedChange={setShowCI}
                             disabled={!hasCIData}
                         />
-                        <Label htmlFor="show-ci" className="text-xs" style={{ color: hasCIData ? rc.muted : rc.grid.stroke }}>
+                        <Label htmlFor="show-ci" className="text-xs whitespace-nowrap" style={{ color: hasCIData ? rc.muted : rc.grid.stroke }}>
                             Show 95% CI
                         </Label>
                     </div>

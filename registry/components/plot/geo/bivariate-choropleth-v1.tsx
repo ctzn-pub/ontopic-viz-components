@@ -126,7 +126,7 @@ const BivariateChoropleth: React.FC<BivariateChoroplethProps> = ({
     const classes = data?.classes ?? {};
     if (!topo) return;
 
-    const fc = feature(topo as never, topo.objects.counties as never) as {
+    const fc = feature(topo as never, topo.objects.counties as never) as unknown as {
       features: { properties: Record<string, unknown> }[];
     };
     for (const f of fc.features) {

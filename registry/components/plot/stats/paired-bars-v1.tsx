@@ -90,17 +90,35 @@ const PairedBars: React.FC<PairedBarsProps> = ({
       },
       marks: [
         Plot.barX(rows, { y: 'label', x: 'x', fill: 'measure', tip: true }),
+        // textAnchor is a fixed style, not a per-datum channel (Plot's types
+        // reject a function there) — split into two marks, one per side,
+        // rather than fight the type with a cast.
         ...(few
           ? [
-              Plot.text(rows, {
-                y: 'label',
-                x: 'x',
-                text: (d) => `${Math.abs(d.x)}%`,
-                textAnchor: (d) => (d.x < 0 ? 'end' : 'start'),
-                dx: (d) => (d.x < 0 ? -4 : 4),
-                fill: theme.muted,
-                fontSize: 10,
-              }),
+              Plot.text(
+                rows.filter((d) => d.x < 0),
+                {
+                  y: 'label',
+                  x: 'x',
+                  text: (d) => `${Math.abs(d.x)}%`,
+                  textAnchor: 'end',
+                  dx: -4,
+                  fill: theme.muted,
+                  fontSize: 10,
+                },
+              ),
+              Plot.text(
+                rows.filter((d) => d.x >= 0),
+                {
+                  y: 'label',
+                  x: 'x',
+                  text: (d) => `${Math.abs(d.x)}%`,
+                  textAnchor: 'start',
+                  dx: 4,
+                  fill: theme.muted,
+                  fontSize: 10,
+                },
+              ),
             ]
           : []),
         Plot.ruleX([0], { stroke: theme.muted }),

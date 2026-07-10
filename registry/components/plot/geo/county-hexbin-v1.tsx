@@ -54,7 +54,7 @@ const CountyHexbin: React.FC<CountyHexbinProps> = ({
     if (!topo) return;
 
     const dom = domain ?? data?.domain ?? [0, 100];
-    const fc = feature(topo as never, topo.objects.counties as never) as {
+    const fc = feature(topo as never, topo.objects.counties as never) as unknown as {
       features: { properties?: Record<string, unknown> }[];
     };
 
