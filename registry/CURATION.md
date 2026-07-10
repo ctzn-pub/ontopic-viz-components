@@ -9,7 +9,7 @@ one winner per chart archetype). Statuses:
 
 | Status | Meaning | Count |
 |---|---|---|
-| `core` | Kept; brought to full standard (theme-aware, typed, `.catalog.json` sidecar) | 42 |
+| `core` | Kept; brought to full standard (theme-aware, typed, `.catalog.json` sidecar) | 47 |
 | `foundation` | Kept + maintained; not a gallery chart card, so exempt from the sidecar requirement (article/book MDX blocks) | 18 |
 | `merged` | Dedupe loser; its `winner` absorbs any unique features. Physically moved to `registry/legacy/` | 16 |
 | `parked` | Potentially useful, not in the curated cut; moved to `registry/legacy/` untouched | 35 |
@@ -77,6 +77,29 @@ semantic colors); `plot/stats/density-basic-v1` + `density-overlay-v1` (which us
 
 Nothing in ctzn-pub imports these yet (verified: no VizResolver/MDX references), so the
 upstream + re-home carries no consumer breakage.
+
+## Ported from health-of-americas-zip-codes — 2026-07-09 (Phase 5)
+
+Five novel forms came over from the atlas, retheme'd from its hardcoded dark "Observatory
+Ledger" onto the theme system (they now render natively in all 6 themes; under `observatory`
+they look like the originals): **strip-ridge** (tail-trimmed ridgeline strip with ramp fill +
+benchmark/comparison/subject markers), **score-gauge** (0–100 semicircle, glow filter dropped
+per Tufte), **gradient-slopes** (all measures normalized to decile-1 = 1.0 on a log scale,
+collision-relaxed labels), **correlation-matrix** (hierarchical ordering computed in-component
+for raw matrices; the ContextHeatmap folded in as an optional panel), and **canvas-scatter**
+(one canvas+SVG+quadtree primitive covering the atlas's ScatterFit/PcaBiplot/DotMap pattern;
+Albers geo mode out of scope — that's the MapLibre engine's job).
+
+Foundation promoted to `registry/utils/`: `useResize`/`useReducedMotion` (hooks.ts) and the
+accessible `TableFallback` (`table-fallback.tsx`) — the house a11y pattern for canvas/dense
+charts. The atlas's imperative d3-select `Axis` island was **not** ported: registry D3
+components render axes as pure JSX per the house pattern, so nothing needs it.
+
+Explicit non-ports: the atlas panels (DisparityGradient, ScatterLoess, RankedDotPlot,
+Distribution) already have registry descendants; StorySig is decorative, not chart-library
+core; MapChoropleth's feature-state pattern belongs in `maplibre/geo/choropleth-v1`.
+A new sidecar category `indicators-and-matrices` covers the gauge/matrix forms — the ctzn-pub
+gallery rail needs a matching label at Phase 7.
 
 ## Parked highlights (and how to un-park)
 

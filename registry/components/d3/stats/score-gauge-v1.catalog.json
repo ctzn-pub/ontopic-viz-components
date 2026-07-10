@@ -1,0 +1,22 @@
+{
+  "id": "score-gauge",
+  "name": "Score Gauge",
+  "category": "indicators-and-matrices",
+  "subcategory": "indicators",
+  "tags": [
+    "gauge",
+    "score",
+    "indicator",
+    "kpi"
+  ],
+  "description": "A 0-100 composite score as a semicircular gauge with an end knob, the arc colored from worse to better through the theme's sentiment roles. Reach for it when a single headline number needs an at-a-glance read of how good or bad it is, not a full chart.",
+  "sample_data": {
+    "url": "https://ontopic-public-data.t3.storage.dev/sample-data/d3-score-gauge.json",
+    "transform": "passthrough"
+  },
+  "dependencies": [
+    "d3-scale"
+  ],
+  "foldInto": null,
+  "variantLabel": null
+}

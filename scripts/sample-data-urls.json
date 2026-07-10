@@ -19,5 +19,10 @@
   "d3-scatter-cloud.json": "https://ontopic-public-data.t3.storage.dev/sample-data/d3-scatter-cloud.json",
   "d3-small-multiples.json": "https://ontopic-public-data.t3.storage.dev/sample-data/d3-small-multiples.json",
   "d3-gradient-line.json": "https://ontopic-public-data.t3.storage.dev/sample-data/d3-gradient-line.json",
-  "d3-county-choropleth.json": "https://ontopic-public-data.t3.storage.dev/sample-data/d3-county-choropleth.json"
+  "d3-county-choropleth.json": "https://ontopic-public-data.t3.storage.dev/sample-data/d3-county-choropleth.json",
+  "d3-strip-ridge.json": "https://ontopic-public-data.t3.storage.dev/sample-data/d3-strip-ridge.json",
+  "d3-score-gauge.json": "https://ontopic-public-data.t3.storage.dev/sample-data/d3-score-gauge.json",
+  "d3-gradient-slopes.json": "https://ontopic-public-data.t3.storage.dev/sample-data/d3-gradient-slopes.json",
+  "d3-correlation-matrix.json": "https://ontopic-public-data.t3.storage.dev/sample-data/d3-correlation-matrix.json",
+  "d3-canvas-scatter.json": "https://ontopic-public-data.t3.storage.dev/sample-data/d3-canvas-scatter.json"
 }

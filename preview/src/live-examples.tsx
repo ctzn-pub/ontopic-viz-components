@@ -1,6 +1,19 @@
 import type { ReactNode } from 'react';
 import { KeyNumber } from '../../registry/components/article/KeyNumber';
 import Caterpillar from '../../registry/components/d3/stats/caterpillar-v1';
+import GradientSlopes from '../../registry/components/d3/stats/gradient-slopes-v1';
+import type { GradientSlopesData } from '../../registry/components/d3/stats/gradient-slopes-v1';
+import ScoreGauge from '../../registry/components/d3/stats/score-gauge-v1';
+import type { ScoreGaugeData } from '../../registry/components/d3/stats/score-gauge-v1';
+import StripRidge from '../../registry/components/d3/stats/strip-ridge-v1';
+import type { StripRidgeData } from '../../registry/components/d3/stats/strip-ridge-v1';
+import gradientSlopesJson from './data/d3-gradient-slopes.json';
+import scoreGaugeJson from './data/d3-score-gauge.json';
+import stripRidgeJson from './data/d3-strip-ridge.json';
+
+const gradientSlopesData = gradientSlopesJson as unknown as GradientSlopesData;
+const scoreGaugeData = scoreGaugeJson as unknown as ScoreGaugeData;
+const stripRidgeData = stripRidgeJson as unknown as StripRidgeData;
 import Dumbbell from '../../registry/components/d3/stats/dumbbell-v1';
 import SlopegraphD3 from '../../registry/components/d3/timeseries/slopegraph-v1';
 import ForestPlot from '../../registry/components/plot/stats/forest-plot-v1';
@@ -91,6 +104,25 @@ export const liveExamples: LiveExample[] = [
     title: 'D3 dumbbell',
     description: 'Two-endpoint gap rows — upstreamed from ctzn-pub, adapter-themed.',
     render: () => <Dumbbell data={dumbbellData} width={560} />,
+  },
+  {
+    path: 'registry/components/d3/stats/strip-ridge-v1.tsx',
+    title: 'Strip ridge (health atlas)',
+    description: 'Tail-trimmed distribution strip with ramp fill and benchmark markers.',
+    render: () => <StripRidge data={stripRidgeData} width={560} />,
+  },
+  {
+    path: 'registry/components/d3/stats/score-gauge-v1.tsx',
+    title: 'Score gauge (health atlas)',
+    description: 'Semicircular 0-100 gauge on the sentiment continuum.',
+    render: () => <ScoreGauge data={scoreGaugeData} width={260} />,
+  },
+  {
+    path: 'registry/components/d3/stats/gradient-slopes-v1.tsx',
+    title: 'Gradient slopes (health atlas)',
+    description: 'All measures normalized to decile 1 on a log scale — slope = inequality.',
+    span: 'wide',
+    render: () => <GradientSlopes data={gradientSlopesData} width={620} />,
   },
   {
     path: 'registry/components/article/KeyNumber.tsx',

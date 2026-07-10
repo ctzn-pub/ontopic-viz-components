@@ -1,0 +1,7 @@
+{
+ "score": 62,
+ "label": "Health score",
+ "title": "Composite health score",
+ "subtitle": "Percentile-based composite across 26 health measures, higher is healthier",
+ "source": "Composite of CDC PLACES 2025 measures, population-weighted national percentiles."
+}

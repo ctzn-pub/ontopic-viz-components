@@ -30,6 +30,10 @@ const ALLOWED_CATEGORIES = new Set([
   'distributions',
   'demographic-breakdowns',
   'regression-and-effects',
+  // added 2026-07-09 for the health-of-americas imports (gauges, correlation
+  // matrices) that fit none of the original five; the ctzn-pub gallery rail
+  // needs a matching label when Phase 7 lands
+  'indicators-and-matrices',
 ]);
 
 // Components that MUST ship a sidecar. New components append here.
@@ -60,6 +64,12 @@ const REQUIRES_SIDECAR = [
   'd3/stats/grouped-bar-v1',
   'd3/stats/scatter-cloud-v1',
   'd3/stats/small-multiples-v1',
+  // ported from health-of-americas-zip-codes (2026-07-09)
+  'd3/stats/canvas-scatter-v1',
+  'd3/stats/correlation-matrix-v1',
+  'd3/stats/gradient-slopes-v1',
+  'd3/stats/score-gauge-v1',
+  'd3/stats/strip-ridge-v1',
   // existing MapLibre set
   'maplibre/geo/map-v1',
   'maplibre/geo/choropleth-v1',

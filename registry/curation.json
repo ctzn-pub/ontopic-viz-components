@@ -468,6 +468,26 @@
     "d3/stats/gradient-line-v1": {
       "status": "core",
       "reason": "Upstreamed from ctzn-pub viz/components/d3 (2026-07-09) and brought to standard: colorDomain prop, literals routed through the d3 adapter, sidecar + Tigris sample data. Distinctive archetype the registry lacked."
+    },
+    "d3/stats/strip-ridge-v1": {
+      "status": "core",
+      "reason": "Ported from health-of-americas-zip-codes (2026-07-09), retheme'd from the hardcoded Observatory ledger onto the theme system. The signature health-atlas ridgeline strip: tail-trimmed distribution silhouette filled with a continuous theme ramp, benchmark/comparison/subject markers always kept visible."
+    },
+    "d3/stats/score-gauge-v1": {
+      "status": "core",
+      "reason": "Ported from health-of-americas-zip-codes (2026-07-09), retheme'd from the hardcoded Observatory ledger onto the theme system. Semicircular 0-100 gauge with sentiment-role continuum coloring; glow filter dropped per Tufte."
+    },
+    "d3/stats/gradient-slopes-v1": {
+      "status": "core",
+      "reason": "Ported from health-of-americas-zip-codes (2026-07-09), retheme'd from the hardcoded Observatory ledger onto the theme system. Every measure's decile gradient normalized to decile-1=1.0 on a log scale — \"the slope is the inequality\" — with collision-relaxed right-edge labels and focus highlighting."
+    },
+    "d3/stats/correlation-matrix-v1": {
+      "status": "core",
+      "reason": "Ported from health-of-americas-zip-codes (2026-07-09), retheme'd from the hardcoded Observatory ledger onto the theme system. Hierarchically-ordered correlation matrix with in-component average-linkage clustering for raw matrices, plus an optional context-heatmap panel (ContextHeatmap folded in)."
+    },
+    "d3/stats/canvas-scatter-v1": {
+      "status": "core",
+      "reason": "Ported from health-of-americas-zip-codes (2026-07-09), retheme'd from the hardcoded Observatory ledger onto the theme system. Unified canvas point-cloud primitive (up to ~25k points): DPR-aware canvas + SVG overlay fit lines + d3-quadtree hover + TableFallback a11y; covers the atlas's ScatterFit/PcaBiplot/DotMap pattern (Albers geo mode out of scope)."
     }
   }
 }

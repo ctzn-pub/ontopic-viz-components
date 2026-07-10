@@ -1,0 +1,25 @@
+{
+  "id": "gradient-slopes",
+  "name": "Gradient Slopes",
+  "category": "regression-and-effects",
+  "subcategory": "gradients",
+  "tags": [
+    "gradient",
+    "deciles",
+    "inequality",
+    "log-scale",
+    "direct-labels"
+  ],
+  "description": "Every measure's decile gradient on one chart, normalized so the reference decile equals 1.0 on a log scale - the slope IS the inequality, and a line ending at 2.5x means the top decile carries 2.5 times the burden of the bottom one. Collision-relaxed right-edge labels replace a legend, and hovering a line or its label isolates that measure. The one-chart summary companion to per-measure gradient lines.",
+  "sample_data": {
+    "url": "https://ontopic-public-data.t3.storage.dev/sample-data/d3-gradient-slopes.json",
+    "transform": "passthrough"
+  },
+  "dependencies": [
+    "d3-array",
+    "d3-scale",
+    "d3-shape"
+  ],
+  "foldInto": null,
+  "variantLabel": null
+}

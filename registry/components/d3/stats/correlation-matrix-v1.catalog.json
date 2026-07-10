@@ -1,0 +1,15 @@
+{
+  "id": "correlation-matrix",
+  "name": "Correlation Matrix",
+  "category": "indicators-and-matrices",
+  "subcategory": "relationships",
+  "tags": ["correlation", "matrix", "heatmap", "clustering", "diverging"],
+  "description": "A square correlation matrix ordered by hierarchical clustering so correlated blocks sit together, with topic-colored labels and a diverging-ramp legend. An optional second strip shows how each measure tracks demographic context variables. Use it to survey the structure of many pairwise relationships at once before committing to a single scatter.",
+  "sample_data": {
+    "url": "https://ontopic-public-data.t3.storage.dev/sample-data/d3-correlation-matrix.json",
+    "transform": "passthrough"
+  },
+  "dependencies": ["d3-scale"],
+  "foldInto": null,
+  "variantLabel": null
+}

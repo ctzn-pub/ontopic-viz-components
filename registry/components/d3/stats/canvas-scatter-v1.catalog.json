@@ -1,0 +1,15 @@
+{
+  "id": "canvas-scatter",
+  "name": "Canvas Scatter",
+  "category": "regression-and-effects",
+  "subcategory": "relationships",
+  "tags": ["scatter", "canvas", "fit-line", "loess", "large-n"],
+  "description": "A canvas-rendered point cloud built for tens of thousands of points, with SVG axes and fit or LOESS overlay lines, quadtree hover, weight-sized dots, and continuous or categorical point coloring. Reach for it when an SVG scatter would buckle under the point count; an accessible data-table fallback summarizes a sample of the points.",
+  "sample_data": {
+    "url": "https://ontopic-public-data.t3.storage.dev/sample-data/d3-canvas-scatter.json",
+    "transform": "passthrough"
+  },
+  "dependencies": ["d3-scale", "d3-shape", "d3-quadtree"],
+  "foldInto": null,
+  "variantLabel": null
+}

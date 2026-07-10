@@ -4,13 +4,18 @@
     "rootDir": ".",
     "baseUrl": ".",
     "paths": {
-      "@/viz/*": ["registry/*"]
+      "@/viz/*": [
+        "registry/*"
+      ]
     },
     "noEmit": true,
     "declaration": false,
     "declarationMap": false,
     "sourceMap": false,
-    "types": ["node", "react"]
+    "types": [
+      "node",
+      "react"
+    ]
   },
   "include": [
     "registry/theme/tokens.ts",
@@ -42,6 +47,13 @@
     "registry/components/maplibre/geo/choropleth-v1.tsx",
     "registry/components/maplibre/geo/legend-v1.tsx",
     "registry/components/maplibre/geo/tooltip-v1.tsx",
-    "registry/theme/__demo__/theme-demo.tsx"
+    "registry/theme/__demo__/theme-demo.tsx",
+    "registry/utils/hooks.ts",
+    "registry/utils/table-fallback.tsx",
+    "registry/components/d3/stats/strip-ridge-v1.tsx",
+    "registry/components/d3/stats/score-gauge-v1.tsx",
+    "registry/components/d3/stats/gradient-slopes-v1.tsx",
+    "registry/components/d3/stats/correlation-matrix-v1.tsx",
+    "registry/components/d3/stats/canvas-scatter-v1.tsx"
   ]
 }

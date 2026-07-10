@@ -1,0 +1,25 @@
+{
+  "id": "strip-ridge",
+  "name": "Strip Ridge",
+  "category": "distributions",
+  "subcategory": "distribution-context",
+  "tags": [
+    "strip",
+    "ridgeline",
+    "benchmark",
+    "gradient-fill",
+    "context"
+  ],
+  "description": "A compact one-row distribution strip: the whole distribution as a smoothed ridgeline silhouette filled with a continuous ramp, tail-trimmed to the central 95% of mass, with benchmark, comparison, and subject markers always kept in view. Use it to answer 'where does this place sit against everyone else?' in a single glance; diverging strips pin the ramp's neutral color to the measure's true midpoint even when the visible domain is asymmetric.",
+  "sample_data": {
+    "url": "https://ontopic-public-data.t3.storage.dev/sample-data/d3-strip-ridge.json",
+    "transform": "passthrough"
+  },
+  "dependencies": [
+    "d3-array",
+    "d3-scale",
+    "d3-shape"
+  ],
+  "foldInto": null,
+  "variantLabel": null
+}
