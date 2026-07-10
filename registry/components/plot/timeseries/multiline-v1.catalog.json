@@ -1,0 +1,15 @@
+{
+  "id": "multiline",
+  "name": "Multi-Series Line",
+  "category": "time-series",
+  "subcategory": "generic",
+  "tags": ["line", "multi-series", "trend", "index-rebase"],
+  "description": "A multi-series time-series line chart with pointer tooltips and an optional slider that rebases every series to a chosen date = 100. Column mapping is prop-driven — xKey, yKey and groupKey name the date, value and series fields — so it reads any long-format table; pass colorDomain to pin partisan series to the theme's semantic party colors. Reach for it to compare a handful of series' levels, or switch to index mode to compare their relative growth.",
+  "sample_data": {
+    "url": "https://ontopic-public-data.t3.storage.dev/sample-data/multiline.json",
+    "transform": "passthrough"
+  },
+  "dependencies": ["@observablehq/plot"],
+  "foldInto": null,
+  "variantLabel": null
+}

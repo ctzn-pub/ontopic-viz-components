@@ -1,4 +1,3 @@
-// @ts-nocheck
 'use client';
 
 import * as Plot from "@observablehq/plot";
@@ -6,12 +5,48 @@ import * as topojson from "topojson-client";
 import * as React from "react";
 import { useVizTheme } from "@/viz/theme/provider";
 
+// Default US atlas (states + nation objects). Used ONLY when the caller does
+// not pass `usTopoJSON` — an explicit prop always wins and skips the fetch.
+const DEFAULT_US_TOPOLOGY_URL = 'https://unpkg.com/us-atlas@3/states-10m.json';
+
+// The topology parameter type topojson-client actually accepts. We cast the
+// loosely-typed prop through this at the call boundary instead of sprinkling
+// `any` through the component.
+type TopologyInput = Parameters<typeof topojson.feature>[0];
+
+interface StateProperties {
+  name: string;
+  value?: number;
+}
+
+interface StateFeature {
+  type: 'Feature';
+  id?: string | number;
+  properties: StateProperties;
+  geometry: unknown;
+}
+
+export interface StateMapDatum {
+  /** Full state name as it appears in the topology (e.g. "California"). */
+  state: string;
+  value: number;
+}
+
 export interface StateMapProps {
-  /** US TopoJSON data with states and nation objects */
-  usTopoJSON: any;
+  /**
+   * US TopoJSON with `objects.states` and `objects.nation` (us-atlas shape).
+   * Optional: when omitted, the component fetches `topologyUrl` at runtime.
+   */
+  usTopoJSON?: unknown;
+
+  /**
+   * URL fetched for the topology when `usTopoJSON` is not provided.
+   * Default: the us-atlas states-10m build on unpkg.
+   */
+  topologyUrl?: string;
 
   /** State data with state names and values */
-  data: Array<{ state: string; value: number }>;
+  data: StateMapDatum[];
 
   /** Chart width in pixels */
   width?: number;
@@ -72,10 +107,7 @@ export interface StateMapProps {
  *
  * @example
  * ```tsx
- * import us from '@/app/data/geo/us_counties_10m.json';
- *
  * <StateMap
- *   usTopoJSON={us}
  *   data={[
  *     { state: 'California', value: 850000 },
  *     { state: 'Texas', value: 620000 }
@@ -90,6 +122,7 @@ export interface StateMapProps {
  */
 export const StateMap: React.FC<StateMapProps> = ({
   usTopoJSON,
+  topologyUrl = DEFAULT_US_TOPOLOGY_URL,
   data,
   width = 975,
   height = 610,
@@ -118,6 +151,30 @@ export const StateMap: React.FC<StateMapProps> = ({
   // Use prop title or fall back to labels.title
   const displayTitle = propTitle || labelTitle;
 
+  // Runtime topology fallback: fetched once, only when no prop was given.
+  const [fetchedTopology, setFetchedTopology] = React.useState<unknown>(null);
+  const [topologyError, setTopologyError] = React.useState<string | null>(null);
+  const topology = usTopoJSON ?? fetchedTopology;
+
+  React.useEffect(() => {
+    if (usTopoJSON || fetchedTopology) return;
+    let cancelled = false;
+    fetch(topologyUrl)
+      .then((res) => {
+        if (!res.ok) throw new Error(`Failed to load US topology (${res.status})`);
+        return res.json();
+      })
+      .then((topo: unknown) => {
+        if (!cancelled) setFetchedTopology(topo);
+      })
+      .catch((err: Error) => {
+        if (!cancelled) setTopologyError(err.message);
+      });
+    return () => {
+      cancelled = true;
+    };
+  }, [usTopoJSON, fetchedTopology, topologyUrl]);
+
   // Calculate national average
   const average = React.useMemo(() => {
     if (!data || data.length === 0) return null;
@@ -130,20 +187,23 @@ export const StateMap: React.FC<StateMapProps> = ({
   const containerRef = React.useRef<HTMLDivElement>(null);
 
   React.useEffect(() => {
-    if (!containerRef.current || !usTopoJSON || !data || data.length === 0) return;
+    if (!containerRef.current || !topology || !data || data.length === 0) return;
 
     containerRef.current.innerHTML = ''; // Clear any existing content
 
     // Map state names to values
-    const stateToValueMap = new Map(
+    const stateToValueMap = new Map<string, number>(
       data.map(({ state, value }) => [state, value])
     );
 
+    const topo = topology as TopologyInput;
+
     // Extract state features from TopoJSON
-    const states: any = topojson.feature(usTopoJSON, usTopoJSON.objects.states);
+    const states = topojson.feature(topo, topo.objects.states);
+    const stateFeatures = (states as unknown as { features: StateFeature[] }).features;
 
     // Attach values to state features
-    for (const state of states.features) {
+    for (const state of stateFeatures) {
       state.properties.value = stateToValueMap.get(state.properties.name);
     }
 
@@ -158,15 +218,12 @@ export const StateMap: React.FC<StateMapProps> = ({
 
     // Extract mesh and nation boundaries
     const statemesh = topojson.mesh(
-      usTopoJSON,
-      usTopoJSON.objects.states,
-      (a: any, b: any) => a !== b
-    ) as any;
+      topo,
+      topo.objects.states as Parameters<typeof topojson.mesh>[1],
+      (a, b) => a !== b
+    );
 
-    const nation = topojson.feature(
-      usTopoJSON,
-      usTopoJSON.objects.nation
-    ) as any;
+    const nation = topojson.feature(topo, topo.objects.nation);
 
     // Color config: when the caller passes `colorScheme` we honour it as a
     // D3 scheme name; otherwise we fall through to the active theme's
@@ -174,7 +231,7 @@ export const StateMap: React.FC<StateMapProps> = ({
     // library's palette. Choropleths default to diverging because most
     // policy/health metrics have a natural center (national average,
     // baseline, zero) the reader compares against.
-    const colorConfig: any = {
+    const colorConfig: Plot.ScaleOptions = {
       type: "quantile",
       n: quantiles,
       reverse: reverseColors,
@@ -182,9 +239,9 @@ export const StateMap: React.FC<StateMapProps> = ({
       tickFormat: formatNumberAsK,
     };
     if (colorScheme) {
-      colorConfig.scheme = colorScheme;
+      colorConfig.scheme = colorScheme as Plot.ScaleOptions['scheme'];
     } else {
-      colorConfig.range = theme.semantic.diverging;
+      colorConfig.range = [...theme.semantic.diverging];
     }
 
     // Create the plot
@@ -202,7 +259,7 @@ export const StateMap: React.FC<StateMapProps> = ({
       marks: [
         // State fills
         Plot.geo(states, {
-          fill: (d: any) => d.properties.value
+          fill: (d: StateFeature) => d.properties.value
         }),
         // State boundaries
         Plot.geo(statemesh, {
@@ -214,11 +271,13 @@ export const StateMap: React.FC<StateMapProps> = ({
         }),
         // Interactive tooltips
         Plot.tip(
-          states.features,
+          stateFeatures,
           Plot.pointer(
             Plot.centroid({
-              title: (d: any) =>
-                `${d.properties.name}: ${formatNumberAsK(d.properties.value)}`
+              title: (d: StateFeature) =>
+                d.properties.value != null
+                  ? `${d.properties.name}: ${formatNumberAsK(d.properties.value)}`
+                  : `${d.properties.name}: no data`
             })
           )
         )
@@ -230,7 +289,7 @@ export const StateMap: React.FC<StateMapProps> = ({
     return () => {
       plot.remove();
     };
-  }, [usTopoJSON, data, width, height, displayTitle, subtitle, caption, valueSuffix, valuePrefix, colorScheme, quantiles, reverseColors, projection, theme]);
+  }, [topology, data, width, height, displayTitle, subtitle, caption, valueSuffix, valuePrefix, colorScheme, quantiles, reverseColors, projection, theme]);
 
   // Format average value
   const formattedAverage = average != null
@@ -245,17 +304,17 @@ export const StateMap: React.FC<StateMapProps> = ({
           {(displayTitle || year) && (
             <div className="flex items-baseline gap-2 mb-1">
               {displayTitle && (
-                <h2 style={{ ...rc.titleStyle, fontSize: 22, fontWeight: 700 }}>
+                <h2 className="text-2xl font-bold" style={rc.titleStyle}>
                   {displayTitle}
                 </h2>
               )}
               {year && (
-                <span style={{ ...rc.subtitleStyle, fontSize: 18 }}>({year})</span>
+                <span className="text-lg" style={rc.subtitleStyle}>({year})</span>
               )}
             </div>
           )}
           {description && (
-            <p style={{ ...rc.subtitleStyle, fontSize: 14 }}>{description}</p>
+            <p className="text-sm" style={rc.subtitleStyle}>{description}</p>
           )}
         </div>
       )}
@@ -263,13 +322,29 @@ export const StateMap: React.FC<StateMapProps> = ({
       {/* Average value display */}
       {showAverage && formattedAverage && (
         <div className="mb-4">
-          <span style={{ ...rc.titleStyle, fontSize: 36, fontWeight: 700 }}>
+          <span className="text-4xl font-bold" style={rc.titleStyle}>
             {formattedAverage}
           </span>
         </div>
       )}
 
       {/* Map container */}
+      {!topology && !topologyError && (
+        <div
+          className="flex items-center justify-center text-sm"
+          style={{ minHeight: Math.min(height, 240), color: theme.muted }}
+        >
+          Loading map…
+        </div>
+      )}
+      {topologyError && (
+        <div
+          className="flex items-center justify-center text-sm"
+          style={{ minHeight: Math.min(height, 240), color: theme.muted }}
+        >
+          Could not load map: {topologyError}
+        </div>
+      )}
       <div ref={containerRef}></div>
 
       {/* Source footer */}

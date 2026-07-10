@@ -1,0 +1,15 @@
+{
+  "id": "histogram",
+  "name": "Histogram",
+  "category": "distributions",
+  "subcategory": "generic",
+  "tags": ["histogram", "frequency", "bins", "mean", "median"],
+  "description": "A binned frequency histogram of one continuous variable, with automatic square-root binning and optional mean and median reference lines. Use it for a first look at the shape of a distribution — skew, spread, outliers — before reaching for a density or ridge chart.",
+  "sample_data": {
+    "url": "https://ontopic-public-data.t3.storage.dev/sample-data/histogram.json",
+    "transform": "passthrough"
+  },
+  "dependencies": ["recharts"],
+  "foldInto": null,
+  "variantLabel": null
+}

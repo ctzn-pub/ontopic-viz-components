@@ -1,0 +1,15 @@
+{
+  "id": "world-choropleth",
+  "name": "World Choropleth",
+  "category": "maps",
+  "subcategory": "world",
+  "tags": ["choropleth", "countries", "world-bank", "quantile"],
+  "description": "A world map choropleth for per-country indicator values (life expectancy, GDP per capita, HDI), keyed by ISO3 country code, with quantile bins, hover tooltips, and an optional highlighted focal country. The ramp defaults to the active theme's sequential palette — country indicators usually read low-to-high — with reverseColors for lower-is-better measures. Use it when the story is how one indicator varies across the world.",
+  "sample_data": {
+    "url": "https://ontopic-public-data.t3.storage.dev/sample-data/world-choropleth.json",
+    "transform": "passthrough"
+  },
+  "dependencies": ["@observablehq/plot", "topojson-client"],
+  "foldInto": null,
+  "variantLabel": null
+}

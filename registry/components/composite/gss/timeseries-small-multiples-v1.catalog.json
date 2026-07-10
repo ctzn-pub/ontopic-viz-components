@@ -1,0 +1,15 @@
+{
+  "id": "gss-small-multiples",
+  "name": "GSS Small Multiples",
+  "category": "time-series",
+  "subcategory": "gss",
+  "tags": ["gss", "small-multiples", "survey", "demographic-splits"],
+  "description": "One survey trend viewed several ways: a grid of compact GSS time-trend panels, each splitting the same outcome by a different demographic axis (party, age, education, church attendance), on one shared y-scale with a single title and source line. The book's preferred figure for 'the same trend, viewed four ways' — use it when the finding is that one divide is growing while the others are not.",
+  "sample_data": {
+    "url": "https://ontopic-public-data.t3.storage.dev/sample-data/gss-small-multiples.json",
+    "transform": "passthrough"
+  },
+  "dependencies": ["recharts"],
+  "foldInto": null,
+  "variantLabel": null
+}

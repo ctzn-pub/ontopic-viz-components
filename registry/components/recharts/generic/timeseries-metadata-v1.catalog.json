@@ -1,0 +1,15 @@
+{
+  "id": "timeseries-line",
+  "name": "Time Series Line",
+  "category": "time-series",
+  "subcategory": "generic",
+  "tags": ["trend", "line", "confidence-interval", "annual", "survey"],
+  "description": "A single-indicator annual trend line with optional 95% confidence-interval error bars and a metadata-driven title, subtitle, and source block. The default pick when one measure needs tracking over time without demographic splits.",
+  "sample_data": {
+    "url": "https://ontopic-public-data.t3.storage.dev/sample-data/timeseries-line.json",
+    "transform": "passthrough"
+  },
+  "dependencies": ["recharts"],
+  "foldInto": null,
+  "variantLabel": null
+}

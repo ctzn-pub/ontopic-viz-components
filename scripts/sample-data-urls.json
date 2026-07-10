@@ -24,5 +24,19 @@
   "d3-score-gauge.json": "https://ontopic-public-data.t3.storage.dev/sample-data/d3-score-gauge.json",
   "d3-gradient-slopes.json": "https://ontopic-public-data.t3.storage.dev/sample-data/d3-gradient-slopes.json",
   "d3-correlation-matrix.json": "https://ontopic-public-data.t3.storage.dev/sample-data/d3-correlation-matrix.json",
-  "d3-canvas-scatter.json": "https://ontopic-public-data.t3.storage.dev/sample-data/d3-canvas-scatter.json"
+  "d3-canvas-scatter.json": "https://ontopic-public-data.t3.storage.dev/sample-data/d3-canvas-scatter.json",
+  "gss-time-trend.json": "https://ontopic-public-data.t3.storage.dev/sample-data/gss-time-trend.json",
+  "timeseries-line.json": "https://ontopic-public-data.t3.storage.dev/sample-data/timeseries-line.json",
+  "timeseries-economic.json": "https://ontopic-public-data.t3.storage.dev/sample-data/timeseries-economic.json",
+  "timeseries-index.json": "https://ontopic-public-data.t3.storage.dev/sample-data/timeseries-index.json",
+  "demographic-line.json": "https://ontopic-public-data.t3.storage.dev/sample-data/demographic-line.json",
+  "demographic-breakdown.json": "https://ontopic-public-data.t3.storage.dev/sample-data/demographic-breakdown.json",
+  "histogram.json": "https://ontopic-public-data.t3.storage.dev/sample-data/histogram.json",
+  "state-bar-sortable.json": "https://ontopic-public-data.t3.storage.dev/sample-data/state-bar-sortable.json",
+  "multiline.json": "https://ontopic-public-data.t3.storage.dev/sample-data/multiline.json",
+  "distribution.json": "https://ontopic-public-data.t3.storage.dev/sample-data/distribution.json",
+  "state-map.json": "https://ontopic-public-data.t3.storage.dev/sample-data/state-map.json",
+  "world-choropleth.json": "https://ontopic-public-data.t3.storage.dev/sample-data/world-choropleth.json",
+  "brfss-dashboard.json": "https://ontopic-public-data.t3.storage.dev/sample-data/brfss-dashboard.json",
+  "gss-small-multiples.json": "https://ontopic-public-data.t3.storage.dev/sample-data/gss-small-multiples.json"
 }

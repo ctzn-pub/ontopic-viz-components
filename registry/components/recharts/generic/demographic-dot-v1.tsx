@@ -18,21 +18,36 @@ import {
     Palette,
     LucideIcon,
 } from 'lucide-react';
-import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/viz/ui/tabs';
+import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/viz/ui/tabs';
+import { useVizTheme } from '@/viz/theme/provider';
 
-interface DataPoint {
-    break_out: string;
+/** One demographic break-out cell (e.g. the "25-34" row of "Age Group"). */
+interface BreakoutDetails {
     value: number;
     confidence_limit_low: number;
     confidence_limit_high: number;
+    [key: string]: unknown;
+}
+
+interface DataPoint extends BreakoutDetails {
+    break_out: string;
     error: [number, number];
     break_out_category: string;
-    [key: string]: any;
 }
 
 interface DemographicDotPlotProps {
-    data: Record<string, any>;
+    /**
+     * Nested record keyed by demographic category, then by break-out:
+     * { "Age Group": { "18-24": { value, confidence_limit_low, confidence_limit_high }, … }, … }
+     */
+    data: Record<string, Record<string, BreakoutDetails | null> | null | undefined>;
     ylabel?: string;
+    /**
+     * Explicit semantic domain for the series color. Defaults to null, which
+     * resolves to the categorical cycle at index 0 — the theme's ink (the
+     * Tufte default). Never inferred from the data.
+     */
+    colorDomain?: 'party' | 'sentiment' | null;
 }
 
 const domains = {
@@ -61,37 +76,28 @@ const domains = {
     Gender: ['Female', 'Male'],
 };
 
-interface CategoryInfo {
-    icon: LucideIcon;
-    color: string;
-}
-
-const categoryReference: Record<string, CategoryInfo> = {
-    'Age Group': { icon: Users, color: 'text-blue-500' },
-    'Education Attained': { icon: GraduationCap, color: 'text-green-500' },
-    Gender: { icon: UserCircle2, color: 'text-purple-500' },
-    'Household Income': { icon: DollarSign, color: 'text-yellow-500' },
-    'Race/Ethnicity': { icon: Palette, color: 'text-red-500' },
+const categoryIcons: Record<string, LucideIcon> = {
+    'Age Group': Users,
+    'Education Attained': GraduationCap,
+    Gender: UserCircle2,
+    'Household Income': DollarSign,
+    'Race/Ethnicity': Palette,
 };
 
-const defaultCategoryInfo: CategoryInfo = {
-    icon: Users,
-    color: 'text-gray-500',
-};
-
-function getCategoryInfo(category: string): CategoryInfo {
-    return categoryReference[category] || defaultCategoryInfo;
-}
-
-interface DemographicCategory extends CategoryInfo {
+interface DemographicCategory {
     key: string;
+    icon: LucideIcon;
     data: DataPoint[];
 }
 
 export default function DemographicDotPlot({
     data,
     ylabel = 'Value (%)',
+    colorDomain = null,
 }: DemographicDotPlotProps) {
+    const { theme, rc, colorFor } = useVizTheme();
+    // null domain + index 0 -> categorical[0] = theme ink (the Tufte default).
+    const seriesColor = colorFor(colorDomain, 'value', 0);
     const [activeTab, setActiveTab] = useState<string | null>(null);
     const [demographicCategories, setDemographicCategories] = useState<DemographicCategory[]>([]);
 
@@ -100,16 +106,17 @@ export default function DemographicDotPlot({
 
         const categories = Object.entries(data)
             .filter(
-                ([_, categoryData]) =>
-                    categoryData &&
-                    typeof categoryData === 'object' &&
-                    Object.values(categoryData).some((value) => value !== null)
+                (entry): entry is [string, Record<string, BreakoutDetails | null>] =>
+                    entry[1] != null &&
+                    typeof entry[1] === 'object' &&
+                    Object.values(entry[1]).some((value) => value !== null)
             )
             .map(([key, categoryData]) => ({
                 key,
-                ...getCategoryInfo(key),
-                data: Object.entries(categoryData as Record<string, any>)
-                    .map(([breakOut, details]: [string, any]) => ({
+                icon: categoryIcons[key] || Users,
+                data: Object.entries(categoryData)
+                    .filter((entry): entry is [string, BreakoutDetails] => entry[1] !== null)
+                    .map(([breakOut, details]): DataPoint => ({
                         break_out: breakOut,
                         ...details,
                         error: [
@@ -135,18 +142,29 @@ export default function DemographicDotPlot({
 
     if (demographicCategories.length === 0) {
         return (
-            <div className="border rounded-lg p-6">
+            <div
+                className="border rounded-lg p-6"
+                style={{ background: rc.surface, borderColor: theme.border }}
+            >
                 <div>
-                    <p className="text-gray-600">No demographic data available</p>
+                    <p style={{ color: rc.muted, fontFamily: rc.fontBody }}>
+                        No demographic data available
+                    </p>
                 </div>
             </div>
         );
     }
 
     return (
-        <div className="border rounded-lg p-6">
+        <div
+            className="border rounded-lg p-6"
+            style={{ background: rc.surface, borderColor: theme.border, color: rc.fg }}
+        >
             <div className="mb-4">
-                <h3 className="text-lg font-semibold flex items-center gap-2">
+                <h3
+                    className="text-lg font-semibold flex items-center gap-2"
+                    style={rc.titleStyle}
+                >
                     <Users className="w-5 h-5" />
                     Demographic Dot Plot with Error Bars
                 </h3>
@@ -154,11 +172,14 @@ export default function DemographicDotPlot({
             <div>
                 <Tabs value={activeTab || undefined} onValueChange={setActiveTab}>
                     <TabsList className="grid w-full" style={{ gridTemplateColumns: `repeat(${demographicCategories.length}, 1fr)` }}>
-                        {demographicCategories.map((category) => {
+                        {demographicCategories.map((category, index) => {
                             const Icon = category.icon;
                             return (
                                 <TabsTrigger key={category.key} value={category.key}>
-                                    <Icon className={`w-4 h-4 mr-2 ${category.color}`} />
+                                    <Icon
+                                        className="w-4 h-4 mr-2"
+                                        style={{ color: colorFor(null, category.key, index) }}
+                                    />
                                     {category.key}
                                 </TabsTrigger>
                             );
@@ -175,18 +196,23 @@ export default function DemographicDotPlot({
                                     margin={{ top: 20, right: 30, left: 20, bottom: 25 }}
                                     className="w-full h-full"
                                 >
-                                    <CartesianGrid strokeDasharray="3 3" />
+                                    <CartesianGrid
+                                        stroke={rc.grid.stroke}
+                                        strokeDasharray={rc.grid.strokeDasharray}
+                                        vertical={rc.grid.vertical}
+                                        horizontal={!rc.grid.hide}
+                                    />
                                     <XAxis
                                         dataKey="break_out"
                                         label={{
                                             value: category.data[0]?.break_out_category || '',
                                             position: 'insideBottom',
                                             offset: -10,
+                                            fill: rc.muted,
                                         }}
                                         interval={0}
                                         tick={{
-                                            fill: 'hsl(var(--foreground))',
-                                            fontSize: 10,
+                                            ...rc.axisTick,
                                             textAnchor: 'end',
                                             dy: 10,
                                         }}
@@ -200,27 +226,25 @@ export default function DemographicDotPlot({
                                             position: 'insideLeft',
                                             offset: 0,
                                             style: { textAnchor: 'middle' },
+                                            fill: rc.muted,
                                         }}
-                                        tick={{ fill: 'hsl(var(--foreground))' }}
+                                        tick={rc.axisTick}
                                     />
                                     <Tooltip
-                                        contentStyle={{
-                                            backgroundColor: 'hsl(var(--background))',
-                                            border: '1px solid hsl(var(--border))',
-                                        }}
+                                        contentStyle={{ ...rc.tooltip, fontFamily: rc.fontBody }}
                                     />
-                                    <Scatter dataKey="value" fill='hsl(var(--foreground))' isAnimationActive={false}>
+                                    <Scatter dataKey="value" fill={seriesColor} isAnimationActive={false}>
                                         <ErrorBar
                                             dataKey="error"
                                             width={4}
                                             strokeWidth={2}
-                                            stroke="grey"
+                                            stroke={rc.muted}
                                         />
                                     </Scatter>
                                 </ScatterChart>
                             </div>
 
-                            <p className="text-sm text-gray-600 text-center">
+                            <p className="text-center" style={rc.sourceStyle}>
                                 Error bars represent 95% confidence intervals
                             </p>
                         </TabsContent>

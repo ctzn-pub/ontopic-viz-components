@@ -1,0 +1,15 @@
+{
+  "id": "demographic-breakdown",
+  "name": "Demographic Breakdown Card",
+  "category": "demographic-breakdowns",
+  "subcategory": "generic",
+  "tags": ["demographics", "confidence-intervals", "toggle", "brfss", "survey"],
+  "description": "A single demographic break-out with 95% confidence intervals and a built-in toggle that cycles the same data through dot, line, and bar forms. Use it for a state-level BRFSS-style envelope where the payload carries its own title, question, and response metadata; for the multi-category tabbed explorer see the tabbed demographic charts.",
+  "sample_data": {
+    "url": "https://ontopic-public-data.t3.storage.dev/sample-data/demographic-breakdown.json",
+    "transform": "passthrough"
+  },
+  "dependencies": ["recharts"],
+  "foldInto": null,
+  "variantLabel": null
+}

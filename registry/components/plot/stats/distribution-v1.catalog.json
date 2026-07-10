@@ -1,0 +1,15 @@
+{
+  "id": "distribution",
+  "name": "Distribution Histogram",
+  "category": "distributions",
+  "subcategory": "generic",
+  "tags": ["histogram", "density", "benchmark", "single-variable"],
+  "description": "A histogram of one numeric field, drawn as a binned area with an outline and an optional dashed benchmark rule (a national average, a policy threshold). Use it to show where the mass of a distribution sits relative to a reference value — the shape answers 'is this common or exceptional?' before any group comparison. The value field is prop-driven (valueKey), so it reads any row-shaped table.",
+  "sample_data": {
+    "url": "https://ontopic-public-data.t3.storage.dev/sample-data/distribution.json",
+    "transform": "passthrough"
+  },
+  "dependencies": ["@observablehq/plot"],
+  "foldInto": null,
+  "variantLabel": null
+}

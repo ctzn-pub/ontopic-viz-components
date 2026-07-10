@@ -1,0 +1,15 @@
+{
+  "id": "brfss-dashboard",
+  "name": "BRFSS Demographic Dashboard",
+  "category": "demographic-breakdowns",
+  "subcategory": "brfss",
+  "tags": ["brfss", "health", "dashboard", "tabs", "prevalence"],
+  "description": "A tabbed dashboard for one BRFSS health measure broken down by demographic axis — age, education, income, race/ethnicity — with a one-click toggle between dot, line, and bar renderings of the same levels. Use it when the question is 'who is most affected?': the tabs let a reader walk one prevalence estimate across every demographic lens without leaving the figure.",
+  "sample_data": {
+    "url": "https://ontopic-public-data.t3.storage.dev/sample-data/brfss-dashboard.json",
+    "transform": "passthrough"
+  },
+  "dependencies": ["recharts", "lucide-react"],
+  "foldInto": null,
+  "variantLabel": null
+}

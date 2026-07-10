@@ -87,7 +87,7 @@ const MultiLine: React.FC<MultiLineProps> = ({
   yFormat = 'number',
   showIndexSlider = true,
 }) => {
-  const { theme, colorScale } = useVizTheme();
+  const { theme, colorScale, rc } = useVizTheme();
   const containerRef = useRef<HTMLDivElement>(null);
   const [sliderIndex, setSliderIndex] = useState<number | null>(null);
 
@@ -209,7 +209,7 @@ const MultiLine: React.FC<MultiLineProps> = ({
       style: {
         background: 'transparent',
         color: theme.fg,
-        fontSize: '12px',
+        fontSize: `${rc.axisTick.fontSize}px`,
         fontFamily: theme.fontBody,
       },
       marks: [
@@ -229,7 +229,7 @@ const MultiLine: React.FC<MultiLineProps> = ({
           x: xKey,
           y: yKey,
           stroke: groupKey,
-          fill: 'white',
+          fill: theme.surface,
           r: 4,
         })),
         Plot.tip(indexedData, Plot.pointerX({
@@ -250,7 +250,7 @@ const MultiLine: React.FC<MultiLineProps> = ({
     return () => {
       chart.remove();
     };
-  }, [indexedData, xKey, yKey, groupKey, selectedGroups, title, subtitle, caption, width, height, yLabel, colorDomain, theme, colorScale, yFormat, showIndexSlider, baseDate]);
+  }, [indexedData, xKey, yKey, groupKey, selectedGroups, title, subtitle, caption, width, height, yLabel, colorDomain, theme, colorScale, rc, yFormat, showIndexSlider, baseDate]);
 
   const handleSliderChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const newValue = Number(e.target.value);

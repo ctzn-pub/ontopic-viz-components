@@ -3,6 +3,7 @@
 import React from 'react';
 import TimeseriesLineV1 from '@/viz/components/recharts/gss/timeseries-line-v1';
 import { SmallMultiples } from '@/viz/components/article/SmallMultiples';
+import { useVizTheme } from '@/viz/theme/provider';
 
 // --- Type Definitions ---
 //
@@ -17,7 +18,7 @@ interface PanelData {
         title: string;
         subtitle?: string;
         source?: { name: string; id?: string };
-        [key: string]: any;
+        [key: string]: unknown;
     };
     dataPoints: Array<{
         year: string | number | null;
@@ -26,9 +27,9 @@ interface PanelData {
         ci_upper?: number;
         n_actual?: number;
         standard_error?: number;
-        [key: string]: any;
+        [key: string]: unknown;
     }>;
-    dataPointMetadata: Array<{ id: string; categories?: string[]; [key: string]: any }>;
+    dataPointMetadata: Array<{ id: string; categories?: string[]; [key: string]: unknown }>;
 }
 
 interface Panel {
@@ -84,9 +85,11 @@ export default function TimeseriesSmallMultiples({
     columns = 2,
     sharedY,
 }: TimeseriesSmallMultiplesProps) {
+    const { rc } = useVizTheme();
+
     if (!panels || panels.length === 0) {
         return (
-            <div className="p-4 text-center text-gray-500">
+            <div className="p-4 text-center" style={{ color: rc.muted }}>
                 No panels provided to small-multiples figure.
             </div>
         );
@@ -99,9 +102,9 @@ export default function TimeseriesSmallMultiples({
                 prose `###` to introduce the grid). For the catalog detail
                 page we DO want a self-contained title, so we add it here. */}
             <div className="mb-2">
-                <h3 className="text-lg font-semibold text-gray-900">{title}</h3>
+                <h3 className="text-lg font-semibold" style={rc.titleStyle}>{title}</h3>
                 {subtitle && (
-                    <p className="text-sm text-gray-600 mt-0.5">{subtitle}</p>
+                    <p className="text-sm mt-0.5" style={rc.subtitleStyle}>{subtitle}</p>
                 )}
             </div>
 

@@ -5,6 +5,7 @@ import { BarChart, Bar, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContaine
 import { Button } from "@/viz/ui/button";
 import { Input } from "@/viz/ui/input";
 import { ArrowUpDown, ChevronDown, ChevronUp } from "lucide-react";
+import { useVizTheme } from '@/viz/theme/provider';
 
 interface StateData {
   state_name: string;
@@ -29,15 +30,24 @@ interface SortedDataItem {
 
 interface StateBarChartProps {
   data: Data;
+  /**
+   * Explicit semantic domain for the bar color. Defaults to null, which
+   * resolves to the categorical cycle at index 0 — the theme's ink (the
+   * Tufte default). Never inferred from the data.
+   */
+  colorDomain?: 'party' | 'sentiment' | null;
 }
 
-export default function StateBarChart({ data }: StateBarChartProps) {
+export default function StateBarChart({ data, colorDomain = null }: StateBarChartProps) {
+  const { rc, colorFor } = useVizTheme();
+  // null domain + index 0 -> categorical[0] = theme ink (the Tufte default).
+  const barColor = colorFor(colorDomain, 'value', 0);
   const [sortOrder, setSortOrder] = useState<'asc' | 'desc'>('desc');
   const [searchTerm, setSearchTerm] = useState('');
   const [isExpanded, setIsExpanded] = useState(false);
 
   const sortedData = Object.entries(data.state_data)
-    .filter((entry): entry is [string, StateData & { overall: number }] => (entry[1] as any).overall !== null)
+    .filter((entry): entry is [string, StateData & { overall: number }] => entry[1].overall !== null)
     .map(([code, data]): SortedDataItem => ({
       code,
       state: data.state_name,
@@ -54,14 +64,14 @@ export default function StateBarChart({ data }: StateBarChartProps) {
   };
 
   return (
-    <div className="w-full">
+    <div className="w-full" style={{ background: rc.surface, color: rc.fg }}>
       <div className="mb-4">
         <div className="flex items-center gap-2 mb-2">
-          <h2 className="text-2xl font-bold">{data.clean_title}</h2>
-          <span className="text-md text-gray-500">({data.year})</span>
+          <h2 className="text-2xl font-bold" style={rc.titleStyle}>{data.clean_title}</h2>
+          <span className="text-md" style={{ color: rc.muted, fontFamily: rc.fontBody }}>({data.year})</span>
         </div>
         <div className="flex items-center gap-2 mb-4">
-          <span className="text-md text-gray-500">{data.question}</span>
+          <span className="text-md" style={{ color: rc.muted, fontFamily: rc.fontBody }}>{data.question}</span>
         </div>
 
         <div className="flex justify-between items-center mb-4">
@@ -81,24 +91,31 @@ export default function StateBarChart({ data }: StateBarChartProps) {
       <div className={`${isExpanded ? 'h-auto' : 'h-[400px]'}`}>
         <ResponsiveContainer width="100%" height={isExpanded ? 800 : 400}>
           <BarChart data={sortedData} layout="vertical" margin={{ right: 20, top: 20, bottom: 40 }}>
-            <CartesianGrid strokeDasharray="3 3" />
+            <CartesianGrid
+              stroke={rc.grid.stroke}
+              strokeDasharray={rc.grid.strokeDasharray}
+              vertical={rc.grid.vertical}
+              horizontal={!rc.grid.hide}
+            />
             <XAxis
               type="number"
-              label={{ value: `Response: ${data.response} (%)`, position: 'bottom', offset: 0 }}
+              label={{ value: `Response: ${data.response} (%)`, position: 'bottom', offset: 0, fill: rc.muted }}
               tickFormatter={(value) => `${value}%`}
+              tick={rc.axisTick}
             />
             <YAxis
               dataKey="state"
               type="category"
               width={180}
               interval={isExpanded ? 0 : 5}
-              tick={{ fontSize: 10 }}
+              tick={rc.axisTick}
             />
             <Tooltip
+              contentStyle={{ ...rc.tooltip, fontFamily: rc.fontBody }}
               formatter={(value: number) => [`${value}%`, `Response: ${data.response}`]}
               labelFormatter={(label: string) => `State: ${label}`}
             />
-            <Bar dataKey="overall" fill="#4A4A4A" />
+            <Bar dataKey="overall" fill={barColor} />
           </BarChart>
         </ResponsiveContainer>
       </div>
@@ -118,7 +135,7 @@ export default function StateBarChart({ data }: StateBarChartProps) {
       </div>
 
       <div className="flex items-center gap-2 mt-6">
-        <span className="text-sm text-gray-500">Source: CDC Behavioral Risk Factor Surveillance System</span>
+        <span style={rc.sourceStyle}>Source: CDC Behavioral Risk Factor Surveillance System</span>
       </div>
     </div>
   );

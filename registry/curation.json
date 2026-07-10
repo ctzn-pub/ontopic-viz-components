@@ -188,8 +188,9 @@
       "reason": "Picturing American Health promotion: theme-aware, typed, sidecar’d."
     },
     "plot/stats/correlation-heatmap-v1": {
-      "status": "core",
-      "reason": "Only correlation-matrix form in the library today; revisit vs the health-of-americas hierarchical Spearman matrix in Phase 5."
+      "status": "merged",
+      "reason": "Correlation archetype gate (2026-07-09): the ported d3/stats/correlation-matrix-v1 wins — hierarchical ordering, optional context panel, and theme-faithful chrome vs this basic Plot cell grid.",
+      "winner": "d3/stats/correlation-matrix-v1"
     },
     "plot/stats/demographic-panel-v1": {
       "status": "parked",
@@ -292,8 +293,8 @@
       "reason": "World choropleth archetype; the clean one of the two world maps. Needs theme + sidecar (Phase 6)."
     },
     "plot/wb/world-map-v1": {
-      "status": "parked",
-      "reason": "WB Plot family; world-choropleth-v1 is the kept world-map form."
+      "status": "core",
+      "reason": "The rendering engine world-choropleth-v1 wraps — promoted to core with it (2026-07-09) and brought to standard: hexes/text-classes retheme'd, all any casts typed. Folds into the world-choropleth gallery card."
     },
     "recharts/brfss/state-bar-sortable-v1": {
       "status": "core",

@@ -1,0 +1,11 @@
+{
+  "id": "demographic-bar",
+  "name": "Tabbed Demographic Explorer (bars)",
+  "category": "demographic-breakdowns",
+  "subcategory": "generic",
+  "tags": ["demographics", "confidence-intervals", "tabs", "bars"],
+  "description": "The same tabbed demographic explorer drawn with bars instead of a line. Identical data contract to the line form; prefer bars when the values are counts or shares anchored at zero.",
+  "dependencies": ["recharts", "lucide-react"],
+  "foldInto": "demographic-line",
+  "variantLabel": "Bar form"
+}

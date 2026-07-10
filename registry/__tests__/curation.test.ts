@@ -92,15 +92,14 @@ describe('curation ledger contract', () => {
     expect(bad, `\n${bad.join('\n')}`).toEqual([]);
   });
 
-  test('everything on REQUIRES_SIDECAR is core', async () => {
-    // read the sibling test's allowlist by parsing its source — keeps one
-    // source of truth per list without exporting test internals
-    const sidecarTest = readFileSync(resolve(here, 'catalog-sidecar.test.ts'), 'utf8');
-    const listMatch = sidecarTest.match(/const REQUIRES_SIDECAR = \[([\s\S]*?)\];/);
-    expect(listMatch, 'could not locate REQUIRES_SIDECAR in catalog-sidecar.test.ts').toBeTruthy();
-    const stems = [...listMatch![1].matchAll(/'([^']+)'/g)].map((m) => m[1]);
-    expect(stems.length).toBeGreaterThan(0);
-    const notCore = stems.filter((s) => entries[s]?.status !== 'core');
-    expect(notCore, `REQUIRES_SIDECAR stems not core in the ledger:\n${notCore.join('\n')}`).toEqual([]);
+  test('every core component ships a .catalog.json sidecar (core ≡ publishable)', () => {
+    // The sidecar test derives its REQUIRES_SIDECAR list from this ledger's
+    // core set; this asserts the same invariant from the ledger's side so a
+    // core promotion without a sidecar fails loudly here too.
+    const missing = Object.entries(entries)
+      .filter(([, e]) => e.status === 'core')
+      .map(([stem]) => stem)
+      .filter((stem) => !existsSync(resolve(COMPONENTS_ROOT, `${stem}.catalog.json`)));
+    expect(missing, `core components without a sidecar:\n${missing.join('\n')}`).toEqual([]);
   });
 });

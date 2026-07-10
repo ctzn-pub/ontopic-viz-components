@@ -49,6 +49,12 @@ export interface WorldMapProps {
   onCountryClick?: (countryCode: string) => void;
 }
 
+/** Minimal shape of a world-atlas country feature (numeric id, name prop). */
+interface CountryFeature {
+  id?: string | number;
+  properties?: { name?: string };
+}
+
 // ISO3 to ISO numeric code mapping for world-atlas TopoJSON
 // world-atlas uses numeric codes, but our app uses ISO3
 const iso3ToNumeric: Record<string, string> = {
@@ -106,7 +112,7 @@ export const WorldMap: React.FC<WorldMapProps> = ({
   } = labels;
 
   const containerRef = React.useRef<HTMLDivElement>(null);
-  const [worldTopology, setWorldTopology] = React.useState<any>(null);
+  const [worldTopology, setWorldTopology] = React.useState<Parameters<typeof topojson.feature>[0] | null>(null);
   const [loading, setLoading] = React.useState(true);
   const [error, setError] = React.useState<string | null>(null);
 
@@ -157,8 +163,15 @@ export const WorldMap: React.FC<WorldMapProps> = ({
       const focalNumeric = focalCountry ? iso3ToNumeric[focalCountry] : null;
 
       // Extract features from topology
-      const countries = topojson.feature(worldTopology, worldTopology.objects.countries) as any;
-      const countrymesh = topojson.mesh(worldTopology, worldTopology.objects.countries, (a: any, b: any) => a !== b);
+      const countries = topojson.feature(
+        worldTopology,
+        worldTopology.objects.countries,
+      ) as unknown as { features: CountryFeature[] };
+      const countrymesh = topojson.mesh(
+        worldTopology,
+        worldTopology.objects.countries as Parameters<typeof topojson.mesh>[1],
+        (a, b) => a !== b,
+      );
 
       // Format function for values
       const formatValue = (value: number) => {
@@ -175,7 +188,7 @@ export const WorldMap: React.FC<WorldMapProps> = ({
       // Color: explicit prop wins; otherwise theme's sequential ramp.
       // Sequential by default for indicator metrics (HDI, GDP per capita,
       // life expectancy) where the natural reading is low→high.
-      const colorConfig: any = {
+      const colorConfig: Record<string, unknown> = {
         type: 'quantile',
         n: quantiles,
         reverse: reverseColors,
@@ -186,7 +199,7 @@ export const WorldMap: React.FC<WorldMapProps> = ({
       if (colorScheme) {
         colorConfig.scheme = colorScheme;
       } else {
-        colorConfig.range = theme.semantic.sequential;
+        colorConfig.range = [...theme.semantic.sequential];
       }
 
       const plot = Plot.plot({
@@ -200,40 +213,40 @@ export const WorldMap: React.FC<WorldMapProps> = ({
         },
         color: colorConfig,
         marks: [
-          // Base layer - all countries with light fill
+          // Base layer - no-data countries in quiet theme chrome
           Plot.geo(countries.features, {
-            fill: '#e5e7eb',
-            stroke: '#d1d5db',
+            fill: theme.grid,
+            stroke: theme.surface,
             strokeWidth: 0.5,
           }),
           // Data layer - countries with values
-          Plot.geo(countries.features.filter((d: any) => numericToValue.has(d.id)), {
-            fill: (d: any) => numericToValue.get(d.id),
-            stroke: (d: any) => d.id === focalNumeric ? '#1d4ed8' : '#fff',
-            strokeWidth: (d: any) => d.id === focalNumeric ? 2 : 0.5,
+          Plot.geo(countries.features.filter((d: CountryFeature) => numericToValue.has(String(d.id))), {
+            fill: (d: CountryFeature) => numericToValue.get(String(d.id)),
+            stroke: (d: CountryFeature) => (String(d.id) === focalNumeric ? theme.accent : theme.surface),
+            strokeWidth: (d: CountryFeature) => (String(d.id) === focalNumeric ? 2 : 0.5),
           }),
           // Country boundaries
           Plot.geo(countrymesh, {
-            stroke: '#9ca3af',
+            stroke: theme.muted,
             strokeWidth: 0.25,
           }),
           // Focal country highlight outline
           focalNumeric ? Plot.geo(
-            countries.features.filter((d: any) => d.id === focalNumeric),
+            countries.features.filter((d: CountryFeature) => String(d.id) === focalNumeric),
             {
               fill: 'none',
-              stroke: '#1d4ed8',
+              stroke: theme.accent,
               strokeWidth: 2.5,
             }
           ) : null,
           // Interactive tooltips
           Plot.tip(
-            countries.features.filter((d: any) => numericToValue.has(d.id)),
+            countries.features.filter((d: CountryFeature) => numericToValue.has(String(d.id))),
             Plot.pointer(
               Plot.centroid({
-                title: (d: any) => {
-                  const value = numericToValue.get(d.id);
-                  const name = numericToName.get(d.id) || d.properties?.name || 'Unknown';
+                title: (d: CountryFeature) => {
+                  const value = numericToValue.get(String(d.id));
+                  const name = numericToName.get(String(d.id)) || d.properties?.name || 'Unknown';
                   return value !== undefined
                     ? `${name}\n${formatValue(value)}`
                     : `${name}\nNo data`;
@@ -246,13 +259,13 @@ export const WorldMap: React.FC<WorldMapProps> = ({
 
       // Add click handler
       if (onCountryClick) {
-        plot.addEventListener('click', (event: any) => {
+        plot.addEventListener('click', (event: Event) => {
           const target = event.target as SVGElement;
           if (target.tagName === 'path') {
             // Try to find the country from the click event
-            const data = (target as any).__data__;
-            if (data?.id) {
-              const iso3 = numericToIso3.get(data.id);
+            const data = (target as unknown as { __data__?: { id?: string | number } }).__data__;
+            if (data?.id != null) {
+              const iso3 = numericToIso3.get(String(data.id));
               if (iso3) {
                 onCountryClick(iso3);
               }
@@ -269,7 +282,9 @@ export const WorldMap: React.FC<WorldMapProps> = ({
     } catch (err) {
       console.error('Error rendering world map:', err);
       if (containerRef.current) {
-        containerRef.current.innerHTML = `<div class="text-red-500 p-4">Error rendering map</div>`;
+        containerRef.current.textContent = 'Error rendering map';
+        containerRef.current.style.color = theme.semantic.sentiment.negative;
+        containerRef.current.style.padding = '16px';
       }
     }
   }, [worldTopology, data, width, height, colorScheme, quantiles, reverseColors, projection, focalCountry, labels, onCountryClick, valuePrefix, valueSuffix, legendLabel, theme]);
@@ -277,14 +292,20 @@ export const WorldMap: React.FC<WorldMapProps> = ({
   if (loading) {
     return (
       <div className={`flex items-center justify-center ${className}`} style={{ minHeight: height }}>
-        <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-blue-600"></div>
+        <div
+          className="animate-spin rounded-full h-12 w-12 border-b-2"
+          style={{ borderColor: theme.accent }}
+        ></div>
       </div>
     );
   }
 
   if (error) {
     return (
-      <div className={`flex items-center justify-center text-red-500 ${className}`} style={{ minHeight: height }}>
+      <div
+        className={`flex items-center justify-center ${className}`}
+        style={{ minHeight: height, color: theme.semantic.sentiment.negative }}
+      >
         Error loading map: {error}
       </div>
     );
@@ -292,10 +313,22 @@ export const WorldMap: React.FC<WorldMapProps> = ({
 
   return (
     <div className={className}>
-      {title && <h3 className="text-lg font-semibold mb-1">{title}</h3>}
-      {subtitle && <p className="text-sm text-gray-600 dark:text-gray-400 mb-3">{subtitle}</p>}
+      {title && (
+        <h3 className="text-lg font-semibold mb-1" style={{ color: theme.fg, fontFamily: theme.fontTitle }}>
+          {title}
+        </h3>
+      )}
+      {subtitle && (
+        <p className="text-sm mb-3" style={{ color: theme.muted }}>
+          {subtitle}
+        </p>
+      )}
       <div ref={containerRef} className="w-full" style={{ minHeight: height }} />
-      {caption && <p className="text-xs text-gray-500 dark:text-gray-500 mt-2">{caption}</p>}
+      {caption && (
+        <p className="text-xs mt-2" style={{ color: theme.muted }}>
+          {caption}
+        </p>
+      )}
     </div>
   );
 };

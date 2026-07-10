@@ -1,0 +1,15 @@
+{
+  "id": "state-map",
+  "name": "US State Choropleth",
+  "category": "maps",
+  "subcategory": "us-states",
+  "tags": ["choropleth", "states", "quantile", "national-average"],
+  "description": "A US state choropleth with quantile color bins, hover tooltips, and an optional national-average headline number above the map. Values join to states by full state name. The ramp defaults to the active theme's diverging palette — most state-level policy and health metrics read best against a national center — and a D3 scheme name can override it. Use it when the story is geographic variation in one number.",
+  "sample_data": {
+    "url": "https://ontopic-public-data.t3.storage.dev/sample-data/state-map.json",
+    "transform": "passthrough"
+  },
+  "dependencies": ["@observablehq/plot", "topojson-client"],
+  "foldInto": null,
+  "variantLabel": null
+}

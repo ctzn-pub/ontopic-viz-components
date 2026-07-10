@@ -1,0 +1,15 @@
+{
+  "id": "gss-time-trend",
+  "name": "GSS Time Trend",
+  "category": "time-series",
+  "subcategory": "gss",
+  "tags": ["gss", "survey", "trend", "party", "confidence-interval"],
+  "description": "The canonical survey time-trend chart: demographic group lines across GSS survey years, with presidential-term bands, a 95% confidence-interval toggle, and identity-coded party colors. The gallery preview passes the data envelope only; the chart reads the demographic split and its groups from the payload's own dataPointMetadata. A compact mode strips the chrome for small-multiples grids.",
+  "sample_data": {
+    "url": "https://ontopic-public-data.t3.storage.dev/sample-data/gss-time-trend.json",
+    "transform": "passthrough"
+  },
+  "dependencies": ["recharts", "@radix-ui/react-switch", "@radix-ui/react-label"],
+  "foldInto": null,
+  "variantLabel": null
+}

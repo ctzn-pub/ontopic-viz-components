@@ -6,6 +6,9 @@
     "paths": {
       "@/viz/*": [
         "registry/*"
+      ],
+      "@/components/ui/*": [
+        "registry/ui/*"
       ]
     },
     "noEmit": true,
@@ -54,6 +57,20 @@
     "registry/components/d3/stats/score-gauge-v1.tsx",
     "registry/components/d3/stats/gradient-slopes-v1.tsx",
     "registry/components/d3/stats/correlation-matrix-v1.tsx",
-    "registry/components/d3/stats/canvas-scatter-v1.tsx"
+    "registry/components/d3/stats/canvas-scatter-v1.tsx",
+    "registry/components/recharts/generic/timeseries-economic-v1.tsx",
+    "registry/components/recharts/generic/timeseries-index-v1.tsx",
+    "registry/components/recharts/generic/demographic-line-v1.tsx",
+    "registry/components/recharts/generic/demographic-bar-v1.tsx",
+    "registry/components/recharts/generic/demographic-dot-v1.tsx",
+    "registry/components/recharts/generic/demographic-breakdown-v1.tsx",
+    "registry/components/recharts/generic/histogram-v1.tsx",
+    "registry/components/recharts/brfss/state-bar-sortable-v1.tsx",
+    "registry/components/plot/stats/distribution-v1.tsx",
+    "registry/components/plot/geo/state-map-v1.tsx",
+    "registry/components/plot/wb/world-choropleth-v1.tsx",
+    "registry/components/composite/brfss/brfss-dashboard-v1.tsx",
+    "registry/components/composite/gss/timeseries-small-multiples-v1.tsx",
+    "registry/components/plot/wb/world-map-v1.tsx"
   ]
 }

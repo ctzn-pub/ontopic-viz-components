@@ -1,0 +1,15 @@
+{
+  "id": "timeseries-index",
+  "name": "Indexed Comparison",
+  "category": "time-series",
+  "subcategory": "generic",
+  "tags": ["indexed", "comparison", "growth", "recession", "brush"],
+  "description": "Two series rebased to zero percent at the start of the visible window so their growth compares directly, with recession shading, time-range presets, and a brush. Pick it when the units differ but relative change is the story.",
+  "sample_data": {
+    "url": "https://ontopic-public-data.t3.storage.dev/sample-data/timeseries-index.json",
+    "transform": "passthrough"
+  },
+  "dependencies": ["recharts", "@radix-ui/react-slot", "class-variance-authority"],
+  "foldInto": null,
+  "variantLabel": null
+}

@@ -137,7 +137,7 @@ export function SmallMultiples({
 
 /**
  * SmallMultiplesLegendItem — small helper for building the shared legend.
- * Use as: <SmallMultiplesLegendItem color="#2196f3" label="College" />
+ * Use as: <SmallMultiplesLegendItem color={someThemeColor} label="College" />
  */
 export function SmallMultiplesLegendItem({
   color,

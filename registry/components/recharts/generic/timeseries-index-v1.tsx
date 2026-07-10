@@ -1,21 +1,20 @@
 'use client'
 
 import React, { useState, useMemo } from 'react';
-import { 
-  LineChart, 
-  Line, 
-  XAxis, 
-  YAxis, 
-  CartesianGrid, 
-  Tooltip, 
-  ResponsiveContainer, 
-  ReferenceArea, 
+import {
+  LineChart,
+  Line,
+  XAxis,
+  YAxis,
+  CartesianGrid,
+  Tooltip,
+  ResponsiveContainer,
+  ReferenceArea,
   Legend,
-  Brush 
+  Brush
 } from 'recharts';
 import { Button } from "@/viz/ui/button";
-import { Grid3X3 } from 'lucide-react';
-import { useTheme } from 'next-themes';
+import { useVizTheme } from '@/viz/theme/provider';
 
 type TimeRange = '1Y' | '2Y' | '5Y' | 'MAX';
 
@@ -54,16 +53,28 @@ interface TimeRangeButtonProps {
 interface IndexChartProps {
   series1: DataSeries;
   series2: DataSeries;
+  /**
+   * Explicit semantic domain for the two series colors. Defaults to null —
+   * the theme's categorical cycle (ink first, then grey), the restrained
+   * default for a two-line comparison. Never inferred from the data.
+   */
+  colorDomain?: 'party' | 'sentiment' | null;
 }
 
 interface TooltipProps {
   active?: boolean;
   payload?: Array<{
     dataKey: string;
-    value: number;
+    value: number | null;
     payload: ChartDataPoint;
   }>;
   label?: string;
+}
+
+// The slice of Recharts' Brush onChange argument this chart reads.
+interface BrushRange {
+  startIndex?: number;
+  endIndex?: number;
 }
 
 interface SeriesComparisonProps {
@@ -71,6 +82,7 @@ interface SeriesComparisonProps {
   series2: DataSeries;
   title?: string;
   description?: string;
+  colorDomain?: 'party' | 'sentiment' | null;
 }
 
 const TimeRangeButton: React.FC<TimeRangeButtonProps> = ({ active, onClick, children }) => (
@@ -78,25 +90,26 @@ const TimeRangeButton: React.FC<TimeRangeButtonProps> = ({ active, onClick, chil
     variant={active ? "default" : "ghost"}
     size="sm"
     onClick={onClick}
-    className={`transition-all ${active ? 'bg-blue-500 text-white hover:bg-blue-600' : 'hover:bg-gray-100'}`}
+    className="transition-all"
   >
     {children}
   </Button>
 );
 
-const IndexChart: React.FC<IndexChartProps> = ({ series1, series2 }) => {
+const IndexChart: React.FC<IndexChartProps> = ({ series1, series2, colorDomain = null }) => {
   const [timeRange, setTimeRange] = useState<TimeRange>('MAX');
-  const [showRecessions, setShowRecessions] = useState(true);
+  const [showRecessions] = useState(true);
   const [brushDomain, setBrushDomain] = useState<{ start: number; end: number } | null>(null);
-  const { theme } = useTheme();
+  const { rc, colorFor } = useVizTheme();
 
+  // Two-series comparison without a semantic mapping resolves to the theme's
+  // categorical cycle: index 0 = ink, index 1 = the theme's second cycle
+  // color. A semantic colorDomain (e.g. 'party' with party-named titles)
+  // resolves both through the fixed lookup instead.
   const colors = {
-    series1: '#4299e1', // original blue
-    series2: '#f59e0b', // original amber
+    series1: colorFor(colorDomain, series1.title, 0),
+    series2: colorFor(colorDomain, series2.title, 1),
   };
-
-  console.log('series1:', series1);
-  console.log('series2:', series2);
 
   const recessionPeriods: RecessionPeriod[] = [
     { start: "1960-04-01", end: "1961-02-01" },
@@ -134,7 +147,7 @@ const IndexChart: React.FC<IndexChartProps> = ({ series1, series2 }) => {
     };
 
     startDate = ranges[timeRange]();
-    
+
     const filteredSeries1 = series1Data.filter(item => new Date(item.date) >= startDate);
     const filteredSeries2 = series2Data.filter(item => new Date(item.date) >= startDate);
 
@@ -172,11 +185,11 @@ const IndexChart: React.FC<IndexChartProps> = ({ series1, series2 }) => {
     return `${month} ${year}`;
   };
 
-  const handleBrushChange = (domain: any) => {
-    if (domain && domain.startIndex !== undefined && domain.endIndex !== undefined) {
+  const handleBrushChange = (range: BrushRange) => {
+    if (range && range.startIndex !== undefined && range.endIndex !== undefined) {
       setBrushDomain({
-        start: domain.startIndex,
-        end: domain.endIndex
+        start: range.startIndex,
+        end: range.endIndex
       });
     }
   };
@@ -184,17 +197,17 @@ const IndexChart: React.FC<IndexChartProps> = ({ series1, series2 }) => {
   const CustomTooltip: React.FC<TooltipProps> = ({ active, payload, label }) => {
     if (active && payload && payload.length && label) {
       return (
-        <div className="bg-background p-4 rounded-lg shadow-lg border border-border">
-          <p className="font-bold text-foreground">{formatDate(label)}</p>
+        <div className="p-4 rounded-lg shadow-lg" style={{ ...rc.tooltip, fontFamily: rc.fontBody }}>
+          <p className="font-bold">{formatDate(label)}</p>
           {payload.map((entry) => {
             const color = entry.dataKey === series1.title ? colors.series1 : colors.series2;
             return (
               <div key={entry.dataKey} className="mt-1">
-                <p className="text-sm text-muted-foreground flex items-center">
+                <p className="text-sm flex items-center" style={{ color: rc.muted }}>
                   <span className="w-2 h-2 rounded-full mr-2" style={{ backgroundColor: color }}></span>
                   <span>{entry.dataKey}:</span>
                   <span className="ml-1 font-medium" style={{ color }}>
-                    {entry.value.toFixed(2)}%
+                    {entry.value != null ? `${entry.value.toFixed(2)}%` : 'N/A'}
                   </span>
                 </p>
               </div>
@@ -207,14 +220,14 @@ const IndexChart: React.FC<IndexChartProps> = ({ series1, series2 }) => {
   };
 
   return (
-    <div className="w-full bg-background shadow-lg rounded-lg border">
+    <div className="w-full shadow-lg rounded-lg border" style={{ background: rc.surface, borderColor: rc.grid.stroke }}>
       <div className="pb-0 p-6">
         <div className="flex flex-col md:flex-row justify-between items-start space-y-4 md:space-y-0 md:space-x-4">
           <div>
-            <h3 className="text-2xl font-bold text-foreground">
+            <h3 className="text-2xl font-bold" style={rc.titleStyle}>
               Index Chart
             </h3>
-            <div className="text-gray-600 text-sm mt-2">
+            <div className="text-sm mt-2" style={rc.subtitleStyle}>
               {series1.title} vs {series2.title}
             </div>
           </div>
@@ -240,7 +253,7 @@ const IndexChart: React.FC<IndexChartProps> = ({ series1, series2 }) => {
               data={filteredData}
               margin={{ top: 30, right: 30, left: 0, bottom: 20 }}
             >
-              <Legend 
+              <Legend
                 verticalAlign="top"
                 align="left"
                 height={36}
@@ -249,20 +262,21 @@ const IndexChart: React.FC<IndexChartProps> = ({ series1, series2 }) => {
                   paddingBottom: '60px'
                 }}
                 formatter={(value) => (
-                  <span className="text-sm text-muted-foreground">{value}</span>
+                  <span className="text-sm" style={{ color: rc.muted, fontFamily: rc.fontBody }}>{value}</span>
                 )}
               />
               <CartesianGrid
-                strokeDasharray="3 3"
-                className="stroke-muted"
-                vertical={false}
+                stroke={rc.grid.stroke}
+                strokeDasharray={rc.grid.strokeDasharray}
+                vertical={rc.grid.vertical}
+                horizontal={!rc.grid.hide}
               />
               <XAxis
                 dataKey="date"
                 axisLine={false}
                 tickLine={false}
                 tickFormatter={formatDate}
-                tick={{ fill: theme === 'dark' ? '#9CA3AF' : '#6B7280', fontSize: 12 }}
+                tick={rc.axisTick}
                 dy={10}
                 minTickGap={5}
                 interval="preserveStartEnd"
@@ -272,19 +286,20 @@ const IndexChart: React.FC<IndexChartProps> = ({ series1, series2 }) => {
                 axisLine={false}
                 tickLine={false}
                 tickFormatter={(value) => `${value}%`}
-                tick={{ fill: theme === 'dark' ? '#9CA3AF' : '#6B7280', fontSize: 12 }}
+                tick={rc.axisTick}
                 width={60}
                 dx={-10}
               />
               <Tooltip content={<CustomTooltip />} />
+              {/* NBER recession bands — the theme's gridline tone at low
+                  opacity: visible context, never competing with the lines. */}
               {showRecessions && recessionPeriods.map((period, index) => (
                 <ReferenceArea
                   key={index}
                   x1={period.start}
                   x2={period.end}
-                  className="fill-muted"
+                  fill={rc.grid.stroke}
                   fillOpacity={0.4}
-                  alwaysShow={true}
                   ifOverflow="visible"
                 />
               ))}
@@ -292,7 +307,7 @@ const IndexChart: React.FC<IndexChartProps> = ({ series1, series2 }) => {
                 type="monotone"
                 dataKey={series1.title}
                 stroke={colors.series1}
-                strokeWidth={2}
+                strokeWidth={rc.stroke}
                 dot={false}
                 activeDot={{ r: 6, fill: colors.series1 }}
               />
@@ -300,14 +315,15 @@ const IndexChart: React.FC<IndexChartProps> = ({ series1, series2 }) => {
                 type="monotone"
                 dataKey={series2.title}
                 stroke={colors.series2}
-                strokeWidth={2}
+                strokeWidth={rc.stroke}
                 dot={false}
                 activeDot={{ r: 6, fill: colors.series2 }}
               />
               <Brush
                 dataKey="date"
                 height={40}
-                stroke="#8884d8"
+                stroke={rc.muted}
+                fill={rc.surface}
                 tickFormatter={formatDate}
                 onChange={handleBrushChange}
                 startIndex={brushDomain?.start}
@@ -338,21 +354,24 @@ const IndexChart: React.FC<IndexChartProps> = ({ series1, series2 }) => {
   );
 };
 
-const SeriesComparison: React.FC<SeriesComparisonProps> = ({ 
-  series1, 
-  series2, 
+const SeriesComparison: React.FC<SeriesComparisonProps> = ({
+  series1,
+  series2,
   title = "Series Comparison",
-  description 
+  description,
+  colorDomain = null
 }) => {
+  const { rc } = useVizTheme();
   return (
     <div className="w-full max-w-7xl mx-auto p-4">
-      <h2 className="text-2xl font-bold mb-4">{title}</h2>
+      <h2 className="text-2xl font-bold mb-4" style={rc.titleStyle}>{title}</h2>
       <IndexChart
         series1={series1}
         series2={series2}
+        colorDomain={colorDomain}
       />
       {description && (
-        <div className="mt-4 text-sm text-gray-600">
+        <div className="mt-4 text-sm" style={{ color: rc.muted, fontFamily: rc.fontBody }}>
           <p>{description}</p>
         </div>
       )}

@@ -1,0 +1,15 @@
+{
+  "id": "state-bar-sortable",
+  "name": "Sortable State Ranking",
+  "category": "demographic-breakdowns",
+  "subcategory": "brfss",
+  "tags": ["states", "ranking", "sortable", "search", "brfss"],
+  "description": "All fifty states ranked on one indicator as horizontal bars, with search, ascending/descending sort, and an expand toggle that reveals every state label. Use it when the reader's first question is where their own state stands.",
+  "sample_data": {
+    "url": "https://ontopic-public-data.t3.storage.dev/sample-data/state-bar-sortable.json",
+    "transform": "passthrough"
+  },
+  "dependencies": ["recharts", "lucide-react"],
+  "foldInto": null,
+  "variantLabel": null
+}

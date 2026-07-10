@@ -1,0 +1,15 @@
+{
+  "id": "demographic-line",
+  "name": "Tabbed Demographic Explorer",
+  "category": "demographic-breakdowns",
+  "subcategory": "generic",
+  "tags": ["demographics", "confidence-intervals", "tabs", "brfss", "survey"],
+  "description": "A tabbed demographic profile of one indicator: switch between age, education, income, race/ethnicity, and gender break-outs, each drawn as a line with 95% confidence-interval whiskers. Pick it when you want a reader to explore how a single rate varies across every major demographic lens without five separate charts. Bar and dot forms are available as variants.",
+  "sample_data": {
+    "url": "https://ontopic-public-data.t3.storage.dev/sample-data/demographic-line.json",
+    "transform": "passthrough"
+  },
+  "dependencies": ["recharts", "lucide-react"],
+  "foldInto": null,
+  "variantLabel": null
+}

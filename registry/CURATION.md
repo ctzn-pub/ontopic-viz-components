@@ -11,8 +11,8 @@ one winner per chart archetype). Statuses:
 |---|---|---|
 | `core` | Kept; brought to full standard (theme-aware, typed, `.catalog.json` sidecar) | 47 |
 | `foundation` | Kept + maintained; not a gallery chart card, so exempt from the sidecar requirement (article/book MDX blocks) | 18 |
-| `merged` | Dedupe loser; its `winner` absorbs any unique features. Physically moved to `registry/legacy/` | 16 |
-| `parked` | Potentially useful, not in the curated cut; moved to `registry/legacy/` untouched | 35 |
+| `merged` | Dedupe loser; its `winner` absorbs any unique features. Physically moved to `registry/legacy/` | 17 |
+| `parked` | Potentially useful, not in the curated cut; moved to `registry/legacy/` untouched | 34 |
 | `retired` | No future; deleted only after the ctzn-pub mirror re-sync confirms no consumers | 0 |
 
 ## The core set
@@ -100,6 +100,32 @@ Distribution) already have registry descendants; StorySig is decorative, not cha
 core; MapChoropleth's feature-state pattern belongs in `maplibre/geo/choropleth-v1`.
 A new sidecar category `indicators-and-matrices` covers the gauge/matrix forms — the ctzn-pub
 gallery rail needs a matching label at Phase 7.
+
+## Core polish complete — 2026-07-09 (Phase 6)
+
+Every `core` component now meets the full standard: theme-aware (zero color/font/size
+literals — the preview's theme-review queue went 40 → 0), typed (no `any`), sidecar'd with
+reachable Tigris sample data. Notable calls:
+
+- The **flagship** `recharts/gss/timeseries-line-v1` lost its hardcoded CATEGORICAL_COLORS
+  (theme cycle now) and its `any` casts; `demographicGroups`/`demographic` became optional
+  (derived from `dataPointMetadata`) so a data-only gallery render works. Sidecar id
+  `gss-time-trend`.
+- The **demographic trio** (line/bar/dot) share one contract → `demographic-line` is the
+  card, bar/dot fold in as variants. `demographic-breakdown` has a different envelope and
+  stays its own card.
+- `plot/stats/distribution-v1` dropped a dead `@/lib/duckdb` import (module never existed
+  here) and is now purely data-prop driven.
+- `plot/wb/world-map-v1` was promoted to core with `world-choropleth` (it's the engine the
+  choropleth wraps; folds into that card). Both geo maps runtime-fetch their TopoJSON from
+  unpkg (overridable by prop).
+- `plot/stats/correlation-heatmap-v1` → merged; the ported `d3/stats/correlation-matrix-v1`
+  wins the correlation archetype.
+- **REQUIRES_SIDECAR is now derived from this ledger's core set** (catalog-sidecar.test.ts)
+  — promoting a component to core makes its sidecar mandatory in the same change.
+- All merged/parked components physically moved to `registry/legacy/`; the active tree is
+  exactly core + foundation. `docs/INVENTORY.md` is generated
+  (`node scripts/generate-inventory.mjs`) — never hand-edit it.
 
 ## Parked highlights (and how to un-park)
 

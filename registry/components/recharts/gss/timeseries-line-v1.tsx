@@ -26,7 +26,8 @@ interface DataPoint {
     ci_upper?: number;
     n_actual?: number;
     standard_error?: number;
-    [key: string]: any;
+    // demographic columns (e.g. PolParty: "Democrat") ride along untyped
+    [key: string]: unknown;
 }
 
 interface TooltipPayloadItem {
@@ -44,7 +45,20 @@ interface DataPointMetadataItem {
     categories?: string[];
     value_prefix?: string | object;
     value_suffix?: string | object;
-    [key: string]: any;
+    [key: string]: unknown;
+}
+
+// The subset of Recharts' internal chart state a <Customized> render prop
+// receives that we actually read: the axis maps, whose d3 scales let us place
+// the presidential-era labels in pixel space. Everything optional — Recharts
+// hands us far more, we narrow to just this.
+interface CustomizedAxisScale {
+    (value: number): number | undefined;
+    range: () => number[];
+}
+interface CustomizedChartState {
+    xAxisMap?: Record<string, { scale: CustomizedAxisScale }>;
+    yAxisMap?: Record<string, { scale: CustomizedAxisScale }>;
 }
 
 interface ChartData {
@@ -54,7 +68,7 @@ interface ChartData {
         question?: string;
         source?: { name: string; id?: string; };
         observations?: number;
-        [key: string]: any;
+        [key: string]: unknown;
     };
     dataPoints: DataPoint[];
     dataPointMetadata: DataPointMetadataItem[];
@@ -62,14 +76,24 @@ interface ChartData {
 
 interface TimeTrendDemoChartProps {
     data: ChartData;
-    demographicGroups: string[];
-    demographic: string;
+    /**
+     * The demographic groups to draw as series (e.g. ["Democrat", "Republican"]).
+     * Optional: when omitted, derived from the payload's own dataPointMetadata
+     * (the first non-"value" entry that lists `categories`) so a data-only
+     * render — the gallery preview — works without wiring. Explicit props win.
+     */
+    demographicGroups?: string[];
+    /**
+     * The dataPoints field holding the group label (e.g. "PolParty"). Optional
+     * with the same dataPointMetadata-derived fallback as demographicGroups.
+     */
+    demographic?: string;
     defaultVisibleGroups?: string[];
     /**
      * When true, renders a stripped-down version of the chart suitable for
      * small-multiples grids:
-     *   - no card chrome (bg-white, shadow, rounded corners) — the wrapper
-     *     provides the frame
+     *   - no card chrome (surface background, shadow, rounded corners) — the
+     *     wrapper provides the frame
      *   - no internal title / subtitle / question block
      *   - no source line and no CI toggle footer
      *   - no Recharts legend (the wrapper renders one shared legend)
@@ -110,14 +134,6 @@ const presidentialTerms = [
     { start: 2020, end: 2024, party: "Democrat", president: "Biden" },
 ];
 
-// Categorical series palette for NON-semantic breakdowns (and the single-line
-// "Overall" case). Mirrors the generic sibling
-// (recharts/timeseries-line-v1.tsx) so a GSS chart with no party/sentiment
-// domain renders in the same pink-first cycle as the MTF/generic charts.
-// Party / ideology series are NOT colored from here — they go through the
-// theme's semantic `colorFor(domain, …)` (Democrat blue / Republican red).
-const CATEGORICAL_COLORS = ['#DD44AA', '#33BB44', '#44DDFF', '#DDCC22', '#BBBBBB', '#5599CC', '#EE6677'];
-
 // --- Helper Functions ---
 const generateTicks = (start: number, end: number, interval: number): number[] => {
     const ticks: number[] = [];
@@ -140,10 +156,25 @@ const processDataPoint = (d: DataPoint): DataPoint & { year: number | null } => 
 
 // --- Component ---
 export default function TimeTrendDemoChart({
-    data, demographicGroups, demographic, defaultVisibleGroups, compact = false, sharedYDomain,
+    data, demographicGroups: demographicGroupsProp, demographic: demographicProp,
+    defaultVisibleGroups, compact = false, sharedYDomain,
     colorDomain
 }: TimeTrendDemoChartProps) {
     const { rc, colorFor } = useVizTheme();
+
+    // Data-only render support (the gallery preview passes just `data`):
+    // derive the demographic split from the payload's own dataPointMetadata —
+    // the entry matching the explicit `demographic` prop if given, otherwise
+    // the first non-"value" entry that lists categories. Explicit props always
+    // win; this fills gaps, it never overrides.
+    const derivedMeta = data?.dataPointMetadata?.find(m =>
+        demographicProp
+            ? m.id === demographicProp
+            : (m.id !== 'value' && Array.isArray(m.categories) && m.categories.length > 0)
+    );
+    const demographic = demographicProp ?? derivedMeta?.id ?? '';
+    const demographicGroups = demographicGroupsProp ?? derivedMeta?.categories ?? [];
+
     // Explicit author mapping, not data sniffing: a `PolParty` breakdown gets
     // the party domain (Democrat blue / Republican red); anything else falls
     // through to the categorical cycle. An explicit prop wins.
@@ -154,13 +185,17 @@ export default function TimeTrendDemoChart({
     // Series color resolver. Semantic domains (party / sentiment) go through
     // the theme so Democrat/Republican/etc. stay red/blue across themes.
     // Non-semantic series (the single-line "Overall" case, or any breakdown
-    // without a semantic mapping) use the MTF/generic pink-first palette
-    // rather than the theme's restrained ink-first cycle — matching the
-    // generic chart the rest of the app already renders for non-GSS sources.
+    // without a semantic mapping) fall through to the theme's categorical
+    // cycle — ink first, so a lone series renders monochrome (the Tufte
+    // default) and stays consistent with every other chart in the registry.
     const resolveColor = (name: string, index: number): string =>
-        domain
-            ? colorFor(domain, name, index)
-            : CATEGORICAL_COLORS[index % CATEGORICAL_COLORS.length];
+        colorFor(domain, name, index);
+
+    // Type sizes are derived from the theme's axis-tick token, never literal:
+    // compact (small-multiples) panels drop two notches so ~3 tick labels fit
+    // a narrow column; full size drops one for year-by-year density.
+    const tickFontSize = rc.axisTick.fontSize - (compact ? 2 : 1);
+    const legendFontSize = rc.axisTick.fontSize - (compact ? 2 : 0);
 
     // For a single-series timetrend (no demographic split, e.g. /chat),
     // demographicGroups is empty — fall back to the synthetic 'Overall' series
@@ -407,7 +442,7 @@ export default function TimeTrendDemoChart({
                             domain={[xAxisMin, xAxisMax]}
                             allowDataOverflow={true}
                             ticks={xAxisTicks}
-                            tick={{ ...rc.axisTick, fontSize: compact ? 10 : 11 }}
+                            tick={{ ...rc.axisTick, fontSize: tickFontSize }}
                             padding={{ left: 10, right: 10 }}
                             tickFormatter={(year) => String(year)}
                             interval={0}
@@ -421,11 +456,11 @@ export default function TimeTrendDemoChart({
                             domain={yDomain}
                             allowDataOverflow={false}
                             axisLine={false} tickLine={false}
-                            tick={{ ...rc.axisTick, fontSize: compact ? 10 : 11 }}
+                            tick={{ ...rc.axisTick, fontSize: tickFontSize }}
                             width={compact ? 36 : 50}
                         />
 
-                        <Tooltip content={<CustomTooltip />} cursor={{ stroke: rc.muted, strokeWidth: 1, strokeDasharray: '3 3' }} />
+                        <Tooltip content={<CustomTooltip />} cursor={{ stroke: rc.muted, strokeWidth: 1, strokeDasharray: rc.grid.strokeDasharray }} />
 
                         {/* Per-panel legend. In `compact` mode (small-multiples)
                             it renders smaller so each panel gets its own group
@@ -445,7 +480,7 @@ export default function TimeTrendDemoChart({
                                         color: isVisible ? rc.fg : rc.muted,
                                         cursor: 'pointer',
                                         marginLeft: '4px',
-                                        fontSize: compact ? '10px' : '12px',
+                                        fontSize: `${legendFontSize}px`,
                                     }}>{value}</span>
                                 );
                             }}
@@ -491,8 +526,10 @@ export default function TimeTrendDemoChart({
                             space at the band's start, just above the x-axis. */}
                         {!compact && relevantPresidentialTerms.length > 0 && (
                             <Customized
-                                component={(rechartsProps: any) => {
-                                    const { xAxisMap, yAxisMap } = rechartsProps;
+                                component={(chartState: unknown) => {
+                                    // Recharts types the render-prop argument loosely; narrow
+                                    // to the two axis maps we read (see CustomizedChartState).
+                                    const { xAxisMap, yAxisMap } = chartState as CustomizedChartState;
                                     const xAxis = xAxisMap?.[Object.keys(xAxisMap ?? {})[0]];
                                     const yAxis = yAxisMap?.[Object.keys(yAxisMap ?? {})[0]];
                                     if (!xAxis || !yAxis) return null;
@@ -520,7 +557,8 @@ export default function TimeTrendDemoChart({
                                                         key={`term-label-${index}`}
                                                         x={x}
                                                         y={y}
-                                                        fontSize={10}
+                                                        fontSize={rc.axisTick.fontSize - 2}
+                                                        fontFamily={rc.fontBody}
                                                         fontWeight={500}
                                                         fill={rc.muted}
                                                         opacity={0.7}

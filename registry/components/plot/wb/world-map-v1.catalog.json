@@ -1,0 +1,11 @@
+{
+  "id": "world-map",
+  "name": "World Map (engine)",
+  "category": "maps",
+  "subcategory": "world",
+  "tags": ["world", "countries", "topojson", "engine"],
+  "description": "The Plot rendering engine under the world choropleth: quantile-bucketed country fills over the world-atlas TopoJSON with focal-country highlighting and centroid tooltips. Use world-choropleth for the data-first API; reach for this directly when you need the projection, quantile, or click-handler knobs.",
+  "dependencies": ["@observablehq/plot", "topojson-client"],
+  "foldInto": "world-choropleth",
+  "variantLabel": "Engine (full knobs)"
+}

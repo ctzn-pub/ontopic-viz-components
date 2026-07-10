@@ -36,46 +36,18 @@ const ALLOWED_CATEGORIES = new Set([
   'indicators-and-matrices',
 ]);
 
-// Components that MUST ship a sidecar. New components append here.
-const REQUIRES_SIDECAR = [
-  // promoted from "Picturing American Health"
-  'plot/geo/bivariate-choropleth-v1',
-  'plot/geo/county-hexbin-v1',
-  'plot/health/scatter-loess-v1',
-  'plot/stats/disparity-gradient-v1',
-  'plot/stats/forest-plot-v1',
-  'plot/stats/marginal-effect-v1',
-  'plot/stats/paired-bars-v1',
-  'plot/timeseries/state-year-heatmap-v1',
-  // D3/SVG track — the archetype-dedupe winners carrying the canonical
-  // gallery ids (ridge, pca-biplot, parallel-coordinates, slopegraph);
-  // the Plot twins moved to registry/legacy/ (see registry/CURATION.md)
-  'd3/stats/parallel-coordinates-v1',
-  'd3/stats/pca-biplot-v1',
-  'd3/stats/ridge-v1',
-  'd3/timeseries/slopegraph-v1',
-  // upstreamed from ctzn-pub (2026-07-09)
-  'd3/geo/county-choropleth-v1',
-  'd3/stats/caterpillar-v1',
-  'd3/stats/density-curves-v1',
-  'd3/stats/diverging-bars-v1',
-  'd3/stats/dumbbell-v1',
-  'd3/stats/gradient-line-v1',
-  'd3/stats/grouped-bar-v1',
-  'd3/stats/scatter-cloud-v1',
-  'd3/stats/small-multiples-v1',
-  // ported from health-of-americas-zip-codes (2026-07-09)
-  'd3/stats/canvas-scatter-v1',
-  'd3/stats/correlation-matrix-v1',
-  'd3/stats/gradient-slopes-v1',
-  'd3/stats/score-gauge-v1',
-  'd3/stats/strip-ridge-v1',
-  // existing MapLibre set
-  'maplibre/geo/map-v1',
-  'maplibre/geo/choropleth-v1',
-  'maplibre/geo/legend-v1',
-  'maplibre/geo/tooltip-v1',
-];
+// Components that MUST ship a sidecar: exactly the curation ledger's `core`
+// set (registry/curation.json). Derived, not hand-maintained, so the ledger
+// and this gate can never drift — promoting a component to core makes its
+// sidecar mandatory in the same change. `foundation` (article/book MDX
+// blocks) is exempt by design; merged/parked live in registry/legacy/.
+const curationLedger = JSON.parse(
+  readFileSync(resolve(here, '../curation.json'), 'utf8'),
+) as { components: Record<string, { status: string }> };
+const REQUIRES_SIDECAR = Object.entries(curationLedger.components)
+  .filter(([, e]) => e.status === 'core')
+  .map(([stem]) => stem)
+  .sort();
 
 function walk(dir: string, out: string[] = []): string[] {
   for (const name of readdirSync(dir)) {

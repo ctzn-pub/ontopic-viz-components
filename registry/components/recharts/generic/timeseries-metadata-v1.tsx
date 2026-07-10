@@ -93,8 +93,17 @@ export default function TimeSeriesChart({
   const minYear = Math.min(...numericData.map((d) => d.year));
   const maxYear = Math.max(...numericData.map((d) => d.year));
 
-  // Custom tooltip component
-  const CustomTooltip = ({ active, payload, label }: any) => {
+  // Custom tooltip component. Recharts' own tooltip generics are loose, so we
+  // narrow the payload to the point shape this chart actually plots.
+  interface TooltipEntry {
+    payload: Omit<DataPoint, 'year'> & { year: number };
+  }
+  interface CustomTooltipProps {
+    active?: boolean;
+    payload?: TooltipEntry[];
+    label?: string | number;
+  }
+  const CustomTooltip = ({ active, payload, label }: CustomTooltipProps) => {
     if (!active || !payload || !payload.length) return null;
 
     const dataPoint = payload[0].payload;
@@ -106,12 +115,12 @@ export default function TimeSeriesChart({
           {`${valueMetadata?.name}: ${dataPoint.value.toFixed(1)}${valueMetadata?.value_suffix || ''}`}
         </p>
         {dataPoint.ci_lower && dataPoint.ci_upper && (
-          <p style={{ color: rc.muted, fontSize: 12 }}>
+          <p style={{ color: rc.muted, fontSize: rc.sourceStyle.fontSize }}>
             {`95% CI: [${dataPoint.ci_lower.toFixed(1)}, ${dataPoint.ci_upper.toFixed(1)}]${valueMetadata?.value_suffix || ''}`}
           </p>
         )}
         {dataPoint.n_actual && (
-          <p style={{ color: rc.muted, fontSize: 12 }}>
+          <p style={{ color: rc.muted, fontSize: rc.sourceStyle.fontSize }}>
             {`N: ${dataPoint.n_actual.toLocaleString()}`}
           </p>
         )}
@@ -122,7 +131,9 @@ export default function TimeSeriesChart({
   return (
     <div className="w-full" style={{ background: rc.surface }}>
       <div className="mb-2">
-        <h2 style={{ ...rc.titleStyle, fontSize: 22, fontWeight: 700, marginBottom: 4 }}>
+        {/* Title size via the editorial Tailwind ramp (like the GSS sibling);
+            color + family come from the theme's titleStyle. */}
+        <h2 className="text-[22px] leading-tight" style={{ ...rc.titleStyle, fontWeight: 700, marginBottom: 4 }}>
           {metadata.title}
         </h2>
         <p style={{ ...rc.subtitleStyle, marginBottom: 8 }}>{metadata.subtitle}</p>

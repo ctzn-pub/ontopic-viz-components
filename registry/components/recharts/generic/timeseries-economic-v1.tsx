@@ -1,15 +1,7 @@
-'use client' 
-import React, { useState, useEffect, useMemo } from 'react';
-import { LineChart, Line, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer, ReferenceLine, ReferenceArea, Brush } from 'recharts';
-import { Button } from "@/viz/ui/button";
-import { TrendingUp, TrendingDown, Grid3X3 } from 'lucide-react';
-import { useTheme } from 'next-themes';
-
-interface TimeRangeButtonProps {
-  active: boolean;
-  onClick: () => void;
-  children: React.ReactNode;
-}
+'use client'
+import React, { useState, useMemo } from 'react';
+import { LineChart, Line, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer, ReferenceArea, Brush } from 'recharts';
+import { useVizTheme } from '@/viz/theme/provider';
 
 interface DataPoint {
   date: string;
@@ -28,6 +20,12 @@ interface TimeSeriesProps {
       value: string;
     }>;
   };
+  /**
+   * Explicit semantic domain for the series color. Defaults to null, which
+   * resolves to the categorical cycle at index 0 — i.e. the theme's ink
+   * (near-black in `editorial`). Never inferred from the data.
+   */
+  colorDomain?: 'party' | 'sentiment' | null;
 }
 
 interface TooltipProps {
@@ -35,25 +33,6 @@ interface TooltipProps {
   payload?: Array<{ payload: DataPoint }>;
   label?: string;
 }
-
-interface Stats {
-  avg: string;
-  max: string;
-  min: string;
-  trend: number;
-}
-
-type TimeRangeType = '1Y' | '2Y' | '5Y' | 'MAX';
-
-const TimeRangeButton: React.FC<TimeRangeButtonProps> = ({ active, onClick, children }) => (
-  <Button
-    variant={active ? 'default' : 'outline'}
-    size="sm"
-    onClick={onClick}
-  >
-    {children}
-  </Button>
-);
 
 const formatValue = (value: number): string => {
   return value.toLocaleString('en-US');
@@ -63,39 +42,11 @@ const calculatePercentChange = (current: number, previous: number): number => {
   return ((current - previous) / previous) * 100;
 };
 
-const calculateYearOverYear = (data: DataPoint[]): number | null => {
-  if (data.length < 12) return null;
-  const current = data[data.length - 1].value;
-  const yearAgo = data[data.length - 12].value;
-  return calculatePercentChange(current, yearAgo);
-};
-
-const calculate3MonthAverage = (data: DataPoint[]): string | null => {
-  if (data.length < 3) return null;
-  const last3Months = data.slice(-3);
-  const average = last3Months.reduce((sum, point) => sum + point.value, 0) / 3;
-  return average.toFixed(1);
-};
-
-const calculateStats = (data: DataPoint[]): Stats => {
-  if (!data.length) return { avg: '0', max: '0', min: '0', trend: 0 };
-  
-  const values = data.map((d) => d.value);
-  const firstValue = values[0];
-  const lastValue = values[values.length - 1];
-  const trend = calculatePercentChange(lastValue, firstValue);
-
-  return {
-    avg: (values.reduce((a, b) => a + b, 0) / values.length).toFixed(1),
-    max: Math.max(...values).toFixed(1),
-    min: Math.min(...values).toFixed(1),
-    trend
-  };
-};
-
-const TimeSeries: React.FC<TimeSeriesProps> = ({ data }) => {
-  const [showRecessions, setShowRecessions] = useState(true);
-  const { theme } = useTheme();
+const TimeSeries: React.FC<TimeSeriesProps> = ({ data, colorDomain = null }) => {
+  const [showRecessions] = useState(true);
+  const { rc, theme, colorFor } = useVizTheme();
+  // null domain + index 0 -> categorical[0] = theme ink (the Tufte default).
+  const lineColor = colorFor(colorDomain, 'value', 0);
 
   const processedData = useMemo(() => {
     return data.observations.map((item, index, arr) => {
@@ -110,8 +61,6 @@ const TimeSeries: React.FC<TimeSeriesProps> = ({ data }) => {
   }, [data]);
 
   const filteredData = processedData;
-  const stats = calculateStats(filteredData);
-  const currentValue = filteredData[filteredData.length - 1]?.value || 0;
 
   const recessionPeriods = [
     { start: '2020-02-01', end: '2020-04-01' },
@@ -139,25 +88,27 @@ const TimeSeries: React.FC<TimeSeriesProps> = ({ data }) => {
   const CustomTooltip: React.FC<TooltipProps> = ({ active, payload, label }) => {
     if (!active || !payload?.length) return null;
 
-    const data = payload[0].payload;
+    const point = payload[0].payload;
     const date = new Date(label || '').toLocaleDateString('en-US', {
       year: 'numeric',
       month: 'long',
     });
-    const value = formatValue(data.value);
-    const percentChange = data.percentChange.toFixed(1);
-    const color =
-      data.percentChange > 0
-        ? 'text-green-500'
-        : data.percentChange < 0
-        ? 'text-red-500'
-        : 'text-gray-500';
+    const value = formatValue(point.value);
+    const percentChange = point.percentChange.toFixed(1);
+    // Up/down deltas ARE semantic — resolve through the sentiment domain so
+    // "positive" green / "negative" red stay consistent across themes.
+    const changeColor =
+      point.percentChange > 0
+        ? colorFor('sentiment', 'positive')
+        : point.percentChange < 0
+        ? colorFor('sentiment', 'negative')
+        : rc.muted;
 
     return (
-      <div className="bg-popover/80 backdrop-blur p-2 rounded-lg border shadow-lg">
+      <div className="p-2 rounded-lg shadow-lg" style={{ ...rc.tooltip, fontFamily: rc.fontBody }}>
         <div className="text-sm font-medium">{date}</div>
         <div className="text-lg font-bold">{value}</div>
-        <div className={`text-sm ${color}`}>
+        <div className="text-sm" style={{ color: changeColor }}>
           {percentChange}% from previous
         </div>
       </div>
@@ -165,14 +116,17 @@ const TimeSeries: React.FC<TimeSeriesProps> = ({ data }) => {
   };
 
   return (
-    <div className="w-full bg-background shadow-lg rounded-lg border">
+    <div
+      className="w-full shadow-lg rounded-lg border"
+      style={{ background: rc.surface, borderColor: theme.border }}
+    >
       <div className="pb-4 p-6">
         <div className="flex flex-col md:flex-row justify-between items-start space-y-4 md:space-y-0 md:space-x-4">
           <div>
-            <h3 className="text-2xl font-bold text-foreground">
+            <h3 className="text-2xl font-bold" style={rc.titleStyle}>
               {data.short_title || data.title.split(':')[0]}
             </h3>
-            <p className="text-sm text-gray-600 mt-1">
+            <p className="text-sm mt-1" style={rc.subtitleStyle}>
               {data.title}
             </p>
           </div>
@@ -186,60 +140,63 @@ const TimeSeries: React.FC<TimeSeriesProps> = ({ data }) => {
               margin={{ top: 20, right: 30, left: 50, bottom: 0 }}
             >
               <CartesianGrid
-                strokeDasharray="3 3"
-                className="stroke-muted"
-                vertical={false}
+                stroke={rc.grid.stroke}
+                strokeDasharray={rc.grid.strokeDasharray}
+                vertical={rc.grid.vertical}
+                horizontal={!rc.grid.hide}
               />
               <XAxis
                 dataKey="date"
                 tickFormatter={formatDate}
                 minTickGap={30}
-                tick={{ fill: theme === 'dark' ? '#9CA3AF' : '#6B7280' }}
+                tick={rc.axisTick}
               />
               <YAxis
                 domain={['auto', 'auto']}
                 tickFormatter={formatValue}
-                tick={{ fill: theme === 'dark' ? '#9CA3AF' : '#6B7280' }}
+                tick={rc.axisTick}
               />
               <Tooltip content={<CustomTooltip />} />
               <Line
                 type="monotone"
                 dataKey="value"
                 dot={false}
-                stroke="#4299e1"
-                strokeWidth={2}
+                stroke={lineColor}
+                strokeWidth={rc.stroke}
               />
               <Brush
                 dataKey="date"
                 height={30}
-                stroke="#8884d8"
-                fill="#fff"
+                stroke={rc.muted}
+                fill={rc.surface}
                 tickFormatter={formatDate}
                 travellerWidth={10}
                 startIndex={0}
                 endIndex={filteredData.length - 1}
               >
                 <LineChart>
-                  <Line dataKey="value" stroke="#4299e1" dot={false} />
+                  <Line dataKey="value" stroke={lineColor} dot={false} />
                   {showRecessions && recessionPeriods.map((period, index) => (
                 <ReferenceArea
                   key={index}
                   x1={period.start}
                   x2={period.end}
-                  fill="currentColor"
-                  fillOpacity={0.1}
+                  fill={rc.muted}
+                  fillOpacity={0.12}
                   strokeOpacity={0}
                 />
               ))}
                 </LineChart>
               </Brush>
+              {/* NBER recession bands — quiet chrome: the theme's muted tone
+                  at low opacity, no outline, so the data line stays primary. */}
               {showRecessions && recessionPeriods.map((period, index) => (
                 <ReferenceArea
                   key={index}
                   x1={period.start}
                   x2={period.end}
-                  fill="currentColor"
-                  fillOpacity={0.1}
+                  fill={rc.muted}
+                  fillOpacity={0.12}
                   strokeOpacity={0}
                 />
               ))}

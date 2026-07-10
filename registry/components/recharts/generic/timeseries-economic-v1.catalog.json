@@ -1,0 +1,15 @@
+{
+  "id": "timeseries-economic",
+  "name": "Economic Time Series",
+  "category": "time-series",
+  "subcategory": "generic",
+  "tags": ["economic", "recession", "brush", "fred", "monthly"],
+  "description": "A monthly economic-indicator line with NBER recession shading and a brush for zooming into a date range. Built for FRED-style series where the question is how an indicator moved through business cycles.",
+  "sample_data": {
+    "url": "https://ontopic-public-data.t3.storage.dev/sample-data/timeseries-economic.json",
+    "transform": "passthrough"
+  },
+  "dependencies": ["recharts"],
+  "foldInto": null,
+  "variantLabel": null
+}

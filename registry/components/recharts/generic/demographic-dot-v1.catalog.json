@@ -1,0 +1,11 @@
+{
+  "id": "demographic-dot",
+  "name": "Tabbed Demographic Explorer (dot plot)",
+  "category": "demographic-breakdowns",
+  "subcategory": "generic",
+  "tags": ["demographics", "confidence-intervals", "tabs", "dot-plot"],
+  "description": "The same tabbed demographic explorer drawn as a dot plot. Identical data contract to the line form; the quietest choice when the break-outs are unordered categories rather than an ordered scale.",
+  "dependencies": ["recharts", "lucide-react"],
+  "foldInto": "demographic-line",
+  "variantLabel": "Dot form"
+}

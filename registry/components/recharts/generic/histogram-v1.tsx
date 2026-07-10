@@ -12,6 +12,7 @@ import {
   ResponsiveContainer,
   ReferenceLine
 } from 'recharts';
+import { useVizTheme } from '@/viz/theme/provider';
 
 export interface HistogramProps {
   data: Record<string, unknown>[];
@@ -22,7 +23,14 @@ export interface HistogramProps {
   xlabel?: string;
   ylabel?: string;
   title?: string;
+  /** Optional explicit bar color. Leave unset to resolve from the theme. */
   color?: string;
+  /**
+   * Explicit semantic domain for the bar color. Defaults to null, which
+   * resolves to the categorical cycle at index 0 — the theme's ink (the
+   * Tufte default). Never inferred from the data.
+   */
+  colorDomain?: 'party' | 'sentiment' | null;
   showMean?: boolean;
   showMedian?: boolean;
 }
@@ -66,10 +74,17 @@ export default function HistogramRecharts({
   xlabel = 'Value',
   ylabel = 'Frequency',
   title,
-  color = 'hsl(var(--primary))',
+  color,
+  colorDomain = null,
   showMean = true,
   showMedian = false
 }: HistogramProps) {
+  const { rc, colorFor } = useVizTheme();
+  // null domain + index 0 -> categorical[0] = theme ink (the Tufte default).
+  const barColor = color ?? colorFor(colorDomain, 'value', 0);
+  const meanColor = rc.accent;
+  const medianColor = rc.muted;
+
   // Extract numeric values from data array
   const numericData = useMemo(() => {
     return data
@@ -95,10 +110,10 @@ export default function HistogramRecharts({
     if (active && payload && payload.length) {
       const d = payload[0].payload;
       return (
-        <div className="bg-white dark:bg-gray-800 p-3 border rounded shadow-lg">
+        <div style={{ ...rc.tooltip, fontFamily: rc.fontBody, padding: 12, borderRadius: 4 }}>
           <p className="font-semibold">{d.bin}</p>
           <p className="text-sm">Count: {d.count}</p>
-          <p className="text-xs text-muted-foreground">
+          <p className="text-xs" style={{ color: rc.muted }}>
             Range: [{d.binStart.toFixed(2)}, {d.binEnd.toFixed(2)})
           </p>
         </div>
@@ -109,39 +124,52 @@ export default function HistogramRecharts({
 
   if (numericData.length === 0) {
     return (
-      <div className="w-full p-4 text-center text-muted-foreground">
+      <div className="w-full p-4 text-center" style={{ color: rc.muted, fontFamily: rc.fontBody }}>
         No valid numeric data found for field: {valueField}
       </div>
     );
   }
 
   return (
-    <div className="w-full">
-      {title && <h3 className="text-lg font-semibold mb-4">{title}</h3>}
+    <div className="w-full" style={{ background: rc.surface }}>
+      {title && (
+        <h3 className="text-lg font-semibold mb-4" style={rc.titleStyle}>
+          {title}
+        </h3>
+      )}
       <ResponsiveContainer width={width || '100%'} height={height}>
         <BarChart data={histogramData} margin={{ top: 20, right: 30, left: 20, bottom: 60 }}>
-          <CartesianGrid strokeDasharray="3 3" />
+          <CartesianGrid
+            stroke={rc.grid.stroke}
+            strokeDasharray={rc.grid.strokeDasharray}
+            vertical={rc.grid.vertical}
+            horizontal={!rc.grid.hide}
+          />
           <XAxis
             dataKey="bin"
-            label={{ value: xlabel, position: 'insideBottom', offset: -10 }}
+            label={{ value: xlabel, position: 'insideBottom', offset: -10, fill: rc.muted }}
             angle={-45}
             textAnchor="end"
             height={80}
+            tick={rc.axisTick}
           />
-          <YAxis label={{ value: ylabel, angle: -90, position: 'insideLeft' }} />
+          <YAxis
+            label={{ value: ylabel, angle: -90, position: 'insideLeft', fill: rc.muted }}
+            tick={rc.axisTick}
+          />
           <Tooltip content={<CustomTooltip />} />
-          <Legend />
-          <Bar dataKey="count" fill={color} name="Frequency" />
+          <Legend wrapperStyle={{ fontFamily: rc.fontBody, color: rc.fg }} />
+          <Bar dataKey="count" fill={barColor} name="Frequency" />
 
           {showMean && (
             <ReferenceLine
               x={histogramData.find(d =>
                 d.binStart <= statistics.mean && d.binEnd > statistics.mean
               )?.bin}
-              stroke="hsl(var(--destructive))"
+              stroke={meanColor}
               strokeWidth={2}
               strokeDasharray="5 5"
-              label={{ value: `Mean: ${statistics.mean.toFixed(2)}`, position: 'top', fill: 'hsl(var(--destructive))' }}
+              label={{ value: `Mean: ${statistics.mean.toFixed(2)}`, position: 'top', fill: meanColor }}
             />
           )}
 
@@ -150,16 +178,16 @@ export default function HistogramRecharts({
               x={histogramData.find(d =>
                 d.binStart <= statistics.median && d.binEnd > statistics.median
               )?.bin}
-              stroke="hsl(var(--chart-2))"
+              stroke={medianColor}
               strokeWidth={2}
               strokeDasharray="5 5"
-              label={{ value: `Median: ${statistics.median.toFixed(2)}`, position: 'bottom', fill: 'hsl(var(--chart-2))' }}
+              label={{ value: `Median: ${statistics.median.toFixed(2)}`, position: 'bottom', fill: medianColor }}
             />
           )}
         </BarChart>
       </ResponsiveContainer>
 
-      <div className="mt-4 text-sm text-muted-foreground">
+      <div className="mt-4" style={rc.sourceStyle}>
         <p>Total observations: {numericData.length} • Bins: {histogramData.length} • Mean: {statistics.mean.toFixed(2)} • Median: {statistics.median.toFixed(2)}</p>
       </div>
     </div>
