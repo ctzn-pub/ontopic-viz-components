@@ -1,0 +1,22 @@
+{
+  "id": "caterpillar",
+  "name": "Caterpillar / Coefficient Plot",
+  "category": "regression-and-effects",
+  "subcategory": "estimates",
+  "tags": [
+    "coefficients",
+    "confidence-intervals",
+    "estimates",
+    "ranking"
+  ],
+  "description": "A sorted column of point estimates with confidence-interval whiskers against a reference line. Use it to compare many coefficients, correlations, or odds ratios at once and show which effects are distinguishable from the reference.",
+  "sample_data": {
+    "url": "https://ontopic-public-data.t3.storage.dev/sample-data/d3-caterpillar.json",
+    "transform": "passthrough"
+  },
+  "dependencies": [
+    "d3-scale"
+  ],
+  "foldInto": null,
+  "variantLabel": null
+}

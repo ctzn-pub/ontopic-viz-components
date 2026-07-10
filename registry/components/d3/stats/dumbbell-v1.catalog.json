@@ -1,0 +1,22 @@
+{
+  "id": "dumbbell",
+  "name": "Dumbbell",
+  "category": "demographic-breakdowns",
+  "subcategory": "comparison",
+  "tags": [
+    "dumbbell",
+    "gap",
+    "comparison",
+    "two-series"
+  ],
+  "description": "One row per category with a connector between two endpoint dots — the visual gap between two series (men vs women, then vs now), with value labels and an optional ratio note. Use it when the distance between two values is the finding.",
+  "sample_data": {
+    "url": "https://ontopic-public-data.t3.storage.dev/sample-data/d3-dumbbell.json",
+    "transform": "passthrough"
+  },
+  "dependencies": [
+    "d3-scale"
+  ],
+  "foldInto": null,
+  "variantLabel": null
+}

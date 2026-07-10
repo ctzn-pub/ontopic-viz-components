@@ -51,6 +51,8 @@ export function d3Theme(theme: Theme) {
       focusR: tokens.dot.lg,
     },
     text: {
+      titleSize: tokens.size.title,
+      subtitleSize: tokens.size.subtitle,
       annotationSize: tokens.size.annotation,
       sourceSize: tokens.size.source,
     },

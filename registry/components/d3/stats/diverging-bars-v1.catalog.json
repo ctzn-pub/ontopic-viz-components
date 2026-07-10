@@ -1,0 +1,22 @@
+{
+  "id": "diverging-bars",
+  "name": "Diverging Bars",
+  "category": "demographic-breakdowns",
+  "subcategory": "ranking",
+  "tags": [
+    "diverging",
+    "ranking",
+    "signed-change",
+    "bars"
+  ],
+  "description": "Ranked horizontal bars extending left or right of a reference line — winners and losers around a baseline, direct-labeled. Use it for signed quantities like population change, swing, or surplus/deficit where the sign is the story.",
+  "sample_data": {
+    "url": "https://ontopic-public-data.t3.storage.dev/sample-data/d3-diverging-bars.json",
+    "transform": "passthrough"
+  },
+  "dependencies": [
+    "d3-scale"
+  ],
+  "foldInto": null,
+  "variantLabel": null
+}

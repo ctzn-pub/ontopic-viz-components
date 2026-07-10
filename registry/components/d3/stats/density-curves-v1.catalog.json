@@ -1,0 +1,23 @@
+{
+  "id": "density-curves",
+  "name": "Density Curves",
+  "category": "distributions",
+  "subcategory": "distribution-comparison",
+  "tags": [
+    "density",
+    "distribution",
+    "overlay",
+    "comparison"
+  ],
+  "description": "Overlaid, normalized density curves with peak labels and optional baseline mean markers. Use it to compare the shape and location of a distribution across a few groups in one frame; the data contract is pre-binned {x, weight} counts.",
+  "sample_data": {
+    "url": "https://ontopic-public-data.t3.storage.dev/sample-data/d3-density-curves.json",
+    "transform": "passthrough"
+  },
+  "dependencies": [
+    "d3-scale",
+    "d3-shape"
+  ],
+  "foldInto": null,
+  "variantLabel": null
+}

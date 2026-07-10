@@ -10,5 +10,14 @@
   "picturing-health-slopegraph.json": "https://ontopic-public-data.t3.storage.dev/sample-data/picturing-health-slopegraph.json",
   "picturing-health-state-year-heatmap.json": "https://ontopic-public-data.t3.storage.dev/sample-data/picturing-health-state-year-heatmap.json",
   "picturing-health-bivariate-choropleth.json": "https://ontopic-public-data.t3.storage.dev/sample-data/picturing-health-bivariate-choropleth.json",
-  "picturing-health-county-hexbin.json": "https://ontopic-public-data.t3.storage.dev/sample-data/picturing-health-county-hexbin.json"
+  "picturing-health-county-hexbin.json": "https://ontopic-public-data.t3.storage.dev/sample-data/picturing-health-county-hexbin.json",
+  "d3-caterpillar.json": "https://ontopic-public-data.t3.storage.dev/sample-data/d3-caterpillar.json",
+  "d3-density-curves.json": "https://ontopic-public-data.t3.storage.dev/sample-data/d3-density-curves.json",
+  "d3-diverging-bars.json": "https://ontopic-public-data.t3.storage.dev/sample-data/d3-diverging-bars.json",
+  "d3-dumbbell.json": "https://ontopic-public-data.t3.storage.dev/sample-data/d3-dumbbell.json",
+  "d3-grouped-bar.json": "https://ontopic-public-data.t3.storage.dev/sample-data/d3-grouped-bar.json",
+  "d3-scatter-cloud.json": "https://ontopic-public-data.t3.storage.dev/sample-data/d3-scatter-cloud.json",
+  "d3-small-multiples.json": "https://ontopic-public-data.t3.storage.dev/sample-data/d3-small-multiples.json",
+  "d3-gradient-line.json": "https://ontopic-public-data.t3.storage.dev/sample-data/d3-gradient-line.json",
+  "d3-county-choropleth.json": "https://ontopic-public-data.t3.storage.dev/sample-data/d3-county-choropleth.json"
 }

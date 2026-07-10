@@ -1,6 +1,8 @@
 import type { ForestPlotData } from '../../registry/components/plot/stats/forest-plot-v1';
 import type { D3RidgeData } from '../../registry/components/d3/stats/ridge-v1';
 import type { D3SlopegraphData } from '../../registry/components/d3/timeseries/slopegraph-v1';
+import type { CaterpillarData } from '../../registry/components/d3/stats/caterpillar-v1';
+import type { DumbbellData } from '../../registry/components/d3/stats/dumbbell-v1';
 
 export const timeSeriesData = [
   { year: '2000', value: 41.2, standard_error: 1.1, n_actual: 1250 },
@@ -114,4 +116,42 @@ export const ridgeData: D3RidgeData = {
       values: [16, 19, 21, 24, 25, 26, 27, 29, 30, 32, 34],
     },
   ],
+};
+
+export const caterpillarData: CaterpillarData = {
+  rows: [
+    { label: 'Social capital index', estimate: 0.42, lo: 0.31, hi: 0.53, n: 3089 },
+    { label: 'Two-parent households', estimate: 0.38, lo: 0.29, hi: 0.47, n: 3089 },
+    { label: 'School quality', estimate: 0.27, lo: 0.16, hi: 0.38, n: 2814 },
+    { label: 'Job growth', estimate: 0.12, lo: 0.01, hi: 0.23, n: 3089 },
+    { label: 'Rent burden', estimate: -0.09, lo: -0.2, hi: 0.02, n: 3089 },
+    { label: 'Long commutes', estimate: -0.24, lo: -0.34, hi: -0.14, n: 3089 },
+    { label: 'Income segregation', estimate: -0.31, lo: -0.41, hi: -0.21, n: 2955 },
+    { label: 'Violent crime', estimate: -0.37, lo: -0.48, hi: -0.26, n: 2790 },
+  ],
+  reference: 0,
+  xLabel: 'correlation with upward mobility',
+  numberFormat: '+.2f',
+  sort: true,
+  title: 'What predicts upward mobility',
+  subtitle: 'County-level correlates (illustrative preview data)',
+  source: 'Preview sample',
+};
+
+export const dumbbellData: DumbbellData = {
+  rows: [
+    { label: 'No HS diploma', left: 21.6, right: 30.7, note: '1.4x' },
+    { label: 'HS graduate', left: 19.7, right: 27.1, note: '1.4x' },
+    { label: 'Some college', left: 16.5, right: 18.9, note: '1.1x' },
+    { label: "Bachelor's+", left: 5.6, right: 7.4, note: '1.3x' },
+  ],
+  leftName: 'Women',
+  rightName: 'Men',
+  leftGroup: 'positive',
+  rightGroup: 'negative',
+  xLabel: 'current smokers',
+  unit: '%',
+  title: 'The education gradient in smoking',
+  subtitle: 'Current smoking by education and sex (illustrative preview data)',
+  source: 'Preview sample',
 };

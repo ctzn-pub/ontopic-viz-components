@@ -1,0 +1,23 @@
+{
+  "id": "gradient-line",
+  "name": "Gradient Line",
+  "category": "regression-and-effects",
+  "subcategory": "gradients",
+  "tags": [
+    "gradient",
+    "dose-response",
+    "ribbon",
+    "dot-cloud"
+  ],
+  "description": "One or more outcomes traced across an ordered social gradient (deprivation, income percentile) with a CI ribbon, a faint dot cloud showing the underlying dispersion, and directional endpoint labels. A multi-series sibling of the disparity-gradient chart for continuous gradients rather than deciles.",
+  "sample_data": {
+    "url": "https://ontopic-public-data.t3.storage.dev/sample-data/d3-gradient-line.json",
+    "transform": "passthrough"
+  },
+  "dependencies": [
+    "d3-scale",
+    "d3-shape"
+  ],
+  "foldInto": null,
+  "variantLabel": null
+}

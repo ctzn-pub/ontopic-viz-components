@@ -1,0 +1,24 @@
+{
+  "id": "county-choropleth",
+  "name": "County Choropleth (SVG)",
+  "category": "maps",
+  "subcategory": "us-counties",
+  "tags": [
+    "choropleth",
+    "counties",
+    "topojson",
+    "geo"
+  ],
+  "description": "A US county choropleth rendered as inline SVG from a caller-supplied TopoJSON, with theme diverging or sequential ramps, state borders, and a hover tooltip. Use it for print-quality county maps in articles; for zoomable, high-cardinality maps reach for the MapLibre engine instead.",
+  "sample_data": {
+    "url": "https://ontopic-public-data.t3.storage.dev/sample-data/d3-county-choropleth.json",
+    "transform": "passthrough"
+  },
+  "dependencies": [
+    "d3-geo",
+    "d3-scale",
+    "topojson-client"
+  ],
+  "foldInto": null,
+  "variantLabel": null
+}

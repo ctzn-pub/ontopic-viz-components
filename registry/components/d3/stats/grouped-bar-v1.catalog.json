@@ -1,0 +1,22 @@
+{
+  "id": "grouped-bar",
+  "name": "Grouped / Stacked Bar",
+  "category": "demographic-breakdowns",
+  "subcategory": "comparison",
+  "tags": [
+    "bars",
+    "grouped",
+    "stacked",
+    "series"
+  ],
+  "description": "Multi-series bars grouped side-by-side or stacked within category bands, with a legend and tooltips. The workhorse categorical comparison when small multiples would be overkill.",
+  "sample_data": {
+    "url": "https://ontopic-public-data.t3.storage.dev/sample-data/d3-grouped-bar.json",
+    "transform": "passthrough"
+  },
+  "dependencies": [
+    "d3-scale"
+  ],
+  "foldInto": null,
+  "variantLabel": null
+}

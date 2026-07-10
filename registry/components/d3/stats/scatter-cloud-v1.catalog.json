@@ -1,0 +1,23 @@
+{
+  "id": "scatter-cloud",
+  "name": "Scatter Cloud",
+  "category": "regression-and-effects",
+  "subcategory": "relationships",
+  "tags": [
+    "scatter",
+    "parity-line",
+    "binned-mean",
+    "annotations"
+  ],
+  "description": "A point cloud with an optional y=x parity line, a binned-mean summary line, and quadrant annotations. Use it for rank-rank or before/after relationships where the reader should see both the dispersion and the central tendency.",
+  "sample_data": {
+    "url": "https://ontopic-public-data.t3.storage.dev/sample-data/d3-scatter-cloud.json",
+    "transform": "passthrough"
+  },
+  "dependencies": [
+    "d3-scale",
+    "d3-shape"
+  ],
+  "foldInto": null,
+  "variantLabel": null
+}

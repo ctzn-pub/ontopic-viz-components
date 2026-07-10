@@ -50,6 +50,16 @@ const REQUIRES_SIDECAR = [
   'd3/stats/pca-biplot-v1',
   'd3/stats/ridge-v1',
   'd3/timeseries/slopegraph-v1',
+  // upstreamed from ctzn-pub (2026-07-09)
+  'd3/geo/county-choropleth-v1',
+  'd3/stats/caterpillar-v1',
+  'd3/stats/density-curves-v1',
+  'd3/stats/diverging-bars-v1',
+  'd3/stats/dumbbell-v1',
+  'd3/stats/gradient-line-v1',
+  'd3/stats/grouped-bar-v1',
+  'd3/stats/scatter-cloud-v1',
+  'd3/stats/small-multiples-v1',
   // existing MapLibre set
   'maplibre/geo/map-v1',
   'maplibre/geo/choropleth-v1',

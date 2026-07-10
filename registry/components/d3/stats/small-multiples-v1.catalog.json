@@ -1,0 +1,23 @@
+{
+  "id": "small-multiples-lines",
+  "name": "Small-Multiples Lines",
+  "category": "demographic-breakdowns",
+  "subcategory": "panels",
+  "tags": [
+    "small-multiples",
+    "panels",
+    "gradient",
+    "lines"
+  ],
+  "description": "A grid of mini line panels over one shared ordered x-axis (e.g. income brackets), endpoint-labeled with an optional rise/fall note per panel. Use it to show how many outcomes move across the same gradient at once.",
+  "sample_data": {
+    "url": "https://ontopic-public-data.t3.storage.dev/sample-data/d3-small-multiples.json",
+    "transform": "passthrough"
+  },
+  "dependencies": [
+    "d3-scale",
+    "d3-shape"
+  ],
+  "foldInto": null,
+  "variantLabel": null
+}

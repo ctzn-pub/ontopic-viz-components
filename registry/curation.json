@@ -196,12 +196,14 @@
       "reason": "Overlaps the recharts demographic family."
     },
     "plot/stats/density-basic-v1": {
-      "status": "parked",
-      "reason": "Density family gated on Phase 4: compare with ctzn d3/stats/density-curves-v1, one winner."
+      "status": "merged",
+      "reason": "Density archetype gate (2026-07-09): the upstreamed d3/stats/density-curves-v1 wins — theme-compliant semantic colors vs this one's hardcoded palette; single-group density is a special case of the winner.",
+      "winner": "d3/stats/density-curves-v1"
     },
     "plot/stats/density-overlay-v1": {
-      "status": "parked",
-      "reason": "Density family gated on Phase 4: compare with ctzn d3/stats/density-curves-v1, one winner."
+      "status": "merged",
+      "reason": "Density archetype gate (2026-07-09): the upstreamed d3/stats/density-curves-v1 wins — this Plot overlay used scheme:\"category10\" (not theme-compliant). Note the winner takes pre-binned {x,weight} data rather than raw rows.",
+      "winner": "d3/stats/density-curves-v1"
     },
     "plot/stats/disparity-gradient-v1": {
       "status": "core",
@@ -430,6 +432,42 @@
     "ui/wb/slope-chart-v1": {
       "status": "parked",
       "reason": "WB UI-chart family on the incompatible Tailwind dark: mechanism."
+    },
+    "d3/geo/county-choropleth-v1": {
+      "status": "core",
+      "reason": "Upstreamed from ctzn-pub viz/components/d3 (2026-07-09) and brought to standard: colorDomain prop, literals routed through the d3 adapter, sidecar + Tigris sample data. Distinctive archetype the registry lacked."
+    },
+    "d3/stats/caterpillar-v1": {
+      "status": "core",
+      "reason": "Upstreamed from ctzn-pub viz/components/d3 (2026-07-09) and brought to standard: colorDomain prop, literals routed through the d3 adapter, sidecar + Tigris sample data. Distinctive archetype the registry lacked."
+    },
+    "d3/stats/density-curves-v1": {
+      "status": "core",
+      "reason": "Upstreamed from ctzn-pub viz/components/d3 (2026-07-09) and brought to standard: colorDomain prop, literals routed through the d3 adapter, sidecar + Tigris sample data. Distinctive archetype the registry lacked."
+    },
+    "d3/stats/diverging-bars-v1": {
+      "status": "core",
+      "reason": "Upstreamed from ctzn-pub viz/components/d3 (2026-07-09) and brought to standard: colorDomain prop, literals routed through the d3 adapter, sidecar + Tigris sample data. Distinctive archetype the registry lacked."
+    },
+    "d3/stats/dumbbell-v1": {
+      "status": "core",
+      "reason": "Upstreamed from ctzn-pub viz/components/d3 (2026-07-09) and brought to standard: colorDomain prop, literals routed through the d3 adapter, sidecar + Tigris sample data. Distinctive archetype the registry lacked."
+    },
+    "d3/stats/grouped-bar-v1": {
+      "status": "core",
+      "reason": "Upstreamed from ctzn-pub viz/components/d3 (2026-07-09) and brought to standard: colorDomain prop, literals routed through the d3 adapter, sidecar + Tigris sample data. Distinctive archetype the registry lacked."
+    },
+    "d3/stats/scatter-cloud-v1": {
+      "status": "core",
+      "reason": "Upstreamed from ctzn-pub viz/components/d3 (2026-07-09) and brought to standard: colorDomain prop, literals routed through the d3 adapter, sidecar + Tigris sample data. Distinctive archetype the registry lacked."
+    },
+    "d3/stats/small-multiples-v1": {
+      "status": "core",
+      "reason": "Upstreamed from ctzn-pub viz/components/d3 (2026-07-09) and brought to standard: colorDomain prop, literals routed through the d3 adapter, sidecar + Tigris sample data. Distinctive archetype the registry lacked."
+    },
+    "d3/stats/gradient-line-v1": {
+      "status": "core",
+      "reason": "Upstreamed from ctzn-pub viz/components/d3 (2026-07-09) and brought to standard: colorDomain prop, literals routed through the d3 adapter, sidecar + Tigris sample data. Distinctive archetype the registry lacked."
     }
   }
 }

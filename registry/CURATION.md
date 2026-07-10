@@ -9,10 +9,10 @@ one winner per chart archetype). Statuses:
 
 | Status | Meaning | Count |
 |---|---|---|
-| `core` | Kept; brought to full standard (theme-aware, typed, `.catalog.json` sidecar) | 33 |
+| `core` | Kept; brought to full standard (theme-aware, typed, `.catalog.json` sidecar) | 42 |
 | `foundation` | Kept + maintained; not a gallery chart card, so exempt from the sidecar requirement (article/book MDX blocks) | 18 |
-| `merged` | Dedupe loser; its `winner` absorbs any unique features. Physically moved to `registry/legacy/` in Phase 3 | 14 |
-| `parked` | Potentially useful, not in the curated cut; moved to `registry/legacy/` untouched | 37 |
+| `merged` | Dedupe loser; its `winner` absorbs any unique features. Physically moved to `registry/legacy/` | 16 |
+| `parked` | Potentially useful, not in the curated cut; moved to `registry/legacy/` untouched | 35 |
 | `retired` | No future; deleted only after the ctzn-pub mirror re-sync confirms no consumers | 0 |
 
 ## The core set
@@ -59,6 +59,24 @@ Mechanics: each D3 winner **took over the canonical gallery card id** (`ridge`, 
 - `recharts/generic/dual-axis-v1` → **`timeseries-dual-axis-v1`** (duplicate; note the winner
   itself is parked — dual axes are a discouraged form).
 - `recharts/brfss/state-bar-v1`, `plot/brfss/state-bar-v1` → **`state-bar-sortable-v1`**.
+
+## Upstreamed from ctzn-pub — 2026-07-09 (Phase 4)
+
+Nine D3-as-JSX components existed only in ctzn-pub's `viz/components/d3/`. All nine came
+upstream as `core`, retrofitted to standard (explicit `colorDomain` prop, size/stroke
+literals routed through the d3 adapter, one hex killed, sidecars + fabricated Tigris
+sample data): **county-choropleth** (maps), **caterpillar**, **density-curves**,
+**diverging-bars**, **dumbbell**, **grouped-bar**, **scatter-cloud**,
+**small-multiples-lines**, and **gradient-line** (re-homed from `timeseries/` to `stats/` —
+it's a dose-response gradient, not a date series; kept as its own card because its
+multi-series + dot-cloud data contract differs from `disparity-gradient`).
+
+**Density archetype gate resolved**: `d3/stats/density-curves-v1` wins (theme-compliant
+semantic colors); `plot/stats/density-basic-v1` + `density-overlay-v1` (which used
+`scheme:"category10"`) → `merged`. Note the winner takes pre-binned `{x, weight}` data.
+
+Nothing in ctzn-pub imports these yet (verified: no VizResolver/MDX references), so the
+upstream + re-home carries no consumer breakage.
 
 ## Parked highlights (and how to un-park)
 
