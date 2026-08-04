@@ -489,6 +489,10 @@
     "d3/stats/canvas-scatter-v1": {
       "status": "core",
       "reason": "Ported from health-of-americas-zip-codes (2026-07-09), retheme'd from the hardcoded Observatory ledger onto the theme system. Unified canvas point-cloud primitive (up to ~25k points): DPR-aware canvas + SVG overlay fit lines + d3-quadtree hover + TableFallback a11y; covers the atlas's ScatterFit/PcaBiplot/DotMap pattern (Albers geo mode out of scope)."
+    },
+    "tanstack/timeseries/line-v1": {
+      "status": "core",
+      "reason": "TanStack Charts port of the canonical survey time-series line (Phase 8). Reference implementation for the tanstack engine: proves the theme adapter, the areaY CI ribbon, and the engine-native focus/aria path. Folds into the timeseries-line card as a rendering variant."
     }
   }
 }

@@ -20,6 +20,7 @@ import ForestPlot from '../../registry/components/plot/stats/forest-plot-v1';
 import Ridge from '../../registry/components/d3/stats/ridge-v1';
 import MultiLine from '../../registry/components/plot/timeseries/multiline-v1';
 import TimeSeriesChart from '../../registry/components/recharts/generic/timeseries-metadata-v1';
+import TanstackTimeSeriesLine from '../../registry/components/tanstack/timeseries/line-v1';
 import {
   caterpillarData,
   dataPointMetadata,
@@ -48,6 +49,19 @@ export const liveExamples: LiveExample[] = [
     span: 'wide',
     render: () => (
       <TimeSeriesChart
+        data={timeSeriesData}
+        metadata={timeSeriesMetadata}
+        dataPointMetadata={dataPointMetadata}
+      />
+    ),
+  },
+  {
+    path: 'registry/components/tanstack/timeseries/line-v1.tsx',
+    title: 'TanStack time series',
+    description: 'Same data as the Recharts card above, rendered with TanStack Charts.',
+    span: 'wide',
+    render: () => (
+      <TanstackTimeSeriesLine
         data={timeSeriesData}
         metadata={timeSeriesMetadata}
         dataPointMetadata={dataPointMetadata}

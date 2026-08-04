@@ -71,6 +71,8 @@
     "registry/components/plot/wb/world-choropleth-v1.tsx",
     "registry/components/composite/brfss/brfss-dashboard-v1.tsx",
     "registry/components/composite/gss/timeseries-small-multiples-v1.tsx",
-    "registry/components/plot/wb/world-map-v1.tsx"
+    "registry/components/plot/wb/world-map-v1.tsx",
+    "registry/theme/adapters/tanstack.ts",
+    "registry/components/tanstack/timeseries/line-v1.tsx"
   ]
 }
