@@ -3,9 +3,23 @@
   "name": "Grouped / Stacked Bars (TanStack)",
   "category": "demographic-breakdowns",
   "subcategory": "generic",
-  "tags": ["bar", "grouped", "stacked", "tanstack", "grammar-of-graphics"],
+  "tags": [
+    "bar",
+    "grouped",
+    "stacked",
+    "tanstack",
+    "grammar-of-graphics"
+  ],
   "description": "Categories compared across several series, side by side or stacked. The band placement and the stack accumulation come from the chart engine rather than hand-rolled offsets, so switching between the two modes is a single option. Requires React 19 — every other engine in this registry still supports React 18.",
-  "dependencies": ["@tanstack/charts", "@tanstack/react-charts", "d3-scale"],
+  "dependencies": [
+    "@tanstack/charts",
+    "@tanstack/react-charts",
+    "d3-scale"
+  ],
+  "sample_data": {
+    "url": "https://ontopic-public-data.t3.storage.dev/sample-data/d3-grouped-bar.json",
+    "transform": "passthrough"
+  },
   "foldInto": "grouped-bar",
   "variantLabel": "TanStack"
 }

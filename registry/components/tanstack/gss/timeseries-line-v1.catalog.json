@@ -3,9 +3,23 @@
   "name": "GSS Time Trend (TanStack)",
   "category": "time-series",
   "subcategory": "gss",
-  "tags": ["gss", "survey", "trend", "tanstack", "grammar-of-graphics"],
+  "tags": [
+    "gss",
+    "survey",
+    "trend",
+    "tanstack",
+    "grammar-of-graphics"
+  ],
   "description": "The canonical GSS survey trend, rendered with TanStack Charts. Demographic series are derived from the payload's own metadata, and keyboard focus comes from the chart engine rather than hand-built hit targets. Requires React 19 — every other engine in this registry still supports React 18.",
-  "dependencies": ["@tanstack/charts", "@tanstack/react-charts", "d3-scale"],
+  "dependencies": [
+    "@tanstack/charts",
+    "@tanstack/react-charts",
+    "d3-scale"
+  ],
+  "sample_data": {
+    "url": "https://ontopic-public-data.t3.storage.dev/sample-data/gss-time-trend.json",
+    "transform": "passthrough"
+  },
   "foldInto": "time-trends",
   "variantLabel": "TanStack (GSS trend)"
 }

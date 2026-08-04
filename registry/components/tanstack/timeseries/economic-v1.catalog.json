@@ -3,9 +3,23 @@
   "name": "Economic Indicator (TanStack)",
   "category": "time-series",
   "subcategory": "generic",
-  "tags": ["fred", "economic", "indicator", "tanstack", "grammar-of-graphics"],
+  "tags": [
+    "fred",
+    "economic",
+    "indicator",
+    "tanstack",
+    "grammar-of-graphics"
+  ],
   "description": "A single economic indicator over time from a FRED-style series envelope, rendered with TanStack Charts. Year boundaries become the axis ticks and the engine thins them when they collide. Requires React 19 — every other engine in this registry still supports React 18.",
-  "dependencies": ["@tanstack/charts", "@tanstack/react-charts", "d3-scale"],
+  "dependencies": [
+    "@tanstack/charts",
+    "@tanstack/react-charts",
+    "d3-scale"
+  ],
+  "sample_data": {
+    "url": "https://ontopic-public-data.t3.storage.dev/sample-data/timeseries-economic.json",
+    "transform": "passthrough"
+  },
   "foldInto": "economic-timeseries",
   "variantLabel": "TanStack"
 }

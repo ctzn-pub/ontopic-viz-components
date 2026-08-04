@@ -3,9 +3,23 @@
   "name": "Indexed Comparison (TanStack)",
   "category": "time-series",
   "subcategory": "generic",
-  "tags": ["indexed", "comparison", "percent-change", "tanstack", "grammar-of-graphics"],
+  "tags": [
+    "indexed",
+    "comparison",
+    "percent-change",
+    "tanstack",
+    "grammar-of-graphics"
+  ],
   "description": "Two series re-based to their first observation and plotted as percent change, which is what makes measures in different units comparable. A rule at zero marks the shared baseline. Requires React 19 — every other engine in this registry still supports React 18.",
-  "dependencies": ["@tanstack/charts", "@tanstack/react-charts", "d3-scale"],
+  "dependencies": [
+    "@tanstack/charts",
+    "@tanstack/react-charts",
+    "d3-scale"
+  ],
+  "sample_data": {
+    "url": "https://ontopic-public-data.t3.storage.dev/sample-data/timeseries-index.json",
+    "transform": "passthrough"
+  },
   "foldInto": "economic-timeseries",
   "variantLabel": "TanStack (indexed)"
 }
