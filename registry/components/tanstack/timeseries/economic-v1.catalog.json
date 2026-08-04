@@ -6,6 +6,6 @@
   "tags": ["fred", "economic", "indicator", "tanstack", "grammar-of-graphics"],
   "description": "A single economic indicator over time from a FRED-style series envelope, rendered with TanStack Charts. Year boundaries become the axis ticks and the engine thins them when they collide. Requires React 19 — every other engine in this registry still supports React 18.",
   "dependencies": ["@tanstack/charts", "@tanstack/react-charts", "d3-scale"],
-  "foldInto": "timeseries-economic",
+  "foldInto": "economic-timeseries",
   "variantLabel": "TanStack"
 }
