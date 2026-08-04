@@ -155,3 +155,76 @@ export const dumbbellData: DumbbellData = {
   subtitle: 'Current smoking by education and sex (illustrative preview data)',
   source: 'Preview sample',
 };
+
+// ── TanStack engine samples (Phase 8) ────────────────────────────────────────
+
+/** FRED-style envelope: a single indicator with string-valued observations. */
+export const fredSeries = {
+  id: 'CPIAUCSL',
+  title: 'Consumer Price Index for All Urban Consumers',
+  short_title: 'Consumer Price Index',
+  units: 'Index 1982-1984=100',
+  observations: Array.from({ length: 40 }, (_, i) => {
+    const year = 2015 + Math.floor(i / 4);
+    const month = (i % 4) * 3;
+    return {
+      date: `${year}-${String(month + 1).padStart(2, '0')}-01`,
+      value: (237 + i * 2.4 + Math.sin(i / 3) * 1.5).toFixed(1),
+    };
+  }),
+};
+
+/** A second FRED-style series in different units, for the indexed comparison. */
+export const fredSeriesWages = {
+  id: 'CES0500000003',
+  title: 'Average Hourly Earnings, Private',
+  short_title: 'Average Hourly Earnings',
+  units: 'Dollars per hour',
+  observations: Array.from({ length: 40 }, (_, i) => {
+    const year = 2015 + Math.floor(i / 4);
+    const month = (i % 4) * 3;
+    return {
+      date: `${year}-${String(month + 1).padStart(2, '0')}-01`,
+      value: (24.7 + i * 0.19 + Math.cos(i / 4) * 0.08).toFixed(2),
+    };
+  }),
+};
+
+export const groupedBarData = {
+  rows: [
+    { label: 'Under $30k', values: { 'No degree': 61, 'Some college': 44, 'Bachelor+': 29 } },
+    { label: '$30-75k', values: { 'No degree': 52, 'Some college': 41, 'Bachelor+': 27 } },
+    { label: '$75-150k', values: { 'No degree': 43, 'Some college': 35, 'Bachelor+': 24 } },
+    { label: 'Over $150k', values: { 'No degree': 34, 'Some college': 28, 'Bachelor+': 19 } },
+  ],
+  series: ['No degree', 'Some college', 'Bachelor+'],
+  unit: '%',
+  mode: 'grouped' as const,
+  title: 'Economic pessimism by income and education',
+  subtitle: 'Share saying the next generation will be worse off.',
+  source: 'Illustrative sample data',
+};
+
+export const divergingBarsData = {
+  rows: [
+    { label: 'Northeast', value: 12.4 },
+    { label: 'Pacific', value: 8.1 },
+    { label: 'Mountain', value: 2.3 },
+    { label: 'Midwest', value: -4.6 },
+    { label: 'South', value: -11.2 },
+  ],
+  reference: 0,
+  unit: '%',
+  decimals: 1,
+  sort: true,
+  title: 'Deviation from the national average',
+  subtitle: 'Percentage points above or below the all-region mean.',
+  source: 'Illustrative sample data',
+};
+
+/** ~500 county-like values with a long right tail, for the histogram. */
+export const histogramRows = Array.from({ length: 500 }, (_, i) => {
+  const a = Math.sin(i * 2.399) * 0.5 + 0.5;
+  const b = Math.sin(i * 5.117) * 0.5 + 0.5;
+  return { value: Number((22 + (a + b) * 9 + Math.pow(a, 3) * 14).toFixed(2)) };
+});

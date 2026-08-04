@@ -21,11 +21,22 @@ import Ridge from '../../registry/components/d3/stats/ridge-v1';
 import MultiLine from '../../registry/components/plot/timeseries/multiline-v1';
 import TimeSeriesChart from '../../registry/components/recharts/generic/timeseries-metadata-v1';
 import TanstackTimeSeriesLine from '../../registry/components/tanstack/timeseries/line-v1';
+import TanstackEconomic from '../../registry/components/tanstack/timeseries/economic-v1';
+import TanstackIndexChart from '../../registry/components/tanstack/timeseries/index-v1';
+import TanstackMultiLine from '../../registry/components/tanstack/timeseries/multiline-v1';
+import TanstackGroupedBar from '../../registry/components/tanstack/stats/grouped-bar-v1';
+import TanstackDivergingBars from '../../registry/components/tanstack/stats/diverging-bars-v1';
+import TanstackHistogram from '../../registry/components/tanstack/stats/histogram-v1';
 import {
   caterpillarData,
   dataPointMetadata,
+  divergingBarsData,
   dumbbellData,
   forestData,
+  fredSeries,
+  fredSeriesWages,
+  groupedBarData,
+  histogramRows,
   partyRows,
   ridgeData,
   slopeData,
@@ -65,6 +76,78 @@ export const liveExamples: LiveExample[] = [
         data={timeSeriesData}
         metadata={timeSeriesMetadata}
         dataPointMetadata={dataPointMetadata}
+      />
+    ),
+  },
+  {
+    path: 'registry/components/tanstack/timeseries/multiline-v1.tsx',
+    title: 'TanStack party multiline',
+    description:
+      'The same party rows as the Plot card below — the semantic colors must match exactly.',
+    span: 'wide',
+    render: () => (
+      <TanstackMultiLine
+        data={partyRows}
+        xKey="year"
+        yKey="value"
+        groupKey="party"
+        colorDomain="party"
+        title="Approval by party"
+        subtitle="Semantic party colors, resolved through the same scale the Plot engine uses."
+        unit="%"
+      />
+    ),
+  },
+  {
+    path: 'registry/components/tanstack/timeseries/economic-v1.tsx',
+    title: 'TanStack economic indicator',
+    description: 'A FRED-style series with year-boundary ticks and locale-formatted values.',
+    span: 'wide',
+    render: () => <TanstackEconomic data={fredSeries} />,
+  },
+  {
+    path: 'registry/components/tanstack/timeseries/index-v1.tsx',
+    title: 'TanStack indexed comparison',
+    description:
+      'Two series in different units, re-based to percent change from their first observation.',
+    span: 'wide',
+    render: () => (
+      <TanstackIndexChart
+        series1={fredSeries}
+        series2={fredSeriesWages}
+        title="Prices versus wages"
+        source="Illustrative sample data"
+      />
+    ),
+  },
+  {
+    path: 'registry/components/tanstack/stats/grouped-bar-v1.tsx',
+    title: 'TanStack grouped bars',
+    description: 'Band placement and stacking come from the engine, not hand-rolled offsets.',
+    span: 'wide',
+    render: () => <TanstackGroupedBar data={groupedBarData} colorDomain={null} />,
+  },
+  {
+    path: 'registry/components/tanstack/stats/diverging-bars-v1.tsx',
+    title: 'TanStack diverging bars',
+    description: 'Signed values either side of a reference rule; direction is position and color.',
+    render: () => <TanstackDivergingBars data={divergingBarsData} />,
+  },
+  {
+    path: 'registry/components/tanstack/stats/histogram-v1.tsx',
+    title: 'TanStack histogram',
+    description: 'Binned by the engine transform, with a dashed benchmark rule.',
+    render: () => (
+      <TanstackHistogram
+        data={histogramRows}
+        valueKey="value"
+        bins={24}
+        benchmark={38}
+        benchmarkLabel="Dashed rule marks the national average."
+        title="Distribution of county rates"
+        subtitle="Five hundred counties, binned by the chart engine."
+        unit="%"
+        source="Illustrative sample data"
       />
     ),
   },

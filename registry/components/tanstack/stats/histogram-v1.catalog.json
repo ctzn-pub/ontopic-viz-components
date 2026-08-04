@@ -1,0 +1,11 @@
+{
+  "id": "tanstack-histogram",
+  "name": "Distribution Histogram (TanStack)",
+  "category": "distributions",
+  "subcategory": "generic",
+  "tags": ["histogram", "distribution", "binning", "tanstack", "grammar-of-graphics"],
+  "description": "The shape of a single numeric variable, with binning handled by the chart engine's own transform and an optional benchmark rule for a reference value. Requires React 19 — every other engine in this registry still supports React 18.",
+  "dependencies": ["@tanstack/charts", "@tanstack/react-charts", "d3-scale"],
+  "foldInto": "distribution",
+  "variantLabel": "TanStack"
+}

@@ -101,6 +101,46 @@
       "status": "parked",
       "reason": "WB composite on the incompatible dark: mechanism."
     },
+    "d3/geo/county-choropleth-v1": {
+      "status": "core",
+      "reason": "Upstreamed from ctzn-pub viz/components/d3 (2026-07-09) and brought to standard: colorDomain prop, literals routed through the d3 adapter, sidecar + Tigris sample data. Distinctive archetype the registry lacked."
+    },
+    "d3/stats/canvas-scatter-v1": {
+      "status": "core",
+      "reason": "Ported from health-of-americas-zip-codes (2026-07-09), retheme'd from the hardcoded Observatory ledger onto the theme system. Unified canvas point-cloud primitive (up to ~25k points): DPR-aware canvas + SVG overlay fit lines + d3-quadtree hover + TableFallback a11y; covers the atlas's ScatterFit/PcaBiplot/DotMap pattern (Albers geo mode out of scope)."
+    },
+    "d3/stats/caterpillar-v1": {
+      "status": "core",
+      "reason": "Upstreamed from ctzn-pub viz/components/d3 (2026-07-09) and brought to standard: colorDomain prop, literals routed through the d3 adapter, sidecar + Tigris sample data. Distinctive archetype the registry lacked."
+    },
+    "d3/stats/correlation-matrix-v1": {
+      "status": "core",
+      "reason": "Ported from health-of-americas-zip-codes (2026-07-09), retheme'd from the hardcoded Observatory ledger onto the theme system. Hierarchically-ordered correlation matrix with in-component average-linkage clustering for raw matrices, plus an optional context-heatmap panel (ContextHeatmap folded in)."
+    },
+    "d3/stats/density-curves-v1": {
+      "status": "core",
+      "reason": "Upstreamed from ctzn-pub viz/components/d3 (2026-07-09) and brought to standard: colorDomain prop, literals routed through the d3 adapter, sidecar + Tigris sample data. Distinctive archetype the registry lacked."
+    },
+    "d3/stats/diverging-bars-v1": {
+      "status": "core",
+      "reason": "Upstreamed from ctzn-pub viz/components/d3 (2026-07-09) and brought to standard: colorDomain prop, literals routed through the d3 adapter, sidecar + Tigris sample data. Distinctive archetype the registry lacked."
+    },
+    "d3/stats/dumbbell-v1": {
+      "status": "core",
+      "reason": "Upstreamed from ctzn-pub viz/components/d3 (2026-07-09) and brought to standard: colorDomain prop, literals routed through the d3 adapter, sidecar + Tigris sample data. Distinctive archetype the registry lacked."
+    },
+    "d3/stats/gradient-line-v1": {
+      "status": "core",
+      "reason": "Upstreamed from ctzn-pub viz/components/d3 (2026-07-09) and brought to standard: colorDomain prop, literals routed through the d3 adapter, sidecar + Tigris sample data. Distinctive archetype the registry lacked."
+    },
+    "d3/stats/gradient-slopes-v1": {
+      "status": "core",
+      "reason": "Ported from health-of-americas-zip-codes (2026-07-09), retheme'd from the hardcoded Observatory ledger onto the theme system. Every measure's decile gradient normalized to decile-1=1.0 on a log scale — \"the slope is the inequality\" — with collision-relaxed right-edge labels and focus highlighting."
+    },
+    "d3/stats/grouped-bar-v1": {
+      "status": "core",
+      "reason": "Upstreamed from ctzn-pub viz/components/d3 (2026-07-09) and brought to standard: colorDomain prop, literals routed through the d3 adapter, sidecar + Tigris sample data. Distinctive archetype the registry lacked."
+    },
     "d3/stats/parallel-coordinates-v1": {
       "status": "core",
       "reason": "Archetype-dedupe winner (2026-07-09) carrying the canonical gallery card id \"parallel-coordinates\". Theme-aware via the d3 adapter, typed, interactive (focus/keyboard/aria), collision-managed labels."
@@ -112,6 +152,22 @@
     "d3/stats/ridge-v1": {
       "status": "core",
       "reason": "Archetype-dedupe winner (2026-07-09) carrying the canonical gallery card id \"ridge\". Theme-aware via the d3 adapter, typed, interactive (focus/keyboard/aria), collision-managed labels."
+    },
+    "d3/stats/scatter-cloud-v1": {
+      "status": "core",
+      "reason": "Upstreamed from ctzn-pub viz/components/d3 (2026-07-09) and brought to standard: colorDomain prop, literals routed through the d3 adapter, sidecar + Tigris sample data. Distinctive archetype the registry lacked."
+    },
+    "d3/stats/score-gauge-v1": {
+      "status": "core",
+      "reason": "Ported from health-of-americas-zip-codes (2026-07-09), retheme'd from the hardcoded Observatory ledger onto the theme system. Semicircular 0-100 gauge with sentiment-role continuum coloring; glow filter dropped per Tufte."
+    },
+    "d3/stats/small-multiples-v1": {
+      "status": "core",
+      "reason": "Upstreamed from ctzn-pub viz/components/d3 (2026-07-09) and brought to standard: colorDomain prop, literals routed through the d3 adapter, sidecar + Tigris sample data. Distinctive archetype the registry lacked."
+    },
+    "d3/stats/strip-ridge-v1": {
+      "status": "core",
+      "reason": "Ported from health-of-americas-zip-codes (2026-07-09), retheme'd from the hardcoded Observatory ledger onto the theme system. The signature health-atlas ridgeline strip: tail-trimmed distribution silhouette filled with a continuous theme ramp, benchmark/comparison/subject markers always kept visible."
     },
     "d3/timeseries/slopegraph-v1": {
       "status": "core",
@@ -414,6 +470,38 @@
       "status": "parked",
       "reason": "WB table family; article/DataTable covers the in-article table need."
     },
+    "tanstack/gss/timeseries-line-v1": {
+      "status": "core",
+      "reason": "TanStack Charts port of the flagship GSS survey trend (Phase 8). Derives its demographic series from the payload metadata like the Recharts flagship; deliberately excludes the app-specific chrome (president bands, CI toggle, compact/embedded modes), which stays on the Recharts card. Folds into gss-time-trend."
+    },
+    "tanstack/stats/diverging-bars-v1": {
+      "status": "core",
+      "reason": "TanStack Charts port of the signed diverging bar chart (Phase 8). barX off a ruleX reference line, sentiment domain for direction. Folds into diverging-bars."
+    },
+    "tanstack/stats/grouped-bar-v1": {
+      "status": "core",
+      "reason": "TanStack Charts port of the grouped/stacked bar chart (Phase 8). Replaces the D3 version hand-rolled band offsets and stack accumulation with the engine z channel plus group()/stack() layouts. Folds into grouped-bar."
+    },
+    "tanstack/stats/histogram-v1": {
+      "status": "core",
+      "reason": "TanStack Charts port of the value-distribution histogram (Phase 8). Binning via the engine binX transform rather than hand-rolled buckets. Folds into distribution."
+    },
+    "tanstack/timeseries/economic-v1": {
+      "status": "core",
+      "reason": "TanStack Charts port of the FRED-style economic indicator line (Phase 8). Year-boundary ticks with engine-side thinning. Folds into timeseries-economic."
+    },
+    "tanstack/timeseries/index-v1": {
+      "status": "core",
+      "reason": "TanStack Charts port of the indexed two-series comparison (Phase 8). Re-bases both series to percent change from their first observation, with a ruleY baseline at zero. Folds into timeseries-index."
+    },
+    "tanstack/timeseries/line-v1": {
+      "status": "core",
+      "reason": "TanStack Charts port of the canonical survey time-series line (Phase 8). Reference implementation for the tanstack engine: proves the theme adapter, the areaY CI ribbon, and the engine-native focus/aria path. Folds into the timeseries-line card as a rendering variant."
+    },
+    "tanstack/timeseries/multiline-v1": {
+      "status": "core",
+      "reason": "TanStack Charts port of the grouped multi-series line (Phase 8). First multi-series tanstack component — proves colorScale resolves identically here and on Plot. Folds into multiline."
+    },
     "ui/wb/bullet-chart-v1": {
       "status": "parked",
       "reason": "WB UI-chart family on the incompatible Tailwind dark: mechanism."
@@ -433,66 +521,6 @@
     "ui/wb/slope-chart-v1": {
       "status": "parked",
       "reason": "WB UI-chart family on the incompatible Tailwind dark: mechanism."
-    },
-    "d3/geo/county-choropleth-v1": {
-      "status": "core",
-      "reason": "Upstreamed from ctzn-pub viz/components/d3 (2026-07-09) and brought to standard: colorDomain prop, literals routed through the d3 adapter, sidecar + Tigris sample data. Distinctive archetype the registry lacked."
-    },
-    "d3/stats/caterpillar-v1": {
-      "status": "core",
-      "reason": "Upstreamed from ctzn-pub viz/components/d3 (2026-07-09) and brought to standard: colorDomain prop, literals routed through the d3 adapter, sidecar + Tigris sample data. Distinctive archetype the registry lacked."
-    },
-    "d3/stats/density-curves-v1": {
-      "status": "core",
-      "reason": "Upstreamed from ctzn-pub viz/components/d3 (2026-07-09) and brought to standard: colorDomain prop, literals routed through the d3 adapter, sidecar + Tigris sample data. Distinctive archetype the registry lacked."
-    },
-    "d3/stats/diverging-bars-v1": {
-      "status": "core",
-      "reason": "Upstreamed from ctzn-pub viz/components/d3 (2026-07-09) and brought to standard: colorDomain prop, literals routed through the d3 adapter, sidecar + Tigris sample data. Distinctive archetype the registry lacked."
-    },
-    "d3/stats/dumbbell-v1": {
-      "status": "core",
-      "reason": "Upstreamed from ctzn-pub viz/components/d3 (2026-07-09) and brought to standard: colorDomain prop, literals routed through the d3 adapter, sidecar + Tigris sample data. Distinctive archetype the registry lacked."
-    },
-    "d3/stats/grouped-bar-v1": {
-      "status": "core",
-      "reason": "Upstreamed from ctzn-pub viz/components/d3 (2026-07-09) and brought to standard: colorDomain prop, literals routed through the d3 adapter, sidecar + Tigris sample data. Distinctive archetype the registry lacked."
-    },
-    "d3/stats/scatter-cloud-v1": {
-      "status": "core",
-      "reason": "Upstreamed from ctzn-pub viz/components/d3 (2026-07-09) and brought to standard: colorDomain prop, literals routed through the d3 adapter, sidecar + Tigris sample data. Distinctive archetype the registry lacked."
-    },
-    "d3/stats/small-multiples-v1": {
-      "status": "core",
-      "reason": "Upstreamed from ctzn-pub viz/components/d3 (2026-07-09) and brought to standard: colorDomain prop, literals routed through the d3 adapter, sidecar + Tigris sample data. Distinctive archetype the registry lacked."
-    },
-    "d3/stats/gradient-line-v1": {
-      "status": "core",
-      "reason": "Upstreamed from ctzn-pub viz/components/d3 (2026-07-09) and brought to standard: colorDomain prop, literals routed through the d3 adapter, sidecar + Tigris sample data. Distinctive archetype the registry lacked."
-    },
-    "d3/stats/strip-ridge-v1": {
-      "status": "core",
-      "reason": "Ported from health-of-americas-zip-codes (2026-07-09), retheme'd from the hardcoded Observatory ledger onto the theme system. The signature health-atlas ridgeline strip: tail-trimmed distribution silhouette filled with a continuous theme ramp, benchmark/comparison/subject markers always kept visible."
-    },
-    "d3/stats/score-gauge-v1": {
-      "status": "core",
-      "reason": "Ported from health-of-americas-zip-codes (2026-07-09), retheme'd from the hardcoded Observatory ledger onto the theme system. Semicircular 0-100 gauge with sentiment-role continuum coloring; glow filter dropped per Tufte."
-    },
-    "d3/stats/gradient-slopes-v1": {
-      "status": "core",
-      "reason": "Ported from health-of-americas-zip-codes (2026-07-09), retheme'd from the hardcoded Observatory ledger onto the theme system. Every measure's decile gradient normalized to decile-1=1.0 on a log scale — \"the slope is the inequality\" — with collision-relaxed right-edge labels and focus highlighting."
-    },
-    "d3/stats/correlation-matrix-v1": {
-      "status": "core",
-      "reason": "Ported from health-of-americas-zip-codes (2026-07-09), retheme'd from the hardcoded Observatory ledger onto the theme system. Hierarchically-ordered correlation matrix with in-component average-linkage clustering for raw matrices, plus an optional context-heatmap panel (ContextHeatmap folded in)."
-    },
-    "d3/stats/canvas-scatter-v1": {
-      "status": "core",
-      "reason": "Ported from health-of-americas-zip-codes (2026-07-09), retheme'd from the hardcoded Observatory ledger onto the theme system. Unified canvas point-cloud primitive (up to ~25k points): DPR-aware canvas + SVG overlay fit lines + d3-quadtree hover + TableFallback a11y; covers the atlas's ScatterFit/PcaBiplot/DotMap pattern (Albers geo mode out of scope)."
-    },
-    "tanstack/timeseries/line-v1": {
-      "status": "core",
-      "reason": "TanStack Charts port of the canonical survey time-series line (Phase 8). Reference implementation for the tanstack engine: proves the theme adapter, the areaY CI ribbon, and the engine-native focus/aria path. Folds into the timeseries-line card as a rendering variant."
     }
   }
 }

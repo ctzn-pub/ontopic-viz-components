@@ -1,0 +1,11 @@
+{
+  "id": "tanstack-diverging-bars",
+  "name": "Diverging Bars (TanStack)",
+  "category": "demographic-breakdowns",
+  "subcategory": "generic",
+  "tags": ["diverging", "bar", "signed", "tanstack", "grammar-of-graphics"],
+  "description": "Signed values spreading left and right of a reference line, for showing which categories sit above or below a baseline. Direction is carried by position as well as color. Requires React 19 — every other engine in this registry still supports React 18.",
+  "dependencies": ["@tanstack/charts", "@tanstack/react-charts", "d3-scale"],
+  "foldInto": "diverging-bars",
+  "variantLabel": "TanStack"
+}

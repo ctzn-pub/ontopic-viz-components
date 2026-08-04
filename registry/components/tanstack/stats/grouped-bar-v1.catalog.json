@@ -1,0 +1,11 @@
+{
+  "id": "tanstack-grouped-bar",
+  "name": "Grouped / Stacked Bars (TanStack)",
+  "category": "demographic-breakdowns",
+  "subcategory": "generic",
+  "tags": ["bar", "grouped", "stacked", "tanstack", "grammar-of-graphics"],
+  "description": "Categories compared across several series, side by side or stacked. The band placement and the stack accumulation come from the chart engine rather than hand-rolled offsets, so switching between the two modes is a single option. Requires React 19 — every other engine in this registry still supports React 18.",
+  "dependencies": ["@tanstack/charts", "@tanstack/react-charts", "d3-scale"],
+  "foldInto": "grouped-bar",
+  "variantLabel": "TanStack"
+}
