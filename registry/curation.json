@@ -470,38 +470,6 @@
       "status": "parked",
       "reason": "WB table family; article/DataTable covers the in-article table need."
     },
-    "tanstack/gss/timeseries-line-v1": {
-      "status": "core",
-      "reason": "TanStack Charts port of the flagship GSS survey trend (Phase 8). Derives its demographic series from the payload metadata like the Recharts flagship; deliberately excludes the app-specific chrome (president bands, CI toggle, compact/embedded modes), which stays on the Recharts card. Folds into gss-time-trend."
-    },
-    "tanstack/stats/diverging-bars-v1": {
-      "status": "core",
-      "reason": "TanStack Charts port of the signed diverging bar chart (Phase 8). barX off a ruleX reference line, sentiment domain for direction. Folds into diverging-bars."
-    },
-    "tanstack/stats/grouped-bar-v1": {
-      "status": "core",
-      "reason": "TanStack Charts port of the grouped/stacked bar chart (Phase 8). Replaces the D3 version hand-rolled band offsets and stack accumulation with the engine z channel plus group()/stack() layouts. Folds into grouped-bar."
-    },
-    "tanstack/stats/histogram-v1": {
-      "status": "core",
-      "reason": "TanStack Charts port of the value-distribution histogram (Phase 8). Binning via the engine binX transform rather than hand-rolled buckets. Folds into distribution."
-    },
-    "tanstack/timeseries/economic-v1": {
-      "status": "core",
-      "reason": "TanStack Charts port of the FRED-style economic indicator line (Phase 8). Year-boundary ticks with engine-side thinning. Folds into timeseries-economic."
-    },
-    "tanstack/timeseries/index-v1": {
-      "status": "core",
-      "reason": "TanStack Charts port of the indexed two-series comparison (Phase 8). Re-bases both series to percent change from their first observation, with a ruleY baseline at zero. Folds into timeseries-index."
-    },
-    "tanstack/timeseries/line-v1": {
-      "status": "core",
-      "reason": "TanStack Charts port of the canonical survey time-series line (Phase 8). Reference implementation for the tanstack engine: proves the theme adapter, the areaY CI ribbon, and the engine-native focus/aria path. Folds into the timeseries-line card as a rendering variant."
-    },
-    "tanstack/timeseries/multiline-v1": {
-      "status": "core",
-      "reason": "TanStack Charts port of the grouped multi-series line (Phase 8). First multi-series tanstack component — proves colorScale resolves identically here and on Plot. Folds into multiline."
-    },
     "ui/wb/bullet-chart-v1": {
       "status": "parked",
       "reason": "WB UI-chart family on the incompatible Tailwind dark: mechanism."

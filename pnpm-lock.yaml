@@ -27,12 +27,6 @@ importers:
       '@radix-ui/react-tabs':
         specifier: ^1.1.17
         version: 1.1.17(@types/react-dom@19.2.4(@types/react@19.2.18))(@types/react@19.2.18)(react-dom@19.2.8(react@19.2.8))(react@19.2.8)
-      '@tanstack/charts':
-        specifier: 0.6.4
-        version: 0.6.4
-      '@tanstack/react-charts':
-        specifier: 0.6.4
-        version: 0.6.4(react-dom@19.2.8(react@19.2.8))(react@19.2.8)
       '@types/d3-array':
         specifier: ^3.2.2
         version: 3.2.2
@@ -1342,15 +1336,6 @@ packages:
     cpu: [x64]
     os: [win32]
 
-  '@tanstack/charts@0.6.4':
-    resolution: {integrity: sha512-x3kZPcRmZh3GNWvYGf+vb+kK2GFeWv/UBCNdptnq5sc9Au2skjnqLf8rs3Idh1q8VPWjnZI7jgaw0lLLRYt0gw==}
-
-  '@tanstack/react-charts@0.6.4':
-    resolution: {integrity: sha512-seP5Dd+JQAxosikGmUfDWtFxYPZk/0ED8biDLYZUYmUCe00Wtz1oWd3d+xiB1Al7gS0RARd6krcCcai+CKHyMA==}
-    peerDependencies:
-      react: ^19.0.0
-      react-dom: ^19.0.0
-
   '@types/chai@5.2.3':
     resolution: {integrity: sha512-Mw558oeA9fFbv65/y4mHtXDs9bPnFMZAL/jxdPFUpOHHIXX91mcgEHbS5Lahr+pwZFR8A7GQleRWeI6cGFC2UA==}
 
@@ -1380,9 +1365,6 @@ packages:
 
   '@types/d3-shape@3.1.7':
     resolution: {integrity: sha512-VLvUQ33C+3J+8p+Daf+nYSOsjB4GXp19/S/aGo60m9h1v6XaxjiT82lKVWJCfzhtuZ3yD7i/TPeC/fuKLLOSmg==}
-
-  '@types/d3-shape@3.1.8':
-    resolution: {integrity: sha512-lae0iWfcDeR7qt7rA88BNiqdvPS5pFVPpo5OfjElwNaT2yyekbM0C9vK+yqBqEmHr6lDkRnYNoTBYlAgJa7a4w==}
 
   '@types/d3-time@3.0.4':
     resolution: {integrity: sha512-yuzZug1nkAAaBlBBikKZTgzCeA+k1uy4ZFwWANOfKw5z5LRhV0gNA7gNkKm7HoK+HRN0wX3EkxGk0fpbWhmB7g==}
@@ -3113,20 +3095,6 @@ snapshots:
   '@rollup/rollup-win32-x64-msvc@4.53.2':
     optional: true
 
-  '@tanstack/charts@0.6.4':
-    dependencies:
-      '@types/d3-geo': 3.1.0
-      '@types/d3-shape': 3.1.8
-      d3-array: 3.2.4
-      d3-geo: 3.1.1
-      d3-shape: 3.2.0
-
-  '@tanstack/react-charts@0.6.4(react-dom@19.2.8(react@19.2.8))(react@19.2.8)':
-    dependencies:
-      '@tanstack/charts': 0.6.4
-      react: 19.2.8
-      react-dom: 19.2.8(react@19.2.8)
-
   '@types/chai@5.2.3':
     dependencies:
       '@types/deep-eql': 4.0.2
@@ -3155,10 +3123,6 @@ snapshots:
       '@types/d3-time': 3.0.4
 
   '@types/d3-shape@3.1.7':
-    dependencies:
-      '@types/d3-path': 3.1.1
-
-  '@types/d3-shape@3.1.8':
     dependencies:
       '@types/d3-path': 3.1.1
 

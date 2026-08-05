@@ -21,7 +21,6 @@ import { rcTheme } from './adapters/recharts';
 import { plotBase } from './adapters/plot';
 import { mlTheme } from './adapters/maplibre';
 import { d3Theme } from './adapters/d3';
-import { tanstackTheme } from './adapters/tanstack';
 import { scaleFor as rawScaleFor, ScaleSpec } from './scales';
 
 export { THEME_SCHEMA_VERSION } from './tokens';
@@ -71,7 +70,6 @@ export function useVizTheme() {
       plotBase: () => plotBase(theme), // Plot options base
       ml: mlTheme(theme), // MapLibre basemap chrome bundle
       d3: d3Theme(theme), // D3/SVG chrome bundle
-      tsq: tanstackTheme(theme), // TanStack Charts theme + chrome bundle
     }),
     [theme],
   );

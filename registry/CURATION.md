@@ -127,46 +127,6 @@ reachable Tigris sample data. Notable calls:
   exactly core + foundation. `docs/INVENTORY.md` is generated
   (`node scripts/generate-inventory.mjs`) — never hand-edit it.
 
-## TanStack Charts — a fifth engine (Phase 8, in progress)
-
-`registry/components/tanstack/*` renders with [TanStack Charts](https://tanstack.com/charts)
-via `registry/theme/adapters/tanstack.ts`. These are **variants, not new archetypes**: each
-one `foldInto`s the card its existing counterpart already owns (`variantLabel: "TanStack"`),
-so the one-winner-per-archetype rule is untouched — a reader picks an engine, not a chart.
-
-What the engine buys: a declarative mark grammar (a CI band is a real `areaY`, not a bespoke
-error-bar shape) and keyboard focus + per-point a11y from the engine rather than hand-built
-hit targets.
-
-### REACT 19 REQUIRED — read before installing
-
-`@tanstack/react-charts` peers on React ^19. **Every other engine here still supports React
-18.** Both TanStack packages are declared **optional** peer dependencies, so React-18
-consumers of the other four engines are unaffected — but `viz add tanstack/...` into a
-React-18 app will not work. See `docs/SETUP.md`.
-
-### Known engine gaps
-
-- **Gridline style is boolean.** TanStack's axis takes `grid?: boolean` and owns the
-  gridline rendering, so `theme.gridStyle`'s `dashed`/`dotted` variants **cannot** be
-  honored the way they are on Recharts/Plot/D3 — the grid is always solid at the engine's
-  own alpha. The adapter still exposes `gridDasharray` for components that draw their own
-  `ruleY` gridlines. Accepted deliberately: sparser grid, solid style.
-- **Axis options are loosely typed and fail SILENTLY.** A misplaced key is accepted by
-  `tsc` and ignored at render. The canonical trap:
-
-  ```ts
-  x: { axis: { tickFormat: fmt } }          // ignored — compiles, does nothing
-  x: { axis: { ticks: { format: fmt } } }   // the real path
-  ```
-
-  The first form renders years as `1,995` and silently drops a `%` suffix. **Never trust
-  `tsc` on this engine — verify against rendered output.** That is what
-  `registry/theme/__tests__/tanstack-contract.test.ts` exists for: it renders DOM-free via
-  `createChartScene` + `renderChartSvg` and asserts on extracted `<text>` nodes. Assert on
-  text nodes, *not* raw SVG substrings — naive `svg.includes(...)` checks were verified to
-  report "no bug" on visibly bugged output.
-
 ## Parked highlights (and how to un-park)
 
 - **The whole WB family** (7 recharts + 5 ui + 1 composite + 2 table + 3 plot) — built on a
